@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ChatClient.Stores;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,13 +7,20 @@ using System.Threading.Tasks;
 
 namespace ChatClient.ViewModels
 {
-    public class MainViewModel
+    public class MainViewModel : ViewModelBase
     {
-        public MainViewModel(ChatViewModel chatViewModel)
+        public MainViewModel(NavigationStore navigationStore)
         {
-            ChatViewModel = chatViewModel;
+            _navigationStore = navigationStore;
+            _navigationStore.CurrentViewModelChanged += OnCurrentViewModelChanged;
         }
 
-        public ChatViewModel ChatViewModel;
+        private void OnCurrentViewModelChanged()
+        {
+            OnPropertyChanged(nameof(CurrentViewModel));
+        }
+
+        public ViewModelBase CurrentViewModel => _navigationStore.CurrentViewModel;
+        private readonly NavigationStore _navigationStore;
     }
 }

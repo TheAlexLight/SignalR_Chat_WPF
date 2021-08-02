@@ -1,4 +1,3 @@
-C:\Users\oyudi\Alexander\Programming\WPF\Chat\ChatClient\obj\Debug\net5.0-windows\ChatClient.csprojAssemblyReference.cache
 C:\Users\oyudi\Alexander\Programming\WPF\Chat\ChatClient\obj\Debug\net5.0-windows\MainWindow.g.cs
 C:\Users\oyudi\Alexander\Programming\WPF\Chat\ChatClient\obj\Debug\net5.0-windows\App.g.cs
 C:\Users\oyudi\Alexander\Programming\WPF\Chat\ChatClient\obj\Debug\net5.0-windows\ChatClient_MarkupCompile.cache
@@ -36,3 +35,14 @@ C:\Users\oyudi\Alexander\Programming\WPF\Chat\ChatClient\obj\Debug\net5.0-window
 C:\Users\oyudi\Alexander\Programming\WPF\Chat\ChatClient\obj\Debug\net5.0-windows\ref\ChatClient.dll
 C:\Users\oyudi\Alexander\Programming\WPF\Chat\ChatClient\obj\Debug\net5.0-windows\ChatClient.pdb
 C:\Users\oyudi\Alexander\Programming\WPF\Chat\ChatClient\obj\Debug\net5.0-windows\ChatClient.genruntimeconfig.cache
+C:\Users\oyudi\Alexander\Programming\WPF\Chat\ChatClient\obj\Debug\net5.0-windows\Resources\ListView.baml
+C:\Users\oyudi\Alexander\Programming\WPF\Chat\ChatClient\obj\Debug\net5.0-windows\Resources\TextBlock.baml
+C:\Users\oyudi\Alexander\Programming\WPF\Chat\ChatClient\obj\Debug\net5.0-windows\Resources\TextBox.baml
+C:\Users\oyudi\Alexander\Programming\WPF\Chat\ChatClient\obj\Debug\net5.0-windows\Resources\Button.baml
+C:\Users\oyudi\Alexander\Programming\WPF\Chat\ChatClient\bin\Debug\net5.0-windows\Newtonsoft.Json.dll
+C:\Users\oyudi\Alexander\Programming\WPF\Chat\ChatClient\obj\Debug\net5.0-windows\GeneratedInternalTypeHelper.g.cs
+C:\Users\oyudi\Alexander\Programming\WPF\Chat\ChatClient\obj\Debug\net5.0-windows\Views\LoginView.g.cs
+C:\Users\oyudi\Alexander\Programming\WPF\Chat\ChatClient\obj\Debug\net5.0-windows\Views\RegisterView.g.cs
+C:\Users\oyudi\Alexander\Programming\WPF\Chat\ChatClient\obj\Debug\net5.0-windows\Views\LoginView.baml
+C:\Users\oyudi\Alexander\Programming\WPF\Chat\ChatClient\obj\Debug\net5.0-windows\Views\RegisterView.baml
+C:\Users\oyudi\Alexander\Programming\WPF\Chat\ChatClient\obj\Debug\net5.0-windows\ChatClient.csproj.AssemblyReference.cache

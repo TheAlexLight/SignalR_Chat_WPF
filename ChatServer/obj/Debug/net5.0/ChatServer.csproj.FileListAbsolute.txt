@@ -20,4 +20,4 @@ C:\Users\oyudi\Alexander\Programming\WPF\Chat\ChatServer\obj\Debug\net5.0\ChatSe
 C:\Users\oyudi\Alexander\Programming\WPF\Chat\ChatServer\obj\Debug\net5.0\ref\ChatServer.dll
 C:\Users\oyudi\Alexander\Programming\WPF\Chat\ChatServer\obj\Debug\net5.0\ChatServer.pdb
 C:\Users\oyudi\Alexander\Programming\WPF\Chat\ChatServer\obj\Debug\net5.0\ChatServer.genruntimeconfig.cache
-C:\Users\oyudi\Alexander\Programming\WPF\Chat\ChatServer\obj\Debug\net5.0\ChatServer.csprojAssemblyReference.cache
+C:\Users\oyudi\Alexander\Programming\WPF\Chat\ChatServer\obj\Debug\net5.0\ChatServer.csproj.AssemblyReference.cache

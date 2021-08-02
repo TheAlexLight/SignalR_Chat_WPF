@@ -12,10 +12,10 @@ namespace ChatClient.ViewModels
 {
     public class ChatViewModel : ViewModelBase
     {
-        //public ChatViewModel()
-        //{
+        public ChatViewModel()
+        {
 
-        //}
+        }
         public ChatViewModel(SignalRChatService chatService)
         {
             _chatService = chatService;
@@ -41,7 +41,7 @@ namespace ChatClient.ViewModels
         {
             get
             {
-                return (sendChatMessageCommand ??= new RelayCommand(async parameter =>
+                return sendChatMessageCommand ??= new RelayCommand(async parameter =>
                   {
                       try
                       {
@@ -53,7 +53,7 @@ namespace ChatClient.ViewModels
                       {
                           ErrorMessage = "Unable to send message.";
                       }
-                  }));
+                  });
             }
             set
             {

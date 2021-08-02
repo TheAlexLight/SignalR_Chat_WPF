@@ -10,11 +10,11 @@ none
 false
 TRACE;DEBUG;NET;NET5_0;NETCOREAPP
 C:\Users\oyudi\Alexander\Programming\WPF\Chat\ChatClient\App.xaml
-11407045341
+7241059194
 
-11-1475650793
-208-190776261
-MainWindow.xaml;
+22-335156687
+2092125567605
+MainWindow.xaml;Resources\Button.xaml;Resources\ListView.xaml;Resources\TextBlock.xaml;Resources\TextBox.xaml;Views\LoginView.xaml;Views\RegisterView.xaml;
 
 True
 
