@@ -1,6 +1,7 @@
 ﻿using ChatClient.Commands;
 using ChatClient.Model;
 using ChatClient.Operations;
+using ChatClient.Services;
 using ChatClient.Stores;
 using ChatClient.Views;
 using System;
@@ -10,7 +11,6 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
-using System.Windows.Navigation;
 
 namespace ChatClient.ViewModels
 {
@@ -18,13 +18,16 @@ namespace ChatClient.ViewModels
     {
         public LoginViewModel(NavigationStore navigationStore)
         {
-            NavigateRegisterCommand = new NavigateRegisterCommand(navigationStore);
+            NavigateRegisterCommand = new NavigateCommand<RegisterViewModel>(new NavigationService<RegisterViewModel>(navigationStore, 
+                    () => new RegisterViewModel(navigationStore)));
+            LoginCommand = new LoginCommand(this, new NavigationService<ChatViewModel>(navigationStore, () => new ChatViewModel()));
         }
 
         private string username;
         private string password;
 
         public ICommand NavigateRegisterCommand { get; }
+        public ICommand LoginCommand { get; }
 
         public string Username
         {

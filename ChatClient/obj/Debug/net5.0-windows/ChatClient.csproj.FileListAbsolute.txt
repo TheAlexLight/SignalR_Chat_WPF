@@ -45,4 +45,6 @@ C:\Users\oyudi\Alexander\Programming\WPF\Chat\ChatClient\obj\Debug\net5.0-window
 C:\Users\oyudi\Alexander\Programming\WPF\Chat\ChatClient\obj\Debug\net5.0-windows\Views\RegisterView.g.cs
 C:\Users\oyudi\Alexander\Programming\WPF\Chat\ChatClient\obj\Debug\net5.0-windows\Views\LoginView.baml
 C:\Users\oyudi\Alexander\Programming\WPF\Chat\ChatClient\obj\Debug\net5.0-windows\Views\RegisterView.baml
+C:\Users\oyudi\Alexander\Programming\WPF\Chat\ChatClient\obj\Debug\net5.0-windows\Views\ChatView.g.cs
+C:\Users\oyudi\Alexander\Programming\WPF\Chat\ChatClient\obj\Debug\net5.0-windows\Views\ChatView.baml
 C:\Users\oyudi\Alexander\Programming\WPF\Chat\ChatClient\obj\Debug\net5.0-windows\ChatClient.csproj.AssemblyReference.cache

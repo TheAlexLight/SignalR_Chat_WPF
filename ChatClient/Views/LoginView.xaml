@@ -17,7 +17,8 @@
             <TextBox  Padding="5" />
             <TextBlock Text="Password:" Margin="0,5,0,0" />
             <PasswordBox Padding="5" />
-            <Button  Content="LOGIN" Padding="5" Margin="0,5,0,0"/>
+            <Button  Content="LOGIN" Padding="5" Margin="0,5,0,0"
+                     Command="{Binding LoginCommand}"/>
             <Button  Content="Create new account" Padding="5" Margin="0,5,0,0"
                      Command="{Binding NavigateRegisterCommand}"/>
 
