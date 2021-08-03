@@ -1,5 +1,4 @@
 ﻿using ChatClient.Commands;
-using ChatClient.Model;
 using ChatClient.Services;
 using ChatClient.Stores;
 using ChatClient.Views;

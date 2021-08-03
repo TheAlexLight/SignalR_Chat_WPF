@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ChatClient.Model
+namespace EntityFramework.Models
 {
     public class User : BaseObject
     {

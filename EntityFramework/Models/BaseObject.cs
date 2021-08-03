@@ -4,10 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ChatClient.Model
+namespace EntityFramework.Models
 {
-    internal class GlobalUsersInfo
+   public class BaseObject
     {
-        public static User LoggedInUser { get; set; }
+        public int Id { get; set; }
     }
 }

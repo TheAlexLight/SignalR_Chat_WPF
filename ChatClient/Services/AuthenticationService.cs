@@ -1,6 +1,6 @@
 ﻿using ChatClient.Encryption;
-using ChatClient.Model;
 using ChatClient.Services.Interfaces;
+using EntityFramework.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,7 +11,7 @@ namespace ChatClient.Services
 {
     class AuthenticationService : IAuthenticationService
     {
-        public async Task<Account> Login(string username, string password)
+        public  Task<Account> Login(string username, string password)
         {
             throw new NotImplementedException();
         }
