@@ -8,6 +8,8 @@
 
   <ItemGroup>
     <None Remove="ChatServer.db" />
+    <None Remove="ChatServer.db-shm" />
+    <None Remove="ChatServer.db-wal" />
   </ItemGroup>
 
   <ItemGroup>

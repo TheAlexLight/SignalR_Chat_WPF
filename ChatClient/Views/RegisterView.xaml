@@ -15,13 +15,14 @@
                        FontSize="36" />
             <TextBlock Text="Username:" 
                        Margin="0,5,0,0" />
-            <TextBox  Padding="5" />
+            <TextBox  Padding="5"/>
             <TextBlock Text="Password:" 
                        Margin="0,5,0,0" />
             <PasswordBox  Padding="5" />
             <Button  Content="REGISTER" 
                      Padding="5" 
-                     Margin="0,5,0,0"/>
+                     Margin="0,5,0,0"
+                     Command="{Binding RegisterCommand}"/>
             <Button  Content="Back to Login" 
                      Padding="5" 
                      Margin="0,5,0,0" 

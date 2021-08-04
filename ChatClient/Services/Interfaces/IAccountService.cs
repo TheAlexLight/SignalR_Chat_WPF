@@ -2,11 +2,11 @@
 using EntityFramework.Models;
 using System.Threading.Tasks;
 
-namespace ChatClient.Services
+namespace ChatClient.Services.Interfaces
 {
     public interface IAccountService<T> : IDataService<T>
     {
-        Task<T> GetByUsername(string username);
-        Task<T> GetByEmail(string email);
+        Task<Account> GetByUsername(string username);
+        Task<Account> GetByEmail(string email);
     }
 }

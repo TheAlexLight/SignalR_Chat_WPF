@@ -1,7 +1,10 @@
 ﻿using ChatClient.Commands;
+using ChatClient.Encryption;
 using ChatClient.Services;
+using ChatClient.Services.Interfaces;
 using ChatClient.Stores;
 using ChatClient.Views;
+using EntityFramework.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,6 +26,15 @@ namespace ChatClient.ViewModels
         private string username;
         private string password;
 
+        private ICommand registerCommand;
+        public ICommand RegisterCommand { get {
+                return registerCommand ??= new RelayCommand(parameter =>
+                 {
+                     IAuthenticationService authentication = new AuthenticationService(new AccountDataService<Account>(), new PasswordHasher());
+                     authentication.Register("qwer@gmail.com", Username, Password, Password);
+                 });
+                    } 
+        }
         public ICommand NavigateLoginCommand { get; }
 
         public string Username

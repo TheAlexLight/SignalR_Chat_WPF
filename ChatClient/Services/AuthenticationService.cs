@@ -11,16 +11,27 @@ namespace ChatClient.Services
 {
     class AuthenticationService : IAuthenticationService
     {
-        private readonly IDataService<Account> _accountService;
+        private readonly IAccountService<Account> _accountService;
+        private readonly PasswordHasher _passwordHasher;
 
-        public AuthenticationService(IDataService<Account> accountService)
+        public AuthenticationService(IAccountService<Account> accountService, PasswordHasher passwordHasher)
         {
             _accountService = accountService;
+            _passwordHasher = passwordHasher;
         }
 
-        public  Task<Account> Login(string username, string password)
+        public async Task<Account> Login(string username, string password)
         {
-            throw new NotImplementedException();
+            Account account = await _accountService.GetByUsername(username);
+
+            bool passwordMatch = _passwordHasher.VerifyHashedPassword(account.AccountHolder.PasswordHash, password);
+
+            if (!passwordMatch)
+            {
+                throw new Exception();
+            }
+
+            return account;
         }
 
         public async Task<bool> Register(string email, string username, string password, string confirmPassword)
@@ -29,9 +40,7 @@ namespace ChatClient.Services
 
             if (password == confirmPassword)
             {
-                PasswordHasher hasher = new PasswordHasher();
-
-               string hashedPassword =  hasher.HashPassword(password);
+               string hashedPassword =  _passwordHasher.HashPassword(password);
 
                 User user = new User()
                 {

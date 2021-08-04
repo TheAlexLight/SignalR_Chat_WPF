@@ -1,4 +1,5 @@
-﻿using ChatClient.Services;
+﻿using ChatClient.Encryption;
+using ChatClient.Services;
 using ChatClient.Services.Interfaces;
 using ChatClient.Stores;
 using ChatClient.ViewModels;
@@ -35,8 +36,9 @@ namespace ChatClient
             //    DataContext = chatViewModel
             //};
 
-            IAuthenticationService authentication = new AuthenticationService(new AccountDataService<Account>());
-            authentication.Register("qwer@gmail.com", "qwer", "qwer", "qwer");
+            IAuthenticationService authentication = new AuthenticationService(new AccountDataService<Account>(), new PasswordHasher());
+            //authentication.Register("qwer@gmail.com", "qwer", "qwer", "qwer");
+            authentication.Login("qwer", "qwer");
 
             NavigationStore navigationStore = new();
 

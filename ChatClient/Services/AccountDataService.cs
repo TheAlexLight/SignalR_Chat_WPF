@@ -1,4 +1,5 @@
-﻿using EntityFramework.DbContexts;
+﻿using ChatClient.Services.Interfaces;
+using EntityFramework.DbContexts;
 using EntityFramework.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
@@ -36,14 +37,23 @@ namespace ChatClient.Services
             }
         }
 
-        public Task<T> GetByEmail(string email)
+        public async Task<Account> GetByEmail(string email)
         {
-            throw new NotImplementedException();
+            using (AuthorizationDbContext context = new AuthorizationDbContext())
+            {
+                return await context.Accounts
+                    .FirstOrDefaultAsync(a => a.AccountHolder.Email == email);
+            }
         }
 
-        public Task<T> GetByUsername(string username)
+        public async Task<Account> GetByUsername(string username)
         {
-            throw new NotImplementedException();
+            using (AuthorizationDbContext context = new AuthorizationDbContext())
+            {
+                return await context.Accounts
+                    .Include(a=>a.AccountHolder)
+                    .FirstOrDefaultAsync(a => a.AccountHolder.Username == username);
+            }
         }
     }
 }
