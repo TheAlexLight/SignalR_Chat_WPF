@@ -13,9 +13,6 @@
     <Compile Update="Views\LoginView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="Views\RegisterView.xaml.cs">
-      <SubType>Code</SubType>
-    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Page Update="MainWindow.xaml">
@@ -25,9 +22,6 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Views\LoginView.xaml">
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Update="Views\RegisterView.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Resources\Button.xaml">

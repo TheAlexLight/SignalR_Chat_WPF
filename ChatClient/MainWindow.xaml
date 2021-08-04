@@ -14,9 +14,6 @@
             <DataTemplate DataType="{x:Type viewModels:LoginViewModel}">
                 <views:LoginView/>
             </DataTemplate>
-            <DataTemplate DataType="{x:Type viewModels:RegisterViewModel}">
-                <views:RegisterView/>
-            </DataTemplate>
             <DataTemplate DataType="{x:Type viewModels:ChatViewModel}">
                 <views:ChatView/>
             </DataTemplate>

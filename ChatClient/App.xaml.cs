@@ -1,19 +1,6 @@
-﻿using ChatClient.Encryption;
-using ChatClient.Services;
-using ChatClient.Services.Interfaces;
+﻿using ChatClient.Services;
 using ChatClient.Stores;
 using ChatClient.ViewModels;
-using EntityFramework.DbContexts;
-using EntityFramework.Models;
-using Microsoft.AspNetCore.SignalR.Client;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.ChangeTracking;
-using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Data;
-using System.Linq;
-using System.Threading.Tasks;
 using System.Windows;
 
 namespace ChatClient
@@ -35,10 +22,6 @@ namespace ChatClient
             //{
             //    DataContext = chatViewModel
             //};
-
-            IAuthenticationService authentication = new AuthenticationService(new AccountDataService<Account>(), new PasswordHasher());
-            //authentication.Register("qwer@gmail.com", "qwer", "qwer", "qwer");
-            authentication.Login("qwer", "qwer");
 
             NavigationStore navigationStore = new();
 

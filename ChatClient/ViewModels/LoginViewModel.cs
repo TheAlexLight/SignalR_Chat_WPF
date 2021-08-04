@@ -16,15 +16,12 @@ namespace ChatClient.ViewModels
     {
         public LoginViewModel(NavigationStore navigationStore)
         {
-            NavigateRegisterCommand = new NavigateCommand<RegisterViewModel>(new NavigationService<RegisterViewModel>(navigationStore, 
-                    () => new RegisterViewModel(navigationStore)));
             LoginCommand = new LoginCommand(this, new NavigationService<ChatViewModel>(navigationStore, () => new ChatViewModel()));
         }
 
         private string username;
         private string password;
 
-        public ICommand NavigateRegisterCommand { get; }
         public ICommand LoginCommand { get; }
 
         public string Username

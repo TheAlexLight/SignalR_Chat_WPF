@@ -4,10 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace EntityFramework.Models
+namespace ChatClient.Models
 {
-    public class Account : BaseObject
+   public class BaseObject
     {
-        public User AccountHolder { get; set; }
+        public int Id { get; set; }
     }
 }
