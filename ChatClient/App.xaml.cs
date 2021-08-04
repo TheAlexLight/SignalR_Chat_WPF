@@ -1,10 +1,12 @@
 ﻿using ChatClient.Services;
+using ChatClient.Services.Interfaces;
 using ChatClient.Stores;
 using ChatClient.ViewModels;
 using EntityFramework.DbContexts;
 using EntityFramework.Models;
 using Microsoft.AspNetCore.SignalR.Client;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -33,6 +35,9 @@ namespace ChatClient
             //    DataContext = chatViewModel
             //};
 
+            IAuthenticationService authentication = new AuthenticationService(new AccountDataService<Account>());
+            authentication.Register("qwer@gmail.com", "qwer", "qwer", "qwer");
+
             NavigationStore navigationStore = new();
 
             navigationStore.CurrentViewModel = new LoginViewModel(navigationStore);
@@ -41,27 +46,6 @@ namespace ChatClient
             {
                 DataContext = new MainViewModel(navigationStore)
             };
-
-            using (AuthorizationDbContext db = new AuthorizationDbContext())
-            {
-                db.Database.Migrate();
-
-                db.Add(new User
-                {
-                    Username = "123"
-                });
-                db.Add(new User
-                {
-                    Username = "321"
-                });
-
-                db.SaveChanges();
-
-                foreach (var item in db.Users)
-                {
-                    MessageBox.Show(item.Username);
-                }
-            }
 
             window.Show();
         }

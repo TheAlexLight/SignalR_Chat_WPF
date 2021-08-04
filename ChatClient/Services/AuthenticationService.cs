@@ -11,6 +11,13 @@ namespace ChatClient.Services
 {
     class AuthenticationService : IAuthenticationService
     {
+        private readonly IDataService<Account> _accountService;
+
+        public AuthenticationService(IDataService<Account> accountService)
+        {
+            _accountService = accountService;
+        }
+
         public  Task<Account> Login(string username, string password)
         {
             throw new NotImplementedException();
@@ -30,16 +37,20 @@ namespace ChatClient.Services
                 {
                     Email = email,
                     Username = username,
-                    PasswordHash = hashedPassword
+                    PasswordHash = hashedPassword,
+                    DateJoined = DateTime.Now
                 };
 
                 Account account = new Account()
                 {
                     AccountHolder = user
                 };
+
+               await _accountService.Create(account);
             }
 
             return success;
         }
+
     }
 }

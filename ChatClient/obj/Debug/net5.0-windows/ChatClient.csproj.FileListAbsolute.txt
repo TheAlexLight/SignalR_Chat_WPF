@@ -78,3 +78,5 @@ C:\Users\oyudi\Alexander\Programming\WPF\Chat\ChatClient\bin\Debug\net5.0-window
 C:\Users\oyudi\Alexander\Programming\WPF\Chat\ChatClient\bin\Debug\net5.0-windows\runtimes\win-x86\native\e_sqlite3.dll
 C:\Users\oyudi\Alexander\Programming\WPF\Chat\ChatClient\bin\Debug\net5.0-windows\EntityFramework.dll
 C:\Users\oyudi\Alexander\Programming\WPF\Chat\ChatClient\bin\Debug\net5.0-windows\EntityFramework.pdb
+C:\Users\oyudi\Alexander\Programming\WPF\Chat\ChatClient\bin\Debug\net5.0-windows\Humanizer.dll
+C:\Users\oyudi\Alexander\Programming\WPF\Chat\ChatClient\bin\Debug\net5.0-windows\Microsoft.EntityFrameworkCore.Design.dll

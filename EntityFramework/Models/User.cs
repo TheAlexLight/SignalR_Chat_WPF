@@ -11,5 +11,6 @@ namespace EntityFramework.Models
         public string Username { get; set; }
         public string PasswordHash { get; set; }
         public string Email { get; set; }
+        public DateTime DateJoined { get; set; }
     }
 }

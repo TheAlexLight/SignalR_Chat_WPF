@@ -14,20 +14,9 @@ namespace EntityFramework.DbContexts
         public DbSet<User> Users { get; set; }
         public DbSet<Account> Accounts { get; set; }
 
-        //private static bool _created = false;
-        //public AuthorizationDbContext()
-        //{
-        //    if (!_created)
-        //    {
-        //        _created = true;
-        //        Database.EnsureDeleted();
-        //        Database.EnsureCreated();
-        //    }
-        //}
-
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlite("Data Source=ChatServer.db");
+            optionsBuilder.UseSqlite("Data Source=../../../ChatServer.db");
 
             //base.OnConfiguring(optionsBuilder);
         }
