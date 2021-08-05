@@ -20,9 +20,18 @@ namespace ChatClient.ViewModels
             ChatService = chatService;
             _navigationStore = navigationStore;
             chatService.TryLogin += ChatService_TryLogin;
+            chatService.ConnectionReceived += ChatService_ConnectionReceived; ;
 
             LoginCommand = new LoginCommand(this, new NavigationService<ChatViewModel>(navigationStore, 
                     () => new ChatViewModel(ChatService)/*ChatViewModel.CreateConnectedViewModel(chatService)*/));
+
+            ConnectionStatus = "Connection...";
+        }
+
+        private void ChatService_ConnectionReceived(bool isConnected)
+        {
+            LoginConnectionService.IsLogin = isConnected;
+            LoginCommand.RaiseCanExecuteChanged();
         }
 
         private void ChatService_TryLogin(bool usernameExist)
@@ -44,7 +53,7 @@ namespace ChatClient.ViewModels
 
         private string username;
 
-        public ICommand LoginCommand { get; }
+        public LoginCommand LoginCommand { get; }
 
         public string Username
         {

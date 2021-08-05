@@ -27,7 +27,13 @@ namespace ChatServer.Hubs
             await Clients.Client(Context.ConnectionId).SendAsync("TryLogin", existUsername);
         }
 
-        public override Task OnConnectedAsync()
+        public async Task SendConnectionInfo(bool connected)
+        {
+
+            await Clients.Client(Context.ConnectionId).SendAsync("ReceiveConnectionInfo", connected);
+        }
+
+        public override async Task<Task> OnConnectedAsync()
         {
             UserHandler user = new()
             {
@@ -35,16 +41,20 @@ namespace ChatServer.Hubs
             };
 
             Account.Users.Add(user);
-            
+
+            await SendConnectionInfo(true);
+
             return base.OnConnectedAsync();
         }
 
-        public override Task OnDisconnectedAsync(Exception exception)
+        public override async Task<Task> OnDisconnectedAsync(Exception exception)
         {
             UserHandler user = Account.Users.FirstOrDefault(a => a.ConnectedIds == Context.ConnectionId);
 
             Account.Users.Remove(user);
-          
+
+            await SendConnectionInfo(false);
+
             return base.OnDisconnectedAsync(exception);
         }
     }

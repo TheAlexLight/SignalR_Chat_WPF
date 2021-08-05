@@ -9,6 +9,7 @@ namespace ChatClient.ViewModels
    public class ChatViewModelBase : ViewModelBase
     {
         private string _errorMessage;
+        private string _connectionStatus;
         public bool HasErrorMessage => !string.IsNullOrEmpty(ErrorMessage);
 
         public string ErrorMessage
@@ -19,6 +20,16 @@ namespace ChatClient.ViewModels
                 _errorMessage = value;
                 OnPropertyChanged();
                 OnPropertyChanged(nameof(HasErrorMessage));
+            }
+        }
+
+        public string ConnectionStatus
+        {
+            get => _connectionStatus;
+            set
+            {
+                _connectionStatus = value;
+                OnPropertyChanged();
             }
         }
     }

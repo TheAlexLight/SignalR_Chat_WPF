@@ -13,6 +13,7 @@ namespace ChatClient.Services
 
         public event Action<string> MessageReceived;
         public event Action<bool> TryLogin;
+        public event Action<bool> ConnectionReceived;
 
         public SignalRChatService(HubConnection connection)
         {
@@ -20,6 +21,7 @@ namespace ChatClient.Services
 
             _connection.On<string>("ReceiveMessage", (message) => MessageReceived?.Invoke(message));
             _connection.On<bool>("TryLogin", (result) => TryLogin?.Invoke(result));
+            _connection.On<bool>("ReceiveConnectionInfo", (result) => ConnectionReceived?.Invoke(result));
         }
 
         public async Task Connect()

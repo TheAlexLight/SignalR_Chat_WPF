@@ -11,7 +11,7 @@ using System.Windows;
 
 namespace ChatClient.Commands
 {
-    class LoginCommand : CommandBase
+    public class LoginCommand : CommandBase
     {
         private readonly LoginViewModel _viewModel;
         private readonly NavigationService<ChatViewModel> _navigationService;
@@ -21,12 +21,25 @@ namespace ChatClient.Commands
             _viewModel = viewModel;
             _navigationService = navigationService;
         }
+
+        public override event EventHandler CanExecuteChanged;
+
+        public override bool CanExecute(object parameter)
+        {
+            return LoginConnectionService.IsLogin;
+        }
+
         public override async void Execute(object parameter)
         {
-            MessageBox.Show($"Logging in {_viewModel.Username}...");
+            //MessageBox.Show($"Logging in {_viewModel.Username}...");
+
             await _viewModel.ChatService.Login(_viewModel.Username);
             //_navigationService.Navigate();
         }
 
+        public void RaiseCanExecuteChanged()
+        {
+            CanExecuteChanged?.Invoke(this, new EventArgs());
+        }
     }
 }

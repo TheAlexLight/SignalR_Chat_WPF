@@ -10,6 +10,8 @@ namespace ChatClient.Services
 {
     public class LoginConnectionService
     {
+        public static bool IsLogin { get; set; }
+
         private readonly NavigationStore _navigation;
         private readonly SignalRChatService _chatService;
 
@@ -28,6 +30,11 @@ namespace ChatClient.Services
                 if (task.Exception != null)
                 {
                     viewModel.ErrorMessage = "Unable to connect to chat hub";
+                    viewModel.ConnectionStatus = "Disconnected";
+                }
+                else
+                {
+                    viewModel.ConnectionStatus = "Connected";
                 }
             });
 
