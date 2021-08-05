@@ -19,46 +19,25 @@ namespace ChatClient.ViewModels
         }
         public ChatViewModel(SignalRChatService chatService)
         {
-            _chatService = chatService;
-            //SendChatMessageCommand = new SendChatCommand(this, chatService);
+            SendChatMessageCommand = new SendChatCommand(this, chatService);
 
             Messages = new();
 
             chatService.MessageReceived += ChatService_MessageReceived;
+            chatService.UserListReceived += ChatService_UserListReceived;
+        }
+
+        private void ChatService_UserListReceived(ObservableCollection<string> activeUsers)
+        {
+            ActiveUsers = activeUsers;
         }
 
         private string _message;
+        private ObservableCollection<string> _activeUsers;
 
         public ObservableCollection<string> Messages { get; }
 
-        private ICommand sendChatMessageCommand;
-
-        private SignalRChatService _chatService;
-
-
-        public ICommand SendChatMessageCommand
-        {
-            get
-            {
-                return sendChatMessageCommand ??= new RelayCommand(async parameter =>
-                  {
-                      try
-                      {
-                          await _chatService.SendMessage(Message);
-
-                          ErrorMessage = string.Empty;
-                      }
-                      catch (Exception)
-                      {
-                          ErrorMessage = "Unable to send message.";
-                      }
-                  });
-            }
-            set
-            {
-
-            }
-        }
+        public ICommand SendChatMessageCommand { get; }
 
         public static ChatViewModel CreateConnectedViewModel(SignalRChatService chatService)
         {
@@ -91,6 +70,16 @@ namespace ChatClient.ViewModels
             set
             {
                 _message = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public ObservableCollection<string> ActiveUsers
+        {
+            get => _activeUsers;
+            set
+            {
+                _activeUsers = value;
                 OnPropertyChanged();
             }
         }

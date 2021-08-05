@@ -19,11 +19,11 @@ namespace ChatClient.ViewModels
         {
             ChatService = chatService;
             _navigationStore = navigationStore;
+            _chatViewModel = new ChatViewModel(ChatService);
             chatService.TryLogin += ChatService_TryLogin;
             chatService.ConnectionReceived += ChatService_ConnectionReceived; ;
 
-            LoginCommand = new LoginCommand(this, new NavigationService<ChatViewModel>(navigationStore, 
-                    () => new ChatViewModel(ChatService)/*ChatViewModel.CreateConnectedViewModel(chatService)*/));
+            LoginCommand = new LoginCommand(this);
 
             ConnectionStatus = "Connection...";
         }
@@ -36,9 +36,11 @@ namespace ChatClient.ViewModels
 
         private void ChatService_TryLogin(bool usernameExist)
         {
+
+
             if (!usernameExist)
             {
-                NavigationService<ChatViewModel> navigationService = new(_navigationStore, () => new ChatViewModel(ChatService));
+                NavigationService<ChatViewModel> navigationService = new(_navigationStore, () => _chatViewModel);
                 navigationService.Navigate();
             }
             else
@@ -49,6 +51,7 @@ namespace ChatClient.ViewModels
         }
 
         private NavigationStore _navigationStore;
+        private ChatViewModel _chatViewModel;
         public SignalRChatService ChatService { get;}
 
         private string username;

@@ -3,6 +3,7 @@ using ChatServer.Models;
 using Microsoft.AspNetCore.SignalR;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -22,9 +23,19 @@ namespace ChatServer.Hubs
             {
                UserHandler user = Account.Users.FirstOrDefault(a => a.ConnectedIds == Context.ConnectionId);
                 user.ConnectedUsername = username;
+
+                await SendUserList();
             }
 
             await Clients.Client(Context.ConnectionId).SendAsync("TryLogin", existUsername);
+        }
+
+        public async Task SendUserList()
+        {
+            //IEnumerable<string> allLoginedUsers = Account.Users.Select(u => u.ConnectedUsername).Where(s => s != null);
+            List<string> allLoginedUsers = Account.Users.Select(u => u.ConnectedUsername).Where(s => s != null).ToList();
+
+            await Clients.All.SendAsync("ReceiveUserList", allLoginedUsers);
         }
 
         public async Task SendConnectionInfo(bool connected)

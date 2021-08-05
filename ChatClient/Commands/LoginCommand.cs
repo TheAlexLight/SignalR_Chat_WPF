@@ -14,12 +14,10 @@ namespace ChatClient.Commands
     public class LoginCommand : CommandBase
     {
         private readonly LoginViewModel _viewModel;
-        private readonly NavigationService<ChatViewModel> _navigationService;
 
-        public LoginCommand( LoginViewModel viewModel, NavigationService<ChatViewModel> navigationService)
+        public LoginCommand( LoginViewModel viewModel)
         {
             _viewModel = viewModel;
-            _navigationService = navigationService;
         }
 
         public override event EventHandler CanExecuteChanged;
@@ -31,10 +29,7 @@ namespace ChatClient.Commands
 
         public override async void Execute(object parameter)
         {
-            //MessageBox.Show($"Logging in {_viewModel.Username}...");
-
             await _viewModel.ChatService.Login(_viewModel.Username);
-            //_navigationService.Navigate();
         }
 
         public void RaiseCanExecuteChanged()

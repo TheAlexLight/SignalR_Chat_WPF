@@ -37,7 +37,7 @@
                        Text="{Binding ErrorMessage}"/>
 
             <ListBox Grid.Row="2" 
-                     Margin="0,20,0,0"
+                     Margin="5,20,5,5"
                      ItemsSource="{Binding Messages}"/>
 
             <Grid Grid.Row="3" >
@@ -54,5 +54,8 @@
                         Command="{Binding SendChatMessageCommand}"/>
             </Grid>
         </Grid>
+        
+        <ListBox Grid.Column="2"
+                     ItemsSource="{Binding ActiveUsers}"/>
     </Grid>
 </UserControl>
