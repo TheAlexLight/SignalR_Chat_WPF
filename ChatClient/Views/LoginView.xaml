@@ -8,15 +8,28 @@
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800">
 
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="../Resources/TextBlock.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+
     <Grid>
         <StackPanel HorizontalAlignment="Center"
                     VerticalAlignment="Center"
                     Width="300">
             <TextBlock Text="Log in" HorizontalAlignment="Center" FontSize="36" />
             <TextBlock Text="Username:" Margin="0,5,0,0" />
-            <TextBox  Padding="5" />
+            <TextBox  Padding="5"
+                      Text="{Binding Username}"/>
             <Button  Content="LOGIN" Padding="5" Margin="0,5,0,0"
                      Command="{Binding LoginCommand}"/>
+            <TextBlock Style="{StaticResource errorMessage}"
+                       Text="{Binding ErrorMessage}"
+                       Margin="10"/>
+
 
         </StackPanel>
     </Grid>

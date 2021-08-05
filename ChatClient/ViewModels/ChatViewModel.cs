@@ -6,11 +6,12 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Input;
 
 namespace ChatClient.ViewModels
 {
-    public class ChatViewModel : ViewModelBase
+    public class ChatViewModel : ChatViewModelBase
     {
         public ChatViewModel()
         {
@@ -27,8 +28,6 @@ namespace ChatClient.ViewModels
         }
 
         private string _message;
-        private string _errorMessage;
-        public bool HasErrorMessage => !string.IsNullOrEmpty(ErrorMessage);
 
         public ObservableCollection<string> Messages { get; }
 
@@ -81,6 +80,11 @@ namespace ChatClient.ViewModels
             Messages.Add(message);
         }
 
+        private void ChatService_NameReceived(string name)
+        {
+            MessageBox.Show(name);
+        }
+
         public string Message
         {
             get => _message;
@@ -90,20 +94,5 @@ namespace ChatClient.ViewModels
                 OnPropertyChanged();
             }
         }
-
-        public string ErrorMessage
-        {
-            get => _errorMessage;
-            set
-            {
-                _errorMessage = value;
-                OnPropertyChanged();
-                OnPropertyChanged(nameof(HasErrorMessage));
-            }
-        }
-
-        
-        //public ICommand SendChatMessageCommand { get; }
-
     }
 }

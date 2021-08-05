@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.SignalR;
+﻿using ChatServer.Helpers;
+using ChatServer.Models;
+using Microsoft.AspNetCore.SignalR;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,6 +13,39 @@ namespace ChatServer.Hubs
         public async Task SendMessage(string message)
         {
             await Clients.All.SendAsync("ReceiveMessage", message);
+        }
+        public async Task SendLogin(string username)
+        {
+            bool existUsername = Account.Users.Exists(u=>u.ConnectedUsername == username);
+
+            if (!existUsername)
+            {
+               UserHandler user = Account.Users.FirstOrDefault(a => a.ConnectedIds == Context.ConnectionId);
+                user.ConnectedUsername = username;
+            }
+
+            await Clients.Client(Context.ConnectionId).SendAsync("TryLogin", existUsername);
+        }
+
+        public override Task OnConnectedAsync()
+        {
+            UserHandler user = new()
+            {
+                ConnectedIds = Context.ConnectionId
+            };
+
+            Account.Users.Add(user);
+            
+            return base.OnConnectedAsync();
+        }
+
+        public override Task OnDisconnectedAsync(Exception exception)
+        {
+            UserHandler user = Account.Users.FirstOrDefault(a => a.ConnectedIds == Context.ConnectionId);
+
+            Account.Users.Remove(user);
+          
+            return base.OnDisconnectedAsync(exception);
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using ChatClient.Services;
 using ChatClient.Stores;
 using ChatClient.ViewModels;
+using Microsoft.AspNetCore.SignalR.Client;
 using System.Windows;
 
 namespace ChatClient
@@ -23,9 +24,17 @@ namespace ChatClient
             //    DataContext = chatViewModel
             //};
 
-            NavigationStore navigationStore = new();
+            HubConnection connection = new HubConnectionBuilder()
+                    .WithUrl("http://localhost:5000/chat")
+                    .Build();
 
-            navigationStore.CurrentViewModel = new LoginViewModel(navigationStore);
+            NavigationStore navigationStore = new();
+            SignalRChatService chatService = new(connection);
+
+
+            LoginConnectionService connectionService = new(navigationStore, chatService);
+
+            navigationStore.CurrentViewModel = connectionService.CreateConnectedViewModel(chatService);
 
             MainWindow window = new()
             {

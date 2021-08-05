@@ -1,6 +1,7 @@
 ﻿using ChatClient.Services;
 using ChatClient.Stores;
 using ChatClient.ViewModels;
+using Microsoft.AspNetCore.SignalR.Client;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,16 +16,17 @@ namespace ChatClient.Commands
         private readonly LoginViewModel _viewModel;
         private readonly NavigationService<ChatViewModel> _navigationService;
 
-        public LoginCommand(LoginViewModel viewModel, NavigationService<ChatViewModel> navigationService)
+        public LoginCommand( LoginViewModel viewModel, NavigationService<ChatViewModel> navigationService)
         {
             _viewModel = viewModel;
             _navigationService = navigationService;
         }
-
-        public override void Execute(object parameter)
+        public override async void Execute(object parameter)
         {
             MessageBox.Show($"Logging in {_viewModel.Username}...");
-            _navigationService.Navigate();
+            await _viewModel.ChatService.Login(_viewModel.Username);
+            //_navigationService.Navigate();
         }
+
     }
 }
