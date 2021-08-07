@@ -24,7 +24,7 @@ namespace ChatClient.Commands
 
         public bool CanExecute(object parameter)
         {
-            return true;
+            return !UserStatusService.IsBanned;
         }
 
         public async void Execute(object parameter)

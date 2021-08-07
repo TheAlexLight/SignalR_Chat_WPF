@@ -15,6 +15,7 @@ namespace ChatClient.Services
         public event Action<string> MessageReceived;
         public event Action<bool> TryLogin;
         public event Action<bool> ConnectionReceived;
+        public event Action<bool> ReceivedBan;
         public event Action<ObservableCollection<string>> UserListReceived;
 
         public SignalRChatService(HubConnection connection)
@@ -29,6 +30,7 @@ namespace ChatClient.Services
             _connection.On<string>("ReceiveMessage", (message) => MessageReceived?.Invoke(message));
             _connection.On<bool>("TryLogin", (result) => TryLogin?.Invoke(result));
             _connection.On<bool>("ReceiveConnectionInfo", (result) => ConnectionReceived?.Invoke(result));
+            _connection.On<bool>("ReceiveBan", (result) => ReceivedBan?.Invoke(result));
             _connection.On<ObservableCollection<string>>("ReceiveUserList", (activeUsers) => UserListReceived?.Invoke(activeUsers));
         }
 
@@ -45,6 +47,11 @@ namespace ChatClient.Services
         public async Task Login(string username)
         {
             await _connection.SendAsync("SendLogin", username);
+        }
+
+        public async Task SendBan(string username)
+        {
+            await _connection.SendAsync("SendUserBan", username);
         }
     }
 }

@@ -1,4 +1,7 @@
 ﻿using ChatClient.Commands;
+using ChatClient.Commands.ContextMenuCommands;
+using ChatClient.Enums;
+using ChatClient.Models;
 using ChatClient.Services;
 using System;
 using System.Collections.Generic;
@@ -13,31 +16,47 @@ namespace ChatClient.ViewModels
 {
     public class ChatViewModel : ChatViewModelBase
     {
-        public ChatViewModel()
-        {
-
-        }
         public ChatViewModel(SignalRChatService chatService)
         {
-            SendChatMessageCommand = new SendChatCommand(this, chatService);
+            //_getBan += GetBan_Action;
 
-            Messages = new();
+            InitializeFields(chatService);
 
             chatService.MessageReceived += ChatService_MessageReceived;
             chatService.UserListReceived += ChatService_UserListReceived;
+            chatService.ReceivedBan += ChatService_ReceivedBan;
         }
 
-        private void ChatService_UserListReceived(ObservableCollection<string> activeUsers)
-        {
-            ActiveUsers = activeUsers;
-        }
+        //private event Action _getBan;
 
         private string _message;
         private ObservableCollection<string> _activeUsers;
+        private ObservableCollection<UserContextMenu> _contextMenuActions;
 
-        public ObservableCollection<string> Messages { get; }
+        public ObservableCollection<string> Messages { get; private set; }
 
-        public ICommand SendChatMessageCommand { get; }
+        public ICommand SendChatMessageCommand { get; private set; }
+
+        private void InitializeFields(SignalRChatService chatService)
+        {
+            SendChatMessageCommand = new SendChatCommand(this, chatService);
+            Messages = new();
+
+            _contextMenuActions = new ObservableCollection<UserContextMenu>()
+            {
+                new UserContextMenu()
+                {
+                    Header = "Ban",
+                    Role = (int)UserRole.Admin,
+                    Command = new BanUserCommand(chatService)
+                }
+            };
+        }
+
+        //private void GetBan_Action()
+        //{
+        //    OnPropertyChanged(nameof(IsBanned));
+        //}
 
         public static ChatViewModel CreateConnectedViewModel(SignalRChatService chatService)
         {
@@ -59,9 +78,14 @@ namespace ChatClient.ViewModels
             Messages.Add(message);
         }
 
-        private void ChatService_NameReceived(string name)
+        private void ChatService_UserListReceived(ObservableCollection<string> activeUsers)
         {
-            MessageBox.Show(name);
+            ActiveUsers = activeUsers;
+        }
+        private void ChatService_ReceivedBan(bool banResult)
+        {
+            UserStatusService.IsBanned = banResult;
+            OnPropertyChanged(nameof(IsBanned));
         }
 
         public string Message
@@ -83,5 +107,17 @@ namespace ChatClient.ViewModels
                 OnPropertyChanged();
             }
         }
+
+        public ObservableCollection<UserContextMenu> ContextMenuActions
+        {
+            get => _contextMenuActions;
+            set
+            {
+                _contextMenuActions = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public bool IsBanned => UserStatusService.IsBanned;
     }
 }

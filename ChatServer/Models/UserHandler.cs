@@ -9,5 +9,6 @@ namespace ChatServer.Helpers
     {
         public string ConnectedIds { get; set; }
         public string ConnectedUsername { get; set; }
+        public int Role { get;set; }
     }
 }

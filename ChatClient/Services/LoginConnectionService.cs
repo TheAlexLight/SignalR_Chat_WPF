@@ -10,8 +10,6 @@ namespace ChatClient.Services
 {
     public class LoginConnectionService
     {
-        public static bool IsLogin { get; set; }
-
         private readonly NavigationStore _navigation;
         private readonly SignalRChatService _chatService;
 

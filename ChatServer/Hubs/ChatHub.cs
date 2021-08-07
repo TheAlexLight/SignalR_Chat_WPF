@@ -15,6 +15,17 @@ namespace ChatServer.Hubs
         {
             await Clients.All.SendAsync("ReceiveMessage", message);
         }
+
+        public async Task SendUserBan(string username)
+        {
+            UserHandler user = Account.Users.FirstOrDefault(u => u.ConnectedUsername == username);
+
+            if (user.ConnectedIds != Context.ConnectionId)
+            {
+                await Clients.Client(user.ConnectedIds).SendAsync("ReceiveBan", true);
+            }
+        }
+
         public async Task SendLogin(string username)
         {
             bool existUsername = Account.Users.Exists(u=>u.ConnectedUsername == username);
@@ -27,12 +38,11 @@ namespace ChatServer.Hubs
                 await SendUserList();
             }
 
-            await Clients.Client(Context.ConnectionId).SendAsync("TryLogin", existUsername);
+            await Clients.Caller.SendAsync("TryLogin", existUsername);
         }
 
         public async Task SendUserList()
         {
-            //IEnumerable<string> allLoginedUsers = Account.Users.Select(u => u.ConnectedUsername).Where(s => s != null);
             List<string> allLoginedUsers = Account.Users.Select(u => u.ConnectedUsername).Where(s => s != null).ToList();
 
             await Clients.All.SendAsync("ReceiveUserList", allLoginedUsers);

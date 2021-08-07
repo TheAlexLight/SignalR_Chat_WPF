@@ -9,15 +9,13 @@ namespace ChatClient.Commands
 {
     public abstract class CommandBase : ICommand
     {
-        public virtual event EventHandler CanExecuteChanged;
-
-       
+        public event EventHandler CanExecuteChanged;
 
         public virtual bool CanExecute(object parameter) => true;
 
         public abstract void Execute(object parameter);
 
-        protected void OnCanExecuteChanged()
+        public void RaiseCanExecuteChanged()
         {
             CanExecuteChanged?.Invoke(this, new EventArgs());
         }

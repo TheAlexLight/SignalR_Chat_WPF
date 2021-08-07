@@ -18,6 +18,15 @@
     <Page Update="MainWindow.xaml">
       <SubType>Designer</SubType>
     </Page>
+    <Page Update="Resources\ContextMenu.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Resources\Grid.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Resources\ListBox.xaml">
+      <SubType>Designer</SubType>
+    </Page>
     <Page Update="Views\ChatView.xaml">
       <SubType>Designer</SubType>
     </Page>
@@ -25,9 +34,6 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Resources\Button.xaml">
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Update="Resources\ListView.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Resources\TextBlock.xaml">

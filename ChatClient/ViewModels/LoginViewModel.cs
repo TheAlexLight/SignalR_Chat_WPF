@@ -30,7 +30,7 @@ namespace ChatClient.ViewModels
 
         private void ChatService_ConnectionReceived(bool isConnected)
         {
-            LoginConnectionService.IsLogin = isConnected;
+            UserStatusService.IsLogin = isConnected;
             LoginCommand.RaiseCanExecuteChanged();
         }
 

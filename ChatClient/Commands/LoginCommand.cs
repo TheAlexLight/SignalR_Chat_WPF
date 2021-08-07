@@ -20,21 +20,14 @@ namespace ChatClient.Commands
             _viewModel = viewModel;
         }
 
-        public override event EventHandler CanExecuteChanged;
-
         public override bool CanExecute(object parameter)
         {
-            return LoginConnectionService.IsLogin;
+            return UserStatusService.IsLogin;
         }
 
         public override async void Execute(object parameter)
         {
             await _viewModel.ChatService.Login(_viewModel.Username);
-        }
-
-        public void RaiseCanExecuteChanged()
-        {
-            CanExecuteChanged?.Invoke(this, new EventArgs());
         }
     }
 }

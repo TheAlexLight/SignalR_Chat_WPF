@@ -13,6 +13,8 @@
                 <ResourceDictionary Source="../Resources/TextBlock.xaml"/>
                 <ResourceDictionary Source="../Resources/TextBox.xaml"/>
                 <ResourceDictionary Source="../Resources/Button.xaml"/>
+                <ResourceDictionary Source="../Resources/ListBox.xaml"/>
+                <ResourceDictionary Source="../Resources/Grid.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </UserControl.Resources>
@@ -54,8 +56,9 @@
                         Command="{Binding SendChatMessageCommand}"/>
             </Grid>
         </Grid>
-        
-        <ListBox Grid.Column="2"
-                     ItemsSource="{Binding ActiveUsers}"/>
+
+        <ListBox Grid.Column="2" Style="{StaticResource activeUsers}"/>
+
+        <Grid Grid.ColumnSpan="3" Style="{StaticResource getBannedLayout}" Background="Black"/>
     </Grid>
 </UserControl>

@@ -13,17 +13,6 @@ namespace ChatClient
     {
         protected override void OnStartup(StartupEventArgs e)
         {
-            //HubConnection connection = new HubConnectionBuilder()
-            //    .WithUrl("http://localhost:5000/chat")
-            //    .Build();
-
-            //ChatViewModel chatViewModel = ChatViewModel.CreateConnectedViewModel(new SignalRChatService(connection));
-
-            //MainWindow window = new()
-            //{
-            //    DataContext = chatViewModel
-            //};
-
             HubConnection connection = new HubConnectionBuilder()
                     .WithUrl("http://localhost:5000/chat")
                     .Build();
