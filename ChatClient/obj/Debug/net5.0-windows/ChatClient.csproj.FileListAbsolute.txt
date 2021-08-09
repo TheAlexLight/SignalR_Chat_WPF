@@ -43,6 +43,7 @@ C:\Users\oyudi\Alexander\Programming\WPF\Chat\ChatClient\obj\Debug\net5.0-window
 C:\Users\oyudi\Alexander\Programming\WPF\Chat\ChatClient\obj\Debug\net5.0-windows\ref\ChatClient.dll
 C:\Users\oyudi\Alexander\Programming\WPF\Chat\ChatClient\obj\Debug\net5.0-windows\ChatClient.pdb
 C:\Users\oyudi\Alexander\Programming\WPF\Chat\ChatClient\obj\Debug\net5.0-windows\ChatClient.genruntimeconfig.cache
-C:\Users\oyudi\Alexander\Programming\WPF\Chat\ChatClient\obj\Debug\net5.0-windows\Resources\ContextMenu.baml
 C:\Users\oyudi\Alexander\Programming\WPF\Chat\ChatClient\obj\Debug\net5.0-windows\Resources\Grid.baml
 C:\Users\oyudi\Alexander\Programming\WPF\Chat\ChatClient\obj\Debug\net5.0-windows\Resources\ListBox.baml
+C:\Users\oyudi\Alexander\Programming\WPF\Chat\ChatClient\obj\Debug\net5.0-windows\ChatClient.csproj.AssemblyReference.cache
+C:\Users\oyudi\Alexander\Programming\WPF\Chat\ChatClient\obj\Debug\net5.0-windows\App.baml
