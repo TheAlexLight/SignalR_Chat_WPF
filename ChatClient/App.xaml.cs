@@ -15,6 +15,7 @@ namespace ChatClient
         {
             HubConnection connection = new HubConnectionBuilder()
                     .WithUrl("http://localhost:5000/chat")
+                    .WithAutomaticReconnect()
                     .Build();
 
             NavigationStore navigationStore = new();

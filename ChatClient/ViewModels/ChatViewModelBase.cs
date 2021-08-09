@@ -1,4 +1,6 @@
-﻿using System;
+﻿using ChatClient.Enums;
+using ChatClient.Services;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,8 +10,22 @@ namespace ChatClient.ViewModels
 {
    public class ChatViewModelBase : ViewModelBase
     {
+        protected readonly SignalRChatService _chatService;
+
+        public ChatViewModelBase(SignalRChatService chatService)
+        {
+            _chatService = chatService;
+            _chatService.Connection.Reconnecting += Connection_Reconnecting;
+        }
+
+        private Task Connection_Reconnecting(Exception arg)
+        {
+            throw new NotImplementedException();
+        }
+
         private string _errorMessage;
-        private string _connectionStatus;
+        private ConnectionStatus _connectionStatusValue;
+
         public bool HasErrorMessage => !string.IsNullOrEmpty(ErrorMessage);
 
         public string ErrorMessage
@@ -23,12 +39,12 @@ namespace ChatClient.ViewModels
             }
         }
 
-        public string ConnectionStatus
+        public ConnectionStatus ConnectionStatusValue
         {
-            get => _connectionStatus;
+            get => _connectionStatusValue;
             set
             {
-                _connectionStatus = value;
+                _connectionStatusValue = value;
                 OnPropertyChanged();
             }
         }

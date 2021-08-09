@@ -1,4 +1,5 @@
 ﻿using ChatClient.Commands;
+using ChatClient.Enums;
 using ChatClient.Services;
 using ChatClient.Stores;
 using ChatClient.Views;
@@ -15,7 +16,7 @@ namespace ChatClient.ViewModels
 {
    public class LoginViewModel : ChatViewModelBase
     {
-        public LoginViewModel(NavigationStore navigationStore, SignalRChatService chatService)
+        public LoginViewModel(NavigationStore navigationStore, SignalRChatService chatService) : base(chatService)
         {
             ChatService = chatService;
             _navigationStore = navigationStore;
@@ -25,7 +26,7 @@ namespace ChatClient.ViewModels
 
             LoginCommand = new LoginCommand(this);
 
-            ConnectionStatus = "Connection...";
+            ConnectionStatusValue = ConnectionStatus.Connecting;
         }
 
         private void ChatService_ConnectionReceived(bool isConnected)
@@ -36,8 +37,6 @@ namespace ChatClient.ViewModels
 
         private void ChatService_TryLogin(bool usernameExist)
         {
-
-
             if (!usernameExist)
             {
                 NavigationService<ChatViewModel> navigationService = new(_navigationStore, () => _chatViewModel);
@@ -47,7 +46,6 @@ namespace ChatClient.ViewModels
             {
                 MessageBox.Show("Username is already exist");
             }
-           
         }
 
         private NavigationStore _navigationStore;

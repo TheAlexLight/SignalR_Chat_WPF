@@ -10,7 +10,7 @@ namespace ChatClient.Services
 {
     public class SignalRChatService
     {
-        private readonly HubConnection _connection;
+        public HubConnection Connection { get; }
 
         public event Action<string> MessageReceived;
         public event Action<bool> TryLogin;
@@ -20,38 +20,38 @@ namespace ChatClient.Services
 
         public SignalRChatService(HubConnection connection)
         {
-            _connection = connection;
+            Connection = connection;
 
             GetChatHubMessagesInvoke();
         }
 
         private void GetChatHubMessagesInvoke()
         {
-            _connection.On<string>("ReceiveMessage", (message) => MessageReceived?.Invoke(message));
-            _connection.On<bool>("TryLogin", (result) => TryLogin?.Invoke(result));
-            _connection.On<bool>("ReceiveConnectionInfo", (result) => ConnectionReceived?.Invoke(result));
-            _connection.On<bool>("ReceiveBan", (result) => ReceivedBan?.Invoke(result));
-            _connection.On<ObservableCollection<string>>("ReceiveUserList", (activeUsers) => UserListReceived?.Invoke(activeUsers));
+            Connection.On<string>("ReceiveMessage", (message) => MessageReceived?.Invoke(message));
+            Connection.On<bool>("TryLogin", (result) => TryLogin?.Invoke(result));
+            Connection.On<bool>("ReceiveConnectionInfo", (result) => ConnectionReceived?.Invoke(result));
+            Connection.On<bool>("ReceiveBan", (result) => ReceivedBan?.Invoke(result));
+            Connection.On<ObservableCollection<string>>("ReceiveUserList", (activeUsers) => UserListReceived?.Invoke(activeUsers));
         }
 
         public async Task Connect()
         {
-            await _connection.StartAsync();
+            await Connection.StartAsync();
         }
 
         public async Task SendMessage(string message)
         {
-            await _connection.SendAsync("SendMessage", message);
+            await Connection.SendAsync("SendMessage", message);
         }
 
         public async Task Login(string username)
         {
-            await _connection.SendAsync("SendLogin", username);
+            await Connection.SendAsync("SendLogin", username);
         }
 
         public async Task SendBan(string username)
         {
-            await _connection.SendAsync("SendUserBan", username);
+            await Connection.SendAsync("SendUserBan", username);
         }
     }
 }

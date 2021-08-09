@@ -1,4 +1,5 @@
-﻿using ChatClient.Stores;
+﻿using ChatClient.Enums;
+using ChatClient.Stores;
 using ChatClient.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -28,11 +29,11 @@ namespace ChatClient.Services
                 if (task.Exception != null)
                 {
                     viewModel.ErrorMessage = "Unable to connect to chat hub";
-                    viewModel.ConnectionStatus = "Disconnected";
+                    viewModel.ConnectionStatusValue = ConnectionStatus.Disconnected;
                 }
                 else
                 {
-                    viewModel.ConnectionStatus = "Connected";
+                    viewModel.ConnectionStatusValue = ConnectionStatus.Connected;
                 }
             });
 

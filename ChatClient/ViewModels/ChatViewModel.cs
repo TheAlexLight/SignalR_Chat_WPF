@@ -16,7 +16,7 @@ namespace ChatClient.ViewModels
 {
     public class ChatViewModel : ChatViewModelBase
     {
-        public ChatViewModel(SignalRChatService chatService)
+        public ChatViewModel(SignalRChatService chatService) : base(chatService)
         {
             //_getBan += GetBan_Action;
 
