@@ -4,10 +4,24 @@
         <Setter Property="Opacity" Value="0.5"/>
         <Setter Property="Panel.ZIndex" Value="2"/>
         <Setter Property="Visibility" Value="Collapsed"/>
+        <Setter Property="Background" Value="Black"/>
         <Style.Triggers>
             <DataTrigger Binding="{Binding IsBanned}" Value="True">
                 <Setter Property="Visibility" Value="Visible"/>
             </DataTrigger>
         </Style.Triggers>
     </Style>
+
+    <Style x:Key="connectionLost" TargetType="{x:Type Grid}">
+        <Setter Property="Opacity" Value="0.94"/>
+        <Setter Property="Panel.ZIndex" Value="3"/>
+        <Setter Property="Visibility" Value="Collapsed"/>
+        <Setter Property="Background" Value="Black"/>
+        <Style.Triggers>
+            <DataTrigger Binding="{Binding ConnectionStatusValue}" Value="Disconnected">
+                <Setter Property="Visibility" Value="Visible"/>
+            </DataTrigger>
+        </Style.Triggers>
+    </Style>
+
 </ResourceDictionary>

@@ -23,8 +23,9 @@ namespace ChatClient
 
 
             LoginConnectionService connectionService = new(navigationStore, chatService);
+            ChatViewModelBase viewModel = new LoginViewModel(connectionService.NavigationStore, connectionService.ChatService);
 
-            navigationStore.CurrentViewModel = connectionService.CreateConnectedViewModel(chatService);
+            navigationStore.CurrentViewModel = connectionService.CreateConnectedViewModel(chatService, viewModel);
 
             MainWindow window = new()
             {

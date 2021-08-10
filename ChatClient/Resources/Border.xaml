@@ -1,0 +1,25 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Style x:Key="formBorder" TargetType="{x:Type Border}">
+        <Setter Property="Width" Value="350"/>
+        <Setter Property="Height" Value="350"/>
+        <Setter Property="BorderBrush" Value="#36383C"/>
+        <Setter Property="BorderThickness" Value="2"/>
+        <Setter Property="CornerRadius" Value="5"/>
+        <Setter Property="Effect">
+            <Setter.Value>
+                <DropShadowEffect ShadowDepth="0" 
+                              BlurRadius="3"/>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="field" TargetType="{x:Type Border}" BasedOn="{StaticResource formBorder}">
+        <Setter Property="Width" Value="170"/>
+        <Setter Property="Height" Value="50"/>
+        <Setter Property="Margin" Value="10"/>
+        <Setter Property="BorderBrush" Value="#71747A"/>
+        <Setter Property="Background" Value="#E5E7E9"/>
+        <Setter Property="BorderThickness" Value="1"/>
+    </Style>
+</ResourceDictionary>

@@ -11,18 +11,18 @@ namespace ChatClient.Services
 {
     public class LoginConnectionService
     {
-        private readonly NavigationStore _navigation;
-        private readonly SignalRChatService _chatService;
+        public NavigationStore NavigationStore { get; }
+        public  SignalRChatService ChatService { get; }
 
-        public LoginConnectionService(NavigationStore navigation, SignalRChatService chatService)
+        public LoginConnectionService(NavigationStore navigationStore, SignalRChatService chatService)
         {
-            _navigation = navigation;
-            _chatService = chatService;
+            NavigationStore = navigationStore;
+            ChatService = chatService;
         }
 
-        public LoginViewModel CreateConnectedViewModel(SignalRChatService chatService)
+        public ChatViewModelBase CreateConnectedViewModel (SignalRChatService chatService, ChatViewModelBase viewModelType)
         {
-            LoginViewModel viewModel = new LoginViewModel(_navigation, _chatService);
+            ChatViewModelBase viewModel = viewModelType;
 
             chatService.Connect().ContinueWith(task =>
             {

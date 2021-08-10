@@ -5,8 +5,9 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:ChatClient.Views"
       xmlns:converters="clr-namespace:ChatClient.Converters"
+             xmlns:additionaViews="clr-namespace:ChatClient.Views.AdditionalViews"
       mc:Ignorable="d" 
-      d:DesignHeight="450" d:DesignWidth="800">
+      d:DesignHeight="500" d:DesignWidth="600">
 
     <UserControl.Resources>
         <ResourceDictionary>
@@ -14,23 +15,59 @@
         </ResourceDictionary>
     </UserControl.Resources>
 
-    <Grid>
-        <StackPanel HorizontalAlignment="Center"
-                    VerticalAlignment="Center"
-                    Width="300">
-            <TextBlock Text="Log in" HorizontalAlignment="Center" FontSize="36" />
-            <TextBlock Text="Username:" Margin="0,5,0,0" />
-            <TextBox  Padding="5"
-                      Text="{Binding Username}"/>
-            <Button  Content="LOGIN" Padding="5" Margin="0,5,0,0"
+    <Border BorderThickness="1"
+            BorderBrush="#C0C8D5"
+            CornerRadius="5"
+            Padding="1"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center">
+        <Border.Effect>
+            <DropShadowEffect ShadowDepth="0" BlurRadius="3"/>
+        </Border.Effect>
+        <Grid Background="#4E535B">
+            <Border Style="{StaticResource formBorder}" >
+                <StackPanel Width="350"
+                        Height ="350" 
+                    Background="#F1F2F4">
+                    <TextBlock Text="Log in" 
+                           HorizontalAlignment="Center" 
+                           FontSize="36"
+                           Margin="10"/>
+                    <TextBlock Text="Username:" 
+                           Margin="10" 
+                           HorizontalAlignment="Center"
+                           FontSize="20"/>
+                    <Border Style="{StaticResource field}">
+                        <TextBox FontSize="22"
+                      Text="{Binding Username}"
+                          Margin="10"
+                              BorderThickness="0"
+                              Background="#E5E7E9"/>
+                    </Border>
+
+                    <Border Style="{StaticResource field}" 
+                        Background="#B2ECE6">
+                        <Button  Content="LOGIN" 
+                             BorderThickness="0"
+                             Background="#B2ECE6"
+                         Height="50"
+                                 FontSize="24"
+                                 VerticalAlignment="Center"
                      Command="{Binding LoginCommand}"/>
-            <TextBlock Style="{StaticResource errorMessage}"
+                    </Border>
+
+                    <TextBlock Style="{StaticResource errorMessage}"
                        Text="{Binding ErrorMessage}"
-                       Margin="10"/>
-            <TextBlock Style="{StaticResource connectionStatus}"
-                       Text="{Binding ConnectionStatusValue, Converter={StaticResource statusMessageConverter}}"/>
+                       Margin="10"
+                               FontSize="16"/>
+                    <TextBlock Style="{StaticResource connectionStatus}"
+                       Text="{Binding ConnectionStatusValue, Converter={StaticResource statusMessageConverter}}"
+                               FontSize="16"/>
+                </StackPanel>
+            </Border>
+            <!--<additionaViews:ConnectionLostView/>-->
+        </Grid>
+    </Border>
+    <!--<ContentControl Style="{StaticResource loginMainContent}"/>-->
 
-
-        </StackPanel>
-    </Grid>
 </UserControl>

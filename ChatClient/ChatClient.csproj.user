@@ -10,12 +10,21 @@
     <Compile Update="Views\ChatView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="Views\AdditionalViews\ConnectionLostView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="Views\LoginView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>
   <ItemGroup>
     <Page Update="MainWindow.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Resources\Border.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Resources\ContentControl.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Resources\Grid.xaml">
@@ -25,6 +34,9 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Views\ChatView.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\AdditionalViews\ConnectionLostView.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Views\LoginView.xaml">

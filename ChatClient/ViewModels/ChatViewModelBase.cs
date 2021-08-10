@@ -18,7 +18,7 @@ namespace ChatClient.ViewModels
             _chatService.Connection.Reconnecting += Connection_Reconnecting;
         }
 
-        private Task Connection_Reconnecting(Exception arg)
+        protected virtual Task Connection_Reconnecting(Exception arg)
         {
             throw new NotImplementedException();
         }

@@ -32,9 +32,9 @@ namespace ChatClient.Converters
 
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            string statusMessage = _connectionStatusMessages.TryGetValue((ConnectionStatus)value, out statusMessage)
+            string statusMessage = _connectionStatusMessages.TryGetValue((ConnectionStatus)value, out _)
                 ? _connectionStatusMessages[(ConnectionStatus)value]
-                : "Error: Status message wasn't received";
+                : "Error: Connection status message wasn't received";
 
             return statusMessage;
         }

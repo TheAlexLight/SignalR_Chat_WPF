@@ -11,6 +11,8 @@
                 <ResourceDictionary Source="Resources/Button.xaml"/>
                 <ResourceDictionary Source="Resources/ListBox.xaml"/>
                 <ResourceDictionary Source="Resources/Grid.xaml"/>
+                <ResourceDictionary Source="Resources/ContentControl.xaml"/>
+                <ResourceDictionary Source="Resources/Border.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>
