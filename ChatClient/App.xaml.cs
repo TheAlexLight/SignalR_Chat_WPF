@@ -2,6 +2,9 @@
 using ChatClient.Stores;
 using ChatClient.ViewModels;
 using Microsoft.AspNetCore.SignalR.Client;
+using SharedItems.Models;
+using System;
+using System.Threading.Tasks;
 using System.Windows;
 
 namespace ChatClient
@@ -11,7 +14,7 @@ namespace ChatClient
     /// </summary>
     public partial class App : Application
     {
-        protected override void OnStartup(StartupEventArgs e)
+        protected override async void OnStartup(StartupEventArgs e)
         {
             HubConnection connection = new HubConnectionBuilder()
                     .WithUrl("http://localhost:5000/chat")
@@ -26,6 +29,17 @@ namespace ChatClient
             ChatViewModelBase viewModel = new LoginViewModel(connectionService.NavigationStore, connectionService.ChatService);
 
             navigationStore.CurrentViewModel = connectionService.CreateConnectedViewModel(chatService, viewModel);
+
+            RegistrationUserData user = new RegistrationUserData()
+            {
+                Email = "test@gmail.com",
+                Username = "test",
+                JoinDate = DateTime.Now,
+                Password = "qwe123QWE!",
+                PasswordConfirm = "qwe123QWE"
+            };
+
+            await chatService.Login(user);
 
             MainWindow window = new()
             {

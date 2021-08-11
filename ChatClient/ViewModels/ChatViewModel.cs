@@ -3,6 +3,7 @@ using ChatClient.Commands.ContextMenuCommands;
 using ChatClient.Enums;
 using ChatClient.Models;
 using ChatClient.Services;
+using SharedItems.Models;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -30,7 +31,7 @@ namespace ChatClient.ViewModels
         //private event Action _getBan;
 
         private string _message;
-        private ObservableCollection<string> _activeUsers;
+        private ObservableCollection<ActiveUser> _activeUsers;
         private ObservableCollection<UserContextMenu> _contextMenuActions;
 
         public ObservableCollection<string> Messages { get; private set; }
@@ -78,7 +79,7 @@ namespace ChatClient.ViewModels
             Messages.Add(message);
         }
 
-        private void ChatService_UserListReceived(ObservableCollection<string> activeUsers)
+        private void ChatService_UserListReceived(ObservableCollection<ActiveUser> activeUsers)
         {
             ActiveUsers = activeUsers;
         }
@@ -98,7 +99,7 @@ namespace ChatClient.ViewModels
             }
         }
 
-        public ObservableCollection<string> ActiveUsers
+        public ObservableCollection<ActiveUser> ActiveUsers
         {
             get => _activeUsers;
             set

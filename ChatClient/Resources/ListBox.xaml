@@ -4,6 +4,8 @@
 
     <Style x:Key="activeUsers" x:Name="usersListBox" TargetType="{x:Type ListBox}">
         <Setter Property="ItemsSource" Value="{Binding ActiveUsers}"/>
+        <Setter Property="FontSize" Value="20"/>
+        <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
         <Setter Property="ContextMenu">
             <Setter.Value>
                 <ContextMenu ItemsSource="{Binding ContextMenuActions}">
@@ -21,6 +23,18 @@
                         </HierarchicalDataTemplate>
                     </ContextMenu.ItemTemplate>
                 </ContextMenu>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="ItemTemplate">
+            <Setter.Value>
+                <DataTemplate>
+                    <Border BorderBrush="#767D89" 
+                                BorderThickness="1.5" Margin="-5,0,-5,0"
+                            Padding="5,0,5,0"
+                            Background="#E6EAF2">
+                        <TextBlock Text="{Binding Username}"/>
+                    </Border>
+                </DataTemplate>
             </Setter.Value>
         </Setter>
     </Style>

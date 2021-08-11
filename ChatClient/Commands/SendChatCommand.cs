@@ -34,10 +34,12 @@ namespace ChatClient.Commands
                 await _chatService.SendMessage(_viewModel.Message);
 
                 _viewModel.ErrorMessage = string.Empty;
+                _viewModel.Message = "";
             }
             catch (Exception)
             {
                 _viewModel.ErrorMessage = "Unable to send message.";
+                _viewModel.Message = "";
             }
         }
     }

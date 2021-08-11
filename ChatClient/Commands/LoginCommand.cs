@@ -27,7 +27,7 @@ namespace ChatClient.Commands
 
         public override async void Execute(object parameter)
         {
-            await _viewModel.ChatService.Login(_viewModel.Username);
+            //await _viewModel.ChatService.Login(_viewModel.Username);
         }
     }
 }

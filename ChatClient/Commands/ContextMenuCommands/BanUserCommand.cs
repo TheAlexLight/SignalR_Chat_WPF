@@ -1,5 +1,6 @@
 ﻿using ChatClient.Services;
 using ChatClient.ViewModels;
+using SharedItems.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,11 +20,11 @@ namespace ChatClient.Commands.ContextMenuCommands
             //_getBan = getBan;
         }
 
-        public override async void Execute(object username)
+        public override async void Execute(object activeUser)
         {
-            string user = username as string;
+            ActiveUser user = activeUser as ActiveUser;
 
-           await _chatService.SendBan(user);
+           await _chatService.SendBan(user.Username);
         }
 
         //public void ReceiveBan()

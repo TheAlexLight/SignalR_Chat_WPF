@@ -1,9 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "c5iS2oJfQT5ebUrx1YR31P6NQZDJzoLq2pmRsKztcRBERRp0moF2JZ5YLIUEti5MpIU8Jhc6001Jvwl/fsnl+Q==",
+  "dgSpecHash": "dZVMJEX4pPbg0QcrW9nR92obR63kuQADT+7XN0Myv6SQldubLx4AT90tfBVlVZ28hgaYoh9oeyY3h+kjXGaWDQ==",
   "success": true,
   "projectFilePath": "C:\\Users\\oyudi\\Alexander\\Programming\\WPF\\Chat\\ChatClient\\ChatClient.csproj",
   "expectedPackageFiles": [
+    "C:\\Users\\oyudi\\.nuget\\packages\\microsoft.aspnet.identity.core\\2.2.3\\microsoft.aspnet.identity.core.2.2.3.nupkg.sha512",
     "C:\\Users\\oyudi\\.nuget\\packages\\microsoft.aspnetcore.connections.abstractions\\5.0.8\\microsoft.aspnetcore.connections.abstractions.5.0.8.nupkg.sha512",
     "C:\\Users\\oyudi\\.nuget\\packages\\microsoft.aspnetcore.http.connections.client\\5.0.8\\microsoft.aspnetcore.http.connections.client.5.0.8.nupkg.sha512",
     "C:\\Users\\oyudi\\.nuget\\packages\\microsoft.aspnetcore.http.connections.common\\5.0.8\\microsoft.aspnetcore.http.connections.common.5.0.8.nupkg.sha512",
@@ -21,5 +22,16 @@
     "C:\\Users\\oyudi\\.nuget\\packages\\system.io.pipelines\\5.0.1\\system.io.pipelines.5.0.1.nupkg.sha512",
     "C:\\Users\\oyudi\\.nuget\\packages\\system.threading.channels\\5.0.0\\system.threading.channels.5.0.0.nupkg.sha512"
   ],
-  "logs": []
+  "logs": [
+    {
+      "code": "NU1701",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "Package 'Microsoft.AspNet.Identity.Core 2.2.3' was restored using '.NETFramework,Version=v4.6.1, .NETFramework,Version=v4.6.2, .NETFramework,Version=v4.7, .NETFramework,Version=v4.7.1, .NETFramework,Version=v4.7.2, .NETFramework,Version=v4.8' instead of the project target framework 'net5.0-windows7.0'. This package may not be fully compatible with your project.",
+      "libraryId": "Microsoft.AspNet.Identity.Core",
+      "targetGraphs": [
+        "net5.0-windows7.0"
+      ]
+    }
+  ]
 }

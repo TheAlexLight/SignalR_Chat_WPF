@@ -22,7 +22,7 @@
             HorizontalAlignment="Center"
             VerticalAlignment="Center">
         <Border.Effect>
-            <DropShadowEffect ShadowDepth="0" BlurRadius="3"/>
+            <DropShadowEffect ShadowDepth="0" BlurRadius="2"/>
         </Border.Effect>
         <Grid Background="#4E535B">
             <Border Style="{StaticResource formBorder}" >

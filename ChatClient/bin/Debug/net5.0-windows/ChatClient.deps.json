@@ -8,10 +8,20 @@
     ".NETCoreApp,Version=v5.0": {
       "ChatClient/1.0.0": {
         "dependencies": {
-          "Microsoft.AspNetCore.SignalR.Client": "5.0.8"
+          "Microsoft.AspNet.Identity.Core": "2.2.3",
+          "Microsoft.AspNetCore.SignalR.Client": "5.0.8",
+          "SharedItems": "1.0.0"
         },
         "runtime": {
           "ChatClient.dll": {}
+        }
+      },
+      "Microsoft.AspNet.Identity.Core/2.2.3": {
+        "runtime": {
+          "lib/net45/Microsoft.AspNet.Identity.Core.dll": {
+            "assemblyVersion": "2.0.0.0",
+            "fileVersion": "2.2.3.11125"
+          }
         }
       },
       "Microsoft.AspNetCore.Connections.Abstractions/5.0.8": {
@@ -180,7 +190,12 @@
           }
         }
       },
-      "System.Threading.Channels/5.0.0": {}
+      "System.Threading.Channels/5.0.0": {},
+      "SharedItems/1.0.0": {
+        "runtime": {
+          "SharedItems.dll": {}
+        }
+      }
     }
   },
   "libraries": {
@@ -188,6 +203,13 @@
       "type": "project",
       "serviceable": false,
       "sha512": ""
+    },
+    "Microsoft.AspNet.Identity.Core/2.2.3": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-Mv5FpoaxspE8hlWLE4r1IdZtovg/OyFgVRhxQbx47J4sqdLImN1hnM1lnwCj+/wLmqtqFk/RYMoZ5GAcwm/00g==",
+      "path": "microsoft.aspnet.identity.core/2.2.3",
+      "hashPath": "microsoft.aspnet.identity.core.2.2.3.nupkg.sha512"
     },
     "Microsoft.AspNetCore.Connections.Abstractions/5.0.8": {
       "type": "package",
@@ -300,6 +322,11 @@
       "sha512": "sha512-RLBIxntLaG9pRmmuVDwY1kc8Bvp/FQzSxPU+19VekkScKkWtVP9r8bLhm28ama3usc816UBrmkg3vv3jUea/hw==",
       "path": "system.threading.channels/5.0.0",
       "hashPath": "system.threading.channels.5.0.0.nupkg.sha512"
+    },
+    "SharedItems/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
     }
   }
 }

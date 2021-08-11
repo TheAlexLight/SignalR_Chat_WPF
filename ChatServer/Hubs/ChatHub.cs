@@ -1,6 +1,9 @@
-﻿using ChatServer.Helpers;
+﻿using ChatServer.Controllers;
+using ChatServer.Helpers;
 using ChatServer.Models;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.SignalR;
+using SharedItems.Models;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -11,6 +14,12 @@ namespace ChatServer.Hubs
 {
     public class ChatHub : Hub
     {
+        private readonly UserManager<User> _userManager;
+
+        public ChatHub(UserManager<User> userManager, SignInManager<User> signInManager)
+        {
+            _userManager = userManager;
+        }
         public async Task SendMessage(string message)
         {
             await Clients.All.SendAsync("ReceiveMessage", message);
@@ -26,26 +35,30 @@ namespace ChatServer.Hubs
             }
         }
 
-        public async Task SendLogin(string username)
+        public async Task SendRegistration(RegistrationUserData model)
         {
-            bool existUsername = Account.Users.Exists(u=>u.ConnectedUsername == username);
+            AccountController account = new AccountController(_userManager);
 
-            if (!existUsername)
-            {
-               UserHandler user = Account.Users.FirstOrDefault(a => a.ConnectedIds == Context.ConnectionId);
-                user.ConnectedUsername = username;
+            IdentityResult completedRegistration =  await account.Register(model);
 
-                await SendUserList();
-            }
-
-            await Clients.Caller.SendAsync("TryLogin", existUsername);
+            await Clients.Caller.SendAsync("ReceiveRegistrationResult", completedRegistration);
         }
 
         public async Task SendUserList()
         {
             List<string> allLoginedUsers = Account.Users.Select(u => u.ConnectedUsername).Where(s => s != null).ToList();
 
-            await Clients.All.SendAsync("ReceiveUserList", allLoginedUsers);
+            List<ActiveUser> activeUsers = new();
+
+            foreach (string username in allLoginedUsers)
+            {
+                activeUsers.Add(new ActiveUser
+                {
+                    Username = username
+                });
+            }
+
+            await Clients.All.SendAsync("ReceiveUserList", activeUsers);
         }
 
         public async Task SendConnectionInfo(bool connected)
@@ -73,6 +86,8 @@ namespace ChatServer.Hubs
             UserHandler user = Account.Users.FirstOrDefault(a => a.ConnectedIds == Context.ConnectionId);
 
             Account.Users.Remove(user);
+
+            await SendUserList();
 
             await SendConnectionInfo(false);
 

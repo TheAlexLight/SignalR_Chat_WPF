@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.SignalR.Client;
+﻿using Microsoft.AspNet.Identity;
+using Microsoft.AspNetCore.SignalR.Client;
+using SharedItems.Models;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -13,10 +15,10 @@ namespace ChatClient.Services
         public HubConnection Connection { get; }
 
         public event Action<string> MessageReceived;
-        public event Action<bool> TryLogin;
+        public event Action<IdentityResult> ReceiveRegistrationResult;
         public event Action<bool> ConnectionReceived;
         public event Action<bool> ReceivedBan;
-        public event Action<ObservableCollection<string>> UserListReceived;
+        public event Action<ObservableCollection<ActiveUser>> UserListReceived;
 
         public SignalRChatService(HubConnection connection)
         {
@@ -28,10 +30,10 @@ namespace ChatClient.Services
         private void GetChatHubMessagesInvoke()
         {
             Connection.On<string>("ReceiveMessage", (message) => MessageReceived?.Invoke(message));
-            Connection.On<bool>("TryLogin", (result) => TryLogin?.Invoke(result));
+            Connection.On<IdentityResult>("ReceiveRegistrationResult", (result) => ReceiveRegistrationResult?.Invoke(result));
             Connection.On<bool>("ReceiveConnectionInfo", (result) => ConnectionReceived?.Invoke(result));
             Connection.On<bool>("ReceiveBan", (result) => ReceivedBan?.Invoke(result));
-            Connection.On<ObservableCollection<string>>("ReceiveUserList", (activeUsers) => UserListReceived?.Invoke(activeUsers));
+            Connection.On<ObservableCollection<ActiveUser>>("ReceiveUserList", (activeUsers) => UserListReceived?.Invoke(activeUsers));
         }
 
         public async Task Connect()
@@ -44,9 +46,9 @@ namespace ChatClient.Services
             await Connection.SendAsync("SendMessage", message);
         }
 
-        public async Task Login(string username)
+        public async Task Login(RegistrationUserData model)
         {
-            await Connection.SendAsync("SendLogin", username);
+            await Connection.SendAsync("SendRegistration", model);
         }
 
         public async Task SendBan(string username)

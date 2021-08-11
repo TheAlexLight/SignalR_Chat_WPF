@@ -13,7 +13,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.AspNet.Identity.Core" Version="2.2.3" />
     <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="5.0.8" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\SharedItems\SharedItems.csproj" />
   </ItemGroup>
 
 </Project>

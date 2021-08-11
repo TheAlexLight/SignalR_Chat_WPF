@@ -1,0 +1,12 @@
+C:\Users\oyudi\Alexander\Programming\WPF\Chat\SharedItems\bin\Debug\net5.0\SharedItems.deps.json
+C:\Users\oyudi\Alexander\Programming\WPF\Chat\SharedItems\bin\Debug\net5.0\SharedItems.dll
+C:\Users\oyudi\Alexander\Programming\WPF\Chat\SharedItems\bin\Debug\net5.0\ref\SharedItems.dll
+C:\Users\oyudi\Alexander\Programming\WPF\Chat\SharedItems\bin\Debug\net5.0\SharedItems.pdb
+C:\Users\oyudi\Alexander\Programming\WPF\Chat\SharedItems\obj\Debug\net5.0\SharedItems.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\oyudi\Alexander\Programming\WPF\Chat\SharedItems\obj\Debug\net5.0\SharedItems.AssemblyInfoInputs.cache
+C:\Users\oyudi\Alexander\Programming\WPF\Chat\SharedItems\obj\Debug\net5.0\SharedItems.AssemblyInfo.cs
+C:\Users\oyudi\Alexander\Programming\WPF\Chat\SharedItems\obj\Debug\net5.0\SharedItems.csproj.CoreCompileInputs.cache
+C:\Users\oyudi\Alexander\Programming\WPF\Chat\SharedItems\obj\Debug\net5.0\SharedItems.dll
+C:\Users\oyudi\Alexander\Programming\WPF\Chat\SharedItems\obj\Debug\net5.0\ref\SharedItems.dll
+C:\Users\oyudi\Alexander\Programming\WPF\Chat\SharedItems\obj\Debug\net5.0\SharedItems.pdb
+C:\Users\oyudi\Alexander\Programming\WPF\Chat\SharedItems\obj\Debug\net5.0\SharedItems.csproj.AssemblyReference.cache

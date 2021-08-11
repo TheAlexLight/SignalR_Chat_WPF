@@ -3,6 +3,7 @@ using ChatClient.Enums;
 using ChatClient.Services;
 using ChatClient.Stores;
 using ChatClient.Views;
+using Microsoft.AspNet.Identity;
 using Microsoft.AspNetCore.SignalR.Client;
 using System;
 using System.Collections.Generic;
@@ -21,7 +22,7 @@ namespace ChatClient.ViewModels
             ChatService = chatService;
             _navigationStore = navigationStore;
             _chatViewModel = new ChatViewModel(ChatService);
-            chatService.TryLogin += ChatService_TryLogin;
+            chatService.ReceiveRegistrationResult += ChatService_ReceiveRegistrationResult;
             chatService.ConnectionReceived += ChatService_ConnectionReceived; ;
 
             LoginCommand = new LoginCommand(this);
@@ -35,17 +36,17 @@ namespace ChatClient.ViewModels
             LoginCommand.RaiseCanExecuteChanged();
         }
 
-        private void ChatService_TryLogin(bool usernameExist)
+        private void ChatService_ReceiveRegistrationResult(IdentityResult registrationResult)
         {
-            if (!usernameExist)
+            if (registrationResult.Succeeded)
             {
                 NavigationService<ChatViewModel> navigationService = new(_navigationStore, () => _chatViewModel);
                 navigationService.Navigate();
             }
-            else
-            {
-                MessageBox.Show("Username is already exist");
-            }
+            //else
+            //{
+            //    MessageBox.Show(registrationResult.Errors);
+            //}
         }
 
         private NavigationStore _navigationStore;

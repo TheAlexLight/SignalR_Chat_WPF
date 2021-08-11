@@ -20,7 +20,7 @@ namespace ChatClient.ViewModels
 
         protected virtual Task Connection_Reconnecting(Exception arg)
         {
-            throw new NotImplementedException();
+            throw new NotImplementedException(); //ToDo: implement
         }
 
         private string _errorMessage;

@@ -49,5 +49,7 @@ C:\Users\oyudi\Alexander\Programming\WPF\Chat\ChatClient\obj\Debug\net5.0-window
 C:\Users\oyudi\Alexander\Programming\WPF\Chat\ChatClient\obj\Debug\net5.0-windows\ChatClient.csproj.AssemblyReference.cache
 C:\Users\oyudi\Alexander\Programming\WPF\Chat\ChatClient\obj\Debug\net5.0-windows\Views\AdditionalViews\ConnectionLostView.g.cs
 C:\Users\oyudi\Alexander\Programming\WPF\Chat\ChatClient\obj\Debug\net5.0-windows\Views\AdditionalViews\ConnectionLostView.baml
-C:\Users\oyudi\Alexander\Programming\WPF\Chat\ChatClient\obj\Debug\net5.0-windows\Resources\ContentControl.baml
 C:\Users\oyudi\Alexander\Programming\WPF\Chat\ChatClient\obj\Debug\net5.0-windows\Resources\Border.baml
+C:\Users\oyudi\Alexander\Programming\WPF\Chat\ChatClient\bin\Debug\net5.0-windows\SharedItems.dll
+C:\Users\oyudi\Alexander\Programming\WPF\Chat\ChatClient\bin\Debug\net5.0-windows\SharedItems.pdb
+C:\Users\oyudi\Alexander\Programming\WPF\Chat\ChatClient\bin\Debug\net5.0-windows\Microsoft.AspNet.Identity.Core.dll
