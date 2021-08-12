@@ -1,9 +1,10 @@
 ﻿using ChatClient.Commands;
+using ChatClient.Commands.AuthenticationCommands;
 using ChatClient.Enums;
 using ChatClient.Services;
 using ChatClient.Stores;
 using ChatClient.Views;
-using Microsoft.AspNet.Identity;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.SignalR.Client;
 using System;
 using System.Collections.Generic;
@@ -22,10 +23,12 @@ namespace ChatClient.ViewModels
             ChatService = chatService;
             _navigationStore = navigationStore;
             _chatViewModel = new ChatViewModel(ChatService);
-            chatService.ReceiveRegistrationResult += ChatService_ReceiveRegistrationResult;
             chatService.ConnectionReceived += ChatService_ConnectionReceived; ;
 
             LoginCommand = new LoginCommand(this);
+            NavigateRegistrationCommand = new NavigateCommand<RegistrationViewModel>
+                    (new NavigationService<RegistrationViewModel>(navigationStore,
+                    () => new RegistrationViewModel(navigationStore, chatService)));
 
             ConnectionStatusValue = ConnectionStatus.Connecting;
         }
@@ -36,19 +39,6 @@ namespace ChatClient.ViewModels
             LoginCommand.RaiseCanExecuteChanged();
         }
 
-        private void ChatService_ReceiveRegistrationResult(IdentityResult registrationResult)
-        {
-            if (registrationResult.Succeeded)
-            {
-                NavigationService<ChatViewModel> navigationService = new(_navigationStore, () => _chatViewModel);
-                navigationService.Navigate();
-            }
-            //else
-            //{
-            //    MessageBox.Show(registrationResult.Errors);
-            //}
-        }
-
         private NavigationStore _navigationStore;
         private ChatViewModel _chatViewModel;
         public SignalRChatService ChatService { get;}
@@ -56,6 +46,7 @@ namespace ChatClient.ViewModels
         private string username;
 
         public LoginCommand LoginCommand { get; }
+        public ICommand NavigateRegistrationCommand { get; }
 
         public string Username
         {

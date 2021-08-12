@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNet.Identity;
+﻿
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.SignalR.Client;
 using SharedItems.Models;
 using System;
@@ -16,6 +17,7 @@ namespace ChatClient.Services
 
         public event Action<string> MessageReceived;
         public event Action<IdentityResult> ReceiveRegistrationResult;
+        public event Action<SignInResult> ReceiveLoginResult;
         public event Action<bool> ConnectionReceived;
         public event Action<bool> ReceivedBan;
         public event Action<ObservableCollection<ActiveUser>> UserListReceived;
@@ -31,6 +33,7 @@ namespace ChatClient.Services
         {
             Connection.On<string>("ReceiveMessage", (message) => MessageReceived?.Invoke(message));
             Connection.On<IdentityResult>("ReceiveRegistrationResult", (result) => ReceiveRegistrationResult?.Invoke(result));
+            Connection.On<SignInResult>("ReceiveLoginResult", (result) => ReceiveLoginResult?.Invoke(result));
             Connection.On<bool>("ReceiveConnectionInfo", (result) => ConnectionReceived?.Invoke(result));
             Connection.On<bool>("ReceiveBan", (result) => ReceivedBan?.Invoke(result));
             Connection.On<ObservableCollection<ActiveUser>>("ReceiveUserList", (activeUsers) => UserListReceived?.Invoke(activeUsers));
@@ -46,9 +49,14 @@ namespace ChatClient.Services
             await Connection.SendAsync("SendMessage", message);
         }
 
-        public async Task Login(RegistrationUserData model)
+        public async Task Registration(RegistrationUserData model)
         {
             await Connection.SendAsync("SendRegistration", model);
+        }
+
+        public async Task Login(LoginUserData model)
+        {
+            await Connection.SendAsync("SendLogin", model);
         }
 
         public async Task SendBan(string username)

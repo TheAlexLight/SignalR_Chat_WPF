@@ -6,4 +6,53 @@
         <Setter Property="Margin" Value="5"/>
         <Setter Property="Height" Value="40"/>
     </Style>
+
+    <Style x:Key="enterField" TargetType="{x:Type TextBox}">
+        <Setter Property="FontSize" Value="22"/>
+        <Setter Property="Margin" Value="10"/>
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="Background" Value="#E5E7E9"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type TextBox}">
+                    <Border BorderBrush="Gray" BorderThickness="1" CornerRadius="5">
+                        <TextBox Margin="1" Text="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Text, UpdateSourceTrigger=PropertyChanged}" 
+                                 BorderThickness="0"
+                                 VerticalContentAlignment="Center"/>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="Validation.ErrorTemplate">
+            <Setter.Value>
+                <ControlTemplate>
+                    <DockPanel LastChildFill="True">
+                        <Border DockPanel.Dock="Right" CornerRadius="30" 
+                                Background="Red" 
+                                BorderThickness="1"
+                                Width="20"
+                                Height="20">
+                            <TextBlock Text="!" 
+                                       TextAlignment="Center"
+                                       Foreground="White"
+                                       FontSize="18"
+                                       VerticalAlignment="Center"
+                                       HorizontalAlignment="Center"/>
+                            </Border>
+                        <Border BorderBrush="DarkRed" BorderThickness="1" CornerRadius="5">
+                            <AdornedElementPlaceholder/>
+                        </Border>
+                    </DockPanel>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        
+        <Style.Triggers>
+            <Trigger Property="Validation.HasError" Value="true">
+                <Setter Property="ToolTip"
+                Value="{Binding RelativeSource={RelativeSource Self}, 
+                       Path=(Validation.Errors)[0].ErrorContent}"/>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
 </ResourceDictionary>

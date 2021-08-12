@@ -15,10 +15,15 @@ namespace ChatServer.Hubs
     public class ChatHub : Hub
     {
         private readonly UserManager<User> _userManager;
+        private readonly SignInManager<User> _signInManager;
+        private readonly AccountController account;
 
         public ChatHub(UserManager<User> userManager, SignInManager<User> signInManager)
         {
             _userManager = userManager;
+            _signInManager = signInManager;
+
+            account = new AccountController(_userManager, _signInManager);
         }
         public async Task SendMessage(string message)
         {
@@ -37,11 +42,16 @@ namespace ChatServer.Hubs
 
         public async Task SendRegistration(RegistrationUserData model)
         {
-            AccountController account = new AccountController(_userManager);
-
             IdentityResult completedRegistration =  await account.Register(model);
 
             await Clients.Caller.SendAsync("ReceiveRegistrationResult", completedRegistration);
+        }
+
+        public async Task SendLogin(LoginUserData model)
+        {
+            SignInResult completedLogin = await account.Login(model);
+
+            await Clients.Caller.SendAsync("ReceiveLoginResult", completedLogin);
         }
 
         public async Task SendUserList()

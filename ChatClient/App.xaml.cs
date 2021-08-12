@@ -14,7 +14,7 @@ namespace ChatClient
     /// </summary>
     public partial class App : Application
     {
-        protected override async void OnStartup(StartupEventArgs e)
+        protected override void OnStartup(StartupEventArgs e)
         {
             HubConnection connection = new HubConnectionBuilder()
                     .WithUrl("http://localhost:5000/chat")
@@ -30,16 +30,16 @@ namespace ChatClient
 
             navigationStore.CurrentViewModel = connectionService.CreateConnectedViewModel(chatService, viewModel);
 
-            RegistrationUserData user = new RegistrationUserData()
-            {
-                Email = "test@gmail.com",
-                Username = "test",
-                JoinDate = DateTime.Now,
-                Password = "qwe123QWE!",
-                PasswordConfirm = "qwe123QWE"
-            };
+            //RegistrationUserData user = new RegistrationUserData()
+            //{
+            //    Email = "test@gmail.com",
+            //    Username = "test",
+            //    JoinDate = DateTime.Now,
+            //    Password = "qwe123QWE!",
+            //    PasswordConfirm = "qwe123QWE"
+            //};
 
-            await chatService.Login(user);
+            //await chatService.Registration(user);
 
             MainWindow window = new()
             {

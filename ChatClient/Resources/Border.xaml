@@ -15,12 +15,13 @@
     </Style>
 
     <Style x:Key="field" TargetType="{x:Type Border}" BasedOn="{StaticResource formBorder}">
-        <Setter Property="Width" Value="170"/>
+        <Setter Property="Width" Value="220"/>
         <Setter Property="Height" Value="50"/>
         <Setter Property="Margin" Value="10"/>
         <Setter Property="BorderBrush" Value="#71747A"/>
         <Setter Property="Background" Value="#E5E7E9"/>
         <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="HorizontalAlignment" Value="Left"/>
     </Style>
 
     <Style x:Key="chatBorder" TargetType="{x:Type Border}">

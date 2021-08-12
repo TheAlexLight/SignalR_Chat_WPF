@@ -30,9 +30,7 @@
                         Height ="350" 
                     Background="#F1F2F4">
                     <TextBlock Text="Log in" 
-                           HorizontalAlignment="Center" 
-                           FontSize="36"
-                           Margin="10"/>
+                               Style="{StaticResource mainTitle}"/>
                     <TextBlock Text="Username:" 
                            Margin="10" 
                            HorizontalAlignment="Center"
@@ -40,14 +38,12 @@
                     <Border Style="{StaticResource field}">
                         <TextBox FontSize="22"
                       Text="{Binding Username}"
-                          Margin="10"
-                              BorderThickness="0"
-                              Background="#E5E7E9"/>
+                                 Style="{StaticResource enterField}"/>
                     </Border>
 
                     <Border Style="{StaticResource field}" 
                         Background="#B2ECE6">
-                        <Button  Content="LOGIN" 
+                        <Button  Content="Login" 
                              BorderThickness="0"
                              Background="#B2ECE6"
                          Height="50"
@@ -56,13 +52,24 @@
                      Command="{Binding LoginCommand}"/>
                     </Border>
 
-                    <TextBlock Style="{StaticResource errorMessage}"
+                    <Border Style="{StaticResource field}" 
+                        Background="#B2ECE6">
+                        <Button  Content="Create new account" 
+                             BorderThickness="0"
+                             Background="#B2ECE6"
+                         Height="50"
+                                 FontSize="24"
+                                 VerticalAlignment="Center"
+                     Command="{Binding NavigateRegistrationCommand}"/>
+                    </Border>
+
+                    <!--<TextBlock Style="{StaticResource errorMessage}"
                        Text="{Binding ErrorMessage}"
                        Margin="10"
                                FontSize="16"/>
                     <TextBlock Style="{StaticResource connectionStatus}"
                        Text="{Binding ConnectionStatusValue, Converter={StaticResource statusMessageConverter}}"
-                               FontSize="16"/>
+                               FontSize="16"/>-->
                 </StackPanel>
             </Border>
             <!--<additionaViews:ConnectionLostView/>-->

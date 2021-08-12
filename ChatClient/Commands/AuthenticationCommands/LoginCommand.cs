@@ -9,7 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 
-namespace ChatClient.Commands
+namespace ChatClient.Commands.AuthenticationCommands
 {
     public class LoginCommand : CommandBase
     {

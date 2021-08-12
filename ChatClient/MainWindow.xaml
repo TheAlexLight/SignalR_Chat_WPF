@@ -18,58 +18,9 @@
             <DataTemplate DataType="{x:Type viewModels:ChatViewModel}">
                 <views:ChatView/>
             </DataTemplate>
+            <DataTemplate DataType="{x:Type viewModels:RegistrationViewModel}">
+                <views:RegistrationView/>
+            </DataTemplate>
         </ContentControl.Resources>
     </ContentControl>
-    
-    <!--<Frame Source="/ChatClient;component/Pages/LoginPage.xaml"
-           NavigationUIVisibility="Hidden"/>-->
-
-    <!--<Window.Resources>
-        <ResourceDictionary>
-            <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="Resources/TextBlock.xaml"/>
-                <ResourceDictionary Source="Resources/TextBox.xaml"/>
-                <ResourceDictionary Source="Resources/Button.xaml"/>
-            </ResourceDictionary.MergedDictionaries>
-        </ResourceDictionary>
-    </Window.Resources>
-
-    <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition/>
-            <ColumnDefinition Width="2.5*"/>
-            <ColumnDefinition/>
-        </Grid.ColumnDefinitions>
-
-        <Grid Grid.Column="1">
-            <Grid.RowDefinitions>
-                <RowDefinition/>
-                <RowDefinition/>
-                <RowDefinition Height="3.5*"/>
-                <RowDefinition/>
-            </Grid.RowDefinitions>
-
-            <TextBlock Grid.Row="1"
-                       Style="{StaticResource errorMessage}"
-                       Text="{Binding ErrorMessage}"/>
-
-            <ListBox Grid.Row="2" 
-                     Margin="0,20,0,0"
-                     ItemsSource="{Binding Messages}"/>
-
-            <Grid Grid.Row="3" >
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="5*"/>
-                    <ColumnDefinition/>
-                </Grid.ColumnDefinitions>
-
-                <TextBox Grid.Column="0"
-                     Style="{StaticResource typeMessage}"
-                     Text="{Binding Message}"/>
-                <Button Grid.Column="1"
-                        Style="{StaticResource sendMessage}"
-                        Command="{Binding SendChatMessageCommand}"/>
-            </Grid>
-        </Grid>
-    </Grid>-->
 </Window>

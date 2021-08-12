@@ -23,4 +23,15 @@
         </Style.Triggers>-->
     </Style>
 
+    <Style x:Key="mainTitle" TargetType="{x:Type TextBlock}">
+        <Setter Property="HorizontalAlignment" Value="Center"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+        <Setter Property="FontSize" Value="36"/>
+    </Style>
+
+    <Style x:Key="formText" TargetType="{x:Type TextBlock}" BasedOn="{StaticResource mainTitle}">
+        <Setter Property="FontSize" Value="20"/>
+        <Setter Property="HorizontalAlignment" Value="Right"/>
+    </Style>
+
 </ResourceDictionary>
