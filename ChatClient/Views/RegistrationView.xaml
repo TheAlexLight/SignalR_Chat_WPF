@@ -6,6 +6,7 @@
              xmlns:local="clr-namespace:ChatClient.Views"
              xmlns:additionalView="clr-namespace:ChatClient.Views.AdditionalViews"
              xmlns:viewmodels="clr-namespace:ChatClient.ViewModels" d:DataContext="{d:DesignInstance Type=viewmodels:RegistrationViewModel}"
+             xmlns:validators="clr-namespace:ChatClient.Validators" 
              mc:Ignorable="d" 
              d:DesignHeight="500" d:DesignWidth="800">
     <Border BorderThickness="1"
@@ -48,9 +49,10 @@
                              Width="220"
                              HorizontalAlignment="Left">
                         <TextBox.Text>
-                            <Binding Path="Username">
+                            <Binding Path="Username" 
+                                     UpdateSourceTrigger="PropertyChanged">
                                 <Binding.ValidationRules>
-                                    <ExceptionValidationRule/>
+                                    <validators:UsernameValidator/>
                                 </Binding.ValidationRules>
                             </Binding>
                         </TextBox.Text>

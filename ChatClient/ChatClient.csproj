@@ -7,6 +7,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Validators\NameValidator.xaml.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Remove="ChatServer.db" />
     <None Remove="ChatServer.db-shm" />
     <None Remove="ChatServer.db-wal" />

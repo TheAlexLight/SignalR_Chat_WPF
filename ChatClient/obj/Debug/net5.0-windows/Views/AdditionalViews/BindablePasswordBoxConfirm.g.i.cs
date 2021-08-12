@@ -61,8 +61,7 @@ namespace ChatClient.Views.AdditionalViews {
                 return;
             }
             _contentLoaded = true;
-            System.Uri resourceLocater = new System.Uri("/ChatClient;V1.0.0.0;component/views/additionalviews/bindablepasswordboxconfirm.x" +
-                    "aml", System.UriKind.Relative);
+            System.Uri resourceLocater = new System.Uri("/ChatClient;component/views/additionalviews/bindablepasswordboxconfirm.xaml", System.UriKind.Relative);
             
             #line 1 "..\..\..\..\..\Views\AdditionalViews\BindablePasswordBoxConfirm.xaml"
             System.Windows.Application.LoadComponent(this, resourceLocater);

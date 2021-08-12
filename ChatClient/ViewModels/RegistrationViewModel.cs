@@ -51,10 +51,6 @@ namespace ChatClient.ViewModels
             set
             {
                 _username = value;
-                if (String.IsNullOrEmpty(value))
-                {
-                    throw new ApplicationException("Customer name is mandatory.");
-                }
                 OnPropertyChanged();
             }
         }
