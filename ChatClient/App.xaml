@@ -12,6 +12,7 @@
                 <ResourceDictionary Source="Resources/ListBox.xaml"/>
                 <ResourceDictionary Source="Resources/Grid.xaml"/>
                 <ResourceDictionary Source="Resources/Border.xaml"/>
+                <ResourceDictionary Source="Resources/PasswordBox.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>

@@ -61,3 +61,4 @@ C:\Users\oyudi\Alexander\Programming\WPF\Chat\ChatClient\obj\Debug\net5.0-window
 C:\Users\oyudi\Alexander\Programming\WPF\Chat\ChatClient\obj\Debug\net5.0-windows\Views\AdditionalViews\BindablePasswordBox.baml
 C:\Users\oyudi\Alexander\Programming\WPF\Chat\ChatClient\obj\Debug\net5.0-windows\Views\AdditionalViews\BindablePasswordBoxConfirm.g.cs
 C:\Users\oyudi\Alexander\Programming\WPF\Chat\ChatClient\obj\Debug\net5.0-windows\Views\AdditionalViews\BindablePasswordBoxConfirm.baml
+C:\Users\oyudi\Alexander\Programming\WPF\Chat\ChatClient\obj\Debug\net5.0-windows\Resources\PasswordBox.baml

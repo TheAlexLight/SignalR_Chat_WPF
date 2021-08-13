@@ -4,7 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:ChatClient.Views"
-             xmlns:additionalView="clr-namespace:ChatClient.Views.AdditionalViews"
+             xmlns:additionalViews="clr-namespace:ChatClient.Views.AdditionalViews"
              xmlns:viewmodels="clr-namespace:ChatClient.ViewModels" d:DataContext="{d:DesignInstance Type=viewmodels:RegistrationViewModel}"
              xmlns:validators="clr-namespace:ChatClient.Validators" 
              mc:Ignorable="d" 
@@ -45,9 +45,7 @@
                                Text="Username:"  
                                Style="{StaticResource formText}"/>
                     <TextBox Style="{StaticResource enterField}"
-                                 Grid.Row="1" Grid.Column="1"
-                             Width="220"
-                             HorizontalAlignment="Left">
+                                 Grid.Row="1" Grid.Column="1">
                         <TextBox.Text>
                             <Binding Path="Username" 
                                      UpdateSourceTrigger="PropertyChanged">
@@ -61,27 +59,50 @@
                     <TextBlock Grid.Row="2"
                                Text="Email:"  
                                Style="{StaticResource formText}"/>
-                    <Border Grid.Row="2" Grid.Column="2" 
-                            Style="{StaticResource field}">
-                        <TextBox Style="{StaticResource enterField}"
-                                 Text="{Binding Email}"/>
-                    </Border>
+                    <TextBox Style="{StaticResource enterField}"
+                                 Grid.Row="2" Grid.Column="2">
+                        <TextBox.Text>
+                            <Binding Path="Email" 
+                                     UpdateSourceTrigger="PropertyChanged">
+                                <Binding.ValidationRules>
+                                    <validators:EmailValidator/>
+                                </Binding.ValidationRules>
+                            </Binding>
+                        </TextBox.Text>
+                    </TextBox>
 
                     <TextBlock Grid.Row="3"
                                Text="Password:"  
                                Style="{StaticResource formText}"/>
-                    <Border Grid.Row="3" Grid.Column="3" 
-                            Style="{StaticResource field}">
-                        <additionalView:BindablePasswordBox Password="{Binding Password,
-                             ValidatesOnNotifyDataErrors=True}"/>
+                    <Border Style="{StaticResource field}"
+                            Grid.Row="3" Grid.Column="3">
+                        <additionalViews:BindablePasswordBox 
+                        Style="{StaticResource passwordField}">
+                            <additionalViews:BindablePasswordBox.Password>
+                                <Binding Path="Password">
+                                    <Binding.ValidationRules>
+                                        <validators:UsernameValidator/>
+                                    </Binding.ValidationRules>
+                                </Binding>
+                            </additionalViews:BindablePasswordBox.Password>
+                        </additionalViews:BindablePasswordBox>
                     </Border>
-
+                   
                     <TextBlock Grid.Row="4"
                                Text="Confirm password:"  
                                Style="{StaticResource formText}"/>
-                    <Border Grid.Row="4" Grid.Column="4" 
-                            Style="{StaticResource field}">
-                        <additionalView:BindablePasswordBoxConfirm PasswordConfirm="{Binding PasswordConfirm}"/>
+                    <Border  Grid.Row="4" Grid.Column="4"
+                             Style="{StaticResource field}">
+                        <additionalViews:BindablePasswordBoxConfirm 
+                            Style="{StaticResource passwordConfirmField}">
+                            <additionalViews:BindablePasswordBoxConfirm.PasswordConfirm>
+                                <Binding Path="PasswordConfirm">
+                                    <Binding.ValidationRules>
+                                        <validators:UsernameValidator/>
+                                    </Binding.ValidationRules>
+                                </Binding>
+                            </additionalViews:BindablePasswordBoxConfirm.PasswordConfirm>
+                        </additionalViews:BindablePasswordBoxConfirm>
                     </Border>
 
                     <Border Grid.Row="5" Grid.ColumnSpan="2"
