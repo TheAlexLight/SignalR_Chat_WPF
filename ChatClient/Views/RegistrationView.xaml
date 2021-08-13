@@ -79,9 +79,10 @@
                         <additionalViews:BindablePasswordBox 
                         Style="{StaticResource passwordField}">
                             <additionalViews:BindablePasswordBox.Password>
-                                <Binding Path="Password">
+                                <Binding Path="Password"
+                                         ValidatesOnDataErrors="True">
                                     <Binding.ValidationRules>
-                                        <validators:UsernameValidator/>
+                                        <validators:PasswordValidator/>
                                     </Binding.ValidationRules>
                                 </Binding>
                             </additionalViews:BindablePasswordBox.Password>
@@ -96,9 +97,10 @@
                         <additionalViews:BindablePasswordBoxConfirm 
                             Style="{StaticResource passwordConfirmField}">
                             <additionalViews:BindablePasswordBoxConfirm.PasswordConfirm>
-                                <Binding Path="PasswordConfirm">
+                                <Binding Path="PasswordConfirm" 
+                                         ValidatesOnDataErrors="True">
                                     <Binding.ValidationRules>
-                                        <validators:UsernameValidator/>
+                                        <validators:PasswordValidator/>
                                     </Binding.ValidationRules>
                                 </Binding>
                             </additionalViews:BindablePasswordBoxConfirm.PasswordConfirm>

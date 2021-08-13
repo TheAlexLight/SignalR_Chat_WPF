@@ -15,7 +15,7 @@ using System.Windows.Input;
 
 namespace ChatClient.ViewModels
 {
-    public class RegistrationViewModel : ChatViewModelBase, INotifyDataErrorInfo
+    public class RegistrationViewModel : ChatViewModelBase, IDataErrorInfo/*, INotifyDataErrorInfo*/
     {
         public RegistrationViewModel(NavigationStore navigationStore, SignalRChatService chatService) : base(chatService)
         {
@@ -43,7 +43,7 @@ namespace ChatClient.ViewModels
 
         private readonly NavigationStore _navigationStore;
 
-        public event EventHandler<DataErrorsChangedEventArgs> ErrorsChanged;
+        //public event EventHandler<DataErrorsChangedEventArgs> ErrorsChanged;
 
         public string Username
         {
@@ -72,6 +72,7 @@ namespace ChatClient.ViewModels
             {
                 _password = value;
                 OnPropertyChanged();
+                OnPropertyChanged(nameof(PasswordConfirm));
             }
         }
 
@@ -82,38 +83,64 @@ namespace ChatClient.ViewModels
             {
                 _passwordConfirm = value;
                 OnPropertyChanged();
+                OnPropertyChanged(nameof(Password));
+            }
+        }
+
+        public string Error { get; }
+
+        public string this[string propertyName]
+        {
+            get
+            {
+                string result = string.Empty;
+
+                propertyName ??= string.Empty;
+
+                if (propertyName != string.Empty
+                        && (propertyName == nameof(PasswordConfirm) || propertyName == nameof(Password))
+                        && PasswordConfirm != null && Password != null)
+                {
+                    if (!Password.Equals(PasswordConfirm, StringComparison.Ordinal))
+                    {
+                        result = "Passwords do not match";
+                    }   
+                }
+
+                return result;
             }
         }
 
         private void ChatService_ReceiveRegistrationResult(IdentityResult registrationResult)
         {
-            HasErrors = !registrationResult.Succeeded;
-            if (!HasErrors)
-            {
-                NavigationService<ChatViewModel> navigationService = new(_navigationStore, 
-                        () => new ChatViewModel(_chatService));
-                navigationService.Navigate();
-            }
-            else
-            {
-                ErrorsChanged?.Invoke(this, new DataErrorsChangedEventArgs(nameof(Password)));
-                ErrorsChanged?.Invoke(this, new DataErrorsChangedEventArgs(nameof(Username)));
-            }
+            //HasErrors = !registrationResult.Succeeded;
+
+            //if (!HasErrors)
+            //{
+            //    NavigationService<ChatViewModel> navigationService = new(_navigationStore, 
+            //            () => new ChatViewModel(_chatService));
+            //    navigationService.Navigate();
+            //}
+            //else
+            //{
+            //    ErrorsChanged?.Invoke(this, new DataErrorsChangedEventArgs(nameof(Password)));
+            //    ErrorsChanged?.Invoke(this, new DataErrorsChangedEventArgs(nameof(Username)));
+            //}
             //else
             //{
             //    MessageBox.Show(registrationResult.Errors);
             //}
         }
 
-        public bool HasErrors { get; set; }
+        //public bool HasErrors { get; set; }
 
-        public IEnumerable GetErrors(string propertyName)
-        {
-            return string.IsNullOrWhiteSpace(propertyName) || (!HasErrors) ? null
-                    : new List<string>()
-                    {
-                        "Invalid credentials"
-                    };
-        }
+        //public IEnumerable GetErrors(string propertyName)
+        //{
+        //    return string.IsNullOrWhiteSpace(propertyName) || (!HasErrors) ? null
+        //            : new List<string>()
+        //            {
+        //                "Invalid credentials"
+        //            };
+        //}
     }
 }
