@@ -35,7 +35,7 @@
                            Margin="10" 
                            HorizontalAlignment="Center"
                            FontSize="20"/>
-                    <Border Style="{StaticResource field}">
+                    <Border Style="{StaticResource field}" Height="40">
                         <TextBox FontSize="22"
                       Text="{Binding Username}"
                                  Style="{StaticResource enterField}"/>
@@ -46,7 +46,6 @@
                         <Button  Content="Login" 
                              BorderThickness="0"
                              Background="#B2ECE6"
-                         Height="50"
                                  FontSize="24"
                                  VerticalAlignment="Center"
                      Command="{Binding LoginCommand}"/>
@@ -57,7 +56,7 @@
                         <Button  Content="Create new account" 
                              BorderThickness="0"
                              Background="#B2ECE6"
-                         Height="50"
+                         Height="40"
                                  FontSize="24"
                                  VerticalAlignment="Center"
                      Command="{Binding NavigateRegistrationCommand}"/>

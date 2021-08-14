@@ -8,7 +8,7 @@
              xmlns:viewmodels="clr-namespace:ChatClient.ViewModels" d:DataContext="{d:DesignInstance Type=viewmodels:RegistrationViewModel}"
              xmlns:validators="clr-namespace:ChatClient.Validators" 
              mc:Ignorable="d" 
-             d:DesignHeight="500" d:DesignWidth="800"
+             d:DesignHeight="800" d:DesignWidth="800"
              Loaded="pwBoxPassword_PasswordChanged">
     <Border BorderThickness="1"
             BorderBrush="#C0C8D5"
@@ -20,16 +20,16 @@
             <DropShadowEffect ShadowDepth="0" BlurRadius="2"/>
         </Border.Effect>
         <Grid Background="#4E535B">
-            <Border Style="{StaticResource formBorder}"
-                    Width="500"
+            <Border x:Name="fullRegistrationBorder" Style="{StaticResource formBorder}"
+                    Width="365"
                     Height="500">
-                <Grid Width="500"
-                        Height ="500" 
+                <Grid Width="{Binding Path=Width,ElementName=fullRegistrationBorder}"
+                      Height="{Binding Path=Height,ElementName=fullRegistrationBorder}"
                     Background="#F1F2F4">
-                    <Grid.ColumnDefinitions>
+                    <!--<Grid.ColumnDefinitions>
                         <ColumnDefinition/>
                         <ColumnDefinition Width="1.3*"/>
-                    </Grid.ColumnDefinitions>
+                    </Grid.ColumnDefinitions>-->
                     <Grid.RowDefinitions>
                         <RowDefinition/>
                         <RowDefinition/>
@@ -39,100 +39,99 @@
                         <RowDefinition/>
                         <RowDefinition/>
                     </Grid.RowDefinitions>
-                    <TextBlock Grid.Row="0" Grid.ColumnSpan="2" 
-                           Text="Registration" 
+                    <TextBlock Grid.Row="0"  
+                           Text="Create account" 
                            Style="{StaticResource mainTitle}"/>
-                    <TextBlock Grid.Row="1"
-                               Text="*Username:"  
+                    <StackPanel Grid.Row="1">
+                        <TextBlock Grid.Row="1"
+                               Text="*Username"  
                                Style="{StaticResource formText}"/>
-                    <TextBox Style="{StaticResource enterField}"
+                        <TextBox Style="{StaticResource enterField}"
                                  Grid.Row="1" Grid.Column="1"
                              x:Name="txtUsername">
-                        <TextBox.Text>
-                            <Binding Path="Username" 
+                            <TextBox.Text>
+                                <Binding Path="Username" 
                                      UpdateSourceTrigger="PropertyChanged">
-                                <Binding.ValidationRules>
-                                    <validators:UsernameValidator/>
-                                </Binding.ValidationRules>
-                            </Binding>
-                        </TextBox.Text>
-                    </TextBox>
-
-                    <TextBlock Grid.Row="2"
-                               Text="*Email:"  
+                                    <Binding.ValidationRules>
+                                        <validators:UsernameValidator/>
+                                    </Binding.ValidationRules>
+                                </Binding>
+                            </TextBox.Text>
+                        </TextBox>
+                    </StackPanel>
+                    <StackPanel Grid.Row="2">
+                        <TextBlock Grid.Row="2"
+                               Text="*Email"  
                                Style="{StaticResource formText}"/>
-                    <TextBox Style="{StaticResource enterField}"
+                        <TextBox Style="{StaticResource enterField}"
                                  Grid.Row="2" Grid.Column="2">
-                        <TextBox.Text>
-                            <Binding Path="Email" 
+                            <TextBox.Text>
+                                <Binding Path="Email" 
                                      UpdateSourceTrigger="PropertyChanged"
                                      x:Name="txtEmail">
-                                <Binding.ValidationRules>
-                                    <validators:EmailValidator/>
-                                </Binding.ValidationRules>
-                            </Binding>
-                        </TextBox.Text>
-                    </TextBox>
-
-                    <TextBlock Grid.Row="3"
-                               Text="*Password:"  
+                                    <Binding.ValidationRules>
+                                        <validators:EmailValidator/>
+                                    </Binding.ValidationRules>
+                                </Binding>
+                            </TextBox.Text>
+                        </TextBox>
+                    </StackPanel>
+                    <StackPanel Grid.Row="3">
+                        <TextBlock Grid.Row="3"
+                               Text="*Password"  
                                Style="{StaticResource formText}"/>
-                    <Border Style="{StaticResource field}"
-                            Grid.Row="3" Grid.Column="3">
-                        <additionalViews:BindablePasswordBox 
+                        <Border Style="{StaticResource field}"
+                            Grid.Row="3" Grid.Column="3"
+                              Padding="1">
+                            <additionalViews:BindablePasswordBox 
                         Style="{StaticResource passwordField}"
                             x:Name="pwBoxPassword"
                             PasswordBox.PasswordChanged="pwBoxPassword_PasswordChanged">
-                            <additionalViews:BindablePasswordBox.Password>
-                                <Binding Path="Password"
+                                <additionalViews:BindablePasswordBox.Password>
+                                    <Binding Path="Password"
                                          ValidatesOnDataErrors="True">
-                                    <Binding.ValidationRules>
-                                        <validators:PasswordValidator/>
-                                    </Binding.ValidationRules>
-                                </Binding>
-                            </additionalViews:BindablePasswordBox.Password>
-                        </additionalViews:BindablePasswordBox>
-                    </Border>
-                   
-                    <TextBlock Grid.Row="4"
-                               Text="*Confirm password:"  
+                                        <Binding.ValidationRules>
+                                            <validators:PasswordValidator/>
+                                        </Binding.ValidationRules>
+                                    </Binding>
+                                </additionalViews:BindablePasswordBox.Password>
+                            </additionalViews:BindablePasswordBox>
+                        </Border>
+                    </StackPanel>
+                    <StackPanel Grid.Row="4">
+                        <TextBlock Grid.Row="4"
+                               Text="*Confirm password"  
                                Style="{StaticResource formText}"/>
-                    <Border  Grid.Row="4" Grid.Column="4"
+                        <Border  Grid.Row="4" Grid.Column="4" 
+                                 Padding="1"
                              Style="{StaticResource field}">
-                        <additionalViews:BindablePasswordBoxConfirm 
+                            <additionalViews:BindablePasswordBoxConfirm 
                             Style="{StaticResource passwordConfirmField}"
                             x:Name="pwBoxPasswordConfirm"
                             PasswordBox.PasswordChanged="pwBoxPassword_PasswordChanged">
-                            <additionalViews:BindablePasswordBoxConfirm.PasswordConfirm>
-                                <Binding Path="PasswordConfirm" 
+                                <additionalViews:BindablePasswordBoxConfirm.PasswordConfirm>
+                                    <Binding Path="PasswordConfirm" 
                                          ValidatesOnDataErrors="True">
-                                    <Binding.ValidationRules>
-                                        <validators:PasswordValidator/>
-                                    </Binding.ValidationRules>
-                                </Binding>
-                            </additionalViews:BindablePasswordBoxConfirm.PasswordConfirm>
-                        </additionalViews:BindablePasswordBoxConfirm>
-                    </Border>
+                                        <Binding.ValidationRules>
+                                            <validators:PasswordValidator/>
+                                        </Binding.ValidationRules>
+                                    </Binding>
+                                </additionalViews:BindablePasswordBoxConfirm.PasswordConfirm>
+                            </additionalViews:BindablePasswordBoxConfirm>
+                        </Border>
+                    </StackPanel>
 
-                    <Border Grid.Row="5" Grid.ColumnSpan="2"
-                            Style="{StaticResource field}" 
-                            HorizontalAlignment="Center"
-                        Background="#B2ECE6">
                         <Button  Content="Register" 
                                  x:Name="btnRegistration"
                                  Style="{StaticResource registrationButton}"
-                                 Command="{Binding RegistrationCommand}"/>
-                    </Border>
+                                 Command="{Binding RegistrationCommand}"
+                                 Grid.Row="5"/>
 
-                    <Border Grid.Row="6" Grid.ColumnSpan="2"
-                            Style="{StaticResource field}" 
-                            HorizontalAlignment="Center"
-                            Margin="0,0,0,10"
-                        Background="#B2ECE6">
-                        <Button  Content="Back to login" 
+                    <Button  Content="Back to login" 
+                                 Grid.Row="6"
+                                 Margin="10,0,10,20"
                                  Style="{StaticResource submitButton}"
                                  Command="{Binding NavigateLoginCommand}"/>
-                    </Border>
 
                     <!--<TextBlock Style="{StaticResource errorMessage}"
                        Text="{Binding ErrorMessage}"

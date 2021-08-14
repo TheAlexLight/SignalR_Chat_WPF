@@ -6,33 +6,34 @@
         <Setter Property="BorderBrush" Value="#36383C"/>
         <Setter Property="BorderThickness" Value="2"/>
         <Setter Property="CornerRadius" Value="5"/>
-        <Setter Property="Effect">
+        <!--<Setter Property="Effect">
             <Setter.Value>
                 <DropShadowEffect ShadowDepth="0" 
                               BlurRadius="2"/>
             </Setter.Value>
-        </Setter>
+        </Setter>-->
     </Style>
 
     <Style x:Key="field" TargetType="{x:Type Border}" BasedOn="{StaticResource formBorder}">
-        <Setter Property="Width" Value="220"/>
-        <Setter Property="Height" Value="50"/>
-        <Setter Property="Margin" Value="10"/>
-        <Setter Property="BorderBrush" Value="#71747A"/>
+        <Setter Property="Width" Value="310"/>
+        <Setter Property="Height" Value="35"/>
+        <Setter Property="Margin" Value="10,0,10,0"/>
+        <Setter Property="BorderBrush" Value="Gray"/>
         <Setter Property="Background" Value="#E5E7E9"/>
         <Setter Property="BorderThickness" Value="1"/>
-        <Setter Property="HorizontalAlignment" Value="Left"/>
+        <Setter Property="HorizontalAlignment" Value="Center"/>
+        <Setter Property="CornerRadius" Value="5"/>
     </Style>
 
     <Style x:Key="chatBorder" TargetType="{x:Type Border}">
         <Setter Property="BorderBrush" Value="#7B828E"/>
         <Setter Property="BorderThickness" Value="1"/>
         <Setter Property="CornerRadius" Value="5"/>
-        <Setter Property="Effect">
+        <!--<Setter Property="Effect">
             <Setter.Value>
                 <DropShadowEffect ShadowDepth="0" 
                               BlurRadius="2"/>
             </Setter.Value>
-        </Setter>
+        </Setter>-->
     </Style>
 </ResourceDictionary>

@@ -6,13 +6,53 @@
         <Setter Property="Margin" Value="5"/>
     </Style>
 
+    <LinearGradientBrush x:Key="registrationBasicColors" StartPoint="0.5,0" EndPoint="0.5,1">
+        <GradientStop Color="#F4DA99" Offset="0"/>
+        <GradientStop Color="#DEB13F" Offset="1"/>
+    </LinearGradientBrush>
+    
+    <LinearGradientBrush x:Key="registrationMouseOverColors" StartPoint="0.5,0" EndPoint="0.5,1">
+        <GradientStop Color="#E4BD5C" Offset="0"/>
+        <GradientStop Color="#D9A41F" Offset="1"/>
+    </LinearGradientBrush>
+
+    <LinearGradientBrush x:Key="registrationIsDisabledColors" StartPoint="0.5,0" EndPoint="0.5,1">
+        <GradientStop Color="#DDDCD8" Offset="0"/>
+        <GradientStop Color="#C9C6BC" Offset="0.7"/>
+        <GradientStop Color="#C5C4C2" Offset="1"/>
+    </LinearGradientBrush>
+
     <Style x:Key="submitButton" TargetType="{x:Type Button}">
         <Setter Property="BorderThickness" Value="0"/>
-        <Setter Property="FontSize" Value="24"/>
-        <Setter Property="Background" Value="#B2ECE6"/>
-        <Setter Property="Height" Value="50"/>
+        <Setter Property="FontSize" Value="22"/>
+        <Setter Property="FontWeight" Value="Medium"/>
+        <Setter Property="Height" Value="35"/>
+        <Setter Property="Width" Value="310"/>
         <Setter Property="HorizontalAlignment" Value="Center"/>
         <Setter Property="VerticalAlignment" Value="Center"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <Border x:Name="insideBorder" BorderBrush="#6D4F02" Background="{StaticResource registrationBasicColors}" 
+                            BorderThickness="1.3" 
+                            CornerRadius="5">
+                        <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalAlignment}"
+                                          VerticalAlignment="{TemplateBinding VerticalAlignment}"/>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="insideBorder" Property="Background" Value="{StaticResource registrationMouseOverColors}"/>
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter TargetName="insideBorder" Property="Background" Value="{StaticResource registrationIsDisabledColors}"/>
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="True">
+                            <Setter TargetName="insideBorder" Property="Background" Value="{StaticResource registrationBasicColors}"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
     </Style>
 
     <Style x:Key="registrationButton" TargetType="{x:Type Button}" BasedOn="{StaticResource submitButton}">
