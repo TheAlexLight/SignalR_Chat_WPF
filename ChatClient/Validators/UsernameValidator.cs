@@ -25,8 +25,8 @@ namespace ChatClient.Validators
             string inputString = ValidateOnEmptiness((string)value);
 
             if (inputString == string.Empty
-                    || MinimimLengthValidation(inputString, string.Format(MINIMUM_LENGTH, MinimumLength))
-                    || MaximumLengthValidation(inputString, string.Format(MAXIMUM_LENGTH, MaximumLength)))
+                    || !MinimimLengthValidation(inputString, string.Format(MINIMUM_LENGTH, MinimumLength))
+                    || !MaximumLengthValidation(inputString, string.Format(MAXIMUM_LENGTH, MaximumLength)))
             {
                 result = new ValidationResult(false, ErrorMessage);
             }

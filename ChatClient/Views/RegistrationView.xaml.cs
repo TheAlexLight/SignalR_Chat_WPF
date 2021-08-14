@@ -24,5 +24,13 @@ namespace ChatClient.Views
         {
             InitializeComponent();
         }
+
+        private void pwBoxPassword_PasswordChanged(object sender, RoutedEventArgs e)
+        {
+            btnRegistration.IsEnabled = !Validation.GetHasError(pwBoxPassword)
+                    && !Validation.GetHasError(pwBoxPasswordConfirm)
+                    && pwBoxPassword.Password != null
+                    && pwBoxPasswordConfirm.PasswordConfirm != null;
+        }
     }
 }

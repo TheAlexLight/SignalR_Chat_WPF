@@ -8,7 +8,8 @@
              xmlns:viewmodels="clr-namespace:ChatClient.ViewModels" d:DataContext="{d:DesignInstance Type=viewmodels:RegistrationViewModel}"
              xmlns:validators="clr-namespace:ChatClient.Validators" 
              mc:Ignorable="d" 
-             d:DesignHeight="500" d:DesignWidth="800">
+             d:DesignHeight="500" d:DesignWidth="800"
+             Loaded="pwBoxPassword_PasswordChanged">
     <Border BorderThickness="1"
             BorderBrush="#C0C8D5"
             CornerRadius="5"
@@ -42,10 +43,11 @@
                            Text="Registration" 
                            Style="{StaticResource mainTitle}"/>
                     <TextBlock Grid.Row="1"
-                               Text="Username:"  
+                               Text="*Username:"  
                                Style="{StaticResource formText}"/>
                     <TextBox Style="{StaticResource enterField}"
-                                 Grid.Row="1" Grid.Column="1">
+                                 Grid.Row="1" Grid.Column="1"
+                             x:Name="txtUsername">
                         <TextBox.Text>
                             <Binding Path="Username" 
                                      UpdateSourceTrigger="PropertyChanged">
@@ -57,13 +59,14 @@
                     </TextBox>
 
                     <TextBlock Grid.Row="2"
-                               Text="Email:"  
+                               Text="*Email:"  
                                Style="{StaticResource formText}"/>
                     <TextBox Style="{StaticResource enterField}"
                                  Grid.Row="2" Grid.Column="2">
                         <TextBox.Text>
                             <Binding Path="Email" 
-                                     UpdateSourceTrigger="PropertyChanged">
+                                     UpdateSourceTrigger="PropertyChanged"
+                                     x:Name="txtEmail">
                                 <Binding.ValidationRules>
                                     <validators:EmailValidator/>
                                 </Binding.ValidationRules>
@@ -72,12 +75,14 @@
                     </TextBox>
 
                     <TextBlock Grid.Row="3"
-                               Text="Password:"  
+                               Text="*Password:"  
                                Style="{StaticResource formText}"/>
                     <Border Style="{StaticResource field}"
                             Grid.Row="3" Grid.Column="3">
                         <additionalViews:BindablePasswordBox 
-                        Style="{StaticResource passwordField}">
+                        Style="{StaticResource passwordField}"
+                            x:Name="pwBoxPassword"
+                            PasswordBox.PasswordChanged="pwBoxPassword_PasswordChanged">
                             <additionalViews:BindablePasswordBox.Password>
                                 <Binding Path="Password"
                                          ValidatesOnDataErrors="True">
@@ -90,12 +95,14 @@
                     </Border>
                    
                     <TextBlock Grid.Row="4"
-                               Text="Confirm password:"  
+                               Text="*Confirm password:"  
                                Style="{StaticResource formText}"/>
                     <Border  Grid.Row="4" Grid.Column="4"
                              Style="{StaticResource field}">
                         <additionalViews:BindablePasswordBoxConfirm 
-                            Style="{StaticResource passwordConfirmField}">
+                            Style="{StaticResource passwordConfirmField}"
+                            x:Name="pwBoxPasswordConfirm"
+                            PasswordBox.PasswordChanged="pwBoxPassword_PasswordChanged">
                             <additionalViews:BindablePasswordBoxConfirm.PasswordConfirm>
                                 <Binding Path="PasswordConfirm" 
                                          ValidatesOnDataErrors="True">
@@ -112,7 +119,8 @@
                             HorizontalAlignment="Center"
                         Background="#B2ECE6">
                         <Button  Content="Register" 
-                                 Style="{StaticResource submitButton}"
+                                 x:Name="btnRegistration"
+                                 Style="{StaticResource registrationButton}"
                                  Command="{Binding RegistrationCommand}"/>
                     </Border>
 

@@ -14,4 +14,19 @@
         <Setter Property="HorizontalAlignment" Value="Center"/>
         <Setter Property="VerticalAlignment" Value="Center"/>
     </Style>
+
+    <Style x:Key="registrationButton" TargetType="{x:Type Button}" BasedOn="{StaticResource submitButton}">
+        <Setter Property="IsEnabled" Value="False"/>
+        <Style.Triggers>
+            <MultiDataTrigger>
+                <MultiDataTrigger.Conditions>
+                    <Condition Binding="{Binding Path=(Validation.HasError), ElementName=txtUsername}" Value="False"/>
+                    <Condition Binding="{Binding Path=(Validation.HasError), ElementName=txtEmail}" Value="False"/>
+                    <Condition Binding="{Binding Path=Text.IsEmpty, ElementName=txtUsername}" Value="False"/>
+                    <Condition Binding="{Binding Path=Text.IsEmpty, ElementName=txtEmail}" Value="False"/>
+                </MultiDataTrigger.Conditions>
+                <Setter Property="IsEnabled" Value="True"/>
+            </MultiDataTrigger>
+        </Style.Triggers>
+    </Style>
 </ResourceDictionary>
