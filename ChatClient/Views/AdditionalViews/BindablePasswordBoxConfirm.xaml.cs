@@ -35,7 +35,7 @@ namespace ChatClient.Views.AdditionalViews
 
         private static void PasswordConfirmPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            if (d is BindablePasswordBox passwordBoxConfirm)
+            if (d is BindablePasswordBoxConfirm passwordBoxConfirm)
             {
                 passwordBoxConfirm.UpdatePasswordBoxConfirm();
             }

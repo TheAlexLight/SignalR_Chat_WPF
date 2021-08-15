@@ -4,12 +4,7 @@ using ChatClient.Services;
 using ChatClient.Stores;
 using Microsoft.AspNetCore.Identity;
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 
@@ -131,6 +126,8 @@ namespace ChatClient.ViewModels
             //{
             //    MessageBox.Show(registrationResult.Errors);
             //}
+
+            MessageBox.Show(registrationResult.Errors.ToString());
         }
 
         //public bool HasErrors { get; set; }

@@ -6,12 +6,6 @@
         <Setter Property="BorderBrush" Value="#36383C"/>
         <Setter Property="BorderThickness" Value="2"/>
         <Setter Property="CornerRadius" Value="5"/>
-        <!--<Setter Property="Effect">
-            <Setter.Value>
-                <DropShadowEffect ShadowDepth="0" 
-                              BlurRadius="2"/>
-            </Setter.Value>
-        </Setter>-->
     </Style>
 
     <Style x:Key="field" TargetType="{x:Type Border}" BasedOn="{StaticResource formBorder}">
@@ -29,11 +23,14 @@
         <Setter Property="BorderBrush" Value="#7B828E"/>
         <Setter Property="BorderThickness" Value="1"/>
         <Setter Property="CornerRadius" Value="5"/>
-        <!--<Setter Property="Effect">
-            <Setter.Value>
-                <DropShadowEffect ShadowDepth="0" 
-                              BlurRadius="2"/>
-            </Setter.Value>
-        </Setter>-->
+    </Style>
+
+    <Style x:Key="outerBorder" TargetType="{x:Type Border}" >
+        <Setter Property="BorderBrush" Value="#C0C8D5"/>
+        <Setter Property="Padding" Value="1"/>
+        <Setter Property="HorizontalAlignment" Value="Center"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="CornerRadius" Value="5"/>
     </Style>
 </ResourceDictionary>

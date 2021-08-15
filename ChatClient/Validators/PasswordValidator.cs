@@ -55,8 +55,8 @@ namespace ChatClient.Validators
             bool result = false;
             ErrorMessage = "Password should has at least one upper letter\n" 
                                          + "Password should has at least one lower letter\n"
-                                         + "Password should has at least one decimal digit"
-                                         + "Password should has at least one nonLetterOrDigit symbol";
+                                         + "Password should has at least one decimal digit\n"
+                                         + "Password should has at least one non letter or digit symbol";
 
             foreach (char ch in inputString)
             {

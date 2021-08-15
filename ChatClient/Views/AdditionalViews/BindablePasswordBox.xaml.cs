@@ -42,11 +42,6 @@ namespace ChatClient.Views.AdditionalViews
             }
         }
 
-        internal void UpdatePasswordBoxConfirm()
-        {
-            throw new NotImplementedException();
-        }
-
         public BindablePasswordBox()
         {
             InitializeComponent();

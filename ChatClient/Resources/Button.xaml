@@ -46,9 +46,6 @@
                         <Trigger Property="IsEnabled" Value="False">
                             <Setter TargetName="insideBorder" Property="Background" Value="{StaticResource registrationIsDisabledColors}"/>
                         </Trigger>
-                        <Trigger Property="IsEnabled" Value="True">
-                            <Setter TargetName="insideBorder" Property="Background" Value="{StaticResource registrationBasicColors}"/>
-                        </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>
