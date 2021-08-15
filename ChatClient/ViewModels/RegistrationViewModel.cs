@@ -15,7 +15,7 @@ namespace ChatClient.ViewModels
         public RegistrationViewModel(NavigationStore navigationStore, SignalRChatService chatService) : base(chatService)
         {
             Window window = Application.Current.MainWindow;
-            window.Height = 540;
+            window.Height = 545;
             window.Width = 385;
 
             _navigationStore = navigationStore;

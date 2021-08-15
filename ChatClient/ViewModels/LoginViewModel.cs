@@ -31,6 +31,7 @@ namespace ChatClient.ViewModels
                     () => new RegistrationViewModel(navigationStore, chatService)));
 
             ConnectionStatusValue = ConnectionStatus.Connecting;
+
         }
 
         private void ChatService_ConnectionReceived(bool isConnected)
@@ -43,17 +44,27 @@ namespace ChatClient.ViewModels
         private ChatViewModel _chatViewModel;
         public SignalRChatService ChatService { get;}
 
-        private string username;
+        private string _username;
+        private string _password;
 
         public LoginCommand LoginCommand { get; }
         public ICommand NavigateRegistrationCommand { get; }
 
         public string Username
         {
-            get => username;
+            get => _username;
             set
             {
-                username = value;
+                _username = value;
+                OnPropertyChanged();
+            }
+        }
+        public string Password
+        {
+            get => _password;
+            set
+            {
+                _password = value;
                 OnPropertyChanged();
             }
         }

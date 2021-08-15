@@ -5,8 +5,10 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:ChatClient.Views"
       xmlns:converters="clr-namespace:ChatClient.Converters"
-             xmlns:additionaViews="clr-namespace:ChatClient.Views.AdditionalViews"
-      mc:Ignorable="d" 
+             xmlns:additionaViews="clr-namespace:ChatClient.Views.AdditionalViews" 
+             xmlns:validators="clr-namespace:ChatClient.Validators" xmlns:viewmodels="clr-namespace:ChatClient.ViewModels" 
+             d:DataContext="{d:DesignInstance Type=viewmodels:LoginViewModel}"
+             mc:Ignorable="d" 
       d:DesignHeight="500" d:DesignWidth="600">
 
     <UserControl.Resources>
@@ -17,26 +19,41 @@
 
     <Border Style="{StaticResource outerBorder}">
         <Grid Background="#4E535B">
-            <Border Style="{StaticResource formBorder}" >
-                <StackPanel Width="350"
-                        Height ="350" 
+            <Border Style="{StaticResource formBorder}"
+                    x:Name="fullLoginBorder"
+                    Width="365"
+                    Height="340">
+                <StackPanel Width="{Binding Path=Width,ElementName=fullLoginBorder}"
+                            Height="{Binding Path=Height,ElementName=fullLoginBorder}"
                     Background="#F1F2F4">
-                    <TextBlock Text="Log in" 
-                               Style="{StaticResource mainTitle}"/>
-                    <TextBlock Text="Username:" 
-                               Style="{StaticResource formText}"/>
-                    <TextBox
-                      Text="{Binding Username}"
-                                 Style="{StaticResource enterField}"/>
-                    <!--<TextBlock Text="Password:" 
-                               Style="{StaticResource formText}"/>
-                    <TextBox 
-                      Text="{Binding Username}"
-                                 Style="{StaticResource enterField}"/>-->
+                    <TextBlock Text="Login" 
+                               Style="{StaticResource mainTitle}"
+                               Margin="30,10,30,10"/>
+                    <TextBlock Text="Username" 
+                               Style="{StaticResource formText}"
+                               Margin="30,0,30,0"/>
+                    <TextBox Style="{StaticResource enterField}"
+                             x:Name="txtUsername"
+                             TextChanged="loginField_TextOrPasswordChanged"
+                             Text="{Binding Username, UpdateSourceTrigger=PropertyChanged}"
+                             Margin="10,0,10,10">
+                    </TextBox>
+                    <TextBlock Text="Password" 
+                               Style="{StaticResource formText}"
+                                                              Margin="30,0,30,0"/>
+                    <Border Style="{StaticResource field}"
+                            Grid.Row="3" Grid.Column="3"
+                              Padding="1">
+                        <additionaViews:BindablePasswordBox 
+                        Style="{StaticResource passwordField}"
+                            x:Name="pwBoxPassword"
+                            PasswordBox.PasswordChanged="loginField_TextOrPasswordChanged"
+                            Password="{Binding Password}"/>
+                    </Border>
                     <Button  Content="Login" 
-                             Style="{StaticResource submitButton}"
+                             Style="{StaticResource loginButton}"
                              Margin="10,20,10,20"
-                     Command="{Binding LoginCommand}"/>
+                             x:Name="btnLogin"/>
 
                     <Button  Content="Create new account" 
                              Style="{StaticResource submitButton}"

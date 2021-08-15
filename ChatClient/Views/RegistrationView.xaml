@@ -111,7 +111,7 @@
                         </Border>
                     </StackPanel>
 
-                        <Button  Content="Register" 
+                        <Button  Content="Create account" 
                                  x:Name="btnRegistration"
                                  Style="{StaticResource registrationButton}"
                                  Command="{Binding RegistrationCommand}"

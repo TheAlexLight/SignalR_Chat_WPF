@@ -33,6 +33,8 @@ namespace ChatClient.Views
                     && !Validation.GetHasError(txtEmail)
                     && pwBoxPassword.Password != null
                     && pwBoxPasswordConfirm.PasswordConfirm != null
+                    && pwBoxPassword.Password.Length > 0
+                    && pwBoxPasswordConfirm.PasswordConfirm.Length > 0
                     && txtUsername.Text.Length > 0
                     && txtEmail.Text.Length > 0;
         }
