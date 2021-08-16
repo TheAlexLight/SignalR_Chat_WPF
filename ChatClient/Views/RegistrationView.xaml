@@ -12,7 +12,8 @@
              Loaded="registrationField_TextOrPasswordChanged">
     <Border Style="{StaticResource outerBorder}">
         <Grid Background="#4E535B">
-            <Border x:Name="fullRegistrationBorder" Style="{StaticResource formBorder}"
+            <Border x:Name="fullRegistrationBorder" 
+                    Style="{StaticResource formBorder}"
                     Width="365"
                     Height="500">
                 <Grid Width="{Binding Path=Width,ElementName=fullRegistrationBorder}"

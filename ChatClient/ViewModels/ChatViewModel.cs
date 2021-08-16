@@ -26,6 +26,14 @@ namespace ChatClient.ViewModels
             chatService.MessageReceived += ChatService_MessageReceived;
             chatService.UserListReceived += ChatService_UserListReceived;
             chatService.ReceivedBan += ChatService_ReceivedBan;
+
+            Window window = Application.Current.MainWindow;
+
+            if (window != null)
+            {
+                window.Height = 400;
+                window.Width = 550;
+            }
         }
 
         //private event Action _getBan;

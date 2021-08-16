@@ -7,7 +7,7 @@
              xmlns:viewmodels="clr-namespace:ChatClient.ViewModels" 
              d:DataContext="{d:DesignInstance Type=viewmodels:ChatViewModel}"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
+             d:DesignHeight="400" d:DesignWidth="550">
 
     <Grid Background="#C0C8D5">
         <Grid.ColumnDefinitions>
@@ -18,26 +18,28 @@
         <Grid Grid.Column="0"> 
             <Grid.RowDefinitions>
                 <RowDefinition Height="35"/>
-                <RowDefinition Height="3.5*"/>
+                <RowDefinition Height="4*"/>
                 <RowDefinition/>
             </Grid.RowDefinitions>
 
-            <Border Style="{StaticResource chatBorder}" >
-                <TextBlock Grid.Row="0"
-                       Text="Chat"
-                       Style="{StaticResource chatTitle}"/>
+            <Border Style="{StaticResource chatBorder}"
+                    Grid.Row="0">
+                <TextBlock Style="{StaticResource chatTitle}"
+                           Text="Chat"/>
             </Border>
 
-            <ListBox Grid.Row="1" Grid.RowSpan="2" 
-                     ItemsSource="{Binding Messages}"/>
+            <ListBox Grid.Row="1"  
+                     ItemsSource="{Binding Messages}"
+                     Background="{StaticResource mainMessageBoxColors}"/>
 
-            <Grid Grid.Row="3" >
+            <Grid Grid.Row="2"
+                  Background="{StaticResource typeMessageGridColors}">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="5*"/>
+                    <ColumnDefinition Width="2.5*"/>
                     <ColumnDefinition/>
                 </Grid.ColumnDefinitions>
 
-                <TextBox Grid.Column="0"
+                <TextBox Grid.Column="0"    
                      Style="{StaticResource typeMessage}"
                      Text="{Binding Message}"/>
                 <Button Grid.Column="1"
@@ -53,13 +55,9 @@
             </Grid.RowDefinitions>
 
             <Border Style="{StaticResource chatBorder}"
-                    BorderThickness="0.5,1,1,1"
-                    CornerRadius="0,5,5,0">
-                <TextBlock Grid.Row="0"
-                       Text="Users"
-                       FontSize="40"
-                       TextAlignment="Center"
-                       VerticalAlignment="Center"/>
+                    Grid.Row="0">
+                <TextBlock Style="{StaticResource chatTitle}"
+                           Text="Users"/>
             </Border>
 
             <ListBox Grid.Row="1"  Style="{StaticResource activeUsers}"/>

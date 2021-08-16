@@ -11,10 +11,6 @@ namespace ChatClient.Views
         public LoginView()
         {
             InitializeComponent();
-
-            Window window = Application.Current.MainWindow;
-            window.Height = 385;
-            window.Width = 385;
         }
 
         private void LoginField_TextOrPasswordChanged(object sender, RoutedEventArgs e)

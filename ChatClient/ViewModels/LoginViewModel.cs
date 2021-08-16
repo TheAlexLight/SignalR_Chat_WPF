@@ -34,6 +34,13 @@ namespace ChatClient.ViewModels
 
             ConnectionStatusValue = ConnectionStatus.Connecting;
 
+            Window window = Application.Current.MainWindow;
+
+            if (window != null)
+            {
+                window.Height = 385;
+                window.Width = 385;
+            }
         }
 
         private NavigationStore _navigationStore;
