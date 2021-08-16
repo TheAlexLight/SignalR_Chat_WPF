@@ -4,7 +4,9 @@ using ChatClient.Services;
 using ChatClient.Stores;
 using Microsoft.AspNetCore.Identity;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq;
 using System.Windows;
 using System.Windows.Input;
 
@@ -100,45 +102,26 @@ namespace ChatClient.ViewModels
                     if (!Password.Equals(PasswordConfirm, StringComparison.Ordinal))
                     {
                         result = "Passwords do not match";
-                    }   
+                    }
                 }
 
                 return result;
             }
         }
 
-        private void ChatService_ReceiveRegistrationResult(IdentityResult registrationResult)
+        private void ChatService_ReceiveRegistrationResult(bool registrationResult, IdentityError error)
         {
-            //HasErrors = !registrationResult.Succeeded;
-
-            //if (!HasErrors)
-            //{
-            //    NavigationService<ChatViewModel> navigationService = new(_navigationStore, 
-            //            () => new ChatViewModel(_chatService));
-            //    navigationService.Navigate();
-            //}
-            //else
-            //{
-            //    ErrorsChanged?.Invoke(this, new DataErrorsChangedEventArgs(nameof(Password)));
-            //    ErrorsChanged?.Invoke(this, new DataErrorsChangedEventArgs(nameof(Username)));
-            //}
-            //else
-            //{
-            //    MessageBox.Show(registrationResult.Errors);
-            //}
-
-            MessageBox.Show(registrationResult.Errors.ToString());
+            if (registrationResult)
+            {
+                NavigationService<ChatViewModel> navigationService = new(_navigationStore,
+                        () => new ChatViewModel(_chatService));
+                navigationService.Navigate();
+            }
+            else
+            {
+                MessageBox.Show(error.Description);
+            }
         }
-
-        //public bool HasErrors { get; set; }
-
-        //public IEnumerable GetErrors(string propertyName)
-        //{
-        //    return string.IsNullOrWhiteSpace(propertyName) || (!HasErrors) ? null
-        //            : new List<string>()
-        //            {
-        //                "Invalid credentials"
-        //            };
-        //}
     }
 }
+

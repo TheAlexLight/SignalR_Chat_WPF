@@ -15,15 +15,13 @@ namespace ChatServer.Hubs
     public class ChatHub : Hub
     {
         private readonly UserManager<User> _userManager;
-        private readonly SignInManager<User> _signInManager;
         private readonly AccountController account;
 
-        public ChatHub(UserManager<User> userManager, SignInManager<User> signInManager)
+        public ChatHub(UserManager<User> userManager)
         {
             _userManager = userManager;
-            _signInManager = signInManager;
 
-            account = new AccountController(_userManager, _signInManager);
+            account = new AccountController(_userManager);
         }
         public async Task SendMessage(string message)
         {
@@ -42,16 +40,37 @@ namespace ChatServer.Hubs
 
         public async Task SendRegistration(RegistrationUserData model)
         {
-            IdentityResult completedRegistration =  await account.Register(model);
+            bool result = false;
+            IdentityError error = new IdentityError();
 
-            await Clients.Caller.SendAsync("ReceiveRegistrationResult", completedRegistration);
+            if (await _userManager.FindByNameAsync(model.Username) != null)
+            {
+                error.Description = "Username is already exist";
+            }
+            else if (await _userManager.FindByEmailAsync(model.Email) != null)
+            {
+                error.Description = "Email is already exist";
+            }
+            else
+            {
+                IdentityResult completedRegistration = await account.Register(model);
+
+                result = completedRegistration.Succeeded;
+
+                if (completedRegistration.Errors.Count() != 0)
+                {
+                    error = completedRegistration.Errors.ToList()[0];
+                }
+            }
+
+            await Clients.Caller.SendAsync("ReceiveRegistrationResult", result, error);
         }
 
         public async Task SendLogin(LoginUserData model)
         {
-            SignInResult completedLogin = await account.Login(model);
+            bool successfulLogin = await account.Login(model);
 
-            await Clients.Caller.SendAsync("ReceiveLoginResult", completedLogin);
+            await Clients.Caller.SendAsync("ReceiveLoginResult", successfulLogin);
         }
 
         public async Task SendUserList()

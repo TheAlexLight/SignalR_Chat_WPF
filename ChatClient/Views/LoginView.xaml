@@ -34,7 +34,7 @@
                                Margin="30,0,30,0"/>
                     <TextBox Style="{StaticResource enterField}"
                              x:Name="txtUsername"
-                             TextChanged="loginField_TextOrPasswordChanged"
+                             TextChanged="LoginField_TextOrPasswordChanged"
                              Text="{Binding Username, UpdateSourceTrigger=PropertyChanged}"
                              Margin="10,0,10,10">
                     </TextBox>
@@ -47,13 +47,14 @@
                         <additionaViews:BindablePasswordBox 
                         Style="{StaticResource passwordField}"
                             x:Name="pwBoxPassword"
-                            PasswordBox.PasswordChanged="loginField_TextOrPasswordChanged"
+                            PasswordBox.PasswordChanged="LoginField_TextOrPasswordChanged"
                             Password="{Binding Password}"/>
                     </Border>
                     <Button  Content="Login" 
                              Style="{StaticResource loginButton}"
                              Margin="10,20,10,20"
-                             x:Name="btnLogin"/>
+                             x:Name="btnLogin"
+                             Command="{Binding LoginCommand}"/>
 
                     <Button  Content="Create new account" 
                              Style="{StaticResource submitButton}"

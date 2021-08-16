@@ -17,7 +17,7 @@ namespace ChatClient.Views
             window.Width = 385;
         }
 
-        private void loginField_TextOrPasswordChanged(object sender, RoutedEventArgs e)
+        private void LoginField_TextOrPasswordChanged(object sender, RoutedEventArgs e)
         {
             btnLogin.IsEnabled = pwBoxPassword.Password != null && pwBoxPassword.Password.Length > 0 && txtUsername.Text.Length > 0;
         }

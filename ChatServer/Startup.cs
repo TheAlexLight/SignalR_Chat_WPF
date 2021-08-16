@@ -27,7 +27,15 @@ namespace ChatServer
         {
             services.AddDbContext<ApplicationContext>(options =>
                     options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
-            services.AddIdentity<User, IdentityRole>()
+            services.AddIdentity<User, IdentityRole>(opts=> 
+            {
+                opts.User.RequireUniqueEmail = true;
+                opts.Password.RequiredLength = 6;
+                opts.Password.RequireLowercase = true;
+                opts.Password.RequireUppercase = true;
+                opts.Password.RequireDigit = true;
+                opts.Password.RequireNonAlphanumeric = true;
+            })
                 .AddEntityFrameworkStores<ApplicationContext>();
             services.AddSignalR();
         }

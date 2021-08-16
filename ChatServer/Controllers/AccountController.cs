@@ -11,12 +11,10 @@ namespace ChatServer.Controllers
     public class AccountController
     {
         private readonly UserManager<User> _userManager;
-        private readonly SignInManager<User> _signInManager;
 
-        public AccountController(UserManager<User> userManager, SignInManager<User> signInManager)
+        public AccountController(UserManager<User> userManager)
         {
             _userManager = userManager;
-            _signInManager = signInManager;
         }
 
         public async Task<IdentityResult> Register(RegistrationUserData model)
@@ -26,14 +24,18 @@ namespace ChatServer.Controllers
             return await _userManager.CreateAsync(user, model.Password);
         }
 
-        public async Task<SignInResult> Login(LoginUserData model)
+        public async Task<bool> Login(LoginUserData model)
         {
-            return await _signInManager.PasswordSignInAsync(model.Username, model.Password, model.RememberMe, false);
-        }
+            bool result = false;
 
-        public async Task Logout()
-        {
-           await _signInManager.SignOutAsync();
+            User user = await _userManager.FindByNameAsync(model.Username);
+
+            if (user != null && await _userManager.CheckPasswordAsync(user, model.Password))
+            {
+                result = true;
+            }
+
+            return result;
         }
     }
 }

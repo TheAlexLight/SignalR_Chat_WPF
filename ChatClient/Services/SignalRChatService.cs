@@ -16,8 +16,8 @@ namespace ChatClient.Services
         public HubConnection Connection { get; }
 
         public event Action<string> MessageReceived;
-        public event Action<IdentityResult> ReceiveRegistrationResult;
-        public event Action<SignInResult> ReceiveLoginResult;
+        public event Action<bool, IdentityError> ReceiveRegistrationResult;
+        public event Action<bool> ReceiveLoginResult;
         public event Action<bool> ConnectionReceived;
         public event Action<bool> ReceivedBan;
         public event Action<ObservableCollection<ActiveUser>> UserListReceived;
@@ -32,8 +32,8 @@ namespace ChatClient.Services
         private void GetChatHubMessagesInvoke()
         {
             Connection.On<string>("ReceiveMessage", (message) => MessageReceived?.Invoke(message));
-            Connection.On<IdentityResult>("ReceiveRegistrationResult", (result) => ReceiveRegistrationResult?.Invoke(result));
-            Connection.On<SignInResult>("ReceiveLoginResult", (result) => ReceiveLoginResult?.Invoke(result));
+            Connection.On<bool, IdentityError>("ReceiveRegistrationResult", (result, error) => ReceiveRegistrationResult?.Invoke(result, error));
+            Connection.On<bool>("ReceiveLoginResult", (result) => ReceiveLoginResult?.Invoke(result));
             Connection.On<bool>("ReceiveConnectionInfo", (result) => ConnectionReceived?.Invoke(result));
             Connection.On<bool>("ReceiveBan", (result) => ReceivedBan?.Invoke(result));
             Connection.On<ObservableCollection<ActiveUser>>("ReceiveUserList", (activeUsers) => UserListReceived?.Invoke(activeUsers));

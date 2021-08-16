@@ -31,6 +31,12 @@
         <Setter Property="FontWeight" Value="DemiBold"/>
     </Style>
 
+    <Style x:Key="chatTitle" TargetType="{x:Type TextBlock}" BasedOn="{StaticResource mainTitle}">
+        <Setter Property="Margin" Value="0,-5,0,0"/>
+        <Setter Property="FontSize" Value="38"/>
+        <Setter Property="HorizontalAlignment" Value="Center"/>
+    </Style>
+
     <Style x:Key="formText" TargetType="{x:Type TextBlock}" BasedOn="{StaticResource mainTitle}">
         <Setter Property="FontSize" Value="20"/>
         <Setter Property="Margin" Value="20,0,20,0"/>

@@ -2,6 +2,7 @@
 using ChatClient.Stores;
 using ChatClient.ViewModels;
 using Microsoft.AspNetCore.SignalR.Client;
+using SharedItems.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,14 +21,15 @@ namespace ChatClient.Commands.AuthenticationCommands
             _viewModel = viewModel;
         }
 
-        public override bool CanExecute(object parameter)
-        {
-            return UserStatusService.IsLogin;
-        }
-
         public override async void Execute(object parameter)
         {
-            //await _viewModel.ChatService.Login(_viewModel.Username);
+            LoginUserData loginData = new()
+            {
+                Username = _viewModel.Username,
+                Password = _viewModel.Password
+            };
+
+            await _viewModel.ChatService.Login(loginData);
         }
     }
 }

@@ -23,7 +23,9 @@ namespace ChatClient.ViewModels
             ChatService = chatService;
             _navigationStore = navigationStore;
             _chatViewModel = new ChatViewModel(ChatService);
-            chatService.ConnectionReceived += ChatService_ConnectionReceived; ;
+
+            _chatService.ConnectionReceived += ChatService_ConnectionReceived;
+            _chatService.ReceiveLoginResult += ChatService_ReceiveLoginResult;
 
             LoginCommand = new LoginCommand(this);
             NavigateRegistrationCommand = new NavigateCommand<RegistrationViewModel>
@@ -32,12 +34,6 @@ namespace ChatClient.ViewModels
 
             ConnectionStatusValue = ConnectionStatus.Connecting;
 
-        }
-
-        private void ChatService_ConnectionReceived(bool isConnected)
-        {
-            UserStatusService.IsLogin = isConnected;
-            LoginCommand.RaiseCanExecuteChanged();
         }
 
         private NavigationStore _navigationStore;
@@ -49,6 +45,26 @@ namespace ChatClient.ViewModels
 
         public LoginCommand LoginCommand { get; }
         public ICommand NavigateRegistrationCommand { get; }
+
+        private void ChatService_ConnectionReceived(bool isConnected)
+        {
+            UserStatusService.IsLogin = isConnected;
+            LoginCommand.RaiseCanExecuteChanged();
+        }
+
+        private void ChatService_ReceiveLoginResult(bool loginResult)
+        {
+            if (loginResult)
+            {
+                NavigationService<ChatViewModel> navigationService = new(_navigationStore,
+                       () => new ChatViewModel(_chatService));
+                navigationService.Navigate();
+            }
+            else
+            {
+                MessageBox.Show("Username or password can't be found");
+            }
+        }
 
         public string Username
         {
