@@ -45,7 +45,9 @@ namespace ChatClient
             {
                 DataContext = new MainViewModel(navigationStore),
                 Top = 80,
-                Left = 425
+                Left = 425,
+                Width = 385,
+                Height = 385
             };
 
             window.Show();

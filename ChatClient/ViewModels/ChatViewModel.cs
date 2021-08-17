@@ -33,16 +33,18 @@ namespace ChatClient.ViewModels
             {
                 window.Height = 400;
                 window.Width = 550;
+                window.Top = 110;
+                window.Left = 415;
             }
         }
 
         //private event Action _getBan;
 
         private string _message;
-        private ObservableCollection<ActiveUser> _activeUsers;
-        private ObservableCollection<UserContextMenu> _contextMenuActions;
+        private ObservableCollection<UserProfileModel> _activeUsers;
 
         public ObservableCollection<string> Messages { get; private set; }
+        //public ObservableCollection<UserContextMenu> ContextMenuActions { get; private set; }
 
         public ICommand SendChatMessageCommand { get; private set; }
 
@@ -51,15 +53,15 @@ namespace ChatClient.ViewModels
             SendChatMessageCommand = new SendChatCommand(this, chatService);
             Messages = new();
 
-            _contextMenuActions = new ObservableCollection<UserContextMenu>()
-            {
-                new UserContextMenu()
-                {
-                    Header = "Ban",
-                    Role = (int)UserRole.Admin,
-                    Command = new BanUserCommand(chatService)
-                }
-            };
+            //Context = new ObservableCollection<UserContextMenu>()
+            //{
+            //    new UserContextMenu()
+            //    {
+            //        Header = "Ban",
+            //        Role = (int)UserRole.Admin,
+            //        Command = new BanUserCommand(chatService)
+            //    }
+            //};
         }
 
         //private void GetBan_Action()
@@ -87,9 +89,10 @@ namespace ChatClient.ViewModels
             Messages.Add(message);
         }
 
-        private void ChatService_UserListReceived(ObservableCollection<ActiveUser> activeUsers)
+        private void ChatService_UserListReceived(ObservableCollection<UserProfileModel> activeUsers)
         {
             ActiveUsers = activeUsers;
+            OnPropertyChanged(nameof(ActiveUsers));
         }
         private void ChatService_ReceivedBan(bool banResult)
         {
@@ -107,22 +110,12 @@ namespace ChatClient.ViewModels
             }
         }
 
-        public ObservableCollection<ActiveUser> ActiveUsers
+        public ObservableCollection<UserProfileModel> ActiveUsers
         {
             get => _activeUsers;
-            set
+            private set
             {
                 _activeUsers = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public ObservableCollection<UserContextMenu> ContextMenuActions
-        {
-            get => _contextMenuActions;
-            set
-            {
-                _contextMenuActions = value;
                 OnPropertyChanged();
             }
         }

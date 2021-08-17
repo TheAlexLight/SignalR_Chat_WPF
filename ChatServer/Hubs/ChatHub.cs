@@ -41,15 +41,15 @@ namespace ChatServer.Hubs
         public async Task SendRegistration(RegistrationUserData model)
         {
             bool result = false;
-            IdentityError error = new IdentityError();
+            string error = "";
 
             if (await _userManager.FindByNameAsync(model.Username) != null)
             {
-                error.Description = "Username is already exist";
+                error = "Username is already exist";
             }
             else if (await _userManager.FindByEmailAsync(model.Email) != null)
             {
-                error.Description = "Email is already exist";
+                error = "Email is already exist";
             }
             else
             {
@@ -57,31 +57,45 @@ namespace ChatServer.Hubs
 
                 result = completedRegistration.Succeeded;
 
-                if (completedRegistration.Errors.Count() != 0)
+                if(!result)
                 {
-                    error = completedRegistration.Errors.ToList()[0];
+                    error = completedRegistration.Errors.ToList()[0].Description.ToString();
                 }
             }
 
             await Clients.Caller.SendAsync("ReceiveRegistrationResult", result, error);
+
+            if (result)
+            {
+                UserHandler user = Account.Users.FirstOrDefault(a => a.ConnectedIds == Context.ConnectionId);
+                user.ConnectedUsername = model.Username;
+                await SendUserList();
+            }
         }
 
-        public async Task SendLogin(LoginUserData model)
+        public async Task SendLogin(UserLoginModel model)
         {
             bool successfulLogin = await account.Login(model);
 
             await Clients.Caller.SendAsync("ReceiveLoginResult", successfulLogin);
+
+            if (successfulLogin)
+            {
+                UserHandler user = Account.Users.FirstOrDefault(a => a.ConnectedIds == Context.ConnectionId);
+                user.ConnectedUsername = model.Username;
+                await SendUserList();
+            }
         }
 
         public async Task SendUserList()
         {
             List<string> allLoginedUsers = Account.Users.Select(u => u.ConnectedUsername).Where(s => s != null).ToList();
 
-            List<ActiveUser> activeUsers = new();
+            List<UserProfileModel> activeUsers = new();
 
             foreach (string username in allLoginedUsers)
             {
-                activeUsers.Add(new ActiveUser
+                activeUsers.Add(new UserProfileModel
                 {
                     Username = username
                 });
@@ -92,7 +106,6 @@ namespace ChatServer.Hubs
 
         public async Task SendConnectionInfo(bool connected)
         {
-
             await Clients.Client(Context.ConnectionId).SendAsync("ReceiveConnectionInfo", connected);
         }
 

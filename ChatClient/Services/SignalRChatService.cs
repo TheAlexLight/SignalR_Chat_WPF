@@ -16,11 +16,11 @@ namespace ChatClient.Services
         public HubConnection Connection { get; }
 
         public event Action<string> MessageReceived;
-        public event Action<bool, IdentityError> ReceiveRegistrationResult;
+        public event Action<bool, string> ReceiveRegistrationResult;
         public event Action<bool> ReceiveLoginResult;
         public event Action<bool> ConnectionReceived;
         public event Action<bool> ReceivedBan;
-        public event Action<ObservableCollection<ActiveUser>> UserListReceived;
+        public event Action<ObservableCollection<UserProfileModel>> UserListReceived;
 
         public SignalRChatService(HubConnection connection)
         {
@@ -32,11 +32,11 @@ namespace ChatClient.Services
         private void GetChatHubMessagesInvoke()
         {
             Connection.On<string>("ReceiveMessage", (message) => MessageReceived?.Invoke(message));
-            Connection.On<bool, IdentityError>("ReceiveRegistrationResult", (result, error) => ReceiveRegistrationResult?.Invoke(result, error));
+            Connection.On<bool, string>("ReceiveRegistrationResult", (result, error) => ReceiveRegistrationResult?.Invoke(result, error));
             Connection.On<bool>("ReceiveLoginResult", (result) => ReceiveLoginResult?.Invoke(result));
             Connection.On<bool>("ReceiveConnectionInfo", (result) => ConnectionReceived?.Invoke(result));
             Connection.On<bool>("ReceiveBan", (result) => ReceivedBan?.Invoke(result));
-            Connection.On<ObservableCollection<ActiveUser>>("ReceiveUserList", (activeUsers) => UserListReceived?.Invoke(activeUsers));
+            Connection.On<ObservableCollection<UserProfileModel>>("ReceiveUserList", (activeUsers) => UserListReceived?.Invoke(activeUsers));
         }
 
         public async Task Connect()
@@ -54,7 +54,7 @@ namespace ChatClient.Services
             await Connection.SendAsync("SendRegistration", model);
         }
 
-        public async Task Login(LoginUserData model)
+        public async Task Login(UserLoginModel model)
         {
             await Connection.SendAsync("SendLogin", model);
         }

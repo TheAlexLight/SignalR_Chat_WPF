@@ -23,7 +23,7 @@ namespace ChatClient.Commands.AuthenticationCommands
 
         public override async void Execute(object parameter)
         {
-            LoginUserData loginData = new()
+            UserLoginModel loginData = new()
             {
                 Username = _viewModel.Username,
                 Password = _viewModel.Password

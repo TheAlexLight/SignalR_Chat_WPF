@@ -6,10 +6,7 @@ using System.Threading.Tasks;
 
 namespace SharedItems.Models
 {
-    public class LoginUserData
+    public class MessagesModel
     {
-        public string Username { get; set; }
-        public string Email { get; set; }
-        public string Password { get; set; }
     }
 }

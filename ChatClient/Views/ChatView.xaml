@@ -60,7 +60,8 @@
                            Text="Users"/>
             </Border>
 
-            <ListBox Grid.Row="1"  Style="{StaticResource activeUsers}"/>
+            <ListBox Grid.Row="1"
+                     Style="{StaticResource activeUsers}"/>
         </Grid>
 
         <Grid Grid.ColumnSpan="3" Style="{StaticResource getBannedLayout}"/>

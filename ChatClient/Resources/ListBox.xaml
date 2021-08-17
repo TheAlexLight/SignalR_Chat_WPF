@@ -16,7 +16,7 @@
         <Setter Property="FontSize" Value="20"/>
         <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
         <Setter Property="Background" Value="{StaticResource mainMessageBoxColors}"/>
-        <Setter Property="ContextMenu">
+        <!--<Setter Property="ContextMenu">
             <Setter.Value>
                 <ContextMenu ItemsSource="{Binding ContextMenuActions}">
                     <ContextMenu.ItemContainerStyle>
@@ -34,16 +34,28 @@
                     </ContextMenu.ItemTemplate>
                 </ContextMenu>
             </Setter.Value>
-        </Setter>
+        </Setter>-->
         <Setter Property="ItemTemplate">
             <Setter.Value>
                 <DataTemplate>
-                    <Border BorderBrush="#767D89" 
-                                BorderThickness="1.5" Margin="-5,0,-5,0"
-                            Padding="5,0,5,0"
-                            Background="#E6EAF2">
-                        <TextBlock Text="{Binding Username}"/>
-                    </Border>
+                    <StackPanel Orientation="Horizontal">
+                        <Border CornerRadius="25" 
+                                    Background="CornflowerBlue" 
+                                    Width="30" 
+                                    Height="30"/>
+                        <StackPanel>
+                            <TextBlock Text="{Binding Username}"
+                                       Foreground="{Binding UsernameColor}"
+                                       Margin="10,0,10,0"
+                                       FontSize="22"/>
+                            <TextBlock Text="{Binding StatusMessage}"
+                                   Margin="10,-5,10,0"
+                                       FontStyle="Italic"
+                                       Foreground="#5F5C5A"
+                                       FontSize="16"
+                                       FontWeight="SemiBold"/>
+                        </StackPanel>
+                    </StackPanel>
                 </DataTemplate>
             </Setter.Value>
         </Setter>

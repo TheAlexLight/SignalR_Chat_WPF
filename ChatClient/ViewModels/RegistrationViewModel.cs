@@ -109,7 +109,7 @@ namespace ChatClient.ViewModels
             }
         }
 
-        private void ChatService_ReceiveRegistrationResult(bool registrationResult, IdentityError error)
+        private void ChatService_ReceiveRegistrationResult(bool registrationResult, string error)
         {
             if (registrationResult)
             {
@@ -119,7 +119,7 @@ namespace ChatClient.ViewModels
             }
             else
             {
-                MessageBox.Show(error.Description);
+                MessageBox.Show(error);
             }
         }
     }

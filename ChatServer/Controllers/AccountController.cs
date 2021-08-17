@@ -24,7 +24,7 @@ namespace ChatServer.Controllers
             return await _userManager.CreateAsync(user, model.Password);
         }
 
-        public async Task<bool> Login(LoginUserData model)
+        public async Task<bool> Login(UserLoginModel model)
         {
             bool result = false;
 

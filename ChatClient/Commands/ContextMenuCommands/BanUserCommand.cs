@@ -22,7 +22,7 @@ namespace ChatClient.Commands.ContextMenuCommands
 
         public override async void Execute(object activeUser)
         {
-            ActiveUser user = activeUser as ActiveUser;
+            UserProfileModel user = activeUser as UserProfileModel;
 
            await _chatService.SendBan(user.Username);
         }
