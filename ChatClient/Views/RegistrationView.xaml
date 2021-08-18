@@ -96,19 +96,19 @@
                         <Border  Grid.Row="4" Grid.Column="4" 
                                  Padding="1"
                              Style="{StaticResource field}">
-                            <additionalViews:BindablePasswordBoxConfirm 
-                            Style="{StaticResource passwordConfirmField}"
+                            <additionalViews:BindablePasswordBox
+                            Style="{StaticResource passwordField}"
                             x:Name="pwBoxPasswordConfirm"
                             PasswordBox.PasswordChanged="registrationField_TextOrPasswordChanged">
-                                <additionalViews:BindablePasswordBoxConfirm.PasswordConfirm>
+                                <additionalViews:BindablePasswordBox.Password>
                                     <Binding Path="PasswordConfirm" 
                                          ValidatesOnDataErrors="True">
                                         <Binding.ValidationRules>
                                             <validators:PasswordValidator/>
                                         </Binding.ValidationRules>
                                     </Binding>
-                                </additionalViews:BindablePasswordBoxConfirm.PasswordConfirm>
-                            </additionalViews:BindablePasswordBoxConfirm>
+                                </additionalViews:BindablePasswordBox.Password>
+                            </additionalViews:BindablePasswordBox>
                         </Border>
                     </StackPanel>
 
