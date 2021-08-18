@@ -15,12 +15,14 @@ namespace ChatClient.Services
     {
         public HubConnection Connection { get; }
 
-        public event Action<string> MessageReceived;
+        public event Action<bool> ConnectionReceived;
         public event Action<bool, string> ReceiveRegistrationResult;
         public event Action<bool> ReceiveLoginResult;
-        public event Action<bool> ConnectionReceived;
-        public event Action<bool> ReceivedBan;
+        public event Action<UserProfileModel> CurrentUserReceived;
         public event Action<ObservableCollection<UserProfileModel>> UserListReceived;
+        public event Action<MessageModel> MessageReceived;
+        public event Action<bool> ReceivedBan;
+
 
         public SignalRChatService(HubConnection connection)
         {
@@ -31,12 +33,14 @@ namespace ChatClient.Services
 
         private void GetChatHubMessagesInvoke()
         {
-            Connection.On<string>("ReceiveMessage", (message) => MessageReceived?.Invoke(message));
+            Connection.On<bool>("ReceiveConnectionInfo", (result) => ConnectionReceived?.Invoke(result));
             Connection.On<bool, string>("ReceiveRegistrationResult", (result, error) => ReceiveRegistrationResult?.Invoke(result, error));
             Connection.On<bool>("ReceiveLoginResult", (result) => ReceiveLoginResult?.Invoke(result));
-            Connection.On<bool>("ReceiveConnectionInfo", (result) => ConnectionReceived?.Invoke(result));
-            Connection.On<bool>("ReceiveBan", (result) => ReceivedBan?.Invoke(result));
             Connection.On<ObservableCollection<UserProfileModel>>("ReceiveUserList", (activeUsers) => UserListReceived?.Invoke(activeUsers));
+            Connection.On<UserProfileModel>("ReceiveCurrentUser", (currentUser) => CurrentUserReceived?.Invoke(currentUser));
+            Connection.On<MessageModel>("ReceiveMessage", (messageModel) => MessageReceived?.Invoke(messageModel));
+            Connection.On<bool>("ReceiveBan", (result) => ReceivedBan?.Invoke(result));
+            
         }
 
         public async Task Connect()
@@ -44,7 +48,7 @@ namespace ChatClient.Services
             await Connection.StartAsync();
         }
 
-        public async Task SendMessage(string message)
+        public async Task SendMessage(MessageModel message)
         {
             await Connection.SendAsync("SendMessage", message);
         }

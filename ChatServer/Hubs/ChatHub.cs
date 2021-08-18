@@ -15,52 +15,24 @@ namespace ChatServer.Hubs
     public class ChatHub : Hub
     {
         private readonly UserManager<User> _userManager;
-        private readonly AccountController account;
+        private readonly AccountController _account;
 
         public ChatHub(UserManager<User> userManager)
         {
             _userManager = userManager;
-
-            account = new AccountController(_userManager);
-        }
-        public async Task SendMessage(string message)
-        {
-            await Clients.All.SendAsync("ReceiveMessage", message);
-        }
-
-        public async Task SendUserBan(string username)
-        {
-            UserHandler user = Account.Users.FirstOrDefault(u => u.ConnectedUsername == username);
-
-            if (user.ConnectedIds != Context.ConnectionId)
-            {
-                await Clients.Client(user.ConnectedIds).SendAsync("ReceiveBan", true);
-            }
+            _account = new AccountController(_userManager);
         }
 
         public async Task SendRegistration(RegistrationUserData model)
         {
+            AuthorizationHelper helper = new AuthorizationHelper();
+            string error = await helper.TryRegistration(model, _userManager, _account);
+
             bool result = false;
-            string error = "";
 
-            if (await _userManager.FindByNameAsync(model.Username) != null)
+            if (error == "")
             {
-                error = "Username is already exist";
-            }
-            else if (await _userManager.FindByEmailAsync(model.Email) != null)
-            {
-                error = "Email is already exist";
-            }
-            else
-            {
-                IdentityResult completedRegistration = await account.Register(model);
-
-                result = completedRegistration.Succeeded;
-
-                if(!result)
-                {
-                    error = completedRegistration.Errors.ToList()[0].Description.ToString();
-                }
+                result = true;
             }
 
             await Clients.Caller.SendAsync("ReceiveRegistrationResult", result, error);
@@ -69,13 +41,15 @@ namespace ChatServer.Hubs
             {
                 UserHandler user = Account.Users.FirstOrDefault(a => a.ConnectedIds == Context.ConnectionId);
                 user.ConnectedUsername = model.Username;
+
+                await SendCurrentUser();
                 await SendUserList();
             }
         }
 
         public async Task SendLogin(UserLoginModel model)
         {
-            bool successfulLogin = await account.Login(model);
+            bool successfulLogin = await _account.Login(model);
 
             await Clients.Caller.SendAsync("ReceiveLoginResult", successfulLogin);
 
@@ -83,8 +57,22 @@ namespace ChatServer.Hubs
             {
                 UserHandler user = Account.Users.FirstOrDefault(a => a.ConnectedIds == Context.ConnectionId);
                 user.ConnectedUsername = model.Username;
+
+                await SendCurrentUser();
                 await SendUserList();
             }
+        }
+
+        public async Task SendCurrentUser()
+        {
+            var user = Account.Users.FirstOrDefault(u => u.ConnectedIds == Context.ConnectionId);
+
+            UserProfileModel currentUser = new()
+            {
+                Username = user.ConnectedUsername
+            };
+
+            await Clients.Caller.SendAsync("ReceiveCurrentUser", currentUser);
         }
 
         public async Task SendUserList()
@@ -102,6 +90,25 @@ namespace ChatServer.Hubs
             }
 
             await Clients.All.SendAsync("ReceiveUserList", activeUsers);
+        }
+
+        public async Task SendMessage(MessageModel messageModel)
+        {
+            bool isFirstMessage = FirstMessageModel.CheckMessage(messageModel.UserInfo.Username);
+
+            messageModel.IsFirstMessage = isFirstMessage;
+
+            await Clients.All.SendAsync("ReceiveMessage", messageModel);
+        }
+
+        public async Task SendUserBan(string username)
+        {
+            UserHandler user = Account.Users.FirstOrDefault(u => u.ConnectedUsername == username);
+
+            if (user.ConnectedIds != Context.ConnectionId)
+            {
+                await Clients.Client(user.ConnectedIds).SendAsync("ReceiveBan", true);
+            }
         }
 
         public async Task SendConnectionInfo(bool connected)

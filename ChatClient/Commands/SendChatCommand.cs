@@ -1,5 +1,6 @@
 ﻿using ChatClient.Services;
 using ChatClient.ViewModels;
+using SharedItems.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -31,7 +32,14 @@ namespace ChatClient.Commands
         {
             try
             {
-                await _chatService.SendMessage(_viewModel.Message);
+                MessageModel model = new MessageModel()
+                {
+                    Message = _viewModel.Message,
+                    Time = DateTime.Now,
+                    UserInfo = _viewModel.CurrentUser
+                };
+
+                await _chatService.SendMessage(model);
 
                 _viewModel.ErrorMessage = string.Empty;
                 _viewModel.Message = "";

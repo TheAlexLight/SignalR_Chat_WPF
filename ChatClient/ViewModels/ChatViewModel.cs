@@ -22,10 +22,7 @@ namespace ChatClient.ViewModels
             //_getBan += GetBan_Action;
 
             InitializeFields(chatService);
-
-            chatService.MessageReceived += ChatService_MessageReceived;
-            chatService.UserListReceived += ChatService_UserListReceived;
-            chatService.ReceivedBan += ChatService_ReceivedBan;
+            InitializeEvents(chatService);
 
             Window window = Application.Current.MainWindow;
 
@@ -35,6 +32,8 @@ namespace ChatClient.ViewModels
                 window.Width = 550;
                 window.Top = 110;
                 window.Left = 415;
+                window.MinWidth = 400;
+                window.MinHeight = 350;
             }
         }
 
@@ -43,7 +42,8 @@ namespace ChatClient.ViewModels
         private string _message;
         private ObservableCollection<UserProfileModel> _activeUsers;
 
-        public ObservableCollection<string> Messages { get; private set; }
+        public UserProfileModel CurrentUser { get; private set; }
+        public ObservableCollection<MessageModel> Messages { get; private set; }
         //public ObservableCollection<UserContextMenu> ContextMenuActions { get; private set; }
 
         public ICommand SendChatMessageCommand { get; private set; }
@@ -62,6 +62,13 @@ namespace ChatClient.ViewModels
             //        Command = new BanUserCommand(chatService)
             //    }
             //};
+        }
+        private void InitializeEvents(SignalRChatService chatService)
+        {
+            chatService.MessageReceived += ChatService_MessageReceived;
+            chatService.UserListReceived += ChatService_UserListReceived;
+            chatService.ReceivedBan += ChatService_ReceivedBan;
+            chatService.CurrentUserReceived += ChatService_CurrentUserReceived; ;
         }
 
         //private void GetBan_Action()
@@ -84,15 +91,20 @@ namespace ChatClient.ViewModels
             return viewModel;
         }
 
-        private void ChatService_MessageReceived(string message)
+        private void ChatService_CurrentUserReceived(UserProfileModel currentUser)
         {
-            Messages.Add(message);
+            CurrentUser = currentUser;
         }
 
         private void ChatService_UserListReceived(ObservableCollection<UserProfileModel> activeUsers)
         {
             ActiveUsers = activeUsers;
             OnPropertyChanged(nameof(ActiveUsers));
+        }
+
+        private void ChatService_MessageReceived(MessageModel message)
+        {
+            Messages.Add(message);
         }
         private void ChatService_ReceivedBan(bool banResult)
         {
