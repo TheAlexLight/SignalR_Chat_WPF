@@ -9,9 +9,12 @@ namespace ChatServer.Models
 {
     public class ApplicationContext : IdentityDbContext<User>
     {
+        public DbSet<MessageStore> MessagesStore { get; set; }
         public ApplicationContext(DbContextOptions<ApplicationContext> options) : base(options)
         {
             Database.EnsureCreated();
         }
+
+
     }
 }

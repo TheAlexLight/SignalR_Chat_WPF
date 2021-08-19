@@ -16,5 +16,5 @@ C:\Users\oyudi\Alexander\Programming\WPF\Chat\ChatClient\App.xaml
 212-272375675
 MainWindow.xaml;Resources\Border.xaml;Resources\Button.xaml;Resources\Grid.xaml;Resources\ListBox.xaml;Resources\PasswordBox.xaml;Resources\TextBlock.xaml;Resources\TextBox.xaml;Views\AdditionalViews\BindablePasswordBox.xaml;Views\AdditionalViews\ConnectionLostView.xaml;Views\ChatView.xaml;Views\LoginView.xaml;Views\RegistrationView.xaml;
 
-False
+True
 
