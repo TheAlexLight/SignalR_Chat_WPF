@@ -20,6 +20,7 @@ namespace ChatClient.Services
         public event Action<bool> ReceiveLoginResult;
         public event Action<UserProfileModel> CurrentUserReceived;
         public event Action<ObservableCollection<UserProfileModel>> UserListReceived;
+        public event Action<List<MessageModel>> SavedMessagesReceived;
         public event Action<MessageModel> MessageReceived;
         public event Action<bool> ReceivedBan;
 
@@ -37,6 +38,7 @@ namespace ChatClient.Services
             Connection.On<bool, string>("ReceiveRegistrationResult", (result, error) => ReceiveRegistrationResult?.Invoke(result, error));
             Connection.On<bool>("ReceiveLoginResult", (result) => ReceiveLoginResult?.Invoke(result));
             Connection.On<ObservableCollection<UserProfileModel>>("ReceiveUserList", (activeUsers) => UserListReceived?.Invoke(activeUsers));
+            Connection.On<List<MessageModel>>("ReceiveSavedMessages", (messages) => SavedMessagesReceived?.Invoke(messages));
             Connection.On<UserProfileModel>("ReceiveCurrentUser", (currentUser) => CurrentUserReceived?.Invoke(currentUser));
             Connection.On<MessageModel>("ReceiveMessage", (messageModel) => MessageReceived?.Invoke(messageModel));
             Connection.On<bool>("ReceiveBan", (result) => ReceivedBan?.Invoke(result));

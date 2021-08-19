@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
 
 namespace ChatServer.Hubs
@@ -16,11 +17,14 @@ namespace ChatServer.Hubs
     {
         private readonly UserManager<User> _userManager;
         private readonly AccountController _account;
+        private readonly ApplicationContext _dbContext;
 
-        public ChatHub(UserManager<User> userManager)
+        public ChatHub(UserManager<User> userManager, ApplicationContext dbContext)
         {
             _userManager = userManager;
             _account = new AccountController(_userManager);
+
+            _dbContext = dbContext;
         }
 
         public async Task SendRegistration(RegistrationUserData model)
@@ -37,14 +41,14 @@ namespace ChatServer.Hubs
 
             await Clients.Caller.SendAsync("ReceiveRegistrationResult", result, error);
 
-            if (result)
-            {
-                UserHandler user = Account.Users.FirstOrDefault(a => a.ConnectedIds == Context.ConnectionId);
-                user.ConnectedUsername = model.Username;
+            //if (result)
+            //{
+            //    UserHandler user = Account.Users.FirstOrDefault(a => a.ConnectedIds == Context.ConnectionId);
+            //    user.ConnectedUsername = model.Username;
 
-                await SendCurrentUser();
-                await SendUserList();
-            }
+            //    await SendCurrentUser();
+            //    await SendUserList();
+            //}
         }
 
         public async Task SendLogin(UserLoginModel model)
@@ -60,7 +64,19 @@ namespace ChatServer.Hubs
 
                 await SendCurrentUser();
                 await SendUserList();
+                await SendSavedMessages();   
             }
+        }
+
+        private async Task SendSavedMessages()
+        {
+            List<MessageModel> messages = await _dbContext.Messages.Include(m => m.UserInfo)
+                               .Where(m => m.GroupName == "mainChat")
+                               .ToListAsync();
+           //UserProfileModel a = _dbContext.Messages.Select(m => m.UserInfo).First();
+            //List<MessageModel> messages = _dbContext.Messages.Select(m => m).Where(message => message.GroupName == "mainChat").ToList();
+
+            await Clients.All.SendAsync("ReceiveSavedMessages", messages);
         }
 
         public async Task SendCurrentUser()
@@ -97,6 +113,9 @@ namespace ChatServer.Hubs
             bool isFirstMessage = FirstMessageModel.CheckMessage(messageModel.UserInfo.Username);
 
             messageModel.IsFirstMessage = isFirstMessage;
+
+            await _dbContext.AddAsync(messageModel);
+            await _dbContext.SaveChangesAsync();
 
             await Clients.All.SendAsync("ReceiveMessage", messageModel);
         }

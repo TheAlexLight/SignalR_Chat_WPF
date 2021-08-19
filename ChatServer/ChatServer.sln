@@ -6,8 +6,11 @@ MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChatServer", "ChatServer.csproj", "{DF102C74-04A5-4DAB-8F1A-6E27AB8497AF}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChatClient", "..\ChatClient\ChatClient.csproj", "{5FCDB79E-AD81-48CE-8B7F-22047A084BCC}"
+	ProjectSection(ProjectDependencies) = postProject
+		{DF102C74-04A5-4DAB-8F1A-6E27AB8497AF} = {DF102C74-04A5-4DAB-8F1A-6E27AB8497AF}
+	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SharedItems", "..\SharedItems\SharedItems.csproj", "{06937129-B76C-4AF5-A4D9-34C0DDCF27A3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SharedItems", "..\SharedItems\SharedItems.csproj", "{06937129-B76C-4AF5-A4D9-34C0DDCF27A3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

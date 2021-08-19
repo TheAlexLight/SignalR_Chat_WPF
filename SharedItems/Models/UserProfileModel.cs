@@ -15,6 +15,7 @@ namespace SharedItems.Models
             UsernameColor = "#1E90FF";
         }
 
+        public int Id { get; set; }
         public string Username { get; set; }
         public string StatusMessage { get; set; }
         public string ImagePath { get; set; }

@@ -40,10 +40,27 @@ namespace ChatClient.ViewModels
         //private event Action _getBan;
 
         private string _message;
+        private ObservableCollection<MessageModel> _messages;
         private ObservableCollection<UserProfileModel> _activeUsers;
+        private UserProfileModel _currentUser;
 
-        public UserProfileModel CurrentUser { get; private set; }
-        public ObservableCollection<MessageModel> Messages { get; private set; }
+        public UserProfileModel CurrentUser {
+            get => _currentUser;
+            private set
+            {
+                _currentUser = value;
+                OnPropertyChanged();
+            }
+        }
+        public ObservableCollection<MessageModel> Messages
+        {
+            get => _messages;
+            private set
+            {
+                _messages = value;
+                OnPropertyChanged();
+            }
+        }
         //public ObservableCollection<UserContextMenu> ContextMenuActions { get; private set; }
 
         public ICommand SendChatMessageCommand { get; private set; }
@@ -68,7 +85,8 @@ namespace ChatClient.ViewModels
             chatService.MessageReceived += ChatService_MessageReceived;
             chatService.UserListReceived += ChatService_UserListReceived;
             chatService.ReceivedBan += ChatService_ReceivedBan;
-            chatService.CurrentUserReceived += ChatService_CurrentUserReceived; ;
+            chatService.CurrentUserReceived += ChatService_CurrentUserReceived;
+            chatService.SavedMessagesReceived += ChatService_SavedMessagesReceived;
         }
 
         //private void GetBan_Action()
@@ -100,6 +118,11 @@ namespace ChatClient.ViewModels
         {
             ActiveUsers = activeUsers;
             OnPropertyChanged(nameof(ActiveUsers));
+        }
+
+        private void ChatService_SavedMessagesReceived(List<MessageModel> messages)
+        {
+            Messages = new ObservableCollection<MessageModel>(messages);
         }
 
         private void ChatService_MessageReceived(MessageModel message)

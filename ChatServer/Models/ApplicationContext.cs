@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using SharedItems.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,10 +10,11 @@ namespace ChatServer.Models
 {
     public class ApplicationContext : IdentityDbContext<User>
     {
-        public DbSet<MessageStore> MessagesStore { get; set; }
+        public DbSet<MessageModel> Messages { get; set; }
         public ApplicationContext(DbContextOptions<ApplicationContext> options) : base(options)
         {
-            Database.EnsureCreated();
+            Database.Migrate();
+            //Database.EnsureDeleted();
         }
 
 
