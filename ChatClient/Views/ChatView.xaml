@@ -28,9 +28,8 @@
                            Text="Chat"/>
             </Border>
 
-            <Grid Grid.Row="1">
-                <ListBox Style="{StaticResource messagesListBox}"/>
-            </Grid>
+            <ListBox Grid.Row="1"
+                Style="{StaticResource messagesListBox}"/>
 
             <Grid Grid.Row="2"
                   Background="{StaticResource typeMessageGridColors}">

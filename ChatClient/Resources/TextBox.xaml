@@ -16,6 +16,7 @@
                         <TextBox Margin="1" Text="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Text, UpdateSourceTrigger=PropertyChanged}" 
                                  BorderThickness="0"
                                  VerticalContentAlignment="Center"
+                                 TextWrapping="Wrap"
                                  Background="{TemplateBinding Background}"/>
                     </Border>
                 </ControlTemplate>
