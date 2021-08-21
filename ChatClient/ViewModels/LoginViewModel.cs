@@ -18,11 +18,10 @@ namespace ChatClient.ViewModels
 {
    public class LoginViewModel : ChatViewModelBase
     {
-        public LoginViewModel(NavigationStore navigationStore, SignalRChatService chatService) : base(chatService)
+        public LoginViewModel(NavigationStore navigationStore, SignalRChatService chatService) : base(chatService, navigationStore)
         {
             ChatService = chatService;
-            _navigationStore = navigationStore;
-            _chatViewModel = new ChatViewModel(ChatService);
+            _chatViewModel = new ChatViewModel(ChatService, _navigationStore);
 
             _chatService.ConnectionReceived += ChatService_ConnectionReceived;
             _chatService.ReceiveLoginResult += ChatService_ReceiveLoginResult;
@@ -43,12 +42,12 @@ namespace ChatClient.ViewModels
             }
         }
 
-        private NavigationStore _navigationStore;
         private ChatViewModel _chatViewModel;
-        public SignalRChatService ChatService { get;}
+        public SignalRChatService ChatService { get; }
 
         private string _username;
         private string _password;
+        private bool _isLoading;
 
         public LoginCommand LoginCommand { get; }
         public ICommand NavigateRegistrationCommand { get; }
@@ -64,7 +63,7 @@ namespace ChatClient.ViewModels
             if (loginResult)
             {
                 NavigationService<ChatViewModel> navigationService = new(_navigationStore,
-                       () => new ChatViewModel(_chatService));
+                       () => new ChatViewModel(_chatService, _navigationStore));
                 navigationService.Navigate();
             }
             else
@@ -89,6 +88,17 @@ namespace ChatClient.ViewModels
             {
                 _password = value;
                 OnPropertyChanged();
+            }
+        }
+
+        public bool IsLoading
+        {
+            get => _isLoading;
+            set
+            {
+               _isLoading = value;
+                OnPropertyChanged();
+                LoginCommand.RaiseCanExecuteChanged();
             }
         }
     }

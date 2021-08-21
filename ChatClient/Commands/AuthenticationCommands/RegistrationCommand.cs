@@ -1,5 +1,6 @@
 ﻿using ChatClient.Services;
 using ChatClient.ViewModels;
+using Microsoft.AspNetCore.SignalR.Client;
 using SharedItems.Models;
 using System;
 using System.Collections.Generic;
@@ -20,18 +21,32 @@ namespace ChatClient.Commands.AuthenticationCommands
             _chatService = chatService;
         }
 
+        public override bool CanExecute(object parameter)
+        {
+            return !_viewModel.IsLoading;
+        }
+
         public override async void Execute(object parameter)
         {
-            RegistrationUserData userData = new()
+            _viewModel.IsLoading = true;
+            RaiseCanExecuteChanged();
+
+            if (await _viewModel.ConnectToServer(_viewModel) != HubConnectionState.Disconnected)
             {
-                Username = _viewModel.Username,
-                Email = _viewModel.Email,
-                Password = _viewModel.Password,
-                PasswordConfirm = _viewModel.PasswordConfirm,
-                JoinDate = DateTime.Now
-            };
- 
-            await _chatService.Registration(userData);
+                RegistrationUserData userData = new()
+                {
+                    Username = _viewModel.Username,
+                    Email = _viewModel.Email,
+                    Password = _viewModel.Password,
+                    PasswordConfirm = _viewModel.PasswordConfirm,
+                    JoinDate = DateTime.Now
+                };
+
+                await _chatService.Registration(userData);
+            }
+
+            _viewModel.IsLoading = false;
+            RaiseCanExecuteChanged();
         }
     }
 }

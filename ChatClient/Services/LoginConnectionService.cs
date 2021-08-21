@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace ChatClient.Services
 {
@@ -20,15 +21,16 @@ namespace ChatClient.Services
             ChatService = chatService;
         }
 
-        public ChatViewModelBase CreateConnectedViewModel (SignalRChatService chatService, ChatViewModelBase viewModelType)
+        public async Task<ChatViewModelBase> CreateConnectedViewModel (SignalRChatService chatService, ChatViewModelBase viewModelType)
         {
             ChatViewModelBase viewModel = viewModelType;
 
-            chatService.Connect().ContinueWith(task =>
+           await chatService.Connect().ContinueWith(task =>
             {
                 if (task.Exception != null)
                 {
                     viewModel.ErrorMessage = "Unable to connect to chat hub";
+                    MessageBox.Show("Unable to connect to server");
                     viewModel.ConnectionStatusValue = ConnectionStatus.Disconnected;
                 }
                 else

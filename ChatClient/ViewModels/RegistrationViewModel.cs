@@ -14,7 +14,7 @@ namespace ChatClient.ViewModels
 {
     public class RegistrationViewModel : ChatViewModelBase, IDataErrorInfo/*, INotifyDataErrorInfo*/
     {
-        public RegistrationViewModel(NavigationStore navigationStore, SignalRChatService chatService) : base(chatService)
+        public RegistrationViewModel(NavigationStore navigationStore, SignalRChatService chatService) : base(chatService, navigationStore)
         {
             Window window = Application.Current.MainWindow;
             window.Height = 545;
@@ -38,7 +38,7 @@ namespace ChatClient.ViewModels
         private string _email;
         private string _password;
         private string _passwordConfirm;
-
+        private bool _isLoading;
         private readonly NavigationStore _navigationStore;
 
         //public event EventHandler<DataErrorsChangedEventArgs> ErrorsChanged;
@@ -80,6 +80,17 @@ namespace ChatClient.ViewModels
             set
             {
                 _passwordConfirm = value;
+                OnPropertyChanged();
+                OnPropertyChanged(nameof(Password));
+            }
+        }
+
+        public bool IsLoading
+        {
+            get => _isLoading;
+            set
+            {
+                _isLoading = value;
                 OnPropertyChanged();
                 OnPropertyChanged(nameof(Password));
             }

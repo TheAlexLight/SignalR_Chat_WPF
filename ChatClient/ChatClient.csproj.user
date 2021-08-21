@@ -30,6 +30,9 @@
     <Page Update="Resources\Border.xaml">
       <SubType>Designer</SubType>
     </Page>
+    <Page Update="Resources\ContentControl.xaml">
+      <SubType>Designer</SubType>
+    </Page>
     <Page Update="Resources\Grid.xaml">
       <SubType>Designer</SubType>
     </Page>

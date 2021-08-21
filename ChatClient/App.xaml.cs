@@ -24,22 +24,12 @@ namespace ChatClient
             NavigationStore navigationStore = new();
             SignalRChatService chatService = new(connection);
 
+           // LoginConnectionService connectionService = new(navigationStore, chatService);
+           // ChatViewModelBase viewModel = new LoginViewModel(connectionService.NavigationStore, connectionService.ChatService);
+            ChatViewModelBase viewModel = new LoginViewModel(navigationStore, chatService);
 
-            LoginConnectionService connectionService = new(navigationStore, chatService);
-            ChatViewModelBase viewModel = new LoginViewModel(connectionService.NavigationStore, connectionService.ChatService);
-
-            navigationStore.CurrentViewModel = connectionService.CreateConnectedViewModel(chatService, viewModel);
-
-            //RegistrationUserData user = new RegistrationUserData()
-            //{
-            //    Email = "test@gmail.com",
-            //    Username = "test",
-            //    JoinDate = DateTime.Now,
-            //    Password = "qwe123QWE!",
-            //    PasswordConfirm = "qwe123QWE"
-            //};
-
-            //await chatService.Registration(user);
+            // navigationStore.CurrentViewModel = connectionService.CreateConnectedViewModel(chatService, viewModel);
+            navigationStore.CurrentViewModel = viewModel;
 
             MainWindow window = new()
             {

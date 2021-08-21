@@ -3,6 +3,7 @@ using ChatClient.Commands.ContextMenuCommands;
 using ChatClient.Enums;
 using ChatClient.Models;
 using ChatClient.Services;
+using ChatClient.Stores;
 using SharedItems.Models;
 using System;
 using System.Collections.Generic;
@@ -17,7 +18,7 @@ namespace ChatClient.ViewModels
 {
     public class ChatViewModel : ChatViewModelBase
     {
-        public ChatViewModel(SignalRChatService chatService) : base(chatService)
+        public ChatViewModel(SignalRChatService chatService, NavigationStore navigationStore) : base(chatService, navigationStore)
         {
             //_getBan += GetBan_Action;
 
@@ -94,9 +95,9 @@ namespace ChatClient.ViewModels
         //    OnPropertyChanged(nameof(IsBanned));
         //}
 
-        public static ChatViewModel CreateConnectedViewModel(SignalRChatService chatService)
+        public static ChatViewModel CreateConnectedViewModel(SignalRChatService chatService, NavigationStore navigationStore)
         {
-            ChatViewModel viewModel = new(chatService);
+            ChatViewModel viewModel = new(chatService, navigationStore);
 
             chatService.Connect().ContinueWith(task =>
             {

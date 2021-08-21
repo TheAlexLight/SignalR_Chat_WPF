@@ -21,15 +21,29 @@ namespace ChatClient.Commands.AuthenticationCommands
             _viewModel = viewModel;
         }
 
+        public override bool CanExecute(object parameter)
+        {
+            return !_viewModel.IsLoading;
+        }
+
         public override async void Execute(object parameter)
         {
-            UserLoginModel loginData = new()
-            {
-                Username = _viewModel.Username,
-                Password = _viewModel.Password
-            };
+            _viewModel.IsLoading = true;
+            RaiseCanExecuteChanged();
 
-            await _viewModel.ChatService.Login(loginData);
+            if (await _viewModel.ConnectToServer(_viewModel) != HubConnectionState.Disconnected)
+            {
+                UserLoginModel loginData = new()
+                {
+                    Username = _viewModel.Username,
+                    Password = _viewModel.Password
+                };
+
+                await _viewModel.ChatService.Login(loginData);
+            }
+
+            _viewModel.IsLoading = false;
+            RaiseCanExecuteChanged();
         }
     }
 }
