@@ -20,8 +20,6 @@ namespace ChatClient.ViewModels
             window.Height = 545;
             window.Width = 385;
 
-            _navigationStore = navigationStore;
-
             NavigateLoginCommand = new NavigateCommand<LoginViewModel>(
                     new NavigationService<LoginViewModel>(_navigationStore,
                     () => new LoginViewModel(_navigationStore, chatService)));
@@ -38,8 +36,6 @@ namespace ChatClient.ViewModels
         private string _email;
         private string _password;
         private string _passwordConfirm;
-        private bool _isLoading;
-        private readonly NavigationStore _navigationStore;
 
         //public event EventHandler<DataErrorsChangedEventArgs> ErrorsChanged;
 
@@ -85,17 +81,6 @@ namespace ChatClient.ViewModels
             }
         }
 
-        public bool IsLoading
-        {
-            get => _isLoading;
-            set
-            {
-                _isLoading = value;
-                OnPropertyChanged();
-                OnPropertyChanged(nameof(Password));
-            }
-        }
-
         public string Error { get; }
 
         public string this[string propertyName]
@@ -126,7 +111,7 @@ namespace ChatClient.ViewModels
             {
                 MessageBox.Show("Registration Succeded");
                 NavigationService<LoginViewModel> navigationService = new(_navigationStore,
-                        () => new LoginViewModel(_navigationStore, _chatService));
+                        () => new LoginViewModel(_navigationStore, ChatService));
                 navigationService.Navigate();
             }
             else

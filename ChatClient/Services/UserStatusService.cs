@@ -8,7 +8,6 @@ namespace ChatClient.Services
 {
    public class UserStatusService
     {
-        public static bool IsLogin { get; set; }
         public static bool IsBanned { get; set; }
     }
 }

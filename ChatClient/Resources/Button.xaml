@@ -58,74 +58,72 @@
         </Setter>
     </Style>
 
-    <Style x:Key="loginButton" TargetType="{x:Type Button}" BasedOn="{StaticResource submitButton}">
-        <Setter Property="IsEnabled" Value="False"/>
-        <Setter Property="Template">
-            <Setter.Value>
-                <ControlTemplate TargetType="{x:Type Button}">
-                    <Border x:Name="insideBorder" BorderBrush="#6D4F02" Background="{StaticResource registrationBasicColors}" 
+    <ControlTemplate x:Key="authorizationControlTemplate" TargetType="{x:Type Button}">
+        <Border x:Name="insideBorder" BorderBrush="#6D4F02" Background="{StaticResource registrationBasicColors}" 
                             BorderThickness="1.3" 
                             CornerRadius="5"
                             Margin="{TemplateBinding Padding}">
-                        <Grid HorizontalAlignment="Center">
-                            <StackPanel Orientation="Horizontal" 
+            <Grid HorizontalAlignment="Center">
+                <StackPanel Orientation="Horizontal" 
                                         x:Name="waitingLoading"
                                         Visibility="Collapsed">
-                                <StackPanel.Triggers>
-                                    <EventTrigger RoutedEvent="Rectangle.Loaded">
-                                        <BeginStoryboard>
-                                            <Storyboard x:Name="waitingAnimation" RepeatBehavior="Forever">
-                                                <DoubleAnimation Storyboard.TargetName="Dot1"
+                    <StackPanel.Triggers>
+                        <EventTrigger RoutedEvent="Rectangle.Loaded">
+                            <BeginStoryboard>
+                                <Storyboard x:Name="waitingAnimation" RepeatBehavior="Forever">
+                                    <DoubleAnimation Storyboard.TargetName="Dot1"
                                                          BeginTime="0:0:0.1" 
                                                          Storyboard.TargetProperty="Opacity" 
                                                          From=".1"
                                                          To="1"
                                                          AutoReverse="True"
                                                          Duration="0:0:0.4"/>
-                                                <DoubleAnimation Storyboard.TargetName="Dot2" 
+                                    <DoubleAnimation Storyboard.TargetName="Dot2" 
                                                          BeginTime="0:0:0.2" 
                                                          Storyboard.TargetProperty="Opacity" From=".1"
                                                          To="1" 
                                                          AutoReverse="True" 
                                                          Duration="0:0:0.4"/>
-                                                <DoubleAnimation Storyboard.TargetName="Dot3" 
+                                    <DoubleAnimation Storyboard.TargetName="Dot3" 
                                                          BeginTime="0:0:0.3" 
                                                          Storyboard.TargetProperty="Opacity" 
                                                          From=".1"
                                                          To="1" 
                                                          AutoReverse="True" 
                                                          Duration="0:0:0.4"/>
-                                            </Storyboard>
-                                        </BeginStoryboard>
-                                    </EventTrigger>
-                                </StackPanel.Triggers>
-                                <Ellipse Name="Dot1" Fill="#1B3258" Opacity="0.1" Width="10" Height="10"/>
-                                <Ellipse Name="Dot2" Fill="#1B3258" Opacity="0.1" Width="10" Height="10" Margin="2,0,0,0"/>
-                                <Ellipse Name="Dot3" Fill="#1B3258" Opacity="0.1" Width="10" Height="10" Margin="2,0,0,0"/>
-                            </StackPanel>
-                            <ContentPresenter HorizontalAlignment="Center"
+                                </Storyboard>
+                            </BeginStoryboard>
+                        </EventTrigger>
+                    </StackPanel.Triggers>
+                    <Ellipse Name="Dot1" Fill="#1B3258" Opacity="0.1" Width="10" Height="10"/>
+                    <Ellipse Name="Dot2" Fill="#1B3258" Opacity="0.1" Width="10" Height="10" Margin="2,0,0,0"/>
+                    <Ellipse Name="Dot3" Fill="#1B3258" Opacity="0.1" Width="10" Height="10" Margin="2,0,0,0"/>
+                </StackPanel>
+                <ContentPresenter HorizontalAlignment="Center"
                                           VerticalAlignment="Center"
                                               x:Name="contentPresenter"/>
-                        </Grid>
-                    </Border>
-                    <ControlTemplate.Triggers>
-                        <DataTrigger Binding="{Binding IsLoading}" Value="True">
-                            <Setter TargetName="waitingLoading" Property="Visibility" Value="Visible"/>
-                            <Setter TargetName="contentPresenter" Property="Visibility" Value="Collapsed"/>
-                        </DataTrigger>
-                        <Trigger Property="IsMouseOver" Value="True">
-                            <Setter TargetName="insideBorder" Property="Background" Value="{StaticResource registrationMouseOverColors}"/>
-                        </Trigger>
-                        <Trigger Property="IsEnabled" Value="False">
-                            <Setter TargetName="insideBorder" Property="Background" Value="{StaticResource registrationIsDisabledColors}"/>
-                        </Trigger>
-                        <Trigger Property="IsPressed" Value="True">
-                            <Setter TargetName="insideBorder" Property="Background" Value="{StaticResource registrationIsPressedColors}"/>
-                        </Trigger>
-                    </ControlTemplate.Triggers>
-                </ControlTemplate>
-            </Setter.Value>
-        </Setter>
+            </Grid>
+        </Border>
+        <ControlTemplate.Triggers>
+            <DataTrigger Binding="{Binding IsLoading}" Value="True">
+                <Setter TargetName="waitingLoading" Property="Visibility" Value="Visible"/>
+                <Setter TargetName="contentPresenter" Property="Visibility" Value="Collapsed"/>
+            </DataTrigger>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter TargetName="insideBorder" Property="Background" Value="{StaticResource registrationMouseOverColors}"/>
+            </Trigger>
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter TargetName="insideBorder" Property="Background" Value="{StaticResource registrationIsDisabledColors}"/>
+            </Trigger>
+            <Trigger Property="IsPressed" Value="True">
+                <Setter TargetName="insideBorder" Property="Background" Value="{StaticResource registrationIsPressedColors}"/>
+            </Trigger>
+        </ControlTemplate.Triggers>
+    </ControlTemplate>
+
+    <Style x:Key="loginButton" TargetType="{x:Type Button}" BasedOn="{StaticResource submitButton}">
+        <Setter Property="IsEnabled" Value="False"/>
+        <Setter Property="Template" Value="{StaticResource authorizationControlTemplate}"/>
         <Style.Triggers>
             <MultiDataTrigger>
                 <MultiDataTrigger.Conditions>
@@ -150,6 +148,11 @@
                 <Setter Property="IsEnabled" Value="True"/>
             </MultiDataTrigger>
         </Style.Triggers>
+    </Style>
+
+    <Style x:Key="reconnectionButton" TargetType="{x:Type Button}">
+        <Setter Property="IsEnabled" Value="False"/>
+        <Setter Property="Template" Value="{StaticResource authorizationControlTemplate}"/>
     </Style>
 
     <Style x:Key="sendMessage" TargetType="{x:Type Button}" BasedOn="{StaticResource submitButton}">

@@ -1,4 +1,5 @@
 ﻿using ChatClient.Commands;
+using ChatClient.Commands.AuthenticationCommands;
 using ChatClient.Commands.ContextMenuCommands;
 using ChatClient.Enums;
 using ChatClient.Models;
@@ -69,6 +70,7 @@ namespace ChatClient.ViewModels
         private void InitializeFields(SignalRChatService chatService)
         {
             SendChatMessageCommand = new SendChatCommand(this, chatService);
+            ReconnectionCommand = new ReconnectionCommand(this);
             Messages = new();
 
             //Context = new ObservableCollection<UserContextMenu>()

@@ -15,7 +15,6 @@ namespace ChatClient.Services
     {
         public HubConnection Connection { get; }
 
-        public event Action<bool> ConnectionReceived;
         public event Action<bool, string> ReceiveRegistrationResult;
         public event Action<bool> ReceiveLoginResult;
         public event Action<UserProfileModel> CurrentUserReceived;
@@ -34,7 +33,6 @@ namespace ChatClient.Services
 
         private void GetChatHubMessagesInvoke()
         {
-            Connection.On<bool>("ReceiveConnectionInfo", (result) => ConnectionReceived?.Invoke(result));
             Connection.On<bool, string>("ReceiveRegistrationResult", (result, error) => ReceiveRegistrationResult?.Invoke(result, error));
             Connection.On<bool>("ReceiveLoginResult", (result) => ReceiveLoginResult?.Invoke(result));
             Connection.On<ObservableCollection<UserProfileModel>>("ReceiveUserList", (activeUsers) => UserListReceived?.Invoke(activeUsers));
@@ -48,6 +46,11 @@ namespace ChatClient.Services
         public async Task Connect()
         {
             await Connection.StartAsync();
+        }
+
+        public async Task Reconnect(string username)
+        {
+            await Connection.SendAsync("SendReconnection", username);
         }
 
         public async Task SendMessage(MessageModel message)

@@ -20,11 +20,7 @@ namespace ChatClient.ViewModels
     {
         public LoginViewModel(NavigationStore navigationStore, SignalRChatService chatService) : base(chatService, navigationStore)
         {
-            ChatService = chatService;
-            _chatViewModel = new ChatViewModel(ChatService, _navigationStore);
-
-            _chatService.ConnectionReceived += ChatService_ConnectionReceived;
-            _chatService.ReceiveLoginResult += ChatService_ReceiveLoginResult;
+            base.ChatService.ReceiveLoginResult += ChatService_ReceiveLoginResult;
 
             LoginCommand = new LoginCommand(this);
             NavigateRegistrationCommand = new NavigateCommand<RegistrationViewModel>
@@ -42,28 +38,18 @@ namespace ChatClient.ViewModels
             }
         }
 
-        private ChatViewModel _chatViewModel;
-        public SignalRChatService ChatService { get; }
-
         private string _username;
         private string _password;
-        private bool _isLoading;
 
         public LoginCommand LoginCommand { get; }
         public ICommand NavigateRegistrationCommand { get; }
-
-        private void ChatService_ConnectionReceived(bool isConnected)
-        {
-            UserStatusService.IsLogin = isConnected;
-            LoginCommand.RaiseCanExecuteChanged();
-        }
 
         private void ChatService_ReceiveLoginResult(bool loginResult)
         {
             if (loginResult)
             {
                 NavigationService<ChatViewModel> navigationService = new(_navigationStore,
-                       () => new ChatViewModel(_chatService, _navigationStore));
+                       () => new ChatViewModel(base.ChatService, _navigationStore));
                 navigationService.Navigate();
             }
             else
@@ -88,17 +74,6 @@ namespace ChatClient.ViewModels
             {
                 _password = value;
                 OnPropertyChanged();
-            }
-        }
-
-        public bool IsLoading
-        {
-            get => _isLoading;
-            set
-            {
-               _isLoading = value;
-                OnPropertyChanged();
-                LoginCommand.RaiseCanExecuteChanged();
             }
         }
     }

@@ -5,6 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:ChatClient.Views" 
              xmlns:viewmodels="clr-namespace:ChatClient.ViewModels" 
+             xmlns:additionaViews="clr-namespace:ChatClient.Views.AdditionalViews"
              d:DataContext="{d:DesignInstance Type=viewmodels:ChatViewModel}"
              mc:Ignorable="d" 
              d:DesignHeight="400" d:DesignWidth="550">
@@ -64,6 +65,7 @@
         </Grid>
 
         <Grid Grid.ColumnSpan="3" Style="{StaticResource getBannedLayout}"/>
+        <additionaViews:ConnectionLostView Grid.ColumnSpan="2"/>
     </Grid>
 
 </UserControl>

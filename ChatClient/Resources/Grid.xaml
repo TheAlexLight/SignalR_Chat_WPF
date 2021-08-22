@@ -20,11 +20,13 @@
     </Style>
 
     <Style x:Key="connectionLost" TargetType="{x:Type Grid}">
-        <Setter Property="Opacity" Value="0.5"/>
         <Setter Property="Panel.ZIndex" Value="3"/>
         <Setter Property="Visibility" Value="Collapsed"/>
-        <Setter Property="Background" Value="Black"/>
+        <Setter Property="Background" Value="#F1F0EA"/>
         <Style.Triggers>
+            <DataTrigger Binding="{Binding ConnectionStatusValue}" Value="Reconnecting">
+                <Setter Property="Visibility" Value="Visible"/>
+            </DataTrigger>
             <DataTrigger Binding="{Binding ConnectionStatusValue}" Value="Disconnected">
                 <Setter Property="Visibility" Value="Visible"/>
             </DataTrigger>

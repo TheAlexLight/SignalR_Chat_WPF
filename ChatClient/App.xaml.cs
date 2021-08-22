@@ -23,12 +23,8 @@ namespace ChatClient
 
             NavigationStore navigationStore = new();
             SignalRChatService chatService = new(connection);
-
-           // LoginConnectionService connectionService = new(navigationStore, chatService);
-           // ChatViewModelBase viewModel = new LoginViewModel(connectionService.NavigationStore, connectionService.ChatService);
             ChatViewModelBase viewModel = new LoginViewModel(navigationStore, chatService);
 
-            // navigationStore.CurrentViewModel = connectionService.CreateConnectedViewModel(chatService, viewModel);
             navigationStore.CurrentViewModel = viewModel;
 
             MainWindow window = new()

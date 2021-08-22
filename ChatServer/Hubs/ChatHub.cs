@@ -40,15 +40,6 @@ namespace ChatServer.Hubs
             }
 
             await Clients.Caller.SendAsync("ReceiveRegistrationResult", result, error);
-
-            //if (result)
-            //{
-            //    UserHandler user = Account.Users.FirstOrDefault(a => a.ConnectedIds == Context.ConnectionId);
-            //    user.ConnectedUsername = model.Username;
-
-            //    await SendCurrentUser();
-            //    await SendUserList();
-            //}
         }
 
         public async Task SendLogin(UserLoginModel model)
@@ -62,10 +53,22 @@ namespace ChatServer.Hubs
                 UserHandler user = Account.Users.FirstOrDefault(a => a.ConnectedIds == Context.ConnectionId);
                 user.ConnectedUsername = model.Username;
 
-                await SendCurrentUser();
-                await SendUserList();
-                await SendSavedMessages();   
+                if (user != null)
+                {
+                    await SendCurrentUser(user);
+                    await SendUserList();
+                    await SendSavedMessages();
+                }
             }
+        }
+
+        public async Task SendReconnection(string username)
+        {
+            UserHandler user = Account.Users.FirstOrDefault(a => a.ConnectedIds == Context.ConnectionId);
+
+            await SendCurrentUser(user);
+            await SendUserList();
+            await SendSavedMessages();
         }
 
         private async Task SendSavedMessages()
@@ -73,16 +76,12 @@ namespace ChatServer.Hubs
             List<MessageModel> messages = await _dbContext.Messages.Include(m => m.UserInfo)
                                .Where(m => m.GroupName == "mainChat")
                                .ToListAsync();
-           //UserProfileModel a = _dbContext.Messages.Select(m => m.UserInfo).First();
-            //List<MessageModel> messages = _dbContext.Messages.Select(m => m).Where(message => message.GroupName == "mainChat").ToList();
-
+           
             await Clients.All.SendAsync("ReceiveSavedMessages", messages);
         }
 
-        public async Task SendCurrentUser()
+        public async Task SendCurrentUser(UserHandler user)
         {
-            var user = Account.Users.FirstOrDefault(u => u.ConnectedIds == Context.ConnectionId);
-
             UserProfileModel currentUser = new()
             {
                 Username = user.ConnectedUsername
@@ -130,12 +129,7 @@ namespace ChatServer.Hubs
             }
         }
 
-        public async Task SendConnectionInfo(bool connected)
-        {
-            await Clients.Client(Context.ConnectionId).SendAsync("ReceiveConnectionInfo", connected);
-        }
-
-        public override async Task<Task> OnConnectedAsync()
+        public override Task OnConnectedAsync()
         {
             UserHandler user = new()
             {
@@ -143,8 +137,6 @@ namespace ChatServer.Hubs
             };
 
             Account.Users.Add(user);
-
-            await SendConnectionInfo(true);
 
             return base.OnConnectedAsync();
         }
@@ -156,8 +148,6 @@ namespace ChatServer.Hubs
             Account.Users.Remove(user);
 
             await SendUserList();
-
-            await SendConnectionInfo(false);
 
             return base.OnDisconnectedAsync(exception);
         }

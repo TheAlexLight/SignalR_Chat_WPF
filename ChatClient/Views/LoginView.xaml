@@ -59,7 +59,7 @@
                     <Button  Content="Create new account" 
                              Style="{StaticResource submitButton}"
                      Command="{Binding NavigateRegistrationCommand}"/>
-                    
+
                     <!--<TextBlock Style="{StaticResource errorMessage}"
                        Text="{Binding ErrorMessage}"
                        Margin="10"
@@ -69,7 +69,6 @@
                                FontSize="16"/>-->
                 </StackPanel>
             </Border>
-            <!--<additionaViews:ConnectionLostView/>-->
         </Grid>
     </Border>
     <!--<ContentControl Style="{StaticResource loginMainContent}"/>-->
