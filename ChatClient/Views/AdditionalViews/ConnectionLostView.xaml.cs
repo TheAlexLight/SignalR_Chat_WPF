@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ChatClient.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -23,6 +24,7 @@ namespace ChatClient.Views.AdditionalViews
         public ConnectionLostView()
         {
             InitializeComponent();
+            DataContext = ((MainViewModel)Application.Current.MainWindow.DataContext).CurrentViewModel;
         }
     }
 }

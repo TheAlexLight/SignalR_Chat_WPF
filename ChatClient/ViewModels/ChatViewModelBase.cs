@@ -92,8 +92,10 @@ namespace ChatClient.ViewModels
             return Task.CompletedTask;
         }
 
-        private Task Connection_Reconnected(string arg)
+        private async Task Connection_Reconnected(string arg)
         {
+            await Reconnect();
+
             ConnectionStatusValue = ConnectionStatus.Connected;
             IsLoading = false;
 
@@ -101,8 +103,11 @@ namespace ChatClient.ViewModels
             {
                 ReconnectionCommand.RaiseCanExecuteChanged();
             }
+        }
 
-            return Task.CompletedTask;
+        protected virtual async Task Reconnect()
+        {
+           await Task.CompletedTask;
         }
 
         private Task Connection_Closed(Exception arg)

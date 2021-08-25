@@ -65,6 +65,7 @@ namespace ChatServer.Hubs
         public async Task SendReconnection(string username)
         {
             UserHandler user = Account.Users.FirstOrDefault(a => a.ConnectedIds == Context.ConnectionId);
+            user.ConnectedUsername = username;
 
             await SendCurrentUser(user);
             await SendUserList();

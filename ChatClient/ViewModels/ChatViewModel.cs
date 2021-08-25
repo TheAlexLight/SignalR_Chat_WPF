@@ -19,6 +19,7 @@ namespace ChatClient.ViewModels
 {
     public class ChatViewModel : ChatViewModelBase
     {
+
         public ChatViewModel(SignalRChatService chatService, NavigationStore navigationStore) : base(chatService, navigationStore)
         {
             //_getBan += GetBan_Action;
@@ -110,6 +111,11 @@ namespace ChatClient.ViewModels
             });
 
             return viewModel;
+        }
+
+        protected async override Task Reconnect()
+        {
+            await ChatService.Reconnect(CurrentUser.Username);
         }
 
         private void ChatService_CurrentUserReceived(UserProfileModel currentUser)

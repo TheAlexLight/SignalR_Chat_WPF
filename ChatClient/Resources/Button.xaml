@@ -150,9 +150,13 @@
         </Style.Triggers>
     </Style>
 
-    <Style x:Key="reconnectionButton" TargetType="{x:Type Button}">
-        <Setter Property="IsEnabled" Value="False"/>
+    <Style x:Key="reconnectionButton" TargetType="{x:Type Button}" BasedOn="{StaticResource submitButton}">
         <Setter Property="Template" Value="{StaticResource authorizationControlTemplate}"/>
+        <Style.Triggers>
+            <DataTrigger Binding="{Binding IsLoading}" Value="True">
+                <Setter Property="IsEnabled" Value="False"/>
+            </DataTrigger>
+        </Style.Triggers>
     </Style>
 
     <Style x:Key="sendMessage" TargetType="{x:Type Button}" BasedOn="{StaticResource submitButton}">

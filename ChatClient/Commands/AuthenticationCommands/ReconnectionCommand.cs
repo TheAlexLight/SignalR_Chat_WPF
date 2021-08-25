@@ -19,7 +19,7 @@ namespace ChatClient.Commands.AuthenticationCommands
 
         public override bool CanExecute(object parameter)
         {
-            return true;//!_viewModel.IsLoading;
+            return !_viewModel.IsLoading;
         }
 
         public override async void Execute(object parameter)
