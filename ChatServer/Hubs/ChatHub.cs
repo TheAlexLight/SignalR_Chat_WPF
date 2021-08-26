@@ -16,15 +16,19 @@ namespace ChatServer.Hubs
     public class ChatHub : Hub
     {
         private readonly UserManager<User> _userManager;
-        private readonly AccountController _account;
+        private readonly RoleManager<IdentityRole> _roleManager;
         private readonly ApplicationContext _dbContext;
+        private readonly AccountController _account;
+        private readonly RoleController _roleController;
 
-        public ChatHub(UserManager<User> userManager, ApplicationContext dbContext)
+        public ChatHub(UserManager<User> userManager, RoleManager<IdentityRole> roleManager, ApplicationContext dbContext)
         {
             _userManager = userManager;
-            _account = new AccountController(_userManager);
-
+            _roleManager = roleManager;
             _dbContext = dbContext;
+
+            _account = new AccountController(_userManager);
+            _roleController = new RoleController(_roleManager, _userManager);
         }
 
         public async Task SendRegistration(RegistrationUserData model)
@@ -55,6 +59,15 @@ namespace ChatServer.Hubs
 
                 if (user != null)
                 {
+                   List<IdentityError> errors = await _roleController.Create("Admin");
+
+                    //await _roleController.Delete("Admin");
+
+                    if (errors.Any())
+                    {
+                        //TODO: Send result
+                    }
+
                     await SendCurrentUser(user);
                     await SendUserList();
                     await SendSavedMessages();
