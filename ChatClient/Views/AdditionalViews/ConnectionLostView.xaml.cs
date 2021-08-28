@@ -24,7 +24,6 @@ namespace ChatClient.Views.AdditionalViews
         public ConnectionLostView()
         {
             InitializeComponent();
-            DataContext = ((MainViewModel)Application.Current.MainWindow.DataContext).CurrentViewModel;
         }
     }
 }

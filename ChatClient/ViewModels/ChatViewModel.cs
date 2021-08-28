@@ -67,11 +67,13 @@ namespace ChatClient.ViewModels
         //public ObservableCollection<UserContextMenu> ContextMenuActions { get; private set; }
 
         public ICommand SendChatMessageCommand { get; private set; }
+        public ICommand RemoveToolBarOverflowCommand { get; private set; }
 
         private void InitializeFields(SignalRChatService chatService)
         {
             SendChatMessageCommand = new SendChatCommand(this, chatService);
             ReconnectionCommand = new ReconnectionCommand(this);
+            RemoveToolBarOverflowCommand = new RemoveToolBarOverwlowCommand();
             Messages = new();
 
             //Context = new ObservableCollection<UserContextMenu>()

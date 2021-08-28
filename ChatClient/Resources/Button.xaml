@@ -169,4 +169,26 @@
         <Setter Property="VerticalAlignment" Value="Stretch"/>
     </Style>
 
+    <Style x:Key="toolBarButton" TargetType="{x:Type Button}">
+        <Setter Property="HorizontalAlignment" Value="Stretch"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <Border BorderThickness="1" 
+                            CornerRadius="5"
+                            BorderBrush="#525251"
+                            Padding="1"
+                            HorizontalAlignment="Stretch"
+                            Background="#E0CD8E"
+                            Margin="0,2,0,2">
+                        <Button BorderThickness="0" 
+                                Content="{TemplateBinding Content}"
+                                Background="Transparent"
+                                FontWeight="DemiBold"/>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
 </ResourceDictionary>

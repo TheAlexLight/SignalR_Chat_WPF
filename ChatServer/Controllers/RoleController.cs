@@ -53,6 +53,20 @@ namespace ChatServer.Controllers
             return result;
         }
 
+        public async Task Assign(string username, List<string> addedRoles)
+        {
+          User user = await _userManager.FindByNameAsync(username);
+
+            if (user != null)
+            {
+                var userRoles = await _userManager.GetRolesAsync(user);
+                var removedRoles = userRoles.Except(addedRoles);
+
+                await _userManager.AddToRolesAsync(user, addedRoles);
+                await _userManager.RemoveFromRolesAsync(user, removedRoles);
+            }
+        }
+
         //public async Task Edit(string id)
         //{
         //    User user = await _userManager.FindByIdAsync(id);

@@ -59,14 +59,19 @@ namespace ChatServer.Hubs
 
                 if (user != null)
                 {
-                   List<IdentityError> errors = await _roleController.Create("Admin");
+                  // List<IdentityError> errors = await _roleController.Create("Admin");
+
+                    //await _roleController.Assign(model.Username, new List<string>()
+                    //{
+                    //    "Admin"
+                    //});
 
                     //await _roleController.Delete("Admin");
 
-                    if (errors.Any())
-                    {
-                        //TODO: Send result
-                    }
+                    //if (errors.Any())
+                    //{
+                    //    //TODO: Send result
+                    //}
 
                     await SendCurrentUser(user);
                     await SendUserList();
