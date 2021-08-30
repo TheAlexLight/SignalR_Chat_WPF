@@ -33,7 +33,7 @@ namespace ChatClient.Commands.AuthenticationCommands
 
             if (await _viewModel.ConnectToServer(_viewModel) != HubConnectionState.Disconnected)
             {
-                RegistrationUserData userData = new()
+                UserRegistrationModel userData = new()
                 {
                     Username = _viewModel.Username,
                     Email = _viewModel.Email,

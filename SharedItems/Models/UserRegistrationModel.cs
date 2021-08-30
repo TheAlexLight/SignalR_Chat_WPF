@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace SharedItems.Models
 {
-    public class RegistrationUserData
+    public class UserRegistrationModel
     {
         public string Username { get; set; }
         public string Email { get; set; }

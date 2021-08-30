@@ -31,7 +31,7 @@ namespace ChatServer.Hubs
             _roleController = new RoleController(_roleManager, _userManager);
         }
 
-        public async Task SendRegistration(RegistrationUserData model)
+        public async Task SendRegistration(UserRegistrationModel model)
         {
             AuthorizationHelper helper = new AuthorizationHelper();
             string error = await helper.TryRegistration(model, _userManager, _account);
@@ -41,6 +41,13 @@ namespace ChatServer.Hubs
             if (error == "")
             {
                 result = true;
+
+                List<string> addedRoles = new List<string>()
+                {
+                    "User"
+                };
+
+                await _roleController.Assign(model.Username, addedRoles);
             }
 
             await Clients.Caller.SendAsync("ReceiveRegistrationResult", result, error);
@@ -59,7 +66,7 @@ namespace ChatServer.Hubs
 
                 if (user != null)
                 {
-                  // List<IdentityError> errors = await _roleController.Create("Admin");
+                   //List<IdentityError> errors = await _roleController.Create("User");
 
                     //await _roleController.Assign(model.Username, new List<string>()
                     //{
@@ -99,11 +106,16 @@ namespace ChatServer.Hubs
             await Clients.All.SendAsync("ReceiveSavedMessages", messages);
         }
 
-        public async Task SendCurrentUser(UserHandler user)
+        public async Task SendCurrentUser(UserHandler userHandler)
         {
+            User user = await _userManager.FindByNameAsync(userHandler.ConnectedUsername);
+
+            string userRole = ((List<string>)await _userManager.GetRolesAsync(user))[0];
+
             UserProfileModel currentUser = new()
             {
-                Username = user.ConnectedUsername
+                Username = userHandler.ConnectedUsername,
+                Role = userRole
             };
 
             await Clients.Caller.SendAsync("ReceiveCurrentUser", currentUser);

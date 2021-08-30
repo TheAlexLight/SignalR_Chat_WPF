@@ -16,12 +16,12 @@ namespace ChatClient.ViewModels
    public class ChatViewModelBase : ViewModelBase
     {
         public SignalRChatService ChatService { get; }
-        protected readonly NavigationStore _navigationStore;
+        public NavigationStore NavigationStore { get; }
 
         public ChatViewModelBase(SignalRChatService chatService, NavigationStore navigationStore)
         {
             ChatService = chatService;
-            _navigationStore = navigationStore;
+            NavigationStore = navigationStore;
 
             ChatService.Connection.Reconnecting += Connection_Reconnecting;
             ChatService.Connection.Reconnected += Connection_Reconnected;
@@ -71,9 +71,9 @@ namespace ChatClient.ViewModels
         {
             if (ChatService.Connection.State == HubConnectionState.Disconnected)
             {
-                 LoginConnectionService connectionService = new(_navigationStore, ChatService);
+                 LoginConnectionService connectionService = new(NavigationStore, ChatService);
 
-                _navigationStore.CurrentViewModel = await connectionService.CreateConnectedViewModel(ChatService, viewModel);
+                NavigationStore.CurrentViewModel = await connectionService.CreateConnectedViewModel(ChatService, viewModel);
             }
 
             return ChatService.Connection.State;

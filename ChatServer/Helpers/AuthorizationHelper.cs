@@ -11,7 +11,7 @@ namespace ChatServer.Helpers
 {
     public class AuthorizationHelper
     {
-        public async Task<string> TryRegistration(RegistrationUserData model, UserManager<User> _userManager, AccountController account)
+        public async Task<string> TryRegistration(UserRegistrationModel model, UserManager<User> _userManager, AccountController account)
         {
             string error = "";
 

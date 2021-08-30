@@ -15,7 +15,7 @@
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="2*"/>
             <ColumnDefinition/>
-            <ColumnDefinition Width="58"/>
+            <ColumnDefinition  Style="{StaticResource toolBarColumn}"/>
         </Grid.ColumnDefinitions>
 
         <Grid Grid.Column="0"> 
@@ -74,7 +74,7 @@
         <additionaViews:ConnectionLostView Grid.ColumnSpan="2"/>
 
 
-        <Grid Grid.Column="2">
+        <Grid Grid.Column="2" >
             <Grid.RowDefinitions>
                 <RowDefinition Height="35"/>
                 <RowDefinition/>

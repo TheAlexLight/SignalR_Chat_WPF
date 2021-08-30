@@ -17,7 +17,7 @@ namespace ChatServer.Controllers
             _userManager = userManager;
         }
 
-        public async Task<IdentityResult> Register(RegistrationUserData model)
+        public async Task<IdentityResult> Register(UserRegistrationModel model)
         {
             User user = new User { Email = model.Email, UserName = model.Username, JoinDate = model.JoinDate };
 

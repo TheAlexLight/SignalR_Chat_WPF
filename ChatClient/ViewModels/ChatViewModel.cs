@@ -68,6 +68,7 @@ namespace ChatClient.ViewModels
 
         public ICommand SendChatMessageCommand { get; private set; }
         public ICommand RemoveToolBarOverflowCommand { get; private set; }
+        public ICommand KickUserCommand { get; private set; }
 
         private void InitializeFields(SignalRChatService chatService)
         {

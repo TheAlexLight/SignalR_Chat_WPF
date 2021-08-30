@@ -48,8 +48,8 @@ namespace ChatClient.ViewModels
         {
             if (loginResult)
             {
-                NavigationService<ChatViewModel> navigationService = new(_navigationStore,
-                       () => new ChatViewModel(base.ChatService, _navigationStore));
+                NavigationService<ChatViewModel> navigationService = new(NavigationStore,
+                       () => new ChatViewModel(base.ChatService, NavigationStore));
                 navigationService.Navigate();
             }
             else

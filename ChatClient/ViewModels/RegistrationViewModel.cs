@@ -21,8 +21,8 @@ namespace ChatClient.ViewModels
             window.Width = 385;
 
             NavigateLoginCommand = new NavigateCommand<LoginViewModel>(
-                    new NavigationService<LoginViewModel>(_navigationStore,
-                    () => new LoginViewModel(_navigationStore, chatService)));
+                    new NavigationService<LoginViewModel>(NavigationStore,
+                    () => new LoginViewModel(NavigationStore, chatService)));
 
             RegistrationCommand = new RegistrationCommand(this, chatService);
 
@@ -110,8 +110,8 @@ namespace ChatClient.ViewModels
             if (registrationResult)
             {
                 MessageBox.Show("Registration Succeded");
-                NavigationService<LoginViewModel> navigationService = new(_navigationStore,
-                        () => new LoginViewModel(_navigationStore, ChatService));
+                NavigationService<LoginViewModel> navigationService = new(NavigationStore,
+                        () => new LoginViewModel(NavigationStore, ChatService));
                 navigationService.Navigate();
             }
             else

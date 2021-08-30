@@ -58,7 +58,7 @@ namespace ChatClient.Services
             await Connection.SendAsync("SendMessage", message);
         }
 
-        public async Task Registration(RegistrationUserData model)
+        public async Task Registration(UserRegistrationModel model)
         {
             await Connection.SendAsync("SendRegistration", model);
         }
@@ -72,5 +72,7 @@ namespace ChatClient.Services
         {
             await Connection.SendAsync("SendUserBan", username);
         }
+
+
     }
 }

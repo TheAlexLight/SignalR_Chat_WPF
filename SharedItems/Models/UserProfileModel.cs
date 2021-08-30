@@ -13,6 +13,7 @@ namespace SharedItems.Models
         {
             StatusMessage = "Active";
             UsernameColor = "#1E90FF";
+            Role = "User";
         }
 
         public int Id { get; set; }
@@ -20,5 +21,6 @@ namespace SharedItems.Models
         public string StatusMessage { get; set; }
         public string ImagePath { get; set; }
         public string UsernameColor { get; set; }
+        public string Role { get; set; }
     }
 }
