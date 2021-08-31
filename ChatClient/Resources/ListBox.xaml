@@ -19,6 +19,7 @@
         <Setter Property="ItemsSource" Value="{Binding ActiveUsers}"/>
         <Setter Property="FontSize" Value="20"/>
         <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+        <Setter Property="SelectedIndex" Value="0"/>
         <!--<Setter Property="ContextMenu">
             <Setter.Value>
                 <ContextMenu ItemsSource="{Binding ContextMenuActions}">

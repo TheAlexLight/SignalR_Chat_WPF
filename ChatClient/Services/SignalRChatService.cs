@@ -22,7 +22,7 @@ namespace ChatClient.Services
         public event Action<List<MessageModel>> SavedMessagesReceived;
         public event Action<MessageModel> MessageReceived;
         public event Action<bool> ReceivedBan;
-
+        public event Action ReceivedKick;
 
         public SignalRChatService(HubConnection connection)
         {
@@ -40,6 +40,7 @@ namespace ChatClient.Services
             Connection.On<UserProfileModel>("ReceiveCurrentUser", (currentUser) => CurrentUserReceived?.Invoke(currentUser));
             Connection.On<MessageModel>("ReceiveMessage", (messageModel) => MessageReceived?.Invoke(messageModel));
             Connection.On<bool>("ReceiveBan", (result) => ReceivedBan?.Invoke(result));
+            Connection.On("ReceiveKick", () => ReceivedKick?.Invoke());
             
         }
 
@@ -73,6 +74,9 @@ namespace ChatClient.Services
             await Connection.SendAsync("SendUserBan", username);
         }
 
-
+        public async Task KickUser(string username)
+        {
+            await Connection.SendAsync("SendKickUser", username);
+        }
     }
 }

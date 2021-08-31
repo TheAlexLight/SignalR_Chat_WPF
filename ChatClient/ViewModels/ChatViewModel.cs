@@ -1,6 +1,7 @@
 ﻿using ChatClient.Commands;
 using ChatClient.Commands.AuthenticationCommands;
 using ChatClient.Commands.ContextMenuCommands;
+using ChatClient.Commands.ToolBarCommands;
 using ChatClient.Enums;
 using ChatClient.Models;
 using ChatClient.Services;
@@ -74,6 +75,7 @@ namespace ChatClient.ViewModels
         {
             SendChatMessageCommand = new SendChatCommand(this, chatService);
             ReconnectionCommand = new ReconnectionCommand(this);
+            KickUserCommand = new KickUserCommand(this);
             RemoveToolBarOverflowCommand = new RemoveToolBarOverwlowCommand();
             Messages = new();
 
@@ -91,9 +93,10 @@ namespace ChatClient.ViewModels
         {
             chatService.MessageReceived += ChatService_MessageReceived;
             chatService.UserListReceived += ChatService_UserListReceived;
-            chatService.ReceivedBan += ChatService_ReceivedBan;
             chatService.CurrentUserReceived += ChatService_CurrentUserReceived;
             chatService.SavedMessagesReceived += ChatService_SavedMessagesReceived;
+            chatService.ReceivedBan += ChatService_ReceivedBan;
+            chatService.ReceivedKick += ChatService_ReceivedKick;
         }
 
         //private void GetBan_Action()
@@ -141,10 +144,22 @@ namespace ChatClient.ViewModels
         {
             Messages.Add(message);
         }
+
         private void ChatService_ReceivedBan(bool banResult)
         {
             UserStatusService.IsBanned = banResult;
             OnPropertyChanged(nameof(IsBanned));
+        }
+
+        private async void ChatService_ReceivedKick()
+        {
+            await ChatService.Connection.StopAsync();
+
+            NavigationService<LoginViewModel> navigationService = new(NavigationStore,
+          () => new LoginViewModel(NavigationStore, ChatService));
+
+            navigationService.Navigate();
+            MessageBox.Show("You have been kicked.");
         }
 
         public string Message

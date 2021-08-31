@@ -172,10 +172,17 @@ namespace ChatServer.Hubs
             return base.OnConnectedAsync();
         }
 
+        public async Task SendKickUser(string username)
+        {
+            UserHandler user = Account.Users.FirstOrDefault(u => u.ConnectedUsername == username);
+
+            await Clients.Client(user.ConnectedIds).SendAsync("ReceiveKick");
+        }
+
         public override async Task<Task> OnDisconnectedAsync(Exception exception)
         {
             UserHandler user = Account.Users.FirstOrDefault(a => a.ConnectedIds == Context.ConnectionId);
-
+            
             Account.Users.Remove(user);
 
             await SendUserList();
