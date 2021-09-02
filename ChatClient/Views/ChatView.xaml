@@ -7,9 +7,14 @@
              xmlns:viewmodels="clr-namespace:ChatClient.ViewModels" 
              xmlns:additionaViews="clr-namespace:ChatClient.Views.AdditionalViews"
              xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+             xmlns:converters="clr-namespace:ChatClient.Converters"
              d:DataContext="{d:DesignInstance Type=viewmodels:ChatViewModel}"
              mc:Ignorable="d" 
              d:DesignHeight="400" d:DesignWidth="550">
+
+    <UserControl.Resources>
+        <converters:DurationTimeConverter x:Key="durationTimeConverter"/>
+    </UserControl.Resources>
 
     <Grid Background="#C0C8D5">
         <Grid.ColumnDefinitions>
@@ -90,8 +95,22 @@
                                                    CommandParameter="{Binding ElementName=toolBar}"/>
                         </i:EventTrigger>
                     </i:Interaction.Triggers>
-                    <Button Style="{StaticResource toolBarButton}" 
-                            Content="Ban"/>
+                    <Menu>
+                        <MenuItem Header="Ban">
+                            <MenuItem Header="10 min" 
+                                      viewmodels:ChatViewModel.DurationTime="10"
+                                      Style="{StaticResource banMenuItem}">
+                            </MenuItem>
+                            <MenuItem Header="20 min" 
+                                      viewmodels:ChatViewModel.DurationTime="20"
+                                      Style="{StaticResource banMenuItem}"/>
+                            <MenuItem Header="Permanent"
+                                      viewmodels:ChatViewModel.DurationTime="Permanent"
+                                      Style="{StaticResource banMenuItem}"/>
+                        </MenuItem>
+                    </Menu>
+                    <!--<Button Style="{StaticResource toolBarButton}" 
+                            Content="Ban"/>-->
                     <Button Style="{StaticResource toolBarButton}"
                             Content="Kick"
                             Command="{Binding KickUserCommand}"

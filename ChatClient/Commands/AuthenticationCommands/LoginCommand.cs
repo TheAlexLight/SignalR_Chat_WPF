@@ -3,6 +3,7 @@ using ChatClient.Stores;
 using ChatClient.ViewModels;
 using Microsoft.AspNetCore.SignalR.Client;
 using SharedItems.Models;
+using SharedItems.Models.AuthenticationModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;

@@ -2,6 +2,7 @@
 using ChatClient.ViewModels;
 using Microsoft.AspNetCore.SignalR.Client;
 using SharedItems.Models;
+using SharedItems.Models.AuthenticationModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -39,7 +40,6 @@ namespace ChatClient.Commands.AuthenticationCommands
                     Email = _viewModel.Email,
                     Password = _viewModel.Password,
                     PasswordConfirm = _viewModel.PasswordConfirm,
-                    JoinDate = DateTime.Now
                 };
 
                 await _chatService.Registration(userData);

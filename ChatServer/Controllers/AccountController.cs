@@ -1,6 +1,8 @@
 ﻿using ChatServer.Models;
 using Microsoft.AspNetCore.Identity;
 using SharedItems.Models;
+using SharedItems.Models.AuthenticationModels;
+using SharedItems.Models.StatusModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,17 +13,40 @@ namespace ChatServer.Controllers
     public class AccountController
     {
         private readonly UserManager<User> _userManager;
+        private readonly ApplicationContext _dbContext;
 
-        public AccountController(UserManager<User> userManager)
+        public AccountController(UserManager<User> userManager, ApplicationContext dbContext)
         {
             _userManager = userManager;
+            _dbContext = dbContext;
         }
 
         public async Task<IdentityResult> Register(UserRegistrationModel model)
         {
-            User user = new User { Email = model.Email, UserName = model.Username, JoinDate = model.JoinDate };
+            User user = new User { Email = model.Email, UserName = model.Username };
 
-            return await _userManager.CreateAsync(user, model.Password);
+            IdentityResult result = await _userManager.CreateAsync(user, model.Password);
+
+            if (result.Succeeded)
+            {
+                User createdUser = await _userManager.FindByNameAsync(model.Username);
+
+                _dbContext.UsersStatus.Add(new UserStatusModel()
+                {
+                    UserId = createdUser.Id
+                });
+
+               await _dbContext.SaveChangesAsync();
+
+                _dbContext.BansStatus.Add(new BanStatusModel()
+                {
+                    UserStatusModelId = createdUser.UserStatus.Id
+                });
+
+                await _dbContext.SaveChangesAsync();
+            }
+
+            return result;
         }
 
         public async Task<bool> Login(UserLoginModel model)

@@ -2,6 +2,7 @@
 using ChatServer.Models;
 using Microsoft.AspNetCore.Identity;
 using SharedItems.Models;
+using SharedItems.Models.AuthenticationModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;

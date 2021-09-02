@@ -8,7 +8,7 @@ using System.Windows.Controls;
 
 namespace ChatClient.Commands
 {
-    public class RemoveToolBarOverwlowCommand : CommandBase
+    public class RemoveToolBarOverfowCommand : CommandBase
     {
         public override void Execute(object parameter)
         {

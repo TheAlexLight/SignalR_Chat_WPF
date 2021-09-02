@@ -1,6 +1,7 @@
 ﻿using ChatClient.Services;
 using ChatClient.ViewModels;
 using SharedItems.Models;
+using SharedItems.Models.StatusModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,25 +12,43 @@ namespace ChatClient.Commands.ContextMenuCommands
 {
     public class BanUserCommand : CommandBase
     {
-        //private event Action _getBan;
-        private readonly SignalRChatService _chatService;
+        private readonly ChatViewModel _viewModel;
 
-        public BanUserCommand(SignalRChatService chatService/*Action getBan*/)
+        public BanUserCommand(ChatViewModel viewModel)
         {
-            _chatService = chatService;
-            //_getBan = getBan;
+            _viewModel = viewModel;
         }
 
-        public override async void Execute(object activeUser)
+        public override async void Execute(object parameter)
         {
-            UserProfileModel user = activeUser as UserProfileModel;
+            var values = (object[])parameter;
+            var duration = (string)values[1];
 
-           await _chatService.SendBan(user.Username);
+            if (values[0] is UserProfileModel)
+            {
+                UserProfileModel user = values[0] as UserProfileModel;
+
+                if (user.Username != _viewModel.CurrentUser.Username)
+                {
+                    BanStatusModel model = new BanStatusModel();
+
+                    if (duration.Equals("Permanent"))
+                    {
+                        model.IsPermanent = true;
+                    }
+                    else
+                    {
+                        model.Duration = Int32.Parse(duration);
+
+                        model.EndTime = DateTime.Now;
+                        model.EndTime.AddMinutes(model.Duration);
+                    }
+
+                    model.IsBanned = true;
+
+                    await _viewModel.ChatService.SendBan(user.Username, model);
+                }
+            }
         }
-
-        //public void ReceiveBan()
-        //{
-        //    _getBan?.Invoke();
-        //}
     }
 }

@@ -1,7 +1,8 @@
-﻿
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.SignalR.Client;
 using SharedItems.Models;
+using SharedItems.Models.AuthenticationModels;
+using SharedItems.Models.StatusModels;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -21,7 +22,7 @@ namespace ChatClient.Services
         public event Action<ObservableCollection<UserProfileModel>> UserListReceived;
         public event Action<List<MessageModel>> SavedMessagesReceived;
         public event Action<MessageModel> MessageReceived;
-        public event Action<bool> ReceivedBan;
+        public event Action<BanStatusModel> ReceivedBan;
         public event Action ReceivedKick;
 
         public SignalRChatService(HubConnection connection)
@@ -39,9 +40,8 @@ namespace ChatClient.Services
             Connection.On<List<MessageModel>>("ReceiveSavedMessages", (messages) => SavedMessagesReceived?.Invoke(messages));
             Connection.On<UserProfileModel>("ReceiveCurrentUser", (currentUser) => CurrentUserReceived?.Invoke(currentUser));
             Connection.On<MessageModel>("ReceiveMessage", (messageModel) => MessageReceived?.Invoke(messageModel));
-            Connection.On<bool>("ReceiveBan", (result) => ReceivedBan?.Invoke(result));
+            Connection.On<BanStatusModel>("ReceiveBan", (model) => ReceivedBan?.Invoke(model));
             Connection.On("ReceiveKick", () => ReceivedKick?.Invoke());
-            
         }
 
         public async Task Connect()
@@ -69,9 +69,9 @@ namespace ChatClient.Services
             await Connection.SendAsync("SendLogin", model);
         }
 
-        public async Task SendBan(string username)
+        public async Task SendBan(string username, BanStatusModel model)
         {
-            await Connection.SendAsync("SendUserBan", username);
+            await Connection.SendAsync("SendUserBan", username, model);
         }
 
         public async Task KickUser(string username)

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace SharedItems.Models
+namespace SharedItems.Models.AuthenticationModels
 {
     public class UserRegistrationModel
     {

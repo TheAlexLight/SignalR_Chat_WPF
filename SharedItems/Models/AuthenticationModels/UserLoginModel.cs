@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SharedItems.Models
+namespace SharedItems.Models.AuthenticationModels
 {
     public class UserLoginModel
     {

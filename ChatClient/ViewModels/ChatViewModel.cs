@@ -7,6 +7,7 @@ using ChatClient.Models;
 using ChatClient.Services;
 using ChatClient.Stores;
 using SharedItems.Models;
+using SharedItems.Models.StatusModels;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -14,13 +15,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
 
 namespace ChatClient.ViewModels
 {
     public class ChatViewModel : ChatViewModelBase
     {
-
         public ChatViewModel(SignalRChatService chatService, NavigationStore navigationStore) : base(chatService, navigationStore)
         {
             //_getBan += GetBan_Action;
@@ -48,6 +49,19 @@ namespace ChatClient.ViewModels
         private ObservableCollection<UserProfileModel> _activeUsers;
         private UserProfileModel _currentUser;
 
+        public static readonly DependencyProperty TimeDurationProperty = DependencyProperty.RegisterAttached("DurationTime"
+                , typeof(string), typeof(ChatViewModel), new PropertyMetadata(null));
+        
+        public static void SetDurationTime(DependencyObject element, string value)
+        {
+            element.SetValue(TimeDurationProperty, value);
+        }
+
+        public static string GetCustomValue(DependencyObject element)
+        {
+            return (string)element.GetValue(TimeDurationProperty);
+        }
+
         public UserProfileModel CurrentUser {
             get => _currentUser;
             private set
@@ -65,29 +79,20 @@ namespace ChatClient.ViewModels
                 OnPropertyChanged();
             }
         }
-        //public ObservableCollection<UserContextMenu> ContextMenuActions { get; private set; }
 
         public ICommand SendChatMessageCommand { get; private set; }
         public ICommand RemoveToolBarOverflowCommand { get; private set; }
         public ICommand KickUserCommand { get; private set; }
+        public ICommand BanUserCommand { get; private set; }
 
         private void InitializeFields(SignalRChatService chatService)
         {
             SendChatMessageCommand = new SendChatCommand(this, chatService);
             ReconnectionCommand = new ReconnectionCommand(this);
+            BanUserCommand = new BanUserCommand(this);
             KickUserCommand = new KickUserCommand(this);
-            RemoveToolBarOverflowCommand = new RemoveToolBarOverwlowCommand();
+            RemoveToolBarOverflowCommand = new RemoveToolBarOverfowCommand();
             Messages = new();
-
-            //Context = new ObservableCollection<UserContextMenu>()
-            //{
-            //    new UserContextMenu()
-            //    {
-            //        Header = "Ban",
-            //        Role = (int)UserRole.Admin,
-            //        Command = new BanUserCommand(chatService)
-            //    }
-            //};
         }
         private void InitializeEvents(SignalRChatService chatService)
         {
@@ -98,11 +103,6 @@ namespace ChatClient.ViewModels
             chatService.ReceivedBan += ChatService_ReceivedBan;
             chatService.ReceivedKick += ChatService_ReceivedKick;
         }
-
-        //private void GetBan_Action()
-        //{
-        //    OnPropertyChanged(nameof(IsBanned));
-        //}
 
         public static ChatViewModel CreateConnectedViewModel(SignalRChatService chatService, NavigationStore navigationStore)
         {
@@ -145,10 +145,10 @@ namespace ChatClient.ViewModels
             Messages.Add(message);
         }
 
-        private void ChatService_ReceivedBan(bool banResult)
+        private void ChatService_ReceivedBan(BanStatusModel model)
         {
-            UserStatusService.IsBanned = banResult;
-            OnPropertyChanged(nameof(IsBanned));
+            //UserStatusService.IsBanned = banResult;
+            //OnPropertyChanged(nameof(IsBanned));
         }
 
         private async void ChatService_ReceivedKick()
@@ -181,7 +181,5 @@ namespace ChatClient.ViewModels
                 OnPropertyChanged();
             }
         }
-
-        public bool IsBanned => UserStatusService.IsBanned;
     }
 }

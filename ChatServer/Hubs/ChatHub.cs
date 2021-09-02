@@ -10,6 +10,8 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
+using SharedItems.Models.AuthenticationModels;
+using SharedItems.Models.StatusModels;
 
 namespace ChatServer.Hubs
 {
@@ -27,7 +29,7 @@ namespace ChatServer.Hubs
             _roleManager = roleManager;
             _dbContext = dbContext;
 
-            _account = new AccountController(_userManager);
+            _account = new AccountController(_userManager, _dbContext);
             _roleController = new RoleController(_roleManager, _userManager);
         }
 
@@ -66,7 +68,8 @@ namespace ChatServer.Hubs
 
                 if (user != null)
                 {
-                   //List<IdentityError> errors = await _roleController.Create("User");
+                    //List<IdentityError> errors = await _roleController.Create("User");
+                    //List<IdentityError> errors2 = await _roleController.Create("Admin");
 
                     //await _roleController.Assign(model.Username, new List<string>()
                     //{
@@ -150,14 +153,39 @@ namespace ChatServer.Hubs
             await Clients.All.SendAsync("ReceiveMessage", messageModel);
         }
 
-        public async Task SendUserBan(string username)
+        public async Task SendUserBan(string username, BanStatusModel model)
+        {
+            UserHandler userHandler = Account.Users.FirstOrDefault(u => u.ConnectedUsername == username);
+
+            User user = await _userManager.FindByNameAsync(username);
+
+            //_userManager.Users.FirstOrDefault(u => u == user).UserStatus.BanStatus = model;
+            var user2 = _dbContext.Users
+                .Include(u=>u.UserStatus)
+                .ThenInclude(userStatus=>userStatus.BanStatus)
+                .FirstOrDefault(u => u.UserName == username);
+
+            // user2.UserStatus = new UserStatusModel();
+            user2.UserStatus.BanStatus = model;
+            //user2.IsPermanent = true;
+
+
+            //user.UserStatus.BanStatus = model;
+
+            //_dbContext.Entry(user2).State = EntityState.Modified;
+            _dbContext.Users.Update(user2);
+
+            
+            int a = await _dbContext.SaveChangesAsync();
+
+            await Clients.Client(userHandler.ConnectedIds).SendAsync("ReceiveBan", model);
+        }
+
+        public async Task SendKickUser(string username)
         {
             UserHandler user = Account.Users.FirstOrDefault(u => u.ConnectedUsername == username);
 
-            if (user.ConnectedIds != Context.ConnectionId)
-            {
-                await Clients.Client(user.ConnectedIds).SendAsync("ReceiveBan", true);
-            }
+            await Clients.Client(user.ConnectedIds).SendAsync("ReceiveKick");
         }
 
         public override Task OnConnectedAsync()
@@ -170,13 +198,6 @@ namespace ChatServer.Hubs
             Account.Users.Add(user);
 
             return base.OnConnectedAsync();
-        }
-
-        public async Task SendKickUser(string username)
-        {
-            UserHandler user = Account.Users.FirstOrDefault(u => u.ConnectedUsername == username);
-
-            await Clients.Client(user.ConnectedIds).SendAsync("ReceiveKick");
         }
 
         public override async Task<Task> OnDisconnectedAsync(Exception exception)

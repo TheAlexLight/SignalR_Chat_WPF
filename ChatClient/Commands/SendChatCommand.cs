@@ -10,7 +10,7 @@ using System.Windows.Input;
 
 namespace ChatClient.Commands
 {
-    public class SendChatCommand : ICommand
+    public class SendChatCommand : CommandBase
     {
         private readonly ChatViewModel _viewModel;
         private readonly SignalRChatService _chatService;
@@ -21,14 +21,7 @@ namespace ChatClient.Commands
             _chatService = chatService;
         }
 
-        public event EventHandler CanExecuteChanged;
-
-        public bool CanExecute(object parameter)
-        {
-            return !UserStatusService.IsBanned;
-        }
-
-        public async void Execute(object parameter)
+        public override async void Execute(object parameter)
         {
             try
             {
