@@ -13,13 +13,18 @@
              d:DesignHeight="400" d:DesignWidth="550">
 
     <UserControl.Resources>
-        <converters:DurationTimeConverter x:Key="durationTimeConverter"/>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="../Resources/Images/Send.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+            <converters:DurationTimeConverter x:Key="durationTimeConverter"/>
+        </ResourceDictionary>
     </UserControl.Resources>
 
     <Grid Background="#C0C8D5">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="2*"/>
             <ColumnDefinition/>
+            <ColumnDefinition Width="164"/>
             <ColumnDefinition  Style="{StaticResource toolBarColumn}"/>
         </Grid.ColumnDefinitions>
 
@@ -27,7 +32,7 @@
             <Grid.RowDefinitions>
                 <RowDefinition Height="35"/>
                 <RowDefinition Height="4*"/>
-                <RowDefinition/>
+                <RowDefinition Height="45"/>
             </Grid.RowDefinitions>
 
             <Border Style="{StaticResource chatBorder}"
@@ -42,16 +47,18 @@
             <Grid Grid.Row="2"
                   Background="{StaticResource typeMessageGridColors}">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="2.5*"/>
+                    <ColumnDefinition Width="3.7*"/>
                     <ColumnDefinition/>
                 </Grid.ColumnDefinitions>
 
                 <TextBox Grid.Column="0"    
                      Style="{StaticResource typeMessage}"
                      Text="{Binding Message}"/>
-                <Button Grid.Column="1"
-                        Style="{StaticResource sendMessage}"
-                        Command="{Binding SendChatMessageCommand}"/>
+                <Button Margin="0,0,10,0" Grid.Column="1" Width="50" Height="45"  
+                        Command="{Binding SendChatMessageCommand}"
+                        Style="{StaticResource sendImageMessage}">
+                    <Image Stretch="Fill" Source="{StaticResource directDrawingImage}" />
+                </Button>
             </Grid>
         </Grid>
 
