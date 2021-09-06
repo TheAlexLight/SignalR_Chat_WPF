@@ -1,6 +1,7 @@
 ﻿using ChatClient.Commands;
 using ChatClient.Commands.AuthenticationCommands;
 using ChatClient.Enums;
+using ChatClient.Interfaces;
 using ChatClient.Services;
 using ChatClient.Stores;
 using Microsoft.AspNetCore.SignalR.Client;
@@ -15,13 +16,13 @@ namespace ChatClient.ViewModels
 {
    public class ChatViewModelBase : ViewModelBase
     {
-        public SignalRChatService ChatService { get; }
-        public NavigationStore NavigationStore { get; }
+        public ISignalRChatService ChatService { get; }
+        public INavigator Navigator { get; }
 
-        public ChatViewModelBase(SignalRChatService chatService, NavigationStore navigationStore)
+        public ChatViewModelBase(INavigator navigator, ISignalRChatService signalChatRService)
         {
-            ChatService = chatService;
-            NavigationStore = navigationStore;
+            ChatService = signalChatRService;
+            Navigator = navigator;
 
             ChatService.Connection.Reconnecting += Connection_Reconnecting;
             ChatService.Connection.Reconnected += Connection_Reconnected;
@@ -71,9 +72,9 @@ namespace ChatClient.ViewModels
         {
             if (ChatService.Connection.State == HubConnectionState.Disconnected)
             {
-                 LoginConnectionService connectionService = new(NavigationStore, ChatService);
+                 LoginConnectionService connectionService = new(Navigator, ChatService);
 
-                NavigationStore.CurrentViewModel = await connectionService.CreateConnectedViewModel(ChatService, viewModel);
+                Navigator.CurrentViewModel = await connectionService.CreateConnectedViewModel(ChatService, viewModel);
             }
 
             return ChatService.Connection.State;

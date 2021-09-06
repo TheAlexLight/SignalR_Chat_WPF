@@ -1,4 +1,5 @@
-﻿using ChatClient.Stores;
+﻿using ChatClient.Interfaces;
+using ChatClient.Stores;
 using ChatClient.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -11,18 +12,18 @@ namespace ChatClient.Services
     public class NavigationService<TViewModel>
         where TViewModel : ViewModelBase
     {
-        private readonly NavigationStore _navigationStore;
+        private readonly INavigator _navigator;
         private readonly Func<TViewModel> _createViewModel;
 
-        public NavigationService(NavigationStore navigationStore, Func<TViewModel> createViewModel )
+        public NavigationService(INavigator navigator, Func<TViewModel> createViewModel )
         {
-            _navigationStore = navigationStore;
+            _navigator = navigator;
             _createViewModel = createViewModel;
         }
 
         public void Navigate() 
         {
-            _navigationStore.CurrentViewModel = _createViewModel();
+            _navigator.CurrentViewModel = _createViewModel();
         }
     }
 }

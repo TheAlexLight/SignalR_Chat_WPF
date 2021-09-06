@@ -3,6 +3,7 @@ using ChatClient.Commands.AuthenticationCommands;
 using ChatClient.Commands.ContextMenuCommands;
 using ChatClient.Commands.ToolBarCommands;
 using ChatClient.Enums;
+using ChatClient.Interfaces;
 using ChatClient.Models;
 using ChatClient.Services;
 using ChatClient.Stores;
@@ -22,7 +23,7 @@ namespace ChatClient.ViewModels
 {
     public class ChatViewModel : ChatViewModelBase
     {
-        public ChatViewModel(SignalRChatService chatService, NavigationStore navigationStore) : base(chatService, navigationStore)
+        public ChatViewModel(INavigator navigator, ISignalRChatService chatService) : base(navigator, chatService)
         {
             //_getBan += GetBan_Action;
 
@@ -37,7 +38,7 @@ namespace ChatClient.ViewModels
                 window.Width = 550;
                 window.Top = 110;
                 window.Left = 415;
-                window.MinWidth = 400;
+                window.MinWidth = 470;
                 window.MinHeight = 350;
             }
         }
@@ -85,7 +86,7 @@ namespace ChatClient.ViewModels
         public ICommand KickUserCommand { get; private set; }
         public ICommand BanUserCommand { get; private set; }
 
-        private void InitializeFields(SignalRChatService chatService)
+        private void InitializeFields(ISignalRChatService chatService)
         {
             SendChatMessageCommand = new SendChatCommand(this, chatService);
             ReconnectionCommand = new ReconnectionCommand(this);
@@ -94,7 +95,7 @@ namespace ChatClient.ViewModels
             RemoveToolBarOverflowCommand = new RemoveToolBarOverfowCommand();
             Messages = new();
         }
-        private void InitializeEvents(SignalRChatService chatService)
+        private void InitializeEvents(ISignalRChatService chatService)
         {
             chatService.MessageReceived += ChatService_MessageReceived;
             chatService.UserListReceived += ChatService_UserListReceived;
@@ -104,9 +105,9 @@ namespace ChatClient.ViewModels
             chatService.ReceivedKick += ChatService_ReceivedKick;
         }
 
-        public static ChatViewModel CreateConnectedViewModel(SignalRChatService chatService, NavigationStore navigationStore)
+        public static ChatViewModel CreateConnectedViewModel(ISignalRChatService chatService, INavigator navigator)
         {
-            ChatViewModel viewModel = new(chatService, navigationStore);
+            ChatViewModel viewModel = new(navigator, chatService);
 
             chatService.Connect().ContinueWith(task =>
             {
@@ -155,8 +156,8 @@ namespace ChatClient.ViewModels
         {
             await ChatService.Connection.StopAsync();
 
-            NavigationService<LoginViewModel> navigationService = new(NavigationStore,
-          () => new LoginViewModel(NavigationStore, ChatService));
+            NavigationService<LoginViewModel> navigationService = new(Navigator,
+          () => new LoginViewModel(Navigator, ChatService));
 
             navigationService.Navigate();
             MessageBox.Show("You have been kicked.");

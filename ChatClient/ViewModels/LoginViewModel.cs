@@ -1,6 +1,8 @@
 ﻿using ChatClient.Commands;
 using ChatClient.Commands.AuthenticationCommands;
+using ChatClient.Commands.NavigatonCommands;
 using ChatClient.Enums;
+using ChatClient.Interfaces;
 using ChatClient.Services;
 using ChatClient.Stores;
 using ChatClient.Views;
@@ -18,14 +20,14 @@ namespace ChatClient.ViewModels
 {
    public class LoginViewModel : ChatViewModelBase
     {
-        public LoginViewModel(NavigationStore navigationStore, SignalRChatService chatService) : base(chatService, navigationStore)
+        public LoginViewModel(INavigator navigator, ISignalRChatService chatService) : base(navigator, chatService)
         {
             base.ChatService.ReceiveLoginResult += ChatService_ReceiveLoginResult;
 
             LoginCommand = new LoginCommand(this);
             NavigateRegistrationCommand = new NavigateCommand<RegistrationViewModel>
-                    (new NavigationService<RegistrationViewModel>(navigationStore,
-                    () => new RegistrationViewModel(navigationStore, chatService)));
+                    (new NavigationService<RegistrationViewModel>(navigator,
+                    () => new RegistrationViewModel(navigator, chatService)));
 
             ConnectionStatusValue = ConnectionStatus.Connecting;
 
@@ -48,8 +50,8 @@ namespace ChatClient.ViewModels
         {
             if (loginResult)
             {
-                NavigationService<ChatViewModel> navigationService = new(NavigationStore,
-                       () => new ChatViewModel(base.ChatService, NavigationStore));
+                NavigationService<ChatViewModel> navigationService = new(Navigator,
+                       () => new ChatViewModel(Navigator, ChatService));
                 navigationService.Navigate();
             }
             else

@@ -1,7 +1,10 @@
-﻿using ChatClient.Services;
+﻿using ChatClient.Factories.ViewModelFactories;
+using ChatClient.Interfaces;
+using ChatClient.Services;
 using ChatClient.Stores;
 using ChatClient.ViewModels;
 using Microsoft.AspNetCore.SignalR.Client;
+using Microsoft.Extensions.DependencyInjection;
 using SharedItems.Models;
 using System;
 using System.Threading.Tasks;
@@ -16,27 +19,37 @@ namespace ChatClient
     {
         protected override void OnStartup(StartupEventArgs e)
         {
-            HubConnection connection = new HubConnectionBuilder()
-                    .WithUrl("http://localhost:5000/chat")
-                    .WithAutomaticReconnect()
-                    .Build();
+            IServiceProvider serviceProvider = CreateServiceProvider();
 
-            NavigationStore navigationStore = new();
-            SignalRChatService chatService = new(connection);
-            ChatViewModelBase viewModel = new LoginViewModel(navigationStore, chatService);
-
-            navigationStore.CurrentViewModel = viewModel;
-
-            MainWindow window = new()
-            {
-                DataContext = new MainViewModel(navigationStore),
-                Top = 80,
-                Left = 425,
-                Width = 385,
-                Height = 385
-            };
+            Window window = serviceProvider.GetRequiredService<WindowConfigurationService>().SetWindowStartupData(
+                     top: 80,
+                     left: 425,
+                     width: 385,
+                     height: 385);
 
             window.Show();
+        }
+
+        private IServiceProvider CreateServiceProvider()
+        {
+            IServiceCollection services = new ServiceCollection();
+
+            services.AddSingleton<ISignalRChatService, SignalRChatService>();
+            services.AddSingleton<HubConnectionBuilder>();
+            services.AddSingleton<WindowConfigurationService>();
+
+            services.AddSingleton<IViewModelAbstractFactory, ViewModelFactory>();
+            services.AddSingleton<IViewModelConcreteFactory<LoginViewModel>, LoginViewModelFactory>();
+            services.AddSingleton<IViewModelConcreteFactory<RegistrationViewModel>, RegistrationViewModelFactory>();
+            services.AddSingleton<IViewModelConcreteFactory<ChatViewModel>, ChatViewModelFactory>();
+
+            services.AddScoped<INavigator, NavigationStore>();
+            services.AddScoped<MainViewModel>();
+            services.AddScoped<ChatViewModelBase, LoginViewModel>();
+
+            services.AddScoped<Window>(s=> new MainWindow(s.GetRequiredService<MainViewModel>()));
+
+            return services.BuildServiceProvider();
         }
     }
 }

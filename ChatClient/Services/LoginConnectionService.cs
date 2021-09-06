@@ -1,4 +1,5 @@
 ﻿using ChatClient.Enums;
+using ChatClient.Interfaces;
 using ChatClient.Stores;
 using ChatClient.ViewModels;
 using System;
@@ -12,16 +13,16 @@ namespace ChatClient.Services
 {
     public class LoginConnectionService
     {
-        public NavigationStore NavigationStore { get; }
-        public  SignalRChatService ChatService { get; }
+        public INavigator Navigator { get; }
+        public ISignalRChatService ChatService { get; }
 
-        public LoginConnectionService(NavigationStore navigationStore, SignalRChatService chatService)
+        public LoginConnectionService(INavigator navigator, ISignalRChatService chatService)
         {
-            NavigationStore = navigationStore;
+            Navigator = navigator;
             ChatService = chatService;
         }
 
-        public async Task<ChatViewModelBase> CreateConnectedViewModel (SignalRChatService chatService, ChatViewModelBase viewModelType)
+        public async Task<ChatViewModelBase> CreateConnectedViewModel (ISignalRChatService chatService, ChatViewModelBase viewModelType)
         {
             ChatViewModelBase viewModel = viewModelType;
 

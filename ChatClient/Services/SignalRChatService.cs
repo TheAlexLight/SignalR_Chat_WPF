@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using ChatClient.Interfaces;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.SignalR.Client;
 using SharedItems.Models;
 using SharedItems.Models.AuthenticationModels;
@@ -12,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace ChatClient.Services
 {
-    public class SignalRChatService
+    public class SignalRChatService : ISignalRChatService
     {
         public HubConnection Connection { get; }
 
@@ -25,9 +26,12 @@ namespace ChatClient.Services
         public event Action<BanStatusModel> ReceivedBan;
         public event Action ReceivedKick;
 
-        public SignalRChatService(HubConnection connection)
+        public SignalRChatService(HubConnectionBuilder connectionBuilder)
         {
-            Connection = connection;
+            Connection = connectionBuilder
+                    .WithUrl("http://localhost:5000/chat")
+                    .WithAutomaticReconnect()
+                    .Build(); ;
 
             GetChatHubMessagesInvoke();
         }

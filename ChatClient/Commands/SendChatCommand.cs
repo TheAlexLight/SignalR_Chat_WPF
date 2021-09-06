@@ -1,4 +1,5 @@
-﻿using ChatClient.Services;
+﻿using ChatClient.Interfaces;
+using ChatClient.Services;
 using ChatClient.ViewModels;
 using SharedItems.Models;
 using System;
@@ -13,9 +14,9 @@ namespace ChatClient.Commands
     public class SendChatCommand : CommandBase
     {
         private readonly ChatViewModel _viewModel;
-        private readonly SignalRChatService _chatService;
+        private readonly ISignalRChatService _chatService;
 
-        public SendChatCommand(ChatViewModel viewModel, SignalRChatService chatService)
+        public SendChatCommand(ChatViewModel viewModel, ISignalRChatService chatService)
         {
             _viewModel = viewModel;
             _chatService = chatService;

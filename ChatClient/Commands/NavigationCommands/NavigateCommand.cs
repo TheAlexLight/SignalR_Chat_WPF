@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ChatClient.Commands
+namespace ChatClient.Commands.NavigatonCommands
 {
     public class NavigateCommand<TViewModel> : CommandBase
         where TViewModel : ViewModelBase

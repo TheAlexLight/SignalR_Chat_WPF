@@ -14,12 +14,10 @@ namespace ChatClient.Commands.AuthenticationCommands
     public class RegistrationCommand : CommandBase
     {
         private readonly RegistrationViewModel _viewModel;
-        private readonly SignalRChatService _chatService;
 
-        public RegistrationCommand(RegistrationViewModel viewModel, SignalRChatService chatService)
+        public RegistrationCommand(RegistrationViewModel viewModel)
         {
             _viewModel = viewModel;
-            _chatService = chatService;
         }
 
         public override bool CanExecute(object parameter)
@@ -42,7 +40,7 @@ namespace ChatClient.Commands.AuthenticationCommands
                     PasswordConfirm = _viewModel.PasswordConfirm,
                 };
 
-                await _chatService.Registration(userData);
+                await _viewModel.ChatService.Registration(userData);
             }
 
             _viewModel.IsLoading = false;

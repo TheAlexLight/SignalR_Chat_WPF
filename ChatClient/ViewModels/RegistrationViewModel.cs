@@ -1,5 +1,7 @@
 ﻿using ChatClient.Commands;
 using ChatClient.Commands.AuthenticationCommands;
+using ChatClient.Commands.NavigatonCommands;
+using ChatClient.Interfaces;
 using ChatClient.Services;
 using ChatClient.Stores;
 using Microsoft.AspNetCore.Identity;
@@ -14,17 +16,17 @@ namespace ChatClient.ViewModels
 {
     public class RegistrationViewModel : ChatViewModelBase, IDataErrorInfo/*, INotifyDataErrorInfo*/
     {
-        public RegistrationViewModel(NavigationStore navigationStore, SignalRChatService chatService) : base(chatService, navigationStore)
+        public RegistrationViewModel(INavigator navigator, ISignalRChatService chatService) : base(navigator, chatService)
         {
             Window window = Application.Current.MainWindow;
             window.Height = 545;
             window.Width = 385;
 
             NavigateLoginCommand = new NavigateCommand<LoginViewModel>(
-                    new NavigationService<LoginViewModel>(NavigationStore,
-                    () => new LoginViewModel(NavigationStore, chatService)));
+                    new NavigationService<LoginViewModel>(Navigator,
+                    () => new LoginViewModel(Navigator, chatService)));
 
-            RegistrationCommand = new RegistrationCommand(this, chatService);
+            RegistrationCommand = new RegistrationCommand(this);
 
             chatService.ReceiveRegistrationResult += ChatService_ReceiveRegistrationResult;
         }
@@ -110,8 +112,8 @@ namespace ChatClient.ViewModels
             if (registrationResult)
             {
                 MessageBox.Show("Registration Succeded");
-                NavigationService<LoginViewModel> navigationService = new(NavigationStore,
-                        () => new LoginViewModel(NavigationStore, ChatService));
+                NavigationService<LoginViewModel> navigationService = new(Navigator,
+                        () => new LoginViewModel(Navigator, ChatService));
                 navigationService.Navigate();
             }
             else

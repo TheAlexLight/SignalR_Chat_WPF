@@ -1,4 +1,5 @@
-﻿using ChatClient.ViewModels;
+﻿using ChatClient.Interfaces;
+using ChatClient.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace ChatClient.Stores
 {
-    public class NavigationStore
+    public class NavigationStore : INavigator
     {
         public event Action CurrentViewModelChanged;
 
@@ -18,7 +19,7 @@ namespace ChatClient.Stores
             {
                 _currentViewModel = value;
                 OnCurrentViewModelChanged();
-            } 
+            }
         }
 
         private void OnCurrentViewModelChanged()
