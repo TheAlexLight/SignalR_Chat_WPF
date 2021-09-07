@@ -1,4 +1,5 @@
 ﻿using ChatClient.Interfaces;
+using ChatClient.Services;
 using ChatClient.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -12,16 +13,19 @@ namespace ChatClient.Factories.ViewModelFactories
     {
         private readonly INavigator _navigator;
         private readonly ISignalRChatService _chatService;
+        private readonly IWindowConfigurationService _windowConfigurationService;
 
-        public ChatViewModelFactory(INavigator navigator, ISignalRChatService chatService)
+        public ChatViewModelFactory(INavigator navigator, ISignalRChatService chatService
+                , IWindowConfigurationService windowConfigurationService)
         {
             _navigator = navigator;
             _chatService = chatService;
+            _windowConfigurationService = windowConfigurationService;
         }
 
         public ChatViewModel CreateViewModel()
         {
-            return new ChatViewModel(_navigator, _chatService);
+            return new ChatViewModel(_navigator, _chatService, _windowConfigurationService);
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ChatClient.Interfaces;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -7,23 +8,37 @@ using System.Windows;
 
 namespace ChatClient.Services
 {
-    public class WindowConfigurationService
+    public class WindowConfigurationService : IWindowConfigurationService
     {
-        private readonly Window _window;
-
-        public WindowConfigurationService(Window window)
+        public Window SetWindowStartupData(Window window, double left, double top, double width, double height)
         {
-           _window = window;
+            window.Left = left;
+            window.Top = top;
+            window.Width = width;
+            window.Height = height;
+
+            return window;
         }
 
-        public Window SetWindowStartupData(double left, double top, double width, double height)
+        public Window SetWindowStartupData(Window window, double left, double top, double width, double height, 
+                double minWidth, double minHeight)
         {
-            _window.Left = left;
-            _window.Top = top;
-            _window.Width = width;
-            _window.Height = height;
+            window.Left = left;
+            window.Top = top;
+            window.Width = width;
+            window.Height = height;
+            window.MinWidth = minWidth;
+            window.MinHeight = minHeight;
 
-            return _window;
+            return window;
+        }
+
+        public Window SetWindowStartupData(Window window, double width, double height)
+        {
+            window.Width = width;
+            window.Height = height;
+
+            return window;
         }
     }
 }

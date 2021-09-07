@@ -20,14 +20,15 @@ namespace ChatClient.ViewModels
 {
    public class LoginViewModel : ChatViewModelBase
     {
-        public LoginViewModel(INavigator navigator, ISignalRChatService chatService) : base(navigator, chatService)
+        public LoginViewModel(INavigator navigator, ISignalRChatService chatService
+                , IWindowConfigurationService windowConfigurationService) : base(navigator, chatService, windowConfigurationService)
         {
             base.ChatService.ReceiveLoginResult += ChatService_ReceiveLoginResult;
 
             LoginCommand = new LoginCommand(this);
             NavigateRegistrationCommand = new NavigateCommand<RegistrationViewModel>
                     (new NavigationService<RegistrationViewModel>(navigator,
-                    () => new RegistrationViewModel(navigator, chatService)));
+                    () => new RegistrationViewModel(navigator, chatService, WindowConfigurationService)));
 
             ConnectionStatusValue = ConnectionStatus.Connecting;
 
@@ -35,15 +36,14 @@ namespace ChatClient.ViewModels
 
             if (window != null)
             {
-                window.Height = 385;
-                window.Width = 385;
+                windowConfigurationService.SetWindowStartupData(window: window, width: 385, height: 385);
             }
         }
 
         private string _username;
         private string _password;
 
-        public LoginCommand LoginCommand { get; }
+        public CommandBase LoginCommand { get; }
         public ICommand NavigateRegistrationCommand { get; }
 
         private void ChatService_ReceiveLoginResult(bool loginResult)
@@ -51,7 +51,7 @@ namespace ChatClient.ViewModels
             if (loginResult)
             {
                 NavigationService<ChatViewModel> navigationService = new(Navigator,
-                       () => new ChatViewModel(Navigator, ChatService));
+                       () => new ChatViewModel(Navigator, ChatService, WindowConfigurationService));
                 navigationService.Navigate();
             }
             else

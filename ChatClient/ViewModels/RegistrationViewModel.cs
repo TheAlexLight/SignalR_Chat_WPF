@@ -16,15 +16,19 @@ namespace ChatClient.ViewModels
 {
     public class RegistrationViewModel : ChatViewModelBase, IDataErrorInfo/*, INotifyDataErrorInfo*/
     {
-        public RegistrationViewModel(INavigator navigator, ISignalRChatService chatService) : base(navigator, chatService)
+        public RegistrationViewModel(INavigator navigator, ISignalRChatService chatService
+               , IWindowConfigurationService windowConfigurationService) : base(navigator, chatService, windowConfigurationService)
         {
             Window window = Application.Current.MainWindow;
-            window.Height = 545;
-            window.Width = 385;
+
+            if (window != null)
+            {
+                windowConfigurationService.SetWindowStartupData(window: window, width: 385, height: 545);
+            }
 
             NavigateLoginCommand = new NavigateCommand<LoginViewModel>(
                     new NavigationService<LoginViewModel>(Navigator,
-                    () => new LoginViewModel(Navigator, chatService)));
+                    () => new LoginViewModel(Navigator, chatService, windowConfigurationService)));
 
             RegistrationCommand = new RegistrationCommand(this);
 
@@ -113,7 +117,7 @@ namespace ChatClient.ViewModels
             {
                 MessageBox.Show("Registration Succeded");
                 NavigationService<LoginViewModel> navigationService = new(Navigator,
-                        () => new LoginViewModel(Navigator, ChatService));
+                        () => new LoginViewModel(Navigator, ChatService, WindowConfigurationService));
                 navigationService.Navigate();
             }
             else

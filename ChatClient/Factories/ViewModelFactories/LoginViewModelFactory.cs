@@ -13,16 +13,19 @@ namespace ChatClient.Factories.ViewModelFactories
     {
         private readonly INavigator _navigator;
         private readonly ISignalRChatService _chatService;
+        private readonly IWindowConfigurationService _windowConfigurationService;
 
-        public LoginViewModelFactory(INavigator navigator, ISignalRChatService chatService)
+        public LoginViewModelFactory(INavigator navigator, ISignalRChatService chatService
+                ,IWindowConfigurationService windowConfigurationService)
         {
             _navigator = navigator;
             _chatService = chatService;
+            _windowConfigurationService = windowConfigurationService;
         }
 
         public LoginViewModel CreateViewModel()
         {
-            return new LoginViewModel(_navigator, _chatService);
+            return new LoginViewModel(_navigator, _chatService, _windowConfigurationService);
         }
     }
 }

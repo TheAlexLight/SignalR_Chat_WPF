@@ -21,7 +21,11 @@ namespace ChatClient
         {
             IServiceProvider serviceProvider = CreateServiceProvider();
 
-            Window window = serviceProvider.GetRequiredService<WindowConfigurationService>().SetWindowStartupData(
+            IWindowConfigurationService service = serviceProvider.GetRequiredService<IWindowConfigurationService>();
+            Window window = serviceProvider.GetRequiredService<Window>();
+
+            window = service.SetWindowStartupData(
+                     window: window,
                      top: 80,
                      left: 425,
                      width: 385,
@@ -36,7 +40,7 @@ namespace ChatClient
 
             services.AddSingleton<ISignalRChatService, SignalRChatService>();
             services.AddSingleton<HubConnectionBuilder>();
-            services.AddSingleton<WindowConfigurationService>();
+            services.AddSingleton<IWindowConfigurationService, WindowConfigurationService>();
 
             services.AddSingleton<IViewModelAbstractFactory, ViewModelFactory>();
             services.AddSingleton<IViewModelConcreteFactory<LoginViewModel>, LoginViewModelFactory>();

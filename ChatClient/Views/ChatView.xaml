@@ -32,7 +32,7 @@
             <Grid.RowDefinitions>
                 <RowDefinition Height="35"/>
                 <RowDefinition Height="4*"/>
-                <RowDefinition Height="45"/>
+                <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
 
             <Border Style="{StaticResource chatBorder}"

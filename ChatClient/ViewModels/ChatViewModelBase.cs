@@ -18,11 +18,14 @@ namespace ChatClient.ViewModels
     {
         public ISignalRChatService ChatService { get; }
         public INavigator Navigator { get; }
+        public IWindowConfigurationService WindowConfigurationService { get; }
 
-        public ChatViewModelBase(INavigator navigator, ISignalRChatService signalChatRService)
+        public ChatViewModelBase(INavigator navigator, ISignalRChatService signalChatRService
+                , IWindowConfigurationService windowConfigurationServie)
         {
             ChatService = signalChatRService;
             Navigator = navigator;
+            WindowConfigurationService = windowConfigurationServie;
 
             ChatService.Connection.Reconnecting += Connection_Reconnecting;
             ChatService.Connection.Reconnected += Connection_Reconnected;

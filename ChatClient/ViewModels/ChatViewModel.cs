@@ -23,7 +23,8 @@ namespace ChatClient.ViewModels
 {
     public class ChatViewModel : ChatViewModelBase
     {
-        public ChatViewModel(INavigator navigator, ISignalRChatService chatService) : base(navigator, chatService)
+        public ChatViewModel(INavigator navigator, ISignalRChatService chatService
+               , IWindowConfigurationService windowConfigurationService) : base(navigator, chatService, windowConfigurationService)
         {
             //_getBan += GetBan_Action;
 
@@ -34,12 +35,14 @@ namespace ChatClient.ViewModels
 
             if (window != null)
             {
-                window.Height = 400;
-                window.Width = 550;
-                window.Top = 110;
-                window.Left = 415;
-                window.MinWidth = 470;
-                window.MinHeight = 350;
+                windowConfigurationService.SetWindowStartupData(
+                    window: window,
+                    left: 415,
+                    top: 110,
+                    width: 550,
+                    height: 400,
+                    minWidth: 470,
+                    minHeight: 350);
             }
         }
 
@@ -105,9 +108,10 @@ namespace ChatClient.ViewModels
             chatService.ReceivedKick += ChatService_ReceivedKick;
         }
 
-        public static ChatViewModel CreateConnectedViewModel(ISignalRChatService chatService, INavigator navigator)
+        public static ChatViewModel CreateConnectedViewModel(ISignalRChatService chatService, INavigator navigator
+                , IWindowConfigurationService windowConfiguration)
         {
-            ChatViewModel viewModel = new(navigator, chatService);
+            ChatViewModel viewModel = new(navigator, chatService, windowConfiguration);
 
             chatService.Connect().ContinueWith(task =>
             {
@@ -157,7 +161,7 @@ namespace ChatClient.ViewModels
             await ChatService.Connection.StopAsync();
 
             NavigationService<LoginViewModel> navigationService = new(Navigator,
-          () => new LoginViewModel(Navigator, ChatService));
+          () => new LoginViewModel(Navigator, ChatService, WindowConfigurationService));
 
             navigationService.Navigate();
             MessageBox.Show("You have been kicked.");
