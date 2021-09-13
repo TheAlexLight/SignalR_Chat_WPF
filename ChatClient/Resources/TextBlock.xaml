@@ -38,4 +38,11 @@
         <Setter Property="FontWeight" Value="SemiBold"/>
     </Style>
 
+    <Style x:Key="redTitle" TargetType="{x:Type TextBlock}">
+        <Setter Property="Foreground" Value="DarkRed"/>
+        <Setter Property="FontSize" Value="28"/>
+        <Setter Property="HorizontalAlignment" Value="Center"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+    </Style>
+
 </ResourceDictionary>

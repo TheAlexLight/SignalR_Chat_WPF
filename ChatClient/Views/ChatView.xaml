@@ -78,7 +78,7 @@
                 </Border>
 
                 <ListBox Grid.Row="1" x:Name="activeUsersListBox"
-                     Style="{StaticResource activeUsers}"/>
+                     Style="{StaticResource usersBox}"/>
             </Grid>
         </Border>
 
@@ -102,7 +102,7 @@
                                                    CommandParameter="{Binding ElementName=toolBar}"/>
                         </i:EventTrigger>
                     </i:Interaction.Triggers>
-                    <Menu>
+                    <Menu Style="{StaticResource banMenu}">
                         <MenuItem Header="Ban">
                             <MenuItem Header="10 min" 
                                       viewmodels:ChatViewModel.DurationTime="10"
@@ -110,6 +110,12 @@
                             </MenuItem>
                             <MenuItem Header="20 min" 
                                       viewmodels:ChatViewModel.DurationTime="20"
+                                      Style="{StaticResource banMenuItem}"/>
+                            <MenuItem Header="30 min" 
+                                      viewmodels:ChatViewModel.DurationTime="30"
+                                      Style="{StaticResource banMenuItem}"/>
+                            <MenuItem Header="60 min" 
+                                      viewmodels:ChatViewModel.DurationTime="60"
                                       Style="{StaticResource banMenuItem}"/>
                             <MenuItem Header="Permanent"
                                       viewmodels:ChatViewModel.DurationTime="Permanent"

@@ -41,7 +41,7 @@ namespace ChatClient.Commands.ContextMenuCommands
                         model.Duration = Int32.Parse(duration);
 
                         model.EndTime = DateTime.Now;
-                        model.EndTime.AddMinutes(model.Duration);
+                       model.EndTime = model.EndTime.AddMinutes(model.Duration);
                     }
 
                     model.IsBanned = true;

@@ -1,6 +1,5 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:local="clr-namespace:ChatClient.Models"
                     xmlns:converters="clr-namespace:ChatClient.Converters"
                     xmlns:extensions="clr-namespace:ChatClient.Extensions">
 
@@ -20,25 +19,6 @@
         <Setter Property="FontSize" Value="20"/>
         <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
         <Setter Property="SelectedIndex" Value="0"/>
-        <!--<Setter Property="ContextMenu">
-            <Setter.Value>
-                <ContextMenu ItemsSource="{Binding ContextMenuActions}">
-                    <ContextMenu.ItemContainerStyle>
-                        <Style TargetType="{x:Type MenuItem}">
-                            <Setter Property="Command" Value="{Binding Command}"/>
-                            <Setter Property="CommandParameter" 
-                                    Value="{Binding RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}, Path=PlacementTarget.SelectedItem}"/>
-                        </Style>
-                    </ContextMenu.ItemContainerStyle>
-                    <ContextMenu.ItemTemplate>
-                        <HierarchicalDataTemplate DataType="{x:Type local:UserContextMenu}" 
-                                                  ItemsSource="{Binding MenuItems}">
-                            <TextBlock Text="{Binding Header}"/>
-                        </HierarchicalDataTemplate>
-                    </ContextMenu.ItemTemplate>
-                </ContextMenu>
-            </Setter.Value>
-        </Setter>-->
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate>
@@ -75,35 +55,7 @@
             </Setter.Value>
         </Setter>
     </Style>
-
-    <Style x:Key="activeUsers" TargetType="{x:Type ListBox}" BasedOn="{StaticResource usersBox}">
-        <Setter Property="ItemContainerStyle">
-            <Setter.Value>
-                <Style TargetType="{x:Type ListBoxItem}">
-                    <Setter Property="ContextMenu">
-                        <Setter.Value>
-                            <ContextMenu ItemsSource="{Binding ContextMenuActions}">
-                                <ContextMenu.ItemContainerStyle>
-                                    <Style TargetType="{x:Type MenuItem}">
-                                        <Setter Property="Command" Value="{Binding Command}"/>
-                                        <Setter Property="CommandParameter" 
-                                    Value="{Binding RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}, Path=PlacementTarget.SelectedItem}"/>
-                                    </Style>
-                                </ContextMenu.ItemContainerStyle>
-                                <ContextMenu.ItemTemplate>
-                                    <HierarchicalDataTemplate DataType="{x:Type local:UserContextMenu}" 
-                                                  ItemsSource="{Binding MenuItems}">
-                                        <TextBlock Text="{Binding Header}"/>
-                                    </HierarchicalDataTemplate>
-                                </ContextMenu.ItemTemplate>
-                            </ContextMenu>
-                        </Setter.Value>
-                    </Setter>
-                </Style>
-            </Setter.Value>
-        </Setter>
-    </Style>
-
+    
     <Style x:Key="messagesListBox" TargetType="{x:Type ListBox}" BasedOn="{StaticResource usersBox}">
         <Setter Property="ItemsSource" Value="{Binding Messages}"/>
         <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Hidden"/>

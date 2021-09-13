@@ -63,11 +63,25 @@ namespace ChatServer.Hubs
 
             if (successfulLogin)
             {
-                UserHandler user = Account.Users.FirstOrDefault(a => a.ConnectedIds == Context.ConnectionId);
-                user.ConnectedUsername = model.Username;
+                UserHandler userHandler = Account.Users.FirstOrDefault(a => a.ConnectedIds == Context.ConnectionId);
+                userHandler.ConnectedUsername = model.Username;
 
-                if (user != null)
+                if (userHandler != null)
                 {
+                    User user = _dbContext.Users
+                        .Include(u => u.UserStatus)
+                        .ThenInclude(userStatus => userStatus.BanStatus)
+                        .FirstOrDefault(u => u.UserName == model.Username);
+
+                    await SendCurrentUser(userHandler);
+
+                    if (user.UserStatus.BanStatus.IsBanned)
+                    {
+                        await Clients.Client(userHandler.ConnectedIds).SendAsync("ReceiveBan", user.UserStatus.BanStatus);
+                        return;
+                    }
+
+                    #region
                     //List<IdentityError> errors = await _roleController.Create("User");
                     //List<IdentityError> errors2 = await _roleController.Create("Admin");
 
@@ -82,20 +96,23 @@ namespace ChatServer.Hubs
                     //{
                     //    //TODO: Send result
                     //}
-
-                    await SendCurrentUser(user);
-                    await SendUserList();
-                    await SendSavedMessages();
+                    #endregion
+                    await UpdateChat(userHandler);
                 }
             }
         }
 
         public async Task SendReconnection(string username)
         {
-            UserHandler user = Account.Users.FirstOrDefault(a => a.ConnectedIds == Context.ConnectionId);
-            user.ConnectedUsername = username;
+            UserHandler userHandler = Account.Users.FirstOrDefault(a => a.ConnectedIds == Context.ConnectionId);
+            userHandler.ConnectedUsername = username;
 
-            await SendCurrentUser(user);
+           await UpdateChat(userHandler);
+        }
+
+        private async Task UpdateChat(UserHandler userHandler)
+        {
+            await SendCurrentUser(userHandler);
             await SendUserList();
             await SendSavedMessages();
         }
@@ -121,7 +138,7 @@ namespace ChatServer.Hubs
                 Role = userRole
             };
 
-            await Clients.Caller.SendAsync("ReceiveCurrentUser", currentUser);
+            await Clients.Client(userHandler.ConnectedIds).SendAsync("ReceiveCurrentUser", currentUser);
         }
 
         public async Task SendUserList()
@@ -157,28 +174,21 @@ namespace ChatServer.Hubs
         {
             UserHandler userHandler = Account.Users.FirstOrDefault(u => u.ConnectedUsername == username);
 
-            User user = await _userManager.FindByNameAsync(username);
-
-            //_userManager.Users.FirstOrDefault(u => u == user).UserStatus.BanStatus = model;
-            var user2 = _dbContext.Users
-                .Include(u=>u.UserStatus)
-                .ThenInclude(userStatus=>userStatus.BanStatus)
+            User user = _dbContext.Users
+                .Include(u => u.UserStatus)
+                .ThenInclude(userStatus => userStatus.BanStatus)
                 .FirstOrDefault(u => u.UserName == username);
 
-            // user2.UserStatus = new UserStatusModel();
-            user2.UserStatus.BanStatus = model;
-            //user2.IsPermanent = true;
-
-
-            //user.UserStatus.BanStatus = model;
-
-            //_dbContext.Entry(user2).State = EntityState.Modified;
-            _dbContext.Users.Update(user2);
-
+            user.UserStatus.BanStatus = model;
             
-            int a = await _dbContext.SaveChangesAsync();
+            await _dbContext.SaveChangesAsync();
 
-            await Clients.Client(userHandler.ConnectedIds).SendAsync("ReceiveBan", model);
+            if (model.IsBanned)
+            {
+                await Clients.Client(userHandler.ConnectedIds).SendAsync("ReceiveBan", model);
+            }
+            
+            await UpdateChat(userHandler);
         }
 
         public async Task SendKickUser(string username)

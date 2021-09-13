@@ -40,4 +40,24 @@
         <Setter Property="BorderThickness" Value="1"/>
         <Setter Property="CornerRadius" Value="5"/>
     </Style>
+
+    <Style x:Key="permanentBan" TargetType="{x:Type Border}" BasedOn="{StaticResource formBorder}">
+        <Setter Property="Visibility" Value="Collapsed"/>
+        <Setter Property="Width" Value="Auto"/>
+        <Setter Property="Height" Value="Auto"/>
+        <Style.Triggers>
+            <DataTrigger Binding="{Binding BanStatus.IsPermanent}" Value="true">
+                <Setter Property="Visibility" Value="Visible"/>
+            </DataTrigger>
+        </Style.Triggers>
+    </Style>
+
+    <Style x:Key="notPermanentBan" TargetType="{x:Type Border}" BasedOn="{StaticResource permanentBan}">
+        <Setter Property="Visibility" Value="Visible"/>
+        <Style.Triggers>
+            <DataTrigger Binding="{Binding BanStatus.IsPermanent}" Value="true">
+                <Setter Property="Visibility" Value="Collapsed"/>
+            </DataTrigger>
+        </Style.Triggers>
+    </Style>
 </ResourceDictionary>

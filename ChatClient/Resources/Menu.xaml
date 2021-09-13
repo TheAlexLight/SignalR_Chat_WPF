@@ -5,7 +5,53 @@
 
     <converters:DurationTimeConverter x:Key="durationTimeConverter"/>
 
+    <LinearGradientBrush x:Key="menuItemsBasicColors" StartPoint="0.5,0" EndPoint="0.5,1">
+        <GradientStop Color="#EED88C" Offset="0"/>
+        <GradientStop Color="#DAC269" Offset="1"/>
+    </LinearGradientBrush>
+
+    <LinearGradientBrush x:Key="menuItemsMouseOverColors" StartPoint="0.5,0" EndPoint="0.5,1">
+        <GradientStop Color="#E1BB58" Offset="0"/>
+        <GradientStop Color="#CF9606" Offset="1"/>
+    </LinearGradientBrush>
+
+    <Style x:Key="banMenu" TargetType="{x:Type Menu}">
+        <Setter Property="OverridesDefaultStyle"
+          Value="True" />
+        <Setter Property="SnapsToDevicePixels"
+          Value="True" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Menu}">
+                    <Border x:Name="insideBorder" 
+                            BorderBrush="#525251"
+                            Background="{StaticResource registrationBasicColors}" 
+                            BorderThickness="1" 
+                            CornerRadius="5"
+                            Margin="{TemplateBinding Padding}">
+                        <StackPanel ClipToBounds="True"
+                      Orientation="Horizontal"
+                      IsItemsHost="True" />
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="insideBorder" Property="Background" Value="{StaticResource registrationMouseOverColors}"/>
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter TargetName="insideBorder" Property="Background" Value="{StaticResource registrationIsDisabledColors}"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
     <Style x:Key="banMenuItem" TargetType="{x:Type MenuItem}">
+        <Setter Property="Background" Value="{StaticResource menuItemsBasicColors}"/>
+        <Setter Property="BorderBrush" Value="#CBB258"/>
+        <Setter Property="Foreground" Value="Black"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="Template" Value="{DynamicResource menuItemControlTemplate}"/>
         <Setter Property="Command" Value="{Binding BanUserCommand}"/>
         <Setter Property="CommandParameter">
             <Setter.Value>
@@ -18,4 +64,24 @@
             </Setter.Value>
         </Setter>
     </Style>
+
+    <ControlTemplate x:Key="menuItemControlTemplate" TargetType="{x:Type MenuItem}">
+        <Border x:Name="templateRoot" 
+                BorderBrush="{TemplateBinding BorderBrush}"
+                BorderThickness="{TemplateBinding BorderThickness}" 
+                Background="{TemplateBinding Background}" 
+                SnapsToDevicePixels="True">
+            <ContentPresenter Margin="5,2,5,2" x:Name="menuHeaderContainer" 
+                                  ContentTemplate="{TemplateBinding HeaderTemplate}" 
+                                  Content="{TemplateBinding Header}" 
+                                  HorizontalAlignment="Center" 
+                                  SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" 
+                                  VerticalAlignment="Center"/>
+        </Border>
+        <ControlTemplate.Triggers>
+            <Trigger Property="IsHighlighted" Value="True">
+                <Setter Property="Background" TargetName="templateRoot" Value="{StaticResource menuItemsMouseOverColors}"/>
+            </Trigger>
+        </ControlTemplate.Triggers>
+    </ControlTemplate>
 </ResourceDictionary>

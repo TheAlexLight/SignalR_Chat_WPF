@@ -4,7 +4,6 @@ using ChatClient.Commands.ContextMenuCommands;
 using ChatClient.Commands.ToolBarCommands;
 using ChatClient.Enums;
 using ChatClient.Interfaces;
-using ChatClient.Models;
 using ChatClient.Services;
 using ChatClient.Stores;
 using SharedItems.Models;
@@ -92,7 +91,7 @@ namespace ChatClient.ViewModels
         private void InitializeFields(ISignalRChatService chatService)
         {
             SendChatMessageCommand = new SendChatCommand(this, chatService);
-            ReconnectionCommand = new ReconnectionCommand(this);
+            ReconnectionCommand = new ReconnectionCommand(this, CurrentUser);
             BanUserCommand = new BanUserCommand(this);
             KickUserCommand = new KickUserCommand(this);
             RemoveToolBarOverflowCommand = new RemoveToolBarOverfowCommand();
@@ -150,10 +149,14 @@ namespace ChatClient.ViewModels
             Messages.Add(message);
         }
 
-        private void ChatService_ReceivedBan(BanStatusModel model)
+        private async void ChatService_ReceivedBan(BanStatusModel model)
         {
-            //UserStatusService.IsBanned = banResult;
-            //OnPropertyChanged(nameof(IsBanned));
+            await ChatService.Connection.StopAsync();
+
+            NavigationService<BanViewModel> navigationService = new(Navigator,
+                () => new BanViewModel(Navigator, ChatService, WindowConfigurationService, model, CurrentUser));
+
+            navigationService.Navigate();
         }
 
         private async void ChatService_ReceivedKick()
