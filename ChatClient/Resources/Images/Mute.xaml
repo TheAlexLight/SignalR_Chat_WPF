@@ -1,0 +1,29 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+  <Geometry x:Key="muteGeometry1">F1 M511.998,511.998z M0,0z M379.218,4.885C373.124,1.387,365.624,1.426,359.555,4.97L143.966,131.106 24.852,131.106C14.017,131.106,5.235,139.888,5.235,150.723L5.235,361.277C5.235,372.112,14.017,380.894,24.852,380.894L71.932,380.894C82.767,380.894 91.549,372.112 91.549,361.277 91.549,350.442 82.767,341.66 71.932,341.66L44.469,341.66 44.469,170.34 149.746,170.34C154.284,170.34,158.659,168.771,162.144,165.926L349.838,56.111 349.838,77.487C349.838,88.322 358.62,97.104 369.455,97.104 380.29,97.104 389.072,88.322 389.072,77.487L389.072,21.906C389.072,14.876,385.312,8.383,379.218,4.885z</Geometry>
+  <Geometry x:Key="muteGeometry2">F1 M511.998,511.998z M0,0z M369.455,216.767C358.62,216.767,349.838,225.549,349.838,236.384L349.838,457.544 194.224,375.323C184.644,370.262 172.77,373.917 167.715,383.503 162.654,393.083 166.316,404.957 175.895,410.012L360.293,507.436C363.164,508.96 366.315,509.712 369.454,509.712 372.965,509.712 376.47,508.764 379.583,506.894 385.468,503.343 389.071,496.974 389.071,490.095L389.071,236.383C389.072,225.548,380.29,216.767,369.455,216.767z</Geometry>
+  <Geometry x:Key="muteGeometry3">F1 M511.998,511.998z M0,0z M506.78,34.742C499.417,26.791,487.019,26.3,479.061,33.663L6.295,471.119C-1.656,478.475 -2.14,490.886 5.216,498.838 9.087,503.023 14.344,505.135 19.621,505.135 24.388,505.135 29.168,503.415 32.941,499.923L505.701,62.467C513.659,55.104,514.136,42.693,506.78,34.742z</Geometry>
+  <Geometry x:Key="muteGeometry4">F1 M511.998,511.998z M0,0z M149.092,134.376C138.257,134.376,129.475,143.158,129.475,153.993L129.475,288.042C129.475,298.877 138.257,307.659 149.092,307.659 159.92,307.659 168.709,298.877 168.709,288.042L168.709,153.993C168.709,143.158,159.927,134.376,149.092,134.376z</Geometry>
+  <DrawingGroup x:Key="muteDrawingGroup" ClipGeometry="M0,0 V511.998 H511.998 V0 H0 Z">
+    <DrawingGroup Opacity="1">
+      <DrawingGroup Opacity="1">
+        <GeometryDrawing Brush="#FF000000" Geometry="{StaticResource muteGeometry1}" />
+      </DrawingGroup>
+    </DrawingGroup>
+    <DrawingGroup Opacity="1">
+      <DrawingGroup Opacity="1">
+        <GeometryDrawing Brush="#FF000000" Geometry="{StaticResource muteGeometry2}" />
+      </DrawingGroup>
+    </DrawingGroup>
+    <DrawingGroup Opacity="1">
+      <DrawingGroup Opacity="1">
+        <GeometryDrawing Brush="#FF000000" Geometry="{StaticResource muteGeometry3}" />
+      </DrawingGroup>
+    </DrawingGroup>
+    <DrawingGroup Opacity="1">
+      <DrawingGroup Opacity="1">
+        <GeometryDrawing Brush="#FF000000" Geometry="{StaticResource muteGeometry4}" />
+      </DrawingGroup>
+    </DrawingGroup>
+  </DrawingGroup>
+  <DrawingImage x:Key="muteDrawingImage" Drawing="{StaticResource muteDrawingGroup}" />
+</ResourceDictionary>

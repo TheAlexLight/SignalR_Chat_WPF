@@ -191,6 +191,27 @@ namespace ChatServer.Hubs
             await UpdateChat(userHandler);
         }
 
+        public async Task SendUserMute(string username, MuteStatusModel model)
+        {
+            UserHandler userHandler = Account.Users.FirstOrDefault(u => u.ConnectedUsername == username);
+
+            User user = _dbContext.Users
+                .Include(u => u.UserStatus)
+                .ThenInclude(userStatus => userStatus.MuteStatus)
+                .FirstOrDefault(u => u.UserName == username);
+
+            user.UserStatus.MuteStatus = model;
+
+            await _dbContext.SaveChangesAsync();
+
+            if (model.IsMuted)
+            {
+                await Clients.Client(userHandler.ConnectedIds).SendAsync("ReceiveMute", model);
+            }
+
+            await UpdateChat(userHandler);
+        }
+
         public async Task SendKickUser(string username)
         {
             UserHandler user = Account.Users.FirstOrDefault(u => u.ConnectedUsername == username);

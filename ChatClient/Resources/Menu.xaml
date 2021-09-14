@@ -65,7 +65,21 @@
         </Setter>
     </Style>
 
-    <ControlTemplate x:Key="menuItemControlTemplate" TargetType="{x:Type MenuItem}">
+    <Style x:Key="muteMenuItem" TargetType="{x:Type MenuItem}" BasedOn="{StaticResource banMenuItem}">
+        <Setter Property="Command" Value="{Binding MuteUserCommand}"/>
+        <Setter Property="CommandParameter">
+            <Setter.Value>
+                <MultiBinding Converter="{StaticResource durationTimeConverter}">
+                    <Binding ElementName="activeUsersListBox" Path="SelectedItem"/>
+                    <Binding Mode="TwoWay" 
+                                                 Path="(viewmodels:ChatViewModel.DurationTime)"
+                                                 RelativeSource="{RelativeSource Self}"/>
+                </MultiBinding>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+        <ControlTemplate x:Key="menuItemControlTemplate" TargetType="{x:Type MenuItem}">
         <Border x:Name="templateRoot" 
                 BorderBrush="{TemplateBinding BorderBrush}"
                 BorderThickness="{TemplateBinding BorderThickness}" 

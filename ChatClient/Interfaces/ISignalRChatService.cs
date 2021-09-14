@@ -20,6 +20,7 @@ namespace ChatClient.Interfaces
         public event Action<MessageModel> MessageReceived;
         public event Action<BanStatusModel> ReceivedBan;
         public event Action ReceivedKick;
+        public event Action<MuteStatusModel> ReceivedMute;
 
         public Task Connect();
         public Task Reconnect(string username);
@@ -27,6 +28,7 @@ namespace ChatClient.Interfaces
         public Task Registration(UserRegistrationModel model);
         public Task Login(UserLoginModel model);
         public Task SendBan(string username, BanStatusModel model);
+        public Task SendMute(string username, MuteStatusModel model);
         public Task KickUser(string username);
     }
 }

@@ -14,9 +14,6 @@
 
     <UserControl.Resources>
         <ResourceDictionary>
-            <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="../Resources/Images/Send.xaml"/>
-            </ResourceDictionary.MergedDictionaries>
             <converters:DurationTimeConverter x:Key="durationTimeConverter"/>
         </ResourceDictionary>
     </UserControl.Resources>
@@ -78,7 +75,7 @@
                 </Border>
 
                 <ListBox Grid.Row="1" x:Name="activeUsersListBox"
-                     Style="{StaticResource usersBox}"/>
+                     Style="{StaticResource usersListBox}"/>
             </Grid>
         </Border>
 
@@ -122,14 +119,30 @@
                                       Style="{StaticResource banMenuItem}"/>
                         </MenuItem>
                     </Menu>
-                    <!--<Button Style="{StaticResource toolBarButton}" 
-                            Content="Ban"/>-->
                     <Button Style="{StaticResource toolBarButton}"
                             Content="Kick"
                             Command="{Binding KickUserCommand}"
                             CommandParameter="{Binding ElementName=activeUsersListBox,Path=SelectedItem}"/>
-                    <Button Style="{StaticResource toolBarButton}"
-                            Content="Mute"/>
+                    <Menu Style="{StaticResource banMenu}">
+                        <MenuItem Header="Mute">
+                            <MenuItem Header="10 min" 
+                                      viewmodels:ChatViewModel.DurationTime="10"
+                                      Style="{StaticResource muteMenuItem}">
+                            </MenuItem>
+                            <MenuItem Header="20 min" 
+                                      viewmodels:ChatViewModel.DurationTime="20"
+                                      Style="{StaticResource muteMenuItem}"/>
+                            <MenuItem Header="30 min" 
+                                      viewmodels:ChatViewModel.DurationTime="30"
+                                      Style="{StaticResource muteMenuItem}"/>
+                            <MenuItem Header="60 min" 
+                                      viewmodels:ChatViewModel.DurationTime="60"
+                                      Style="{StaticResource banMenuItem}"/>
+                            <MenuItem Header="Permanent"
+                                      viewmodels:ChatViewModel.DurationTime="Permanent"
+                                      Style="{StaticResource banMenuItem}"/>
+                        </MenuItem>
+                    </Menu>
                 </ToolBar>
             </ToolBarTray>
         </Grid>

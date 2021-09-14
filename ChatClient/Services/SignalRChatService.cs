@@ -23,8 +23,9 @@ namespace ChatClient.Services
         public event Action<ObservableCollection<UserProfileModel>> UserListReceived;
         public event Action<List<MessageModel>> SavedMessagesReceived;
         public event Action<MessageModel> MessageReceived;
-        public event Action<BanStatusModel> ReceivedBan;
         public event Action ReceivedKick;
+        public event Action<BanStatusModel> ReceivedBan;
+        public event Action<MuteStatusModel> ReceivedMute;
 
         public SignalRChatService(HubConnectionBuilder connectionBuilder)
         {
@@ -45,6 +46,7 @@ namespace ChatClient.Services
             Connection.On<UserProfileModel>("ReceiveCurrentUser", (currentUser) => CurrentUserReceived?.Invoke(currentUser));
             Connection.On<MessageModel>("ReceiveMessage", (messageModel) => MessageReceived?.Invoke(messageModel));
             Connection.On<BanStatusModel>("ReceiveBan", (model) => ReceivedBan?.Invoke(model));
+            Connection.On<MuteStatusModel>("ReceiveMute", (model) => ReceivedMute?.Invoke(model));
             Connection.On("ReceiveKick", () => ReceivedKick?.Invoke());
         }
 
@@ -76,6 +78,11 @@ namespace ChatClient.Services
         public async Task SendBan(string username, BanStatusModel model)
         {
             await Connection.SendAsync("SendUserBan", username, model);
+        }
+
+        public async Task SendMute(string username, MuteStatusModel model)
+        {
+            await Connection.SendAsync("SendUserMute", username, model);
         }
 
         public async Task KickUser(string username)

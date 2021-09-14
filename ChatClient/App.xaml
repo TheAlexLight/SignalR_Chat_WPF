@@ -15,6 +15,9 @@
                 <ResourceDictionary Source="Resources/PasswordBox.xaml"/>
                 <ResourceDictionary Source="Resources/ContentControl.xaml"/>
                 <ResourceDictionary Source="Resources/Menu.xaml"/>
+
+                <ResourceDictionary Source="../Resources/Images/Send.xaml"/>
+                <ResourceDictionary Source="../Resources/Images/Mute.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>

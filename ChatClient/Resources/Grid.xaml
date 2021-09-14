@@ -12,11 +12,11 @@
         <Setter Property="Panel.ZIndex" Value="2"/>
         <Setter Property="Visibility" Value="Collapsed"/>
         <Setter Property="Background" Value="Black"/>
-        <Style.Triggers>
+        <!--<Style.Triggers>
             <DataTrigger Binding="{Binding IsBanned}" Value="True">
                 <Setter Property="Visibility" Value="Visible"/>
             </DataTrigger>
-        </Style.Triggers>
+        </Style.Triggers>-->
     </Style>
 
     <Style x:Key="connectionLost" TargetType="{x:Type Grid}">

@@ -23,5 +23,6 @@ namespace SharedItems.Models
         public string ImagePath { get; set; }
         public string UsernameColor { get; set; }
         public string Role { get; set; }
+
     }
 }
