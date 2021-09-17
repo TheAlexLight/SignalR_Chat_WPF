@@ -85,15 +85,46 @@
                         <RowDefinition Height="Auto"/>
                         <RowDefinition/>
                     </Grid.RowDefinitions>
-                    <ListBox ItemsSource="{Binding Source={StaticResource ListBoxItems}}" >
+                    <ToolBarTray IsLocked="True"
+                                 Grid.Row="0"
+                                 Background="White"
+                                 HorizontalAlignment="Right">
+                        <ToolBar ToolBar.OverflowMode="Never"
+                                 Name="UsersToolBar">
+                            <i:Interaction.Triggers>
+                                <i:EventTrigger EventName="Loaded">
+                                    <i:InvokeCommandAction Command="{Binding RemoveToolBarOverflowCommand}"
+                                                   CommandParameter="{Binding ElementName=UsersToolBar}"/>
+                                </i:EventTrigger>
+                            </i:Interaction.Triggers>
+                            <Menu>
+                                <MenuItem ItemsSource="{Binding Source={StaticResource ListBoxItems}}"
+                                          HorizontalAlignment="Right"
+                                          Background="White">
+                                    <MenuItem.Header>
+                                        <Image Source="{StaticResource filterDrawingImage}"
+                                               Width="20"
+                                               Height="20"/>
+                                    </MenuItem.Header>
+                                    <MenuItem.ItemTemplate>
+                                        <HierarchicalDataTemplate>
+                                            <CheckBox Content="{Binding Name}" IsChecked="{Binding IsChecked}"/>
+                                        </HierarchicalDataTemplate>
+                                    </MenuItem.ItemTemplate>
+                                </MenuItem>
+                            </Menu>
+                        </ToolBar>
+                    </ToolBarTray>
+                    <!--<ListBox ItemsSource="{Binding Source={StaticResource ListBoxItems}}" >
                         <ListBox.ItemTemplate>
                             <HierarchicalDataTemplate>
                                 <CheckBox Content="{Binding Name}" IsChecked="{Binding IsChecked}"/>
                             </HierarchicalDataTemplate>
                         </ListBox.ItemTemplate>
-                    </ListBox>
+                    </ListBox>-->
                     <ListBox Grid.Row="1" x:Name="activeUsersListBox"
-                     ItemsSource="{Binding Source={StaticResource ListBoxItems}}">
+                     ItemsSource="{Binding Source={StaticResource ListBoxItems}}"
+                             BorderThickness="0">
                         <ListBox.GroupStyle>
                             <GroupStyle>
                                 <GroupStyle.Panel>
@@ -142,12 +173,23 @@
                                 <ListBox ItemsSource="{Binding GroupedUsers}">
                                     <ListBox.ItemTemplate>
                                         <DataTemplate>
-                                            <TextBlock Text="{Binding UserProfile.Username, Mode=TwoWay}"/>
+                                            <TextBlock x:Name="usernameTextBlock" 
+                                                       Text="{Binding UserProfile.Username, Mode=TwoWay}"/>
                                         </DataTemplate>
                                     </ListBox.ItemTemplate>
                                 </ListBox>
                             </DataTemplate>
                         </ListBox.ItemTemplate>
+                        <ListBox.ItemContainerStyle>
+                            <Style TargetType="{x:Type ListBoxItem }">
+                                <Style.Triggers>
+                                    <DataTrigger Binding ="{Binding RelativeSource={RelativeSource AncestorType={x:Type ListBox}}, Path=HasItems}" 
+                                                    Value="False">
+                                        <Setter Property="Visibility" Value="Collapsed"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </ListBox.ItemContainerStyle>
                     </ListBox>
                 </Grid>
             </Grid>
