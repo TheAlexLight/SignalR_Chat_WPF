@@ -24,8 +24,80 @@
         <GradientStop Color="#E6E7FF" Offset="1"/>
     </LinearGradientBrush>
 
+    <!--<CollectionViewSource x:Key="ListBoxItems" Source="{Binding Path=Groups}">
+        <CollectionViewSource.GroupDescriptions>
+            <PropertyGroupDescription PropertyName="Name"/>
+        </CollectionViewSource.GroupDescriptions>
+    </CollectionViewSource>-->
+
     <Style x:Key="usersListBox" x:Name="usersListBox" TargetType="{x:Type ListBox}">
-        <Setter Property="ItemsSource" Value="{Binding ActiveUsers}"/>
+        <!--<Setter Property="ItemsSource" Value="{Binding Source={StaticResource ListBoxItems}}"/>-->
+        <Setter Property="FontSize" Value="20"/>
+        <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+        <Setter Property="SelectedIndex" Value="0"/>
+        <!--<Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate>
+                    <ScrollViewer extensions:ScrollViewerExtension.AlwaysScrollToEnd="True">
+                        <Grid Background="{StaticResource mainMessageBoxColors}">
+                            <ItemsPresenter/>
+                        </Grid>
+                    </ScrollViewer>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>-->
+        <!--<Setter Property="ItemTemplate">
+            <Setter.Value>
+                <DataTemplate>
+                    <ListBox ItemsSource="{Binding GroupedUsers}">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                    <TextBlock Text="{Binding UserProfile.Username}"/>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                </DataTemplate>
+            </Setter.Value>
+        </Setter>-->
+        <!--<Setter Property="ItemTemplate">
+            <Setter.Value>
+                <DataTemplate>
+                    <StackPanel Orientation="Horizontal">
+                        <Border CornerRadius="25" 
+                                    Background="CornflowerBlue" 
+                                    Width="30" 
+                                    Height="30"/>
+                        <Image Source="{StaticResource muteDrawingImage}" 
+                               Width="15" 
+                               Height="15"
+                               Margin="5,10,-5,5"
+                               Visibility="Collapsed"
+                               Name="muteImage"/>
+                        <StackPanel>
+                            <TextBlock Text="{Binding UserProfile.Username}"
+                                       Foreground="{Binding UserProfile.UsernameColor}"
+                                       Margin="10,-5,10,0"
+                                       FontSize="22"/>
+                            <TextBlock Text="{Binding UserProfile.StatusMessage}"
+                                   Margin="10,-5,10,0"
+                                       FontStyle="Italic"
+                                       Foreground="#5F5C5A"
+                                       FontSize="16"
+                                       FontWeight="SemiBold"/>
+                        </StackPanel>
+                    </StackPanel>
+                    <DataTemplate.Triggers>
+                        <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType={x:Type UserControl}}, Path=DataContext.MuteStatus.IsMuted}" Value="True">
+                            <Setter Property="Visibility" TargetName="muteImage" Value="Visible"/>
+                        </DataTrigger>
+                    </DataTemplate.Triggers>
+                </DataTemplate>
+            </Setter.Value>
+        </Setter>-->
+    </Style>
+
+    <!--<Style x:Key="usersListBox" x:Name="usersListBox" TargetType="{x:Type ListBox}">
+        --><!--<Setter Property="ItemsSource" Value="{Binding AllUsers}"/>
         <Setter Property="FontSize" Value="20"/>
         <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
         <Setter Property="SelectedIndex" Value="0"/>
@@ -55,11 +127,11 @@
                                Visibility="Collapsed"
                                Name="muteImage"/>
                         <StackPanel>
-                            <TextBlock Text="{Binding Username}"
-                                       Foreground="{Binding UsernameColor}"
+                            <TextBlock Text="{Binding UserProfile.Username}"
+                                       Foreground="{Binding UserProfile.UsernameColor}"
                                        Margin="10,-5,10,0"
                                        FontSize="22"/>
-                            <TextBlock Text="{Binding StatusMessage}"
+                            <TextBlock Text="{Binding UserProfile.StatusMessage}"
                                    Margin="10,-5,10,0"
                                        FontStyle="Italic"
                                        Foreground="#5F5C5A"
@@ -74,8 +146,8 @@
                     </DataTemplate.Triggers>
                 </DataTemplate>
             </Setter.Value>
-        </Setter>
-    </Style>
+        </Setter>--><!--
+    </Style>-->
     
     <Style x:Key="messagesListBox" TargetType="{x:Type ListBox}" BasedOn="{StaticResource usersListBox}">
         <Setter Property="ItemsSource" Value="{Binding Messages}"/>

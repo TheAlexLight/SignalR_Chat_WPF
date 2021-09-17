@@ -21,13 +21,13 @@ namespace ChatClient.Commands.ToolBarCommands
 
         public override async void Execute(object parameter)
         {
-            if (parameter is UserProfileModel)
+            if (parameter is UserModel)
             {
-                UserProfileModel selectedModel = parameter as UserProfileModel;
+                UserModel selectedModel = parameter as UserModel;
 
-                if (_viewModel.CurrentUser.Username != selectedModel.Username)
+                if (_viewModel.CurrentUser.UserProfile.Username != selectedModel.UserProfile.Username)
                 {
-                    await _viewModel.ChatService.KickUser(selectedModel.Username);
+                    await _viewModel.ChatService.KickUser(selectedModel.UserProfile.Username);
                 }
             }
         }

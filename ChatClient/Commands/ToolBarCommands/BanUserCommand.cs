@@ -24,11 +24,11 @@ namespace ChatClient.Commands.ContextMenuCommands
             var values = (object[])parameter;
             var duration = (string)values[1];
 
-            if (values[0] is UserProfileModel)
+            if (values[0] is UserModel)
             {
-                UserProfileModel user = values[0] as UserProfileModel;
+                UserModel user = values[0] as UserModel;
 
-                if (user.Username != _viewModel.CurrentUser.Username)
+                if (user.UserProfile.Username != _viewModel.CurrentUser.UserProfile.Username)
                 {
                     BanStatusModel model = new BanStatusModel();
 
@@ -46,7 +46,7 @@ namespace ChatClient.Commands.ContextMenuCommands
 
                     model.IsBanned = true;
 
-                    await _viewModel.ChatService.SendBan(user.Username, model);
+                    await _viewModel.ChatService.SendBan(user.UserProfile.Username, model);
                 }
             }
         }

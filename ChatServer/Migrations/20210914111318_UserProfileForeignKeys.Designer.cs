@@ -4,14 +4,16 @@ using ChatServer.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace ChatServer.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    partial class ApplicationContextModelSnapshot : ModelSnapshot
+    [Migration("20210914111318_UserProfileForeignKeys")]
+    partial class UserProfileForeignKeys
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -314,13 +316,10 @@ namespace ChatServer.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("UserModelId")
+                    b.Property<int>("UserProfileModelId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("UserModelId")
-                        .IsUnique();
 
                     b.ToTable("UsersStatus");
                 });
@@ -335,11 +334,16 @@ namespace ChatServer.Migrations
                     b.Property<string>("UserId")
                         .HasColumnType("nvarchar(450)");
 
+                    b.Property<int?>("UserStatusId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.HasIndex("UserId")
                         .IsUnique()
                         .HasFilter("[UserId] IS NOT NULL");
+
+                    b.HasIndex("UserStatusId");
 
                     b.ToTable("UserModels");
                 });
@@ -353,9 +357,6 @@ namespace ChatServer.Migrations
 
                     b.Property<string>("ImagePath")
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("IsOnline")
-                        .HasColumnType("bit");
 
                     b.Property<string>("Role")
                         .HasColumnType("nvarchar(max)");
@@ -460,20 +461,17 @@ namespace ChatServer.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("SharedItems.Models.StatusModels.UserStatusModel", b =>
-                {
-                    b.HasOne("SharedItems.Models.UserModel", null)
-                        .WithOne("UserStatus")
-                        .HasForeignKey("SharedItems.Models.StatusModels.UserStatusModel", "UserModelId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("SharedItems.Models.UserModel", b =>
                 {
                     b.HasOne("ChatServer.Models.User", null)
                         .WithOne("UserModel")
                         .HasForeignKey("SharedItems.Models.UserModel", "UserId");
+
+                    b.HasOne("SharedItems.Models.StatusModels.UserStatusModel", "UserStatus")
+                        .WithMany()
+                        .HasForeignKey("UserStatusId");
+
+                    b.Navigation("UserStatus");
                 });
 
             modelBuilder.Entity("SharedItems.Models.UserProfileModel", b =>
@@ -502,8 +500,6 @@ namespace ChatServer.Migrations
                     b.Navigation("Messages");
 
                     b.Navigation("UserProfile");
-
-                    b.Navigation("UserStatus");
                 });
 #pragma warning restore 612, 618
         }

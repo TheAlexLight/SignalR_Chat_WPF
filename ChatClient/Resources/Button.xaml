@@ -26,12 +26,6 @@
         <GradientStop Color="#C5C4C2" Offset="1"/>
     </LinearGradientBrush>
 
-    <LinearGradientBrush x:Key="reconnectionIsDisabledColors" StartPoint="0.5,0" EndPoint="0.5,1">
-        <GradientStop Color="#F2F0E9" Offset="0"/>
-        <GradientStop Color="#DAD6CC" Offset="0.7"/>
-        <GradientStop Color="#DAD6CC" Offset="1"/>
-    </LinearGradientBrush>
-
     <Style x:Key="submitButton" TargetType="{x:Type Button}">
         <Setter Property="BorderThickness" Value="0"/>
         <Setter Property="FontSize" Value="22"/>
@@ -177,7 +171,7 @@
                             <Setter TargetName="insideBorder" Property="Background" Value="{StaticResource registrationMouseOverColors}"/>
                         </Trigger>
                         <Trigger Property="IsEnabled" Value="False">
-                            <Setter TargetName="insideBorder" Property="Background" Value="{StaticResource reconnectionIsDisabledColors}"/>
+                            <Setter TargetName="insideBorder" Property="Background" Value="{StaticResource registrationIsDisabledColors}"/>
                         </Trigger>
                         <Trigger Property="IsPressed" Value="True">
                             <Setter TargetName="insideBorder" Property="Background" Value="{StaticResource registrationIsPressedColors}"/>

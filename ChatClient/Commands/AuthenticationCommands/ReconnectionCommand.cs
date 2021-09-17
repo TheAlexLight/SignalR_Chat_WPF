@@ -16,10 +16,10 @@ namespace ChatClient.Commands.AuthenticationCommands
     public class ReconnectionCommand : CommandBase
     {
         private readonly ChatViewModelBase _viewModel;
-        private readonly UserProfileModel _currentUser;
+        private readonly UserModel _currentUser;
         private readonly ICommand _navigationCommand;
 
-        public ReconnectionCommand(ChatViewModelBase viewModel, UserProfileModel currentUser)
+        public ReconnectionCommand(ChatViewModelBase viewModel, UserModel currentUser)
         {
             _viewModel = viewModel;
             _currentUser = currentUser;
@@ -40,11 +40,11 @@ namespace ChatClient.Commands.AuthenticationCommands
 
             if (await _viewModel.ConnectToServer(_viewModel) != HubConnectionState.Disconnected)
             {
-                await _viewModel.ChatService.Reconnect(_currentUser.Username);
+                await _viewModel.ChatService.Reconnect(_currentUser.UserProfile.Username);
 
                 if (parameter is BanStatusModel banStatus)
                 {
-                    await _viewModel.ChatService.SendBan(_currentUser.Username, banStatus);
+                    await _viewModel.ChatService.SendBan(_currentUser.UserProfile.Username, banStatus);
                 }
             }
 

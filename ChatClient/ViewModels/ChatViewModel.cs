@@ -11,11 +11,14 @@ using SharedItems.Models.StatusModels;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
 using System.Windows.Input;
 
 namespace ChatClient.ViewModels
@@ -46,9 +49,23 @@ namespace ChatClient.ViewModels
 
         private string _message;
         private ObservableCollection<MessageModel> _messages;
-        private ObservableCollection<UserProfileModel> _activeUsers;
-        private UserProfileModel _currentUser;
+        private ObservableCollection<UserModel> _allUsers;
+        private UserModel _currentUser;
         private MuteStatusModel _muteStatus;
+
+        private ObservableCollection<Group> _groups;
+
+        public ObservableCollection<Group> Groups 
+        {
+            get =>_groups;
+            set
+            {
+                _groups = value;
+                OnPropertyChanged();
+            } 
+        }
+
+        public ICollectionView UsersCollectionView { get; private set; }
 
         public ICommand SendChatMessageCommand { get; private set; }
         public ICommand RemoveToolBarOverflowCommand { get; private set; }
@@ -79,7 +96,11 @@ namespace ChatClient.ViewModels
             RemoveToolBarOverflowCommand = new RemoveToolBarOverfowCommand();
             Messages = new();
             MuteStatus = new();
+            UsersCollectionView = CollectionViewSource.GetDefaultView(AllUsers);
+
+            CreateGroups();
         }
+
         private void InitializeEvents(ISignalRChatService chatService)
         {
             chatService.MessageReceived += ChatService_MessageReceived;
@@ -90,6 +111,35 @@ namespace ChatClient.ViewModels
             chatService.ReceivedKick += ChatService_ReceivedKick;
             chatService.ReceivedMute += ChatService_ReceivedMute;
 
+        }
+
+        private void CreateGroups()
+        {
+            Groups = new ObservableCollection<Group>()
+            {
+                new Group()
+                {
+                    Name = nameof(UserGroups.Online),
+                    //GroupedUsers = new ObservableCollection<UserModel>()
+                    //{
+                    //    new UserModel()
+                    //    {
+                    //        UserProfile = new()
+                    //        {
+                    //            Username = "vbn"
+                    //        }
+                    //    }
+                    //}
+                },
+                new Group()
+                {
+                    Name = nameof(UserGroups.Offline)
+                },
+                new Group()
+                {
+                    Name = nameof(UserGroups.Banned)
+                }
+            };
         }
 
         public static ChatViewModel CreateConnectedViewModel(ISignalRChatService chatService, INavigator navigator
@@ -110,18 +160,32 @@ namespace ChatClient.ViewModels
 
         protected async override Task Reconnect()
         {
-            await ChatService.Reconnect(CurrentUser.Username);
+            await ChatService.Reconnect(CurrentUser.UserProfile.Username);
         }
 
-        private void ChatService_CurrentUserReceived(UserProfileModel currentUser)
+        private void ChatService_CurrentUserReceived(UserModel currentUser)
         {
             CurrentUser = currentUser;
         }
 
-        private void ChatService_UserListReceived(ObservableCollection<UserProfileModel> activeUsers)
+        private void ChatService_UserListReceived(ObservableCollection<UserModel> allUsers)
         {
-            ActiveUsers = activeUsers;
-            OnPropertyChanged(nameof(ActiveUsers));
+            AllUsers = allUsers;
+            OnPropertyChanged(nameof(AllUsers));
+
+            Group bannedGroup = Groups.FirstOrDefault(g => g.Name.Equals(nameof(UserGroups.Banned)));
+            bannedGroup.GroupedUsers = new ObservableCollection<UserModel>(allUsers
+                    .Where(u => u.UserStatus.BanStatus.IsBanned).ToList());
+
+            Group onlineGroup = Groups.FirstOrDefault(g => g.Name.Equals(nameof(UserGroups.Online)));
+            onlineGroup.GroupedUsers = new ObservableCollection<UserModel>(allUsers
+                    .Where(u => u.UserProfile.IsOnline).Except(bannedGroup.GroupedUsers).ToList());
+
+            Group offlineGroup = Groups.FirstOrDefault(g => g.Name.Equals(nameof(UserGroups.Offline)));
+            offlineGroup.GroupedUsers = new ObservableCollection<UserModel>(allUsers
+                    .Except(bannedGroup.GroupedUsers).Except(onlineGroup.GroupedUsers).ToList());
+
+            OnPropertyChanged(nameof(Groups));
         }
 
         private void ChatService_SavedMessagesReceived(List<MessageModel> messages)
@@ -160,7 +224,7 @@ namespace ChatClient.ViewModels
             MessageBox.Show("You have been kicked.");
         }
 
-        public UserProfileModel CurrentUser
+        public UserModel CurrentUser
         {
             get => _currentUser;
             private set
@@ -189,12 +253,12 @@ namespace ChatClient.ViewModels
             }
         }
 
-        public ObservableCollection<UserProfileModel> ActiveUsers
+        public ObservableCollection<UserModel> AllUsers 
         {
-            get => _activeUsers;
+            get => _allUsers;
             private set
             {
-                _activeUsers = value;
+                _allUsers = value;
                 OnPropertyChanged();
             }
         }

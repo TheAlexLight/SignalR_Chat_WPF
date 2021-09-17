@@ -16,7 +16,7 @@ namespace ChatClient.ViewModels
     {
         public BanViewModel(INavigator navigator, ISignalRChatService chatService
                , IWindowConfigurationService windowConfigurationService,
-                BanStatusModel banStatus, UserProfileModel currentUser) : base(navigator, chatService, windowConfigurationService)
+                BanStatusModel banStatus, UserModel currentUser) : base(navigator, chatService, windowConfigurationService)
         {
             _banStatus = banStatus;
             _currentUser = currentUser;
@@ -36,7 +36,7 @@ namespace ChatClient.ViewModels
 
         private readonly DispatcherTimer _timer;
         private BanStatusModel _banStatus;
-        private UserProfileModel _currentUser;
+        private UserModel _currentUser;
 
         private string _remainingTime;
         private bool _isEnabled;
@@ -107,7 +107,7 @@ namespace ChatClient.ViewModels
 
         protected async override Task Reconnect()
         {
-            await ChatService.Reconnect(_currentUser.Username);
+            await ChatService.Reconnect(_currentUser.UserProfile.Username);
         }
     }
 }

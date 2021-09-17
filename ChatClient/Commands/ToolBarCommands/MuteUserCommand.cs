@@ -23,11 +23,11 @@ namespace ChatClient.Commands.ToolBarCommands
             var values = (object[])parameter;
             var duration = (string)values[1];
 
-            if (values[0] is UserProfileModel)
+            if (values[0] is UserModel)
             {
-                UserProfileModel user = values[0] as UserProfileModel;
+                UserModel user = values[0] as UserModel;
 
-                if (user.Username != _viewModel.CurrentUser.Username)
+                if (user.UserProfile.Username != _viewModel.CurrentUser.UserProfile.Username)
                 {
                     MuteStatusModel model = new MuteStatusModel();
 
@@ -45,7 +45,7 @@ namespace ChatClient.Commands.ToolBarCommands
 
                     model.IsMuted = true;
 
-                    await _viewModel.ChatService.SendMute(user.Username, model);
+                    await _viewModel.ChatService.SendMute(user.UserProfile.Username, model);
                 }
             }
         }

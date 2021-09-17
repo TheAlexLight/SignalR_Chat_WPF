@@ -31,22 +31,67 @@ namespace ChatServer.Controllers
             {
                 User createdUser = await _userManager.FindByNameAsync(model.Username);
 
-                _dbContext.UsersStatus.Add(new UserStatusModel()
-                {
-                    UserId = createdUser.Id
-                });
-
-               await _dbContext.SaveChangesAsync();
-
-                _dbContext.BansStatus.Add(new BanStatusModel()
-                {
-                    UserStatusModelId = createdUser.UserStatus.Id
-                });
-
-                await _dbContext.SaveChangesAsync();
+               await AddUserModelIds(createdUser);
+               await AddUserStatuslIds(createdUser);
+               await AddUserProfileIds(createdUser);
+               await AddMessageseIds(createdUser);
             }
 
             return result;
+        }
+
+        private async Task AddUserModelIds(User createdUser)
+        {
+            _dbContext.UserModels.Add(new UserModel()
+            {
+                UserId = createdUser.Id
+            });
+
+            await _dbContext.SaveChangesAsync();
+        }
+
+        private async Task AddUserStatuslIds(User createdUser)
+        {
+            _dbContext.UsersStatus.Add(new UserStatusModel()
+            {
+                UserModelId = createdUser.UserModel.Id
+            });
+
+            await _dbContext.SaveChangesAsync();
+
+            _dbContext.BansStatus.Add(new BanStatusModel()
+            {
+                UserStatusModelId = createdUser.UserModel.UserStatus.Id
+            });
+
+            await _dbContext.SaveChangesAsync();
+
+            _dbContext.MutesStatus.Add(new MuteStatusModel()
+            {
+                UserStatusModelId = createdUser.UserModel.UserStatus.Id
+            });
+
+            await _dbContext.SaveChangesAsync();
+        }
+
+        private async Task AddUserProfileIds(User createdUser)
+        {
+            _dbContext.UserProfiles.Add(new UserProfileModel()
+            {
+                UserModelId = createdUser.UserModel.Id
+            });
+
+            await _dbContext.SaveChangesAsync();
+        }
+
+        private async Task AddMessageseIds(User createdUser)
+        {
+            _dbContext.Messages.Add(new MessageModel()
+            {
+                UserModelId = createdUser.UserModel.Id
+            });
+
+            await _dbContext.SaveChangesAsync();
         }
 
         public async Task<bool> Login(UserLoginModel model)

@@ -69,15 +69,21 @@ namespace ChatServer.Hubs
                 if (userHandler != null)
                 {
                     User user = _dbContext.Users
-                        .Include(u => u.UserStatus)
-                        .ThenInclude(userStatus => userStatus.BanStatus)
+                        .Include(u=>u.UserModel)
+                            .ThenInclude(u => u.UserStatus)
+                                .ThenInclude(userStatus => userStatus.BanStatus)
+                        .Include(u=>u.UserModel)
+                            .ThenInclude(um=>um.UserProfile)
                         .FirstOrDefault(u => u.UserName == model.Username);
+
+                    user.UserModel.UserProfile.IsOnline = true;
+                    await _dbContext.SaveChangesAsync();
 
                     await SendCurrentUser(userHandler);
 
-                    if (user.UserStatus.BanStatus.IsBanned)
+                    if (user.UserModel.UserStatus.BanStatus.IsBanned)
                     {
-                        await Clients.Client(userHandler.ConnectedIds).SendAsync("ReceiveBan", user.UserStatus.BanStatus);
+                        await Clients.Client(userHandler.ConnectedIds).SendAsync("ReceiveBan", user.UserModel.UserStatus.BanStatus);
                         return;
                     }
 
@@ -114,12 +120,12 @@ namespace ChatServer.Hubs
         {
             await SendCurrentUser(userHandler);
             await SendUserList();
-            await SendSavedMessages();
+            //await SendSavedMessages();
         }
 
         private async Task SendSavedMessages()
         {
-            List<MessageModel> messages = await _dbContext.Messages.Include(m => m.UserInfo)
+            List<MessageModel> messages = await _dbContext.Messages.Include(m => m.UserModel)
                                .Where(m => m.GroupName == "mainChat")
                                .ToListAsync();
            
@@ -128,39 +134,61 @@ namespace ChatServer.Hubs
 
         public async Task SendCurrentUser(UserHandler userHandler)
         {
-            User user = await _userManager.FindByNameAsync(userHandler.ConnectedUsername);
+            //User user = await _userManager.FindByNameAsync(userHandler.ConnectedUsername);
 
+            User user = await _dbContext.Users
+                    .Include(u => u.UserModel)
+                        .ThenInclude(userModel => userModel.UserProfile)
+                    .FirstOrDefaultAsync(u => u.UserName == userHandler.ConnectedUsername);
+            
             string userRole = ((List<string>)await _userManager.GetRolesAsync(user))[0];
 
-            UserProfileModel currentUser = new()
-            {
-                Username = userHandler.ConnectedUsername,
-                Role = userRole
-            };
+            user.UserModel.UserProfile.Role = userRole;
+            user.UserModel.UserProfile.Username = user.UserName;
 
-            await Clients.Client(userHandler.ConnectedIds).SendAsync("ReceiveCurrentUser", currentUser);
+            await _dbContext.SaveChangesAsync();
+
+            await Clients.Client(userHandler.ConnectedIds).SendAsync("ReceiveCurrentUser", user.UserModel);
         }
 
         public async Task SendUserList()
         {
-            List<string> allLoginedUsers = Account.Users.Select(u => u.ConnectedUsername).Where(s => s != null).ToList();
+            //List<string> allLoginedUsers = Account.Users.Select(u => u.ConnectedUsername).Where(s => s != null).ToList();
 
-            List<UserProfileModel> activeUsers = new();
+            List<UserModel> users = _dbContext.UserModels
+                    .Include(u => u.UserProfile)
+            //.Include(u => u.Messages)
+                    .Include(u => u.UserStatus)
+                        .ThenInclude(userStatus => userStatus.BanStatus)
+                    .Include(u => u.UserStatus)
+                        .ThenInclude(userStatus => userStatus.MuteStatus).ToList();
 
-            foreach (string username in allLoginedUsers)
-            {
-                activeUsers.Add(new UserProfileModel
-                {
-                    Username = username
-                });
-            }
+            //List<UserModel> userList = users.ToList();
 
-            await Clients.All.SendAsync("ReceiveUserList", activeUsers);
+            //List<UserModel> activeUsers = new();
+
+            //activeUsers.AddRange(users.ToList());
+
+            //foreach (string username in allLoginedUsers)
+            //{
+            //    activeUsers.Add(new UserModel
+            //    {
+            //        UserProfile = new UserProfileModel() 
+            //        {
+            //            Username = username
+            //        }
+            //    });
+            //}
+
+            List<UserModel> us = new();
+
+            await Clients.All.SendAsync("ReceiveUserList", users);
+            // await Clients.All.SendAsync("ReceiveUserList", activeUsers);
         }
 
         public async Task SendMessage(MessageModel messageModel)
         {
-            bool isFirstMessage = FirstMessageModel.CheckMessage(messageModel.UserInfo.Username);
+            bool isFirstMessage = FirstMessageModel.CheckMessage(messageModel.UserModel.UserProfile.Username);
 
             messageModel.IsFirstMessage = isFirstMessage;
 
@@ -175,11 +203,11 @@ namespace ChatServer.Hubs
             UserHandler userHandler = Account.Users.FirstOrDefault(u => u.ConnectedUsername == username);
 
             User user = _dbContext.Users
-                .Include(u => u.UserStatus)
+                .Include(u => u.UserModel.UserStatus)
                 .ThenInclude(userStatus => userStatus.BanStatus)
                 .FirstOrDefault(u => u.UserName == username);
 
-            user.UserStatus.BanStatus = model;
+            user.UserModel.UserStatus.BanStatus = model;
             
             await _dbContext.SaveChangesAsync();
 
@@ -196,11 +224,11 @@ namespace ChatServer.Hubs
             UserHandler userHandler = Account.Users.FirstOrDefault(u => u.ConnectedUsername == username);
 
             User user = _dbContext.Users
-                .Include(u => u.UserStatus)
+                .Include(u => u.UserModel.UserStatus)
                 .ThenInclude(userStatus => userStatus.MuteStatus)
                 .FirstOrDefault(u => u.UserName == username);
 
-            user.UserStatus.MuteStatus = model;
+            user.UserModel.UserStatus.MuteStatus = model;
 
             await _dbContext.SaveChangesAsync();
 
@@ -234,11 +262,22 @@ namespace ChatServer.Hubs
         public override async Task<Task> OnDisconnectedAsync(Exception exception)
         {
             UserHandler user = Account.Users.FirstOrDefault(a => a.ConnectedIds == Context.ConnectionId);
-            
+
+            if (user.ConnectedUsername != null)
+            {
+               var dbUser = _dbContext.Users.Include(u => u.UserModel)
+                    .ThenInclude(um => um.UserProfile)
+                    .FirstOrDefault(u => u.UserName == user.ConnectedUsername);
+
+                dbUser.UserModel.UserProfile.IsOnline = false;
+                await _dbContext.SaveChangesAsync();
+            }
+
             Account.Users.Remove(user);
 
             await SendUserList();
 
+            
             return base.OnDisconnectedAsync(exception);
         }
     }

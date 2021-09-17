@@ -9,7 +9,7 @@ namespace SharedItems.Models.StatusModels
     public class UserStatusModel
     {
         public int Id { get; set; }
-        public string UserId { get; set; }
+        public int UserModelId { get; set; }
         public BanStatusModel BanStatus { get; set; }
         public MuteStatusModel MuteStatus { get; set; }
     }

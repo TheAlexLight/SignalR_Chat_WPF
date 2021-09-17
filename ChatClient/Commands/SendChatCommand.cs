@@ -30,7 +30,7 @@ namespace ChatClient.Commands
                 {
                     Message = _viewModel.Message,
                     Time = DateTime.Now,
-                    UserInfo = _viewModel.CurrentUser
+                    UserModel = _viewModel.CurrentUser
                 };
 
                 await _chatService.SendMessage(model);

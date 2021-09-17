@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using SharedItems.Models;
 using SharedItems.Models.StatusModels;
 using System;
 using System.Collections.Generic;
@@ -15,6 +16,7 @@ namespace ChatServer.Models
         }
 
         public DateTime JoinDate { get; set; }
-        public UserStatusModel UserStatus { get; set; }
+        public UserModel UserModel { get; set; }
+        //public UserStatusModel UserStatus { get; set; }
     }
 }

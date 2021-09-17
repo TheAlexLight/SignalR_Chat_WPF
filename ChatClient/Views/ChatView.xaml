@@ -15,6 +15,12 @@
     <UserControl.Resources>
         <ResourceDictionary>
             <converters:DurationTimeConverter x:Key="durationTimeConverter"/>
+            <CollectionViewSource x:Key="ListBoxItems" Source="{Binding Path=Groups, 
+                UpdateSourceTrigger=PropertyChanged}">
+                <CollectionViewSource.GroupDescriptions>
+                    <PropertyGroupDescription PropertyName="Name"/>
+                </CollectionViewSource.GroupDescriptions>
+            </CollectionViewSource>
         </ResourceDictionary>
     </UserControl.Resources>
 
@@ -74,8 +80,76 @@
                            Text="Users"/>
                 </Border>
 
-                <ListBox Grid.Row="1" x:Name="activeUsersListBox"
-                     Style="{StaticResource usersListBox}"/>
+                <Grid Grid.Row="1" Background="White">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <ListBox ItemsSource="{Binding Source={StaticResource ListBoxItems}}" >
+                        <ListBox.ItemTemplate>
+                            <HierarchicalDataTemplate>
+                                <CheckBox Content="{Binding Name}" IsChecked="{Binding IsChecked}"/>
+                            </HierarchicalDataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                    <ListBox Grid.Row="1" x:Name="activeUsersListBox"
+                     ItemsSource="{Binding Source={StaticResource ListBoxItems}}">
+                        <ListBox.GroupStyle>
+                            <GroupStyle>
+                                <GroupStyle.Panel>
+                                    <ItemsPanelTemplate>
+                                        <VirtualizingStackPanel Orientation="Vertical"
+                                                    HorizontalAlignment="Stretch"
+                                                    VerticalAlignment="Stretch"/>
+                                    </ItemsPanelTemplate>
+                                </GroupStyle.Panel>
+                                <GroupStyle.ContainerStyle>
+                                    <Style TargetType="{x:Type GroupItem}">
+                                        <Setter Property="Template">
+                                            <Setter.Value>
+                                                <ControlTemplate>
+                                                    <Expander
+                                                        x:Name="expander"
+                                        Padding="0"                                           
+                                        BorderThickness="0"
+                                        IsExpanded="True"
+                                            HorizontalContentAlignment="Stretch"
+                                            HorizontalAlignment="Stretch">
+                                                        <ItemsPresenter/>
+                                                        <Expander.Header>
+                                                            <StackPanel Orientation="Horizontal">
+                                                                <TextBlock Text="{Binding Name}"/>
+                                                                <TextBlock Text="  ("/>
+                                                                <TextBlock Text="{Binding Items[0].UsersCount}"/>
+                                                                <TextBlock Text=")"/>
+                                                            </StackPanel>
+                                                        </Expander.Header>
+                                                    </Expander>
+                                                    <ControlTemplate.Triggers>
+                                                        <DataTrigger Binding="{Binding Items[0].IsChecked}" Value="False">
+                                                            <Setter TargetName="expander" Property="Visibility" Value="Collapsed"/>
+                                                        </DataTrigger>
+                                                    </ControlTemplate.Triggers>
+                                                </ControlTemplate>
+                                            </Setter.Value>
+                                        </Setter>
+                                    </Style>
+                                </GroupStyle.ContainerStyle>
+                            </GroupStyle>
+                        </ListBox.GroupStyle>
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <ListBox ItemsSource="{Binding GroupedUsers}">
+                                    <ListBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding UserProfile.Username, Mode=TwoWay}"/>
+                                        </DataTemplate>
+                                    </ListBox.ItemTemplate>
+                                </ListBox>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                </Grid>
             </Grid>
         </Border>
 

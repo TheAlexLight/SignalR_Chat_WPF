@@ -12,7 +12,7 @@ TRACE;DEBUG;NET;NET5_0;NETCOREAPP
 C:\Users\oyudi\Alexander\Programming\WPF\Chat\ChatClient\App.xaml
 181881382628
 
-552006850903
+56-905568298
 215-1946759342
 MainWindow.xaml;Resources\Border.xaml;Resources\Button.xaml;Resources\ContentControl.xaml;Resources\Grid.xaml;Resources\Images\Mute.xaml;Resources\Images\Send.xaml;Resources\ListBox.xaml;Resources\Menu.xaml;Resources\PasswordBox.xaml;Resources\TextBlock.xaml;Resources\TextBox.xaml;Views\AdditionalViews\BindablePasswordBox.xaml;Views\AdditionalViews\ConnectionLostView.xaml;Views\BanView.xaml;Views\ChatView.xaml;Views\LoginView.xaml;Views\RegistrationView.xaml;
 

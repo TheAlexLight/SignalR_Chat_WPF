@@ -19,8 +19,8 @@ namespace ChatClient.Services
 
         public event Action<bool, string> ReceiveRegistrationResult;
         public event Action<bool> ReceiveLoginResult;
-        public event Action<UserProfileModel> CurrentUserReceived;
-        public event Action<ObservableCollection<UserProfileModel>> UserListReceived;
+        public event Action<UserModel> CurrentUserReceived;
+        public event Action<ObservableCollection<UserModel>> UserListReceived;
         public event Action<List<MessageModel>> SavedMessagesReceived;
         public event Action<MessageModel> MessageReceived;
         public event Action ReceivedKick;
@@ -41,9 +41,9 @@ namespace ChatClient.Services
         {
             Connection.On<bool, string>("ReceiveRegistrationResult", (result, error) => ReceiveRegistrationResult?.Invoke(result, error));
             Connection.On<bool>("ReceiveLoginResult", (result) => ReceiveLoginResult?.Invoke(result));
-            Connection.On<ObservableCollection<UserProfileModel>>("ReceiveUserList", (activeUsers) => UserListReceived?.Invoke(activeUsers));
+            Connection.On<ObservableCollection<UserModel>>("ReceiveUserList", (activeUsers) => UserListReceived?.Invoke(activeUsers));
             Connection.On<List<MessageModel>>("ReceiveSavedMessages", (messages) => SavedMessagesReceived?.Invoke(messages));
-            Connection.On<UserProfileModel>("ReceiveCurrentUser", (currentUser) => CurrentUserReceived?.Invoke(currentUser));
+            Connection.On<UserModel>("ReceiveCurrentUser", (currentUser) => CurrentUserReceived?.Invoke(currentUser));
             Connection.On<MessageModel>("ReceiveMessage", (messageModel) => MessageReceived?.Invoke(messageModel));
             Connection.On<BanStatusModel>("ReceiveBan", (model) => ReceivedBan?.Invoke(model));
             Connection.On<MuteStatusModel>("ReceiveMute", (model) => ReceivedMute?.Invoke(model));

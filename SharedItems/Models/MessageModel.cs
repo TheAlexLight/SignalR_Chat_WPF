@@ -14,10 +14,12 @@ namespace SharedItems.Models
         }
 
         public int Id { get; set; }
-        public UserProfileModel UserInfo { get; set; }
+        public int UserModelId { get; set; }
         public DateTime Time { get; set; }
         public bool IsFirstMessage { get; set; }
         public string Message { get; set; }
         public string GroupName { get; set; }
+
+        public UserModel UserModel { get; set; }
     }
 }

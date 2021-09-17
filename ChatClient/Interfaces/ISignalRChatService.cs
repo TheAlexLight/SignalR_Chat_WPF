@@ -14,8 +14,8 @@ namespace ChatClient.Interfaces
     {
         public event Action<bool, string> ReceiveRegistrationResult;
         public event Action<bool> ReceiveLoginResult;
-        public event Action<UserProfileModel> CurrentUserReceived;
-        public event Action<ObservableCollection<UserProfileModel>> UserListReceived;
+        public event Action<UserModel> CurrentUserReceived;
+        public event Action<ObservableCollection<UserModel>> UserListReceived;
         public event Action<List<MessageModel>> SavedMessagesReceived;
         public event Action<MessageModel> MessageReceived;
         public event Action<BanStatusModel> ReceivedBan;
