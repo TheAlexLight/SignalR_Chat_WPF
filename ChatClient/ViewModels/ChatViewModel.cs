@@ -62,6 +62,11 @@ namespace ChatClient.ViewModels
             {
                 _groups = value;
                 OnPropertyChanged();
+
+                if (UsersCollectionView != null)
+                {
+                    UsersCollectionView.Refresh();
+                }
             } 
         }
 
@@ -96,9 +101,11 @@ namespace ChatClient.ViewModels
             RemoveToolBarOverflowCommand = new RemoveToolBarOverfowCommand();
             Messages = new();
             MuteStatus = new();
-            UsersCollectionView = CollectionViewSource.GetDefaultView(AllUsers);
 
             CreateGroups();
+
+            UsersCollectionView = CollectionViewSource.GetDefaultView(Groups);
+            UsersCollectionView.GroupDescriptions.Add(new PropertyGroupDescription(nameof(Group.Name)));
         }
 
         private void InitializeEvents(ISignalRChatService chatService)
@@ -110,7 +117,6 @@ namespace ChatClient.ViewModels
             chatService.ReceivedBan += ChatService_ReceivedBan;
             chatService.ReceivedKick += ChatService_ReceivedKick;
             chatService.ReceivedMute += ChatService_ReceivedMute;
-
         }
 
         private void CreateGroups()
@@ -120,16 +126,6 @@ namespace ChatClient.ViewModels
                 new Group()
                 {
                     Name = nameof(UserGroups.Online),
-                    //GroupedUsers = new ObservableCollection<UserModel>()
-                    //{
-                    //    new UserModel()
-                    //    {
-                    //        UserProfile = new()
-                    //        {
-                    //            Username = "vbn"
-                    //        }
-                    //    }
-                    //}
                 },
                 new Group()
                 {
@@ -185,7 +181,7 @@ namespace ChatClient.ViewModels
             offlineGroup.GroupedUsers = new ObservableCollection<UserModel>(allUsers
                     .Except(bannedGroup.GroupedUsers).Except(onlineGroup.GroupedUsers).ToList());
 
-            OnPropertyChanged(nameof(Groups));
+            UsersCollectionView.Refresh();
         }
 
         private void ChatService_SavedMessagesReceived(List<MessageModel> messages)

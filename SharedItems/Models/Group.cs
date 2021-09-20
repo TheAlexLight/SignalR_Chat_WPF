@@ -9,6 +9,10 @@ namespace SharedItems.Models
 {
     public class Group
     {
+        public Group()
+        {
+            IsChecked = true;
+        }
         public string Name { get; set; }
         public ObservableCollection<UserModel> GroupedUsers { get; set; }
         public bool IsChecked { get; set; }

@@ -59,9 +59,72 @@
                 </DataTemplate>
             </Setter.Value>
         </Setter>-->
-        <!--<Setter Property="ItemTemplate">
+        <Setter Property="ItemTemplate">
             <Setter.Value>
                 <DataTemplate>
+                    <ListBox ItemsSource="{Binding GroupedUsers}"
+                             HorizontalContentAlignment="Stretch"
+                             HorizontalAlignment="Stretch"
+                             VerticalAlignment="Stretch"
+                             Margin="-10,-5,-10,-5"
+                             BorderThickness="0">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal">
+                                    <Border CornerRadius="25" BorderBrush="DarkRed" BorderThickness="2.5"
+                                    Background="CornflowerBlue" 
+                                    Width="30" 
+                                    Height="30"
+                                            Name="userActiveBorder"/>
+                                    <Image Source="{StaticResource muteDrawingImage}" 
+                               Width="15" 
+                               Height="15"
+                               Margin="5,10,-5,5"
+                               Visibility="Collapsed"
+                               Name="muteImage"/>
+                                    <StackPanel>
+                                        <TextBlock Text="{Binding UserProfile.Username}"
+                                       Foreground="{Binding UserProfile.UsernameColor}"
+                                       Margin="10,0,0,0"
+                                       FontSize="22"/>
+                                        <!--<TextBlock Text="{Binding UserProfile.StatusMessage}"
+                                   Margin="10,-5,10,0"
+                                       FontStyle="Italic"
+                                       Foreground="#5F5C5A"
+                                       FontSize="16"
+                                       FontWeight="SemiBold"/>-->
+                                    </StackPanel>
+                                </StackPanel>
+                                <DataTemplate.Triggers>
+                                    <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType={x:Type UserControl}}, Path=DataContext.MuteStatus.IsMuted}" Value="True">
+                                        <Setter Property="Visibility" TargetName="muteImage" Value="Visible"/>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding UserProfile.IsOnline}" Value="True">
+                                        <Setter Property="BorderBrush" TargetName="userActiveBorder" Value="Green"/>
+                                    </DataTrigger>
+                                </DataTemplate.Triggers>
+                                <!--<TextBlock x:Name="usernameTextBlock" 
+                                                       Text="{Binding UserProfile.Username}"/>-->
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                        <ListBox.Style>
+                            <Style TargetType="{x:Type ListBox}"
+           BasedOn="{StaticResource {x:Type ListBox}}">
+                                <Style.Triggers>
+                                    <!-- Use ListBox.HasItems instead of Binding -->
+                                    <Trigger Property="HasItems" Value="False">
+                                        <Setter Property="Template">
+                                            <Setter.Value>
+                                                <ControlTemplate/>
+                                            </Setter.Value>
+                                        </Setter>
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </ListBox.Style>
+                    </ListBox>
+                </DataTemplate>
+                <!--<DataTemplate>
                     <StackPanel Orientation="Horizontal">
                         <Border CornerRadius="25" 
                                     Background="CornflowerBlue" 
@@ -91,9 +154,9 @@
                             <Setter Property="Visibility" TargetName="muteImage" Value="Visible"/>
                         </DataTrigger>
                     </DataTemplate.Triggers>
-                </DataTemplate>
+                </DataTemplate>-->
             </Setter.Value>
-        </Setter>-->
+        </Setter>
     </Style>
 
     <!--<Style x:Key="usersListBox" x:Name="usersListBox" TargetType="{x:Type ListBox}">

@@ -15,12 +15,12 @@
     <UserControl.Resources>
         <ResourceDictionary>
             <converters:DurationTimeConverter x:Key="durationTimeConverter"/>
-            <CollectionViewSource x:Key="ListBoxItems" Source="{Binding Path=Groups, 
+            <!--<CollectionViewSource x:Key="ListBoxItems" Source="{Binding Path=Groups, 
                 UpdateSourceTrigger=PropertyChanged}">
                 <CollectionViewSource.GroupDescriptions>
                     <PropertyGroupDescription PropertyName="Name"/>
                 </CollectionViewSource.GroupDescriptions>
-            </CollectionViewSource>
+            </CollectionViewSource>-->
         </ResourceDictionary>
     </UserControl.Resources>
 
@@ -81,14 +81,11 @@
                 </Border>
 
                 <Grid Grid.Row="1" Background="White">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition/>
-                    </Grid.RowDefinitions>
                     <ToolBarTray IsLocked="True"
                                  Grid.Row="0"
                                  Background="White"
-                                 HorizontalAlignment="Right">
+                                 HorizontalAlignment="Right"
+                                 Panel.ZIndex="2">
                         <ToolBar ToolBar.OverflowMode="Never"
                                  Name="UsersToolBar">
                             <i:Interaction.Triggers>
@@ -98,7 +95,7 @@
                                 </i:EventTrigger>
                             </i:Interaction.Triggers>
                             <Menu>
-                                <MenuItem ItemsSource="{Binding Source={StaticResource ListBoxItems}}"
+                                <MenuItem ItemsSource="{Binding UsersCollectionView}"
                                           HorizontalAlignment="Right"
                                           Background="White">
                                     <MenuItem.Header>
@@ -122,9 +119,10 @@
                             </HierarchicalDataTemplate>
                         </ListBox.ItemTemplate>
                     </ListBox>-->
-                    <ListBox Grid.Row="1" x:Name="activeUsersListBox"
-                     ItemsSource="{Binding Source={StaticResource ListBoxItems}}"
-                             BorderThickness="0">
+                    <ListBox Grid.RowSpan="2" Grid.Row="0" x:Name="activeUsersListBox"
+                     ItemsSource="{Binding UsersCollectionView}"
+                             BorderThickness="0"
+                             Style="{StaticResource usersListBox}">
                         <ListBox.GroupStyle>
                             <GroupStyle>
                                 <GroupStyle.Panel>
@@ -168,18 +166,18 @@
                                 </GroupStyle.ContainerStyle>
                             </GroupStyle>
                         </ListBox.GroupStyle>
-                        <ListBox.ItemTemplate>
+                        <!--<ListBox.ItemTemplate>
                             <DataTemplate>
                                 <ListBox ItemsSource="{Binding GroupedUsers}">
                                     <ListBox.ItemTemplate>
                                         <DataTemplate>
                                             <TextBlock x:Name="usernameTextBlock" 
-                                                       Text="{Binding UserProfile.Username, Mode=TwoWay}"/>
+                                                       Text="{Binding UserProfile.Username}"/>
                                         </DataTemplate>
                                     </ListBox.ItemTemplate>
                                 </ListBox>
                             </DataTemplate>
-                        </ListBox.ItemTemplate>
+                        </ListBox.ItemTemplate>-->
                         <ListBox.ItemContainerStyle>
                             <Style TargetType="{x:Type ListBoxItem }">
                                 <Style.Triggers>
