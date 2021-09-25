@@ -48,6 +48,9 @@
     <Page Update="Resources\PasswordBox.xaml">
       <SubType>Designer</SubType>
     </Page>
+    <Page Update="Resources\ToolBar.xaml">
+      <SubType>Designer</SubType>
+    </Page>
     <Page Update="Views\AdditionalViews\BindablePasswordBox.xaml">
       <SubType>Designer</SubType>
     </Page>

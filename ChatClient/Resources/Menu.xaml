@@ -3,7 +3,14 @@
                     xmlns:viewmodels="clr-namespace:ChatClient.ViewModels"
                     xmlns:converters="clr-namespace:ChatClient.Converters">
 
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="pack://application:,,,/ChatClient;component/Resources/Images/ThreeDots.xaml"/>
+    </ResourceDictionary.MergedDictionaries>
+
     <converters:DurationTimeConverter x:Key="durationTimeConverter"/>
+
+    <SolidColorBrush x:Key="highLightedIcon" 
+                     Color="#B0D2E3"/>
 
     <LinearGradientBrush x:Key="menuItemsBasicColors" StartPoint="0.5,0" EndPoint="0.5,1">
         <GradientStop Color="#EED88C" Offset="0"/>
@@ -46,13 +53,16 @@
         </Setter>
     </Style>
 
-    <Style x:Key="banMenuItem" TargetType="{x:Type MenuItem}">
+    <Style x:Key="baseMenuItem" TargetType="{x:Type MenuItem}">
         <Setter Property="Background" Value="{StaticResource menuItemsBasicColors}"/>
         <Setter Property="BorderBrush" Value="#CBB258"/>
         <Setter Property="Foreground" Value="Black"/>
         <Setter Property="BorderThickness" Value="1"/>
-        <Setter Property="Template" Value="{DynamicResource menuItemControlTemplate}"/>
-        <Setter Property="Command" Value="{Binding BanUserCommand}"/>
+        <Setter Property="Template" Value="{DynamicResource topLevelHeader}"/>
+    </Style>
+
+    <Style x:Key="banMenuItem" TargetType="{x:Type MenuItem}" BasedOn="{StaticResource baseMenuItem}">
+        <Setter Property="Command" Value="{Binding RelativeSource={RelativeSource AncestorType= {x:Type UserControl}}, Path=DataContext.BanUserCommand}"/>
         <Setter Property="CommandParameter">
             <Setter.Value>
                 <MultiBinding Converter="{StaticResource durationTimeConverter}">
@@ -65,8 +75,8 @@
         </Setter>
     </Style>
 
-    <Style x:Key="muteMenuItem" TargetType="{x:Type MenuItem}" BasedOn="{StaticResource banMenuItem}">
-        <Setter Property="Command" Value="{Binding MuteUserCommand}"/>
+    <Style x:Key="muteMenuItem" TargetType="{x:Type MenuItem}" BasedOn="{StaticResource baseMenuItem}">
+        <Setter Property="Command" Value="{Binding RelativeSource={RelativeSource AncestorType= {x:Type UserControl}}, Path=DataContext.MuteUserCommand}"/>
         <Setter Property="CommandParameter">
             <Setter.Value>
                 <MultiBinding Converter="{StaticResource durationTimeConverter}">
@@ -79,7 +89,7 @@
         </Setter>
     </Style>
 
-        <ControlTemplate x:Key="menuItemControlTemplate" TargetType="{x:Type MenuItem}">
+    <ControlTemplate x:Key="menuItemControlTemplate" TargetType="{x:Type MenuItem}">
         <Border x:Name="templateRoot" 
                 BorderBrush="{TemplateBinding BorderBrush}"
                 BorderThickness="{TemplateBinding BorderThickness}" 
@@ -90,7 +100,8 @@
                                   Content="{TemplateBinding Header}" 
                                   HorizontalAlignment="Center" 
                                   SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" 
-                                  VerticalAlignment="Center"/>
+                                  VerticalAlignment="Center">
+            </ContentPresenter>
         </Border>
         <ControlTemplate.Triggers>
             <Trigger Property="IsHighlighted" Value="True">
@@ -98,4 +109,139 @@
             </Trigger>
         </ControlTemplate.Triggers>
     </ControlTemplate>
+    <!-- TopLevelHeader -->
+    <ControlTemplate x:Key="topLevelHeader"
+                 TargetType="{x:Type MenuItem}">
+        <Border x:Name="Border" 
+                Background="{StaticResource menuItemsBasicColors}"
+                BorderBrush="{StaticResource menuItemsBasicColors}"
+                CornerRadius="4"
+                BorderThickness="1">
+            <Grid>
+                <ContentPresenter Margin="6,3,6,3"
+                        ContentSource="Header"
+                        RecognizesAccessKey="True" />
+                <Popup x:Name="Popup"
+             Placement="Right"
+             IsOpen="{TemplateBinding IsSubmenuOpen}"
+             AllowsTransparency="True"
+             Focusable="False"
+             PopupAnimation="Fade">
+                    <Border x:Name="SubmenuBorder"
+                SnapsToDevicePixels="True"
+                BorderThickness="1"
+                Background="{StaticResource menuItemsBasicColors}">
+                        <ScrollViewer CanContentScroll="True"
+                                      VerticalScrollBarVisibility="Auto">
+                            <StackPanel IsItemsHost="True"
+                        KeyboardNavigation.DirectionalNavigation="Cycle" />
+                        </ScrollViewer>
+                    </Border>
+                </Popup>
+            </Grid>
+        </Border>
+        <ControlTemplate.Triggers>
+            <Trigger Property="IsSuspendingPopupAnimation"
+             Value="true">
+                <Setter TargetName="Popup"
+              Property="PopupAnimation"
+              Value="None" />
+            </Trigger>
+            <Trigger Property="IsHighlighted" Value="true">
+                <Setter Property="Background" TargetName="Border"
+                        Value="{StaticResource menuItemsMouseOverColors}">
+                </Setter>
+            </Trigger>
+            <Trigger Property="IsPressed" Value="True">
+                <Setter Property="StaysOpen" TargetName="Popup" Value="False"/>
+                <Setter Property="Focusable" TargetName="Popup" Value="False"/>
+            </Trigger>
+            <Trigger SourceName="Popup"
+             Property="AllowsTransparency"
+             Value="True">
+                <Setter TargetName="SubmenuBorder"
+              Property="CornerRadius"
+              Value="0,0,4,4" />
+                <Setter TargetName="SubmenuBorder"
+              Property="Padding"
+              Value="0,0,0,3" />
+            </Trigger>
+        </ControlTemplate.Triggers>
+    </ControlTemplate>
+
+    <Style x:Key="userMenu" TargetType="{x:Type Menu}">
+        <Setter Property="HorizontalAlignment" Value="Right"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+        <Setter Property="Width" Value="Auto"/>
+        <Setter Property="Height" Value="Auto"/>
+        <Setter Property="Background" Value="Transparent"/>
+    </Style>
+
+    <!-- iconTopLevelHeader -->
+    <ControlTemplate x:Key="iconTopLevelHeader"
+                 TargetType="{x:Type MenuItem}">
+        <Border x:Name="Border" 
+                Background="Transparent">
+            <Grid>
+                <ContentPresenter Margin="6,3,6,3"
+                        ContentSource="Header"
+                        RecognizesAccessKey="True" />
+                <Popup x:Name="Popup"
+             Placement="Bottom"
+             IsOpen="{TemplateBinding IsSubmenuOpen}"
+             AllowsTransparency="True"
+             Focusable="False"
+             PopupAnimation="Fade">
+                    <Border x:Name="SubmenuBorder"
+                SnapsToDevicePixels="True"
+                BorderThickness="1"
+                Background="{StaticResource menuItemsBasicColors}"
+                            Width="55"
+                            Margin="0">
+                        <ScrollViewer CanContentScroll="True"
+                                      VerticalScrollBarVisibility="Auto">
+                            <StackPanel IsItemsHost="True"
+                        KeyboardNavigation.DirectionalNavigation="Cycle"/>
+                        </ScrollViewer>
+                    </Border>
+                </Popup>
+            </Grid>
+        </Border>
+        <ControlTemplate.Triggers>
+            <Trigger Property="IsSuspendingPopupAnimation"
+             Value="true">
+                <Setter TargetName="Popup"
+              Property="PopupAnimation"
+              Value="None" />
+            </Trigger>
+            <Trigger Property="IsHighlighted" Value="true">
+                <Setter Property="Background" TargetName="Border"
+                        Value="{StaticResource highLightedIcon}">
+                </Setter>
+            </Trigger>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Background" Value="{StaticResource highLightedIcon}"/>
+            </Trigger>
+            <Trigger SourceName="Popup"
+             Property="AllowsTransparency"
+             Value="True">
+                <Setter TargetName="SubmenuBorder"
+              Property="CornerRadius"
+              Value="0,0,4,4" />
+                <Setter TargetName="SubmenuBorder"
+              Property="Padding"
+              Value="0,0,0,3" />
+            </Trigger>
+            <Trigger Property="IsEnabled"
+             Value="False">
+            </Trigger>
+        </ControlTemplate.Triggers>
+    </ControlTemplate>
+
+    <Style x:Key="userMenuItem" TargetType="{x:Type MenuItem}">
+        <Setter Property="Width" Value="25"/>
+        <Setter Property="Height" Value="30"/>
+        <Setter Property="Template" Value="{StaticResource iconTopLevelHeader}"/>
+        <Setter Property="FontSize" Value="16"/>
+    </Style>
 </ResourceDictionary>

@@ -213,37 +213,4 @@
             </Setter.Value>
         </Setter>
     </Style>
-
-    <Style x:Key="toolBarButton" TargetType="{x:Type Button}">
-        <Setter Property="HorizontalAlignment" Value="Stretch"/>
-        <Setter Property="Template">
-            <Setter.Value>
-                <ControlTemplate TargetType="{x:Type Button}">
-                    <Border BorderThickness="1" 
-                            CornerRadius="5"
-                            BorderBrush="#525251"
-                            Padding="1"
-                            HorizontalAlignment="Stretch"
-                            Name="toolBarBorder"
-                            Background="{StaticResource registrationBasicColors}"
-                            Margin="0,2,0,2">
-                        <ContentPresenter HorizontalAlignment="Center"
-                                          VerticalAlignment="Center"/>
-                    </Border>
-                    <ControlTemplate.Triggers>
-                        <Trigger Property="IsMouseOver" Value="True">
-                            <Setter TargetName="toolBarBorder" Property="Background" Value="{StaticResource registrationMouseOverColors}"/>
-                        </Trigger>
-                        <Trigger Property="IsEnabled" Value="False">
-                            <Setter TargetName="toolBarBorder" Property="Background" Value="{StaticResource registrationIsDisabledColors}"/>
-                        </Trigger>
-                        <Trigger Property="IsPressed" Value="True">
-                            <Setter TargetName="toolBarBorder" Property="Background" Value="{StaticResource registrationIsPressedColors}"/>
-                        </Trigger>
-                    </ControlTemplate.Triggers>
-                </ControlTemplate>
-            </Setter.Value>
-        </Setter>
-    </Style>
-
 </ResourceDictionary>

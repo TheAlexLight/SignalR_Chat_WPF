@@ -15,20 +15,13 @@
     <UserControl.Resources>
         <ResourceDictionary>
             <converters:DurationTimeConverter x:Key="durationTimeConverter"/>
-            <!--<CollectionViewSource x:Key="ListBoxItems" Source="{Binding Path=Groups, 
-                UpdateSourceTrigger=PropertyChanged}">
-                <CollectionViewSource.GroupDescriptions>
-                    <PropertyGroupDescription PropertyName="Name"/>
-                </CollectionViewSource.GroupDescriptions>
-            </CollectionViewSource>-->
         </ResourceDictionary>
     </UserControl.Resources>
 
     <Grid Background="#C0C8D5">
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
-            <ColumnDefinition Width="164"/>
-            <ColumnDefinition  Style="{StaticResource toolBarColumn}"/>
+            <ColumnDefinition Width="185"/>
         </Grid.ColumnDefinitions>
 
         <Grid Grid.Column="0">
@@ -81,23 +74,20 @@
                 </Border>
 
                 <Grid Grid.Row="1" Background="White">
-                    <ToolBarTray IsLocked="True"
-                                 Grid.Row="0"
-                                 Background="White"
-                                 HorizontalAlignment="Right"
-                                 Panel.ZIndex="2">
-                        <ToolBar ToolBar.OverflowMode="Never"
-                                 Name="UsersToolBar">
+                    <ToolBarTray Style="{StaticResource filterToolBarTray}">
+                        <ToolBar Name="usersToolBar" Style="{StaticResource usersToolBar}">
                             <i:Interaction.Triggers>
                                 <i:EventTrigger EventName="Loaded">
                                     <i:InvokeCommandAction Command="{Binding RemoveToolBarOverflowCommand}"
-                                                   CommandParameter="{Binding ElementName=UsersToolBar}"/>
+                                                   CommandParameter="{Binding ElementName=usersToolBar}"/>
                                 </i:EventTrigger>
                             </i:Interaction.Triggers>
-                            <Menu>
+                            <!--<Menu BorderThickness="2,1,0,0"
+                                  Background="White">
                                 <MenuItem ItemsSource="{Binding UsersCollectionView}"
                                           HorizontalAlignment="Right"
-                                          Background="White">
+                                          Background="White"
+                                          BorderThickness="0">
                                     <MenuItem.Header>
                                         <Image Source="{StaticResource filterDrawingImage}"
                                                Width="20"
@@ -109,16 +99,9 @@
                                         </HierarchicalDataTemplate>
                                     </MenuItem.ItemTemplate>
                                 </MenuItem>
-                            </Menu>
+                            </Menu>-->
                         </ToolBar>
                     </ToolBarTray>
-                    <!--<ListBox ItemsSource="{Binding Source={StaticResource ListBoxItems}}" >
-                        <ListBox.ItemTemplate>
-                            <HierarchicalDataTemplate>
-                                <CheckBox Content="{Binding Name}" IsChecked="{Binding IsChecked}"/>
-                            </HierarchicalDataTemplate>
-                        </ListBox.ItemTemplate>
-                    </ListBox>-->
                     <ListBox Grid.RowSpan="2" Grid.Row="0" x:Name="activeUsersListBox"
                      ItemsSource="{Binding UsersCollectionView}"
                              BorderThickness="0"
@@ -143,19 +126,20 @@
                                         BorderThickness="0"
                                         IsExpanded="True"
                                             HorizontalContentAlignment="Stretch"
-                                            HorizontalAlignment="Stretch">
+                                            HorizontalAlignment="Stretch"
+                                                        Margin="10,10,0,0">
                                                         <ItemsPresenter/>
                                                         <Expander.Header>
                                                             <StackPanel Orientation="Horizontal">
                                                                 <TextBlock Text="{Binding Name}"/>
                                                                 <TextBlock Text="  ("/>
-                                                                <TextBlock Text="{Binding Items[0].UsersCount}"/>
+                                                                <TextBlock Text="{Binding Items.CurrentItem.UsersCount}"/>
                                                                 <TextBlock Text=")"/>
                                                             </StackPanel>
                                                         </Expander.Header>
                                                     </Expander>
                                                     <ControlTemplate.Triggers>
-                                                        <DataTrigger Binding="{Binding Items[0].IsChecked}" Value="False">
+                                                        <DataTrigger Binding="{Binding Items.CurrentItem.IsChecked}" Value="False">
                                                             <Setter TargetName="expander" Property="Visibility" Value="Collapsed"/>
                                                         </DataTrigger>
                                                     </ControlTemplate.Triggers>
@@ -166,100 +150,12 @@
                                 </GroupStyle.ContainerStyle>
                             </GroupStyle>
                         </ListBox.GroupStyle>
-                        <!--<ListBox.ItemTemplate>
-                            <DataTemplate>
-                                <ListBox ItemsSource="{Binding GroupedUsers}">
-                                    <ListBox.ItemTemplate>
-                                        <DataTemplate>
-                                            <TextBlock x:Name="usernameTextBlock" 
-                                                       Text="{Binding UserProfile.Username}"/>
-                                        </DataTemplate>
-                                    </ListBox.ItemTemplate>
-                                </ListBox>
-                            </DataTemplate>
-                        </ListBox.ItemTemplate>-->
-                        <ListBox.ItemContainerStyle>
-                            <Style TargetType="{x:Type ListBoxItem }">
-                                <Style.Triggers>
-                                    <DataTrigger Binding ="{Binding RelativeSource={RelativeSource AncestorType={x:Type ListBox}}, Path=HasItems}" 
-                                                    Value="False">
-                                        <Setter Property="Visibility" Value="Collapsed"/>
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </ListBox.ItemContainerStyle>
                     </ListBox>
                 </Grid>
             </Grid>
         </Border>
 
         <Grid Grid.ColumnSpan="3" Style="{StaticResource getBannedLayout}"/>
-
-        <Grid Grid.Column="2" >
-            <Grid.RowDefinitions>
-                <RowDefinition Height="35"/>
-                <RowDefinition/>
-            </Grid.RowDefinitions>
-            <ToolBarTray Grid.Column="2" Grid.Row="1" 
-                     Orientation="Vertical"
-                         IsLocked="True"
-                         Background="{StaticResource mainMessageBoxColors}">
-                <ToolBar FontSize="20" 
-                         ToolBar.OverflowMode="Never"
-                         Name="toolBar">
-                    <i:Interaction.Triggers>
-                        <i:EventTrigger EventName="Loaded">
-                            <i:InvokeCommandAction Command="{Binding RemoveToolBarOverflowCommand}"
-                                                   CommandParameter="{Binding ElementName=toolBar}"/>
-                        </i:EventTrigger>
-                    </i:Interaction.Triggers>
-                    <Menu Style="{StaticResource banMenu}">
-                        <MenuItem Header="Ban">
-                            <MenuItem Header="10 min" 
-                                      viewmodels:ChatViewModel.DurationTime="10"
-                                      Style="{StaticResource banMenuItem}">
-                            </MenuItem>
-                            <MenuItem Header="20 min" 
-                                      viewmodels:ChatViewModel.DurationTime="20"
-                                      Style="{StaticResource banMenuItem}"/>
-                            <MenuItem Header="30 min" 
-                                      viewmodels:ChatViewModel.DurationTime="30"
-                                      Style="{StaticResource banMenuItem}"/>
-                            <MenuItem Header="60 min" 
-                                      viewmodels:ChatViewModel.DurationTime="60"
-                                      Style="{StaticResource banMenuItem}"/>
-                            <MenuItem Header="Permanent"
-                                      viewmodels:ChatViewModel.DurationTime="Permanent"
-                                      Style="{StaticResource banMenuItem}"/>
-                        </MenuItem>
-                    </Menu>
-                    <Button Style="{StaticResource toolBarButton}"
-                            Content="Kick"
-                            Command="{Binding KickUserCommand}"
-                            CommandParameter="{Binding ElementName=activeUsersListBox,Path=SelectedItem}"/>
-                    <Menu Style="{StaticResource banMenu}">
-                        <MenuItem Header="Mute">
-                            <MenuItem Header="10 min" 
-                                      viewmodels:ChatViewModel.DurationTime="10"
-                                      Style="{StaticResource muteMenuItem}">
-                            </MenuItem>
-                            <MenuItem Header="20 min" 
-                                      viewmodels:ChatViewModel.DurationTime="20"
-                                      Style="{StaticResource muteMenuItem}"/>
-                            <MenuItem Header="30 min" 
-                                      viewmodels:ChatViewModel.DurationTime="30"
-                                      Style="{StaticResource muteMenuItem}"/>
-                            <MenuItem Header="60 min" 
-                                      viewmodels:ChatViewModel.DurationTime="60"
-                                      Style="{StaticResource banMenuItem}"/>
-                            <MenuItem Header="Permanent"
-                                      viewmodels:ChatViewModel.DurationTime="Permanent"
-                                      Style="{StaticResource banMenuItem}"/>
-                        </MenuItem>
-                    </Menu>
-                </ToolBar>
-            </ToolBarTray>
-        </Grid>
 
         <additionaViews:ConnectionLostView Grid.ColumnSpan="3"/>
     </Grid>

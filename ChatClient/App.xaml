@@ -15,10 +15,12 @@
                 <ResourceDictionary Source="Resources/PasswordBox.xaml"/>
                 <ResourceDictionary Source="Resources/ContentControl.xaml"/>
                 <ResourceDictionary Source="Resources/Menu.xaml"/>
+                <ResourceDictionary Source="Resources/Toolbar.xaml"/>
 
                 <ResourceDictionary Source="Resources/Images/Send.xaml"/>
                 <ResourceDictionary Source="Resources/Images/Mute.xaml"/>
-                <ResourceDictionary Source="Resources/Images/Filter.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/ChatClient;component/Resources/Images/Filter.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/ChatClient;component/Resources/Images/ThreeDots.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>

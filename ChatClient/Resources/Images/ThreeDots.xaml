@@ -1,0 +1,9 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+  <Geometry x:Key="threeDotsGeometry">F0 M500,500z M0,0z M250,355C277.614237,355 300,377.385763 300,405 300,432.614237 277.614237,455 250,455 222.385763,455 200,432.614237 200,405 200,377.385763 222.385763,355 250,355z M250,200C277.614237,200 300,222.385763 300,250 300,277.614237 277.614237,300 250,300 222.385763,300 200,277.614237 200,250 200,222.385763 222.385763,200 250,200z M250,45C277.614237,45 300,67.3857625 300,95 300,122.614237 277.614237,145 250,145 222.385763,145 200,122.614237 200,95 200,67.3857625 222.385763,45 250,45z</Geometry>
+  <DrawingGroup x:Key="threeDotsDrawingGroup" ClipGeometry="M0,0 V500 H500 V0 H0 Z">
+    <DrawingGroup Opacity="1">
+      <GeometryDrawing Brush="#FF000000" Geometry="{StaticResource threeDotsGeometry}" />
+    </DrawingGroup>
+  </DrawingGroup>
+  <DrawingImage x:Key="threeDotsDrawingImage" Drawing="{StaticResource threeDotsDrawingGroup}" />
+</ResourceDictionary>
