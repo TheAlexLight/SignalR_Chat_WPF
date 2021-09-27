@@ -5,9 +5,10 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:ChatClient.Views" 
              xmlns:viewmodels="clr-namespace:ChatClient.ViewModels" 
-             xmlns:additionaViews="clr-namespace:ChatClient.Views.AdditionalViews"
+             xmlns:additionalViews="clr-namespace:ChatClient.Views.AdditionalViews"
              xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
              xmlns:converters="clr-namespace:ChatClient.Converters"
+             xmlns:enums="clr-namespace:ChatClient.Enums"
              d:DataContext="{d:DesignInstance Type=viewmodels:ChatViewModel}"
              mc:Ignorable="d" 
              d:DesignHeight="400" d:DesignWidth="550">
@@ -20,11 +21,40 @@
 
     <Grid Background="#C0C8D5">
         <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="60"/>
             <ColumnDefinition/>
             <ColumnDefinition Width="185"/>
         </Grid.ColumnDefinitions>
 
-        <Grid Grid.Column="0">
+        <Grid Grid.Column ="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="35"/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+
+            <!--<Border Style="{StaticResource chatBorder}"
+                    Grid.Row="0">
+            </Border>-->
+
+            <ListBox Background="White"
+                     Grid.Row="1">
+                <Button Width="40" 
+                        Height="40" 
+                        Content="Pub"
+                        FontSize="18"
+                        Command="{Binding SwitchChatCommand}"
+                        CommandParameter="{x:Static enums:ChatType.Public}"/>
+                <Button Width="40" 
+                        Height="40" 
+                        Content="Priv"
+                        FontSize="18"
+                        Command="{Binding SwitchChatCommand}"
+                        CommandParameter="{x:Static enums:ChatType.Private}"/>
+            </ListBox>
+            
+        </Grid>
+
+        <Grid Grid.Column="1">
             <Grid.RowDefinitions>
                 <RowDefinition Height="35"/>
                 <RowDefinition Height="4*"/>
@@ -58,10 +88,10 @@
             </Grid>
         </Grid>
 
-        <Border  Grid.Column="1" 
+        <Border  Grid.Column="2" 
                  BorderThickness="1,0,1,0"
                  BorderBrush="#AAAEB2">
-            <Grid >
+            <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="35"/>
                     <RowDefinition/>
@@ -82,24 +112,6 @@
                                                    CommandParameter="{Binding ElementName=usersToolBar}"/>
                                 </i:EventTrigger>
                             </i:Interaction.Triggers>
-                            <!--<Menu BorderThickness="2,1,0,0"
-                                  Background="White">
-                                <MenuItem ItemsSource="{Binding UsersCollectionView}"
-                                          HorizontalAlignment="Right"
-                                          Background="White"
-                                          BorderThickness="0">
-                                    <MenuItem.Header>
-                                        <Image Source="{StaticResource filterDrawingImage}"
-                                               Width="20"
-                                               Height="20"/>
-                                    </MenuItem.Header>
-                                    <MenuItem.ItemTemplate>
-                                        <HierarchicalDataTemplate>
-                                            <CheckBox Content="{Binding Name}" IsChecked="{Binding IsChecked}"/>
-                                        </HierarchicalDataTemplate>
-                                    </MenuItem.ItemTemplate>
-                                </MenuItem>
-                            </Menu>-->
                         </ToolBar>
                     </ToolBarTray>
                     <ListBox Grid.RowSpan="2" Grid.Row="0" x:Name="activeUsersListBox"
@@ -157,6 +169,12 @@
 
         <Grid Grid.ColumnSpan="3" Style="{StaticResource getBannedLayout}"/>
 
-        <additionaViews:ConnectionLostView Grid.ColumnSpan="3"/>
+        <additionalViews:ConnectionLostView Grid.ColumnSpan="3"
+                                           Visibility="Collapsed"
+                                            Style="{StaticResource connectionLost}"/>
+        <additionalViews:PrivateChatView Grid.Column="1" 
+                                         Grid.ColumnSpan="2"
+                                         Style="{StaticResource privateChat}">
+        </additionalViews:PrivateChatView>
     </Grid>
 </UserControl>

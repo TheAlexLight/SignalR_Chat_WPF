@@ -50,25 +50,11 @@ namespace ChatClient.ViewModels
         private string _message;
         private ObservableCollection<MessageModel> _messages;
         private ObservableCollection<UserModel> _allUsers;
+        private ObservableCollection<Group> _groups;
         private UserModel _currentUser;
         private MuteStatusModel _muteStatus;
 
-        private ObservableCollection<Group> _groups;
-
-        public ObservableCollection<Group> Groups 
-        {
-            get =>_groups;
-            set
-            {
-                _groups = value;
-                OnPropertyChanged();
-
-                if (UsersCollectionView != null)
-                {
-                    UsersCollectionView.Refresh();
-                }
-            } 
-        }
+        private ChatType _currentChatType;
 
         public ICollectionView UsersCollectionView { get; private set; }
 
@@ -77,6 +63,7 @@ namespace ChatClient.ViewModels
         public ICommand KickUserCommand { get; private set; }
         public ICommand BanUserCommand { get; private set; }
         public ICommand MuteUserCommand { get; private set; }
+        public ICommand SwitchChatCommand { get; private set; }
 
         public static readonly DependencyProperty TimeDurationProperty = DependencyProperty.RegisterAttached("DurationTime"
                 , typeof(string), typeof(ChatViewModel), new PropertyMetadata(null));
@@ -98,6 +85,7 @@ namespace ChatClient.ViewModels
             BanUserCommand = new BanUserCommand(this);
             KickUserCommand = new KickUserCommand(this);
             MuteUserCommand = new MuteUserCommand(this);
+            SwitchChatCommand = new SwitchChatCommand(this);
             RemoveToolBarOverflowCommand = new RemoveToolBarOverfowCommand();
             Messages = new();
             MuteStatus = new();
@@ -266,6 +254,31 @@ namespace ChatClient.ViewModels
             {
                 _muteStatus = value;
                 OnPropertyChanged();
+            }
+        }
+
+        public ChatType CurrentChatType
+        {
+            get => _currentChatType;
+            set
+            {
+                _currentChatType = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public ObservableCollection<Group> Groups
+        {
+            get => _groups;
+            set
+            {
+                _groups = value;
+                OnPropertyChanged();
+
+                if (UsersCollectionView != null)
+                {
+                    UsersCollectionView.Refresh();
+                }
             }
         }
     }

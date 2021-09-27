@@ -1,5 +1,6 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:additionalViews="clr-namespace:ChatClient.Views.AdditionalViews">
 
     <LinearGradientBrush x:Key="typeMessageGridColors" StartPoint="0.5,0" EndPoint="0.5,1">
         <GradientStop Color="#D9D9DC" Offset="0"/>
@@ -19,7 +20,7 @@
         </Style.Triggers>-->
     </Style>
 
-    <Style x:Key="connectionLost" TargetType="{x:Type Grid}">
+    <Style x:Key="connectionLost" TargetType="{x:Type additionalViews:ConnectionLostView}">
         <Setter Property="Panel.ZIndex" Value="3"/>
         <Setter Property="Visibility" Value="Collapsed"/>
         <Setter Property="Background" Value="#F1F0EA"/>
@@ -28,6 +29,17 @@
                 <Setter Property="Visibility" Value="Visible"/>
             </DataTrigger>
             <DataTrigger Binding="{Binding ConnectionStatusValue}" Value="Disconnected">
+                <Setter Property="Visibility" Value="Visible"/>
+            </DataTrigger>
+        </Style.Triggers>
+    </Style>
+
+    <Style x:Key="privateChat" TargetType="{x:Type additionalViews:PrivateChatView}">
+        <Setter Property="Panel.ZIndex" Value="3"/>
+        <Setter Property="Visibility" Value="Collapsed"/>
+        <!--<Setter Property="Background" Value="#F1F0EA"/>-->
+        <Style.Triggers>
+            <DataTrigger Binding="{Binding CurrentChatType}" Value="Private">
                 <Setter Property="Visibility" Value="Visible"/>
             </DataTrigger>
         </Style.Triggers>

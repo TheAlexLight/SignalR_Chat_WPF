@@ -9,7 +9,7 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
 
-        <Grid Style="{StaticResource connectionLost}">
+    <Grid Background="#F1F0EA">
         <Border Style="{StaticResource formBorder}"
                 Width="Auto"
                 Height="Auto">

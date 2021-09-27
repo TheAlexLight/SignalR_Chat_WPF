@@ -7,7 +7,7 @@
         xmlns:viewModels="clr-namespace:ChatClient.ViewModels"
         xmlns:views="clr-namespace:ChatClient.Views"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="600"  WindowStartupLocation="Manual" Background="#4E535B">
+        Title="Chat" Height="450" Width="600"  WindowStartupLocation="Manual" Background="#4E535B">
 
 
     <ContentControl Content="{Binding CurrentViewModel}">
