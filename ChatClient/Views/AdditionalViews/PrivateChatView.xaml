@@ -20,12 +20,14 @@
             </Grid.RowDefinitions>
 
             <Border Grid.Row="0"
-                    BorderBrush="Black"
-                    BorderThickness="1">
+                    BorderBrush="#AAAEB2"
+                    BorderThickness="1,1,0,1"
+                    Background="{StaticResource mainMessageBoxColors}">
                 <TextBox Text="Search"
                      VerticalAlignment="Center"
                      FontSize="18"
-                     Height="35"/>
+                     Height="35"
+                         Background="#ECECF4"/>
             </Border>
 
             <Border  Grid.Row="1" 
@@ -47,8 +49,9 @@
             </Grid.RowDefinitions>
 
             <Grid Grid.Row="0">
-                <Border BorderBrush="Black"
-                        BorderThickness="1">
+                <Border BorderBrush="#AAAEB2"
+                        BorderThickness="1"
+                        Background="#ECECF4">
                     <TextBlock HorizontalAlignment="Center"
                            Text="Info about user"
                            VerticalAlignment="Center"

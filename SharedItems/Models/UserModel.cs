@@ -12,6 +12,7 @@ namespace SharedItems.Models
     {
         public int Id { get; set; }
         public string UserId { get; set; }
+        //public int PrivateChatId { get; set; }
         public UserProfileModel UserProfile { get; set; }
         public UserStatusModel UserStatus { get; set; }
         public ICollection<MessageModel> Messages { get; set; }

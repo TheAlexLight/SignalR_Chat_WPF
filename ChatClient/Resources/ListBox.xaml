@@ -33,6 +33,7 @@
         <Setter Property="FontSize" Value="20"/>
         <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
         <Setter Property="SelectedIndex" Value="0"/>
+        <Setter Property="Background" Value="{StaticResource mainMessageBoxColors}"/>
         <Setter Property="ItemContainerStyle">
             <Setter.Value>
                 <Style TargetType="{x:Type ListBoxItem }">
@@ -53,12 +54,15 @@
                              HorizontalAlignment="Stretch"
                              VerticalAlignment="Stretch"
                              Margin="-15,-5,-10,-5"
-                             BorderThickness="0">
+                             BorderThickness="0"
+                             Background="#F0F0FF">
                         <ListBox.ItemTemplate>
                             <DataTemplate>
                                 <DockPanel HorizontalAlignment="Stretch" 
-                                           VerticalAlignment="Stretch">
-                                    <StackPanel Orientation="Horizontal">
+                                           VerticalAlignment="Stretch"
+                                           Background="#F0F0FF">
+                                    <StackPanel Orientation="Horizontal"
+                                                Background="#F0F0FF">
                                         <Border CornerRadius="25" 
                                                 BorderBrush="DarkRed" 
                                                 BorderThickness="2.5"
@@ -72,11 +76,12 @@
                                Margin="5,10,-5,5"
                                Visibility="Collapsed"
                                Name="muteImage"/>
-                                        <StackPanel>
+                                        <StackPanel Background="#F0F0FF">
                                             <TextBlock Text="{Binding UserProfile.Username}"
                                        Foreground="{Binding UserProfile.UsernameColor}"
                                        Margin="10,0,0,0"
-                                       FontSize="22"/>
+                                       FontSize="22"
+                                                       Background="#F0F0FF"/>
                                             <!--<TextBlock Text="{Binding UserProfile.StatusMessage}"
                                    Margin="10,-5,10,0"
                                        FontStyle="Italic"
@@ -250,6 +255,7 @@
     <Style x:Key="messagesListBox" TargetType="{x:Type ListBox}" BasedOn="{StaticResource usersListBox}">
         <Setter Property="ItemsSource" Value="{Binding Messages}"/>
         <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Hidden"/>
+        <Setter Property="Background" Value="{StaticResource mainMessageBoxColors}"/>
         <Setter Property="ItemTemplate">
             <Setter.Value>
                 <DataTemplate>

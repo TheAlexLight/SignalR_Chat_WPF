@@ -32,12 +32,13 @@
                 <RowDefinition/>
             </Grid.RowDefinitions>
 
-            <!--<Border Style="{StaticResource chatBorder}"
+            <Border Background="{StaticResource mainMessageBoxColors}"
                     Grid.Row="0">
-            </Border>-->
+            </Border>
 
-            <ListBox Background="White"
-                     Grid.Row="1">
+            <ListBox Background="{StaticResource mainMessageBoxColors}"
+                     Grid.Row="1"
+                     BorderThickness="1,0,1,1">
                 <Button Width="40" 
                         Height="40" 
                         Content="Pub"
@@ -103,9 +104,11 @@
                            Text="Users"/>
                 </Border>
 
-                <Grid Grid.Row="1" Background="White">
-                    <ToolBarTray Style="{StaticResource filterToolBarTray}">
-                        <ToolBar Name="usersToolBar" Style="{StaticResource usersToolBar}">
+                <Grid Grid.Row="1" Background="{StaticResource mainMessageBoxColors}">
+                    <ToolBarTray Style="{StaticResource filterToolBarTray}"
+                                 Background="{StaticResource mainMessageBoxColors}">
+                        <ToolBar Name="usersToolBar" Style="{StaticResource usersToolBar}"
+                                 Background="{StaticResource mainMessageBoxColors}">
                             <i:Interaction.Triggers>
                                 <i:EventTrigger EventName="Loaded">
                                     <i:InvokeCommandAction Command="{Binding RemoveToolBarOverflowCommand}"
