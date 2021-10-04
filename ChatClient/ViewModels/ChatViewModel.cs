@@ -6,6 +6,7 @@ using ChatClient.Enums;
 using ChatClient.Interfaces;
 using ChatClient.Services;
 using ChatClient.Stores;
+using SharedItems.Enums;
 using SharedItems.Models;
 using SharedItems.Models.StatusModels;
 using System;
@@ -48,15 +49,18 @@ namespace ChatClient.ViewModels
         }
 
         private string _message;
-        private ObservableCollection<MessageModel> _messages;
+        private string _usersFilter;
+        //private ObservableCollection<MessageModel> _messages;
         private ObservableCollection<UserModel> _allUsers;
         private ObservableCollection<Group> _groups;
         private UserModel _currentUser;
         private MuteStatusModel _muteStatus;
+        private ChatGroupModel _currentChatGroup;
 
         private ChatType _currentChatType;
 
         public ICollectionView UsersCollectionView { get; private set; }
+        public ICollectionView FilterUsersCollectionView { get; private set; }
 
         public ICommand SendChatMessageCommand { get; private set; }
         public ICommand RemoveToolBarOverflowCommand { get; private set; }
@@ -64,6 +68,7 @@ namespace ChatClient.ViewModels
         public ICommand BanUserCommand { get; private set; }
         public ICommand MuteUserCommand { get; private set; }
         public ICommand SwitchChatCommand { get; private set; }
+        public ICommand UpdatePrivateMessagesCommand { get; private set; }
 
         public static readonly DependencyProperty TimeDurationProperty = DependencyProperty.RegisterAttached("DurationTime"
                 , typeof(string), typeof(ChatViewModel), new PropertyMetadata(null));
@@ -87,8 +92,11 @@ namespace ChatClient.ViewModels
             MuteUserCommand = new MuteUserCommand(this);
             SwitchChatCommand = new SwitchChatCommand(this);
             RemoveToolBarOverflowCommand = new RemoveToolBarOverfowCommand();
-            Messages = new();
+            UpdatePrivateMessagesCommand = new UpdatePrivateMessagesCommand(this);
+            //Messages = new();
             MuteStatus = new();
+            UsersFilter = string.Empty;
+            AllUsers = new ObservableCollection<UserModel>();
 
             CreateGroups();
 
@@ -98,13 +106,26 @@ namespace ChatClient.ViewModels
 
         private void InitializeEvents(ISignalRChatService chatService)
         {
-            chatService.MessageReceived += ChatService_MessageReceived;
+            //chatService.MessageReceived += ChatService_MessageReceived;
             chatService.UserListReceived += ChatService_UserListReceived;
+            chatService.CurrentGroupReceived += ChatService_CurrentGroupReceived;
             chatService.CurrentUserReceived += ChatService_CurrentUserReceived;
-            chatService.SavedMessagesReceived += ChatService_SavedMessagesReceived;
+            //chatService.CurrentGroupReceived += ChatService_SavedMessagesReceived;
             chatService.ReceivedBan += ChatService_ReceivedBan;
             chatService.ReceivedKick += ChatService_ReceivedKick;
             chatService.ReceivedMute += ChatService_ReceivedMute;
+        }
+
+        private bool FilterUsers(object obj)
+        {
+            bool result = false;
+
+            if (obj is UserModel user)
+            {
+                result = user.UserProfile.Username.Contains(UsersFilter, StringComparison.InvariantCultureIgnoreCase);
+            }
+
+            return result;
         }
 
         private void CreateGroups()
@@ -152,34 +173,37 @@ namespace ChatClient.ViewModels
             CurrentUser = currentUser;
         }
 
-        private void ChatService_UserListReceived(ObservableCollection<UserModel> allUsers)
+        private void ChatService_CurrentGroupReceived(ChatGroupModel currentGroup)
         {
-            AllUsers = allUsers;
-            OnPropertyChanged(nameof(AllUsers));
+            CurrentChatGroup = currentGroup;
 
             Group bannedGroup = Groups.FirstOrDefault(g => g.Name.Equals(nameof(UserGroups.Banned)));
-            bannedGroup.GroupedUsers = new ObservableCollection<UserModel>(allUsers
+            bannedGroup.GroupedUsers = new ObservableCollection<UserModel>(CurrentChatGroup.Users
                     .Where(u => u.UserStatus.BanStatus.IsBanned).ToList());
 
             Group onlineGroup = Groups.FirstOrDefault(g => g.Name.Equals(nameof(UserGroups.Online)));
-            onlineGroup.GroupedUsers = new ObservableCollection<UserModel>(allUsers
+            onlineGroup.GroupedUsers = new ObservableCollection<UserModel>(CurrentChatGroup.Users
                     .Where(u => u.UserProfile.IsOnline).Except(bannedGroup.GroupedUsers).ToList());
 
             Group offlineGroup = Groups.FirstOrDefault(g => g.Name.Equals(nameof(UserGroups.Offline)));
-            offlineGroup.GroupedUsers = new ObservableCollection<UserModel>(allUsers
+            offlineGroup.GroupedUsers = new ObservableCollection<UserModel>(CurrentChatGroup.Users
                     .Except(bannedGroup.GroupedUsers).Except(onlineGroup.GroupedUsers).ToList());
 
             UsersCollectionView.Refresh();
         }
 
-        private void ChatService_SavedMessagesReceived(List<MessageModel> messages)
+        private void ChatService_UserListReceived(ObservableCollection<UserModel> allUsers)
         {
-            Messages = new ObservableCollection<MessageModel>(messages);
-        }
+            AllUsers = allUsers;
 
-        private void ChatService_MessageReceived(MessageModel message)
-        {
-            Messages.Add(message);
+            if (FilterUsersCollectionView == null)
+            {
+                FilterUsersCollectionView = CollectionViewSource.GetDefaultView(AllUsers);
+                FilterUsersCollectionView.Filter = FilterUsers;
+            }
+
+
+            FilterUsersCollectionView.Refresh();
         }
 
         private async void ChatService_ReceivedBan(BanStatusModel model)
@@ -217,15 +241,6 @@ namespace ChatClient.ViewModels
                 OnPropertyChanged();
             }
         }
-        public ObservableCollection<MessageModel> Messages
-        {
-            get => _messages;
-            private set
-            {
-                _messages = value;
-                OnPropertyChanged();
-            }
-        }
 
         public string Message
         {
@@ -237,13 +252,17 @@ namespace ChatClient.ViewModels
             }
         }
 
-        public ObservableCollection<UserModel> AllUsers 
+        public ObservableCollection<UserModel> AllUsers
         {
             get => _allUsers;
             private set
             {
                 _allUsers = value;
                 OnPropertyChanged();
+                if (FilterUsersCollectionView != null)
+                {
+                    FilterUsersCollectionView.Refresh();
+                }
             }
         }
 
@@ -267,6 +286,16 @@ namespace ChatClient.ViewModels
             }
         }
 
+        public ChatGroupModel CurrentChatGroup
+        {
+            get => _currentChatGroup;
+            set
+            {
+                _currentChatGroup = value;
+                OnPropertyChanged();
+            }
+        }
+
         public ObservableCollection<Group> Groups
         {
             get => _groups;
@@ -278,6 +307,21 @@ namespace ChatClient.ViewModels
                 if (UsersCollectionView != null)
                 {
                     UsersCollectionView.Refresh();
+                }
+            }
+        }
+
+        public string UsersFilter
+        {
+            get => _usersFilter;
+            set
+            {
+                _usersFilter = value;
+                OnPropertyChanged();
+
+                if (FilterUsersCollectionView != null)
+                {
+                    FilterUsersCollectionView.Refresh();
                 }
             }
         }

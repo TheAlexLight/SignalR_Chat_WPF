@@ -14,10 +14,6 @@ C:\Users\oyudi\Alexander\Programming\WPF\Chat\ChatClient\bin\Debug\net5.0-window
 C:\Users\oyudi\Alexander\Programming\WPF\Chat\ChatClient\bin\Debug\net5.0-windows\Microsoft.AspNetCore.SignalR.Common.dll
 C:\Users\oyudi\Alexander\Programming\WPF\Chat\ChatClient\bin\Debug\net5.0-windows\Microsoft.AspNetCore.SignalR.Protocols.Json.dll
 C:\Users\oyudi\Alexander\Programming\WPF\Chat\ChatClient\bin\Debug\net5.0-windows\Microsoft.Extensions.DependencyInjection.dll
-C:\Users\oyudi\Alexander\Programming\WPF\Chat\ChatClient\bin\Debug\net5.0-windows\Microsoft.Extensions.DependencyInjection.Abstractions.dll
-C:\Users\oyudi\Alexander\Programming\WPF\Chat\ChatClient\bin\Debug\net5.0-windows\Microsoft.Extensions.Logging.dll
-C:\Users\oyudi\Alexander\Programming\WPF\Chat\ChatClient\bin\Debug\net5.0-windows\Microsoft.Extensions.Logging.Abstractions.dll
-C:\Users\oyudi\Alexander\Programming\WPF\Chat\ChatClient\bin\Debug\net5.0-windows\Microsoft.Extensions.Options.dll
 C:\Users\oyudi\Alexander\Programming\WPF\Chat\ChatClient\bin\Debug\net5.0-windows\Microsoft.Extensions.Primitives.dll
 C:\Users\oyudi\Alexander\Programming\WPF\Chat\ChatClient\bin\Debug\net5.0-windows\System.IO.Pipelines.dll
 C:\Users\oyudi\Alexander\Programming\WPF\Chat\ChatClient\obj\Debug\net5.0-windows\Resources\Button.baml
@@ -60,7 +56,6 @@ C:\Users\oyudi\Alexander\Programming\WPF\Chat\ChatClient\obj\Debug\net5.0-window
 C:\Users\oyudi\Alexander\Programming\WPF\Chat\ChatClient\obj\Debug\net5.0-windows\Views\AdditionalViews\BindablePasswordBox.baml
 C:\Users\oyudi\Alexander\Programming\WPF\Chat\ChatClient\obj\Debug\net5.0-windows\Resources\PasswordBox.baml
 C:\Users\oyudi\Alexander\Programming\WPF\Chat\ChatClient\obj\Debug\net5.0-windows\Resources\ContentControl.baml
-C:\Users\oyudi\Alexander\Programming\WPF\Chat\ChatClient\bin\Debug\net5.0-windows\Microsoft.Extensions.Caching.Abstractions.dll
 C:\Users\oyudi\Alexander\Programming\WPF\Chat\ChatClient\bin\Debug\net5.0-windows\Microsoft.Extensions.Identity.Stores.dll
 C:\Users\oyudi\Alexander\Programming\WPF\Chat\ChatClient\bin\Debug\net5.0-windows\Microsoft.Xaml.Behaviors.dll
 C:\Users\oyudi\Alexander\Programming\WPF\Chat\ChatClient\obj\Debug\net5.0-windows\Resources\Menu.baml
@@ -71,6 +66,9 @@ C:\Users\oyudi\Alexander\Programming\WPF\Chat\ChatClient\obj\Debug\net5.0-window
 C:\Users\oyudi\Alexander\Programming\WPF\Chat\ChatClient\obj\Debug\net5.0-windows\Resources\Images\Filter.baml
 C:\Users\oyudi\Alexander\Programming\WPF\Chat\ChatClient\obj\Debug\net5.0-windows\Resources\ToolBar.baml
 C:\Users\oyudi\Alexander\Programming\WPF\Chat\ChatClient\obj\Debug\net5.0-windows\Resources\Images\ThreeDots.baml
-C:\Users\oyudi\Alexander\Programming\WPF\Chat\ChatClient\obj\Debug\net5.0-windows\ChatClient.csproj.AssemblyReference.cache
 C:\Users\oyudi\Alexander\Programming\WPF\Chat\ChatClient\obj\Debug\net5.0-windows\Views\AdditionalViews\PrivateChatView.g.cs
 C:\Users\oyudi\Alexander\Programming\WPF\Chat\ChatClient\obj\Debug\net5.0-windows\Views\AdditionalViews\PrivateChatView.baml
+C:\Users\oyudi\Alexander\Programming\WPF\Chat\ChatClient\bin\Debug\net5.0-windows\Microsoft.AspNetCore.JsonPatch.dll
+C:\Users\oyudi\Alexander\Programming\WPF\Chat\ChatClient\bin\Debug\net5.0-windows\Microsoft.AspNetCore.Mvc.NewtonsoftJson.dll
+C:\Users\oyudi\Alexander\Programming\WPF\Chat\ChatClient\bin\Debug\net5.0-windows\Newtonsoft.Json.dll
+C:\Users\oyudi\Alexander\Programming\WPF\Chat\ChatClient\bin\Debug\net5.0-windows\Newtonsoft.Json.Bson.dll

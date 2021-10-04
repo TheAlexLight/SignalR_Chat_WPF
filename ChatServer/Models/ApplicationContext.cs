@@ -17,6 +17,7 @@ namespace ChatServer.Models
         public DbSet<UserStatusModel> UsersStatus { get; set; }
         public DbSet<BanStatusModel> BansStatus { get; set; }
         public DbSet<MuteStatusModel> MutesStatus { get; set; }
+        public DbSet<ChatGroupModel> Groups { get; set; }
 
         public ApplicationContext(DbContextOptions<ApplicationContext> options) : base(options)
         {

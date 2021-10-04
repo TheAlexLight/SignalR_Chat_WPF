@@ -1,6 +1,8 @@
-﻿using ChatClient.Interfaces;
+﻿using ChatClient.Enums;
+using ChatClient.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.SignalR.Client;
+using SharedItems.Enums;
 using SharedItems.Models;
 using SharedItems.Models.AuthenticationModels;
 using SharedItems.Models.StatusModels;
@@ -21,8 +23,8 @@ namespace ChatClient.Services
         public event Action<bool> ReceiveLoginResult;
         public event Action<UserModel> CurrentUserReceived;
         public event Action<ObservableCollection<UserModel>> UserListReceived;
-        public event Action<List<MessageModel>> SavedMessagesReceived;
-        public event Action<MessageModel> MessageReceived;
+        public event Action<ChatGroupModel> CurrentGroupReceived;
+        //public event Action<MessageModel> MessageReceived;
         public event Action ReceivedKick;
         public event Action<BanStatusModel> ReceivedBan;
         public event Action<MuteStatusModel> ReceivedMute;
@@ -42,9 +44,9 @@ namespace ChatClient.Services
             Connection.On<bool, string>("ReceiveRegistrationResult", (result, error) => ReceiveRegistrationResult?.Invoke(result, error));
             Connection.On<bool>("ReceiveLoginResult", (result) => ReceiveLoginResult?.Invoke(result));
             Connection.On<ObservableCollection<UserModel>>("ReceiveUserList", (activeUsers) => UserListReceived?.Invoke(activeUsers));
-            Connection.On<List<MessageModel>>("ReceiveSavedMessages", (messages) => SavedMessagesReceived?.Invoke(messages));
+            Connection.On<ChatGroupModel>("ReceiveCurrentGroup", (group) => CurrentGroupReceived?.Invoke(group));
             Connection.On<UserModel>("ReceiveCurrentUser", (currentUser) => CurrentUserReceived?.Invoke(currentUser));
-            Connection.On<MessageModel>("ReceiveMessage", (messageModel) => MessageReceived?.Invoke(messageModel));
+            //Connection.On<MessageModel>("ReceiveMessage", (messageModel) => MessageReceived?.Invoke(messageModel));
             Connection.On<BanStatusModel>("ReceiveBan", (model) => ReceivedBan?.Invoke(model));
             Connection.On<MuteStatusModel>("ReceiveMute", (model) => ReceivedMute?.Invoke(model));
             Connection.On("ReceiveKick", () => ReceivedKick?.Invoke());
@@ -60,9 +62,9 @@ namespace ChatClient.Services
             await Connection.SendAsync("SendReconnection", username);
         }
 
-        public async Task SendMessage(MessageModel message)
+        public async Task SendMessage(MessageModel message, ChatGroupModel currentGroup, UserModel selectedUser, UserModel currentUser)
         {
-            await Connection.SendAsync("SendMessage", message);
+            await Connection.SendAsync("SendMessage", message, currentGroup, selectedUser, currentUser);
         }
 
         public async Task Registration(UserRegistrationModel model)
@@ -88,6 +90,15 @@ namespace ChatClient.Services
         public async Task KickUser(string username)
         {
             await Connection.SendAsync("SendKickUser", username);
+        }
+        
+        public async Task SwitchChat(ChatType chatTtype)
+        {
+            await Connection.SendAsync("SendSwitchChat", chatTtype);
+        }
+        public async Task UpdatePrivateMessages(UserModel selectedUser, UserModel currentUser)
+        {
+            await Connection.SendAsync("SendUpdatePrivateMEssages", selectedUser, currentUser);
         }
     }
 }

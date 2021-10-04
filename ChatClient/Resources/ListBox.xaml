@@ -184,7 +184,7 @@
         <Setter Property="ItemsSource" Value="{Binding AllUsers}"/>
         <Setter Property="FontSize" Value="20"/>
         <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
-        <Setter Property="SelectedIndex" Value="0"/>
+        <Setter Property="SelectedIndex" Value="-1"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate>
@@ -249,11 +249,10 @@
                 </DataTemplate>
             </Setter.Value>
         </Setter>
-    
     </Style>
 
     <Style x:Key="messagesListBox" TargetType="{x:Type ListBox}" BasedOn="{StaticResource usersListBox}">
-        <Setter Property="ItemsSource" Value="{Binding Messages}"/>
+        <Setter Property="ItemsSource" Value="{Binding CurrentChatGroup.Messages}"/>
         <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Hidden"/>
         <Setter Property="Background" Value="{StaticResource mainMessageBoxColors}"/>
         <Setter Property="ItemTemplate">

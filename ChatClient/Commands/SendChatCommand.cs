@@ -1,6 +1,7 @@
 ﻿using ChatClient.Interfaces;
 using ChatClient.Services;
 using ChatClient.ViewModels;
+using SharedItems.Enums;
 using SharedItems.Models;
 using System;
 using System.Collections.Generic;
@@ -30,10 +31,21 @@ namespace ChatClient.Commands
                 {
                     Message = _viewModel.Message,
                     Time = DateTime.Now,
-                    UserModel = _viewModel.CurrentUser
                 };
 
-                await _chatService.SendMessage(model);
+                if (_viewModel.CurrentChatGroup.Name == ChatType.Private)
+                {
+                    if (parameter is UserModel selectedUser)
+                    {
+                        await _chatService.SendMessage(model, _viewModel.CurrentChatGroup, selectedUser, _viewModel.CurrentUser);
+                    }
+                }
+                else
+                {
+                    await _chatService.SendMessage(model, _viewModel.CurrentChatGroup, null, _viewModel.CurrentUser);
+                }
+
+                
 
                 _viewModel.ErrorMessage = string.Empty;
                 _viewModel.Message = "";

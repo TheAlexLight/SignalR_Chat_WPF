@@ -21,22 +21,69 @@
 
             <Border Grid.Row="0"
                     BorderBrush="#AAAEB2"
-                    BorderThickness="1,1,0,1"
+                    BorderThickness="0,1,0,1"
                     Background="{StaticResource mainMessageBoxColors}">
-                <TextBox Text="Search"
+                <TextBox 
                      VerticalAlignment="Center"
                      FontSize="18"
                      Height="35"
-                         Background="#ECECF4"/>
+                         Background="#ECECF4"
+                    Text="{Binding UsersFilter,UpdateSourceTrigger=PropertyChanged}"/>
             </Border>
 
             <Border  Grid.Row="1" 
-                 BorderThickness="1,0,1,0"
+                 BorderThickness="1,0,0,0"
                  BorderBrush="#AAAEB2">
-                <Grid Grid.Row="0" Background="White">
-                    <ListBox Grid.RowSpan="2" Grid.Row="0"
-                             Style="{StaticResource privateUsersListBox}">
+                <Grid Grid.Row="0" Background="#ECECF4">
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition Height="45"/>
+                    </Grid.RowDefinitions>
+                    <Border BorderBrush="#AAAEB2"
+                            BorderThickness="0,1,1,1">
+                        <ListBox Grid.Row="0"
+                             Style="{StaticResource privateUsersListBox}"
+                             Name="userList">
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="SelectionChanged">
+                                <i:InvokeCommandAction Command="{Binding UpdatePrivateMessagesCommand}"
+                                                   CommandParameter="{Binding ElementName=userList, Path=SelectedItem}"/>
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
                     </ListBox>
+                        </Border>
+                        <Border Grid.Row="1" BorderBrush="#AAAEB2"
+                            BorderThickness="0,0,1,0">
+                        <StackPanel Orientation="Horizontal"
+                                    Background="{StaticResource typeMessageGridColors}">
+                            <Border CornerRadius="25" 
+                                    Background="CornflowerBlue" 
+                                    Width="30" 
+                                    Height="30"
+                                Name="userActiveBorder"
+                                BorderThickness="2.5"
+                                Margin="5,0,0,0">
+                                <Border.Style>
+                                    <Style TargetType="{x:Type Border}">
+                                        <Setter Property="BorderBrush" Value="DarkRed"/>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding CurrentUser.UserProfile.IsOnline}" Value="True">
+                                                <Setter Property="BorderBrush" Value="Green"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Border.Style>
+                            </Border>
+                            <StackPanel VerticalAlignment="Center">
+                                <TextBlock Text="{Binding CurrentUser.UserProfile.Username}"
+                                       Foreground="{Binding CurrentUser.UserProfile.UsernameColor}"
+                                       Margin="10,-5,10,0"
+                                       FontSize="22"
+                                       Name="userTextBlock"
+                                       VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </StackPanel>
+                    </Border>
                 </Grid>
             </Border>
         </Grid>
@@ -45,7 +92,7 @@
             <Grid.RowDefinitions>
                 <RowDefinition Height="35"/>
                 <RowDefinition/>
-                <RowDefinition Height="50"/>
+                <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
 
             <Grid Grid.Row="0">
@@ -63,22 +110,27 @@
             <ListBox Grid.Row="1"
                 Style="{StaticResource messagesListBox}"/>
 
-            <Grid Grid.Row="2"
+            <Border Grid.Row="2"
+                    BorderBrush="#AAAEB2"
+                    BorderThickness="1,0,1,0">
+                <Grid Grid.Row="2"
                   Background="{StaticResource typeMessageGridColors}">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="3.7*"/>
-                    <ColumnDefinition MinWidth="60" MaxWidth="60"/>
-                </Grid.ColumnDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="3.7*"/>
+                        <ColumnDefinition MinWidth="60" MaxWidth="60"/>
+                    </Grid.ColumnDefinitions>
 
-                <TextBox Grid.Column="0"    
+                    <TextBox Grid.Column="0"    
                      Style="{StaticResource typeMessage}"
                      Text="{Binding Message}"/>
-                <Button  Margin="0,0,10,0" Grid.Column="1" Width="50" Height="45"  
+                    <Button  Margin="0,0,10,0" Grid.Column="1" Width="50" Height="45"  
                         Command="{Binding SendChatMessageCommand}"
+                         CommandParameter="{Binding ElementName=userList, Path=SelectedItem}"
                         Style="{StaticResource sendImageMessage}">
-                    <Image Stretch="Fill" Source="{StaticResource directDrawingImage}" />
-                </Button>
-            </Grid>
+                        <Image Stretch="Fill" Source="{StaticResource directDrawingImage}" />
+                    </Button>
+                </Grid>
+            </Border>
         </Grid>
     </Grid>
 </UserControl>

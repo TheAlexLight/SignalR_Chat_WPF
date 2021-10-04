@@ -16,7 +16,7 @@ namespace ChatServer.Models
         }
 
         public DateTime JoinDate { get; set; }
-        public UserModel UserModel { get; set; }
+        public virtual UserModel UserModel { get; set; }
         //public UserStatusModel UserStatus { get; set; }
     }
 }

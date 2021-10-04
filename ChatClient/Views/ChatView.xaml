@@ -8,7 +8,7 @@
              xmlns:additionalViews="clr-namespace:ChatClient.Views.AdditionalViews"
              xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
              xmlns:converters="clr-namespace:ChatClient.Converters"
-             xmlns:enums="clr-namespace:ChatClient.Enums"
+             xmlns:enums="clr-namespace:SharedItems.Enums;assembly=SharedItems"
              d:DataContext="{d:DesignInstance Type=viewmodels:ChatViewModel}"
              mc:Ignorable="d" 
              d:DesignHeight="400" d:DesignWidth="550">
@@ -33,6 +33,8 @@
             </Grid.RowDefinitions>
 
             <Border Background="{StaticResource mainMessageBoxColors}"
+                    BorderBrush="#AAAEB2"
+                    BorderThickness="1"
                     Grid.Row="0">
             </Border>
 

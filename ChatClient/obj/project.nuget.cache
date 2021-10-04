@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "lXU6pBQtzaYRvny3uztWtCdYlUIX8j6FqGRgkZaCP562APNVq7bMn1fDeanVcmoXA2TntwSd9jDWv2ZGr4bOAQ==",
+  "dgSpecHash": "r+tXJO+AyNyu3bd9DDqBYjG7soycuEIWW1RJ/FEHd9Emz4PC+CfmyirgNVp8WjswY5wKmVpjbYZ2vjT0/rvF2Q==",
   "success": true,
   "projectFilePath": "C:\\Users\\oyudi\\Alexander\\Programming\\WPF\\Chat\\ChatClient\\ChatClient.csproj",
   "expectedPackageFiles": [
@@ -10,10 +10,13 @@
     "C:\\Users\\oyudi\\.nuget\\packages\\microsoft.aspnetcore.http.connections.client\\5.0.8\\microsoft.aspnetcore.http.connections.client.5.0.8.nupkg.sha512",
     "C:\\Users\\oyudi\\.nuget\\packages\\microsoft.aspnetcore.http.connections.common\\5.0.8\\microsoft.aspnetcore.http.connections.common.5.0.8.nupkg.sha512",
     "C:\\Users\\oyudi\\.nuget\\packages\\microsoft.aspnetcore.http.features\\5.0.8\\microsoft.aspnetcore.http.features.5.0.8.nupkg.sha512",
+    "C:\\Users\\oyudi\\.nuget\\packages\\microsoft.aspnetcore.jsonpatch\\5.0.10\\microsoft.aspnetcore.jsonpatch.5.0.10.nupkg.sha512",
+    "C:\\Users\\oyudi\\.nuget\\packages\\microsoft.aspnetcore.mvc.newtonsoftjson\\5.0.10\\microsoft.aspnetcore.mvc.newtonsoftjson.5.0.10.nupkg.sha512",
     "C:\\Users\\oyudi\\.nuget\\packages\\microsoft.aspnetcore.signalr.client\\5.0.8\\microsoft.aspnetcore.signalr.client.5.0.8.nupkg.sha512",
     "C:\\Users\\oyudi\\.nuget\\packages\\microsoft.aspnetcore.signalr.client.core\\5.0.8\\microsoft.aspnetcore.signalr.client.core.5.0.8.nupkg.sha512",
     "C:\\Users\\oyudi\\.nuget\\packages\\microsoft.aspnetcore.signalr.common\\5.0.8\\microsoft.aspnetcore.signalr.common.5.0.8.nupkg.sha512",
     "C:\\Users\\oyudi\\.nuget\\packages\\microsoft.aspnetcore.signalr.protocols.json\\5.0.8\\microsoft.aspnetcore.signalr.protocols.json.5.0.8.nupkg.sha512",
+    "C:\\Users\\oyudi\\.nuget\\packages\\microsoft.csharp\\4.7.0\\microsoft.csharp.4.7.0.nupkg.sha512",
     "C:\\Users\\oyudi\\.nuget\\packages\\microsoft.extensions.caching.abstractions\\5.0.0\\microsoft.extensions.caching.abstractions.5.0.0.nupkg.sha512",
     "C:\\Users\\oyudi\\.nuget\\packages\\microsoft.extensions.dependencyinjection\\5.0.2\\microsoft.extensions.dependencyinjection.5.0.2.nupkg.sha512",
     "C:\\Users\\oyudi\\.nuget\\packages\\microsoft.extensions.dependencyinjection.abstractions\\5.0.0\\microsoft.extensions.dependencyinjection.abstractions.5.0.0.nupkg.sha512",
@@ -24,6 +27,8 @@
     "C:\\Users\\oyudi\\.nuget\\packages\\microsoft.extensions.options\\5.0.0\\microsoft.extensions.options.5.0.0.nupkg.sha512",
     "C:\\Users\\oyudi\\.nuget\\packages\\microsoft.extensions.primitives\\5.0.1\\microsoft.extensions.primitives.5.0.1.nupkg.sha512",
     "C:\\Users\\oyudi\\.nuget\\packages\\microsoft.xaml.behaviors.wpf\\1.1.31\\microsoft.xaml.behaviors.wpf.1.1.31.nupkg.sha512",
+    "C:\\Users\\oyudi\\.nuget\\packages\\newtonsoft.json\\12.0.2\\newtonsoft.json.12.0.2.nupkg.sha512",
+    "C:\\Users\\oyudi\\.nuget\\packages\\newtonsoft.json.bson\\1.0.2\\newtonsoft.json.bson.1.0.2.nupkg.sha512",
     "C:\\Users\\oyudi\\.nuget\\packages\\system.io.pipelines\\5.0.1\\system.io.pipelines.5.0.1.nupkg.sha512",
     "C:\\Users\\oyudi\\.nuget\\packages\\system.threading.channels\\5.0.0\\system.threading.channels.5.0.0.nupkg.sha512"
   ],

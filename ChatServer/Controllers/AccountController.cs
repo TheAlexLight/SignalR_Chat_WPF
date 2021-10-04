@@ -34,7 +34,7 @@ namespace ChatServer.Controllers
                await AddUserModelIds(createdUser);
                await AddUserStatuslIds(createdUser);
                await AddUserProfileIds(createdUser);
-               await AddMessageseIds(createdUser);
+               //await AddMessageseIds(createdUser);
             }
 
             return result;
@@ -84,15 +84,15 @@ namespace ChatServer.Controllers
             await _dbContext.SaveChangesAsync();
         }
 
-        private async Task AddMessageseIds(User createdUser)
-        {
-            _dbContext.Messages.Add(new MessageModel()
-            {
-                UserModelId = createdUser.UserModel.Id
-            });
+        //private async Task AddMessageseIds(User createdUser)
+        //{
+        //    _dbContext.Messages.Add(new MessageModel()
+        //    {
+        //        UserModelId = createdUser.UserModel.Id
+        //    });
 
-            await _dbContext.SaveChangesAsync();
-        }
+        //    await _dbContext.SaveChangesAsync();
+        //}
 
         public async Task<bool> Login(UserLoginModel model)
         {

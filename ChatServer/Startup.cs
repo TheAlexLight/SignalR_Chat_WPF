@@ -11,6 +11,7 @@ using Microsoft.Extensions.Hosting;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace ChatServer
@@ -25,8 +26,13 @@ namespace ChatServer
         }
         public void ConfigureServices(IServiceCollection services)
         {
+            
+
             services.AddDbContext<ApplicationContext>(options =>
-                    options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+                    options
+                    .UseSqlServer(Configuration.GetConnectionString("DefaultConnection"))
+                    .UseLazyLoadingProxies());
+
             services.AddIdentity<User, IdentityRole>(opts=> 
             {
                 opts.User.RequireUniqueEmail = true;
