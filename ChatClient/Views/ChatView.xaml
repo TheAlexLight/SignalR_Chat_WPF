@@ -27,34 +27,31 @@
         </Grid.ColumnDefinitions>
 
         <Grid Grid.Column ="0">
-            <Grid.RowDefinitions>
+            <!--<Grid.RowDefinitions>
                 <RowDefinition Height="35"/>
                 <RowDefinition/>
-            </Grid.RowDefinitions>
+            </Grid.RowDefinitions>-->
 
-            <Border Background="{StaticResource mainMessageBoxColors}"
+            <!--<Border Background="{StaticResource mainMessageBoxColors}"
                     BorderBrush="#AAAEB2"
-                    BorderThickness="1"
+                    BorderThickness="1,1,1,0"
                     Grid.Row="0">
-            </Border>
+            </Border>-->
 
-            <ListBox Background="{StaticResource mainMessageBoxColors}"
-                     Grid.Row="1"
-                     BorderThickness="1,0,1,1">
-                <Button Width="40" 
-                        Height="40" 
-                        Content="Pub"
-                        FontSize="18"
+            <Border Grid.Row="1" 
+                    Background="{StaticResource mainMessageBoxColors}"
+                    BorderBrush="#AAAEB2"
+                    BorderThickness="1">
+                <StackPanel Background="{StaticResource mainMessageBoxColors}">
+                    <Button Style="{StaticResource publicChatButton}"
                         Command="{Binding SwitchChatCommand}"
                         CommandParameter="{x:Static enums:ChatType.Public}"/>
-                <Button Width="40" 
-                        Height="40" 
-                        Content="Priv"
-                        FontSize="18"
+                    <Button Style="{StaticResource privateChatButton}"
                         Command="{Binding SwitchChatCommand}"
                         CommandParameter="{x:Static enums:ChatType.Private}"/>
-            </ListBox>
-            
+                </StackPanel>
+            </Border>
+
         </Grid>
 
         <Grid Grid.Column="1">

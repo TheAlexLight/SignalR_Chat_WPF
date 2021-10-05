@@ -72,3 +72,4 @@ C:\Users\oyudi\Alexander\Programming\WPF\Chat\ChatClient\bin\Debug\net5.0-window
 C:\Users\oyudi\Alexander\Programming\WPF\Chat\ChatClient\bin\Debug\net5.0-windows\Microsoft.AspNetCore.Mvc.NewtonsoftJson.dll
 C:\Users\oyudi\Alexander\Programming\WPF\Chat\ChatClient\bin\Debug\net5.0-windows\Newtonsoft.Json.dll
 C:\Users\oyudi\Alexander\Programming\WPF\Chat\ChatClient\bin\Debug\net5.0-windows\Newtonsoft.Json.Bson.dll
+C:\Users\oyudi\Alexander\Programming\WPF\Chat\ChatClient\obj\Debug\net5.0-windows\Resources\Images\Chats.baml
