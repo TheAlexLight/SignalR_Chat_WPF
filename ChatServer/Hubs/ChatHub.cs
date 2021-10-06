@@ -250,41 +250,15 @@ namespace ChatServer.Hubs
 
         public async Task SendUserList()
         {
-            //List<string> allLoginedUsers = Account.Users.Select(u => u.ConnectedUsername).Where(s => s != null).ToList();
-
-            List<UserModel> users = _dbContext.UserModels
-                    .Include(u => u.UserProfile)
-            //.Include(u => u.Messages)
-                    .Include(u => u.UserStatus)
-                        .ThenInclude(userStatus => userStatus.BanStatus)
-                    .Include(u => u.UserStatus)
-                        .ThenInclude(userStatus => userStatus.MuteStatus).ToList();
-
-            //List<UserModel> userList = users.ToList();
-
-            //List<UserModel> activeUsers = new();
-
-            //activeUsers.AddRange(users.ToList());
-
-            //foreach (string username in allLoginedUsers)
-            //{
-            //    activeUsers.Add(new UserModel
-            //    {
-            //        UserProfile = new UserProfileModel() 
-            //        {
-            //            Username = username
-            //        }
-            //    });
-            //}
+            List<UserModel> users = _dbContext.UserModels.ToList();
 
             await Clients.All.SendAsync("ReceiveUserList", users);
-            // await Clients.All.SendAsync("ReceiveUserList", activeUsers);
         }
 
-        public async Task SendMessage(string messageM, ChatGroupModel currentGroup, UserModel selectedUser, UserModel currentUser)
+        public async Task SendMessage(string message, ChatGroupModel currentGroup, UserModel selectedUser, UserModel currentUser)
         {
             ChatGroupModel group;
-            MessageModel messageModel = JsonConvert.DeserializeObject<MessageModel>(messageM);
+            MessageModel messageModel = JsonConvert.DeserializeObject<MessageModel>(message);
 
             if (currentGroup.Name == ChatType.Public)
             {
@@ -297,30 +271,11 @@ namespace ChatServer.Hubs
                         && g.Users.Contains(selectedUser)
                         && g.Users.Contains(currentUser));
             }
-            //ChatGroupModel group = _dbContext.Groups.FirstOrDefault(g => g.Name == currentGroup.Name);
+
             if (group != null)
             {
-                //MessageModel message = messageModel;
-                //message.ChatGroupModel = currentGroup;
-                //message.UserModel = currentUser;
-
+                messageModel.
                 group.Messages.Add(messageModel);
-                //group.Messages.Add(new MessageModel()
-                //{
-                //    IsFirstMessage = messageModel.IsFirstMessage,
-                //    Message = messageModel.Message,
-                //    UserModel = new UserModel()
-                //    {
-                //        Groups = currentUser.Groups,
-                //        //Messages = currentUser.Messages,
-                //        UserStatus = currentUser.UserStatus,
-                //        UserProfile = currentUser.UserProfile
-                //    },
-                //    ChatGroupModel = currentGroup,
-                //    Time = messageModel.Time,
-                //    UserModelId = currentUser.Id
-
-                //});
 
                 await _dbContext.SaveChangesAsync();
 
