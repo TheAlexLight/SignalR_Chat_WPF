@@ -115,7 +115,7 @@ namespace ChatClient.ViewModels
         {
             if (registrationResult)
             {
-                MessageBox.Show("Registration Succeded");
+                MessageBox.Show("Registration was successful");
                 NavigationService<LoginViewModel> navigationService = new(Navigator,
                         () => new LoginViewModel(Navigator, ChatService, WindowConfigurationService));
                 navigationService.Navigate();

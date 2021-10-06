@@ -4,14 +4,16 @@ using ChatServer.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace ChatServer.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    partial class ApplicationContextModelSnapshot : ModelSnapshot
+    [Migration("20211005110529_MessagesFix")]
+    partial class MessagesFix
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -487,7 +489,7 @@ namespace ChatServer.Migrations
                         .IsRequired();
 
                     b.HasOne("SharedItems.Models.UserModel", "UserModel")
-                        .WithMany()
+                        .WithMany("Messages")
                         .HasForeignKey("UserModelId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -559,6 +561,8 @@ namespace ChatServer.Migrations
 
             modelBuilder.Entity("SharedItems.Models.UserModel", b =>
                 {
+                    b.Navigation("Messages");
+
                     b.Navigation("UserProfile");
 
                     b.Navigation("UserStatus");

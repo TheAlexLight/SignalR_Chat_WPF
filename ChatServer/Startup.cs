@@ -1,5 +1,6 @@
 using ChatServer.Hubs;
 using ChatServer.Models;
+using MessagePack;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -44,6 +45,12 @@ namespace ChatServer
             })
                 .AddEntityFrameworkStores<ApplicationContext>();
             services.AddSignalR();
+            //    .AddMessagePackProtocol(options=> 
+            //{
+            //    options.SerializerOptions = MessagePackSerializerOptions.Standard
+            //        .WithResolver(MessagePack.Resolvers.StandardResolver.Instance)
+            //        .WithSecurity(MessagePackSecurity.UntrustedData);
+            //});
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

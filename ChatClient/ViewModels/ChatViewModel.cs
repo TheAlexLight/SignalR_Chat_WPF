@@ -6,6 +6,7 @@ using ChatClient.Enums;
 using ChatClient.Interfaces;
 using ChatClient.Services;
 using ChatClient.Stores;
+using Newtonsoft.Json;
 using SharedItems.Enums;
 using SharedItems.Models;
 using SharedItems.Models.StatusModels;
@@ -173,9 +174,10 @@ namespace ChatClient.ViewModels
             CurrentUser = currentUser;
         }
 
-        private void ChatService_CurrentGroupReceived(ChatGroupModel currentGroup)
+        private void ChatService_CurrentGroupReceived(string currentGroup)
         {
-            CurrentChatGroup = currentGroup;
+            ChatGroupModel group = JsonConvert.DeserializeObject<ChatGroupModel>(currentGroup);
+            CurrentChatGroup = group;
 
             Group bannedGroup = Groups.FirstOrDefault(g => g.Name.Equals(nameof(UserGroups.Banned)));
             bannedGroup.GroupedUsers = new ObservableCollection<UserModel>(CurrentChatGroup.Users

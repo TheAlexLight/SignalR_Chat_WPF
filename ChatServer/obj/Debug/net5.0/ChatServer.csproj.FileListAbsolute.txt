@@ -66,3 +66,12 @@ C:\Users\oyudi\Alexander\Programming\WPF\Chat\ChatServer\bin\Debug\net5.0\Micros
 C:\Users\oyudi\Alexander\Programming\WPF\Chat\ChatServer\bin\Debug\net5.0\Microsoft.AspNetCore.JsonPatch.dll
 C:\Users\oyudi\Alexander\Programming\WPF\Chat\ChatServer\bin\Debug\net5.0\Microsoft.AspNetCore.Mvc.NewtonsoftJson.dll
 C:\Users\oyudi\Alexander\Programming\WPF\Chat\ChatServer\bin\Debug\net5.0\Newtonsoft.Json.Bson.dll
+C:\Users\oyudi\Alexander\Programming\WPF\Chat\ChatServer\bin\Debug\net5.0\MessagePack.dll
+C:\Users\oyudi\Alexander\Programming\WPF\Chat\ChatServer\bin\Debug\net5.0\MessagePack.Annotations.dll
+C:\Users\oyudi\Alexander\Programming\WPF\Chat\ChatServer\bin\Debug\net5.0\Microsoft.AspNetCore.Connections.Abstractions.dll
+C:\Users\oyudi\Alexander\Programming\WPF\Chat\ChatServer\bin\Debug\net5.0\Microsoft.AspNetCore.Http.Features.dll
+C:\Users\oyudi\Alexander\Programming\WPF\Chat\ChatServer\bin\Debug\net5.0\Microsoft.AspNetCore.SignalR.Common.dll
+C:\Users\oyudi\Alexander\Programming\WPF\Chat\ChatServer\bin\Debug\net5.0\Microsoft.AspNetCore.SignalR.Protocols.MessagePack.dll
+C:\Users\oyudi\Alexander\Programming\WPF\Chat\ChatServer\bin\Debug\net5.0\Microsoft.Bcl.AsyncInterfaces.dll
+C:\Users\oyudi\Alexander\Programming\WPF\Chat\ChatServer\bin\Debug\net5.0\Microsoft.Extensions.Primitives.dll
+C:\Users\oyudi\Alexander\Programming\WPF\Chat\ChatServer\bin\Debug\net5.0\System.IO.Pipelines.dll

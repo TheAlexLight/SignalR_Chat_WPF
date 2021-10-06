@@ -15,14 +15,14 @@ namespace SharedItems.Models
         //}
 
         public int Id { get; set; }
-        //public int UserModelId { get; set; }
+        public int UserModelId { get; set; }
         public int ChatGroupModelId { get; set; }
 
         public DateTime Time { get; set; }
         public bool IsFirstMessage { get; set; }
         public string Message { get; set; }
-        //public string GroupName { get; set; }
-        //public UserModel UserModel { get; set; }
+        [JsonIgnore]
+        public virtual UserModel UserModel { get; set; }
 
         [JsonIgnore]
         public virtual ChatGroupModel ChatGroupModel { get; set; }

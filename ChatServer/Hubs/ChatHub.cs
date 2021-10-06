@@ -13,6 +13,7 @@ using System.Threading.Tasks;
 using SharedItems.Models.AuthenticationModels;
 using SharedItems.Models.StatusModels;
 using SharedItems.Enums;
+using Newtonsoft.Json;
 
 namespace ChatServer.Hubs
 {
@@ -88,7 +89,7 @@ namespace ChatServer.Hubs
                         return;
                     }
 
-                    await SendPublicGroup(user.UserModel);
+                    await SendPublicGroup();
                     #region
                     //List<IdentityError> errors = await _roleController.Create("User");
                     //List<IdentityError> errors2 = await _roleController.Create("Admin");
@@ -110,7 +111,7 @@ namespace ChatServer.Hubs
             }
         }
 
-        private async Task SendPublicGroup(UserModel user)
+        private async Task SendPublicGroup()
         {
             ChatGroupModel group = _dbContext.Groups
                 .Include(g=>g.Users)
@@ -130,7 +131,10 @@ namespace ChatServer.Hubs
 
             await _dbContext.SaveChangesAsync();
 
-            await Clients.All.SendAsync("ReceiveCurrentGroup", group);
+            string serializedGroup = JsonConvert.SerializeObject(group, Formatting.None,
+                new JsonSerializerSettings { ReferenceLoopHandling = ReferenceLoopHandling.Ignore });
+
+            await Clients.All.SendAsync("ReceiveCurrentGroup", serializedGroup);
         }
 
         public async Task SendReconnection(string username)
@@ -155,7 +159,11 @@ namespace ChatServer.Hubs
                 group = new ChatGroupModel();
             }
 
-            await Clients.Caller.SendAsync("ReceiveCurrentGroup", group);
+            string serializedGroup = JsonConvert.SerializeObject(group, Formatting.None,
+                new JsonSerializerSettings { ReferenceLoopHandling = ReferenceLoopHandling.Ignore });
+
+
+            await Clients.Caller.SendAsync("ReceiveCurrentGroup", serializedGroup);
         }
 
         public async Task SendUpdatePrivateMessages(UserModel selectedUser, UserModel currentUser)
@@ -185,7 +193,10 @@ namespace ChatServer.Hubs
                 int result = await _dbContext.SaveChangesAsync();
             }
 
-            await Clients.Caller.SendAsync("ReceiveCurrentGroup", group);
+            string serializedGroup = JsonConvert.SerializeObject(group, Formatting.None,
+                new JsonSerializerSettings { ReferenceLoopHandling = ReferenceLoopHandling.Ignore });
+
+            await Clients.Caller.SendAsync("ReceiveCurrentGroup", serializedGroup);
         }
 
         //private async Task UpdatePublicChat(GroupName groupName)
@@ -270,9 +281,10 @@ namespace ChatServer.Hubs
             // await Clients.All.SendAsync("ReceiveUserList", activeUsers);
         }
 
-        public async Task SendMessage(MessageModel messageModel, ChatGroupModel currentGroup, UserModel selectedUser, UserModel currentUser)
+        public async Task SendMessage(string messageM, ChatGroupModel currentGroup, UserModel selectedUser, UserModel currentUser)
         {
             ChatGroupModel group;
+            MessageModel messageModel = JsonConvert.DeserializeObject<MessageModel>(messageM);
 
             if (currentGroup.Name == ChatType.Public)
             {
@@ -288,11 +300,34 @@ namespace ChatServer.Hubs
             //ChatGroupModel group = _dbContext.Groups.FirstOrDefault(g => g.Name == currentGroup.Name);
             if (group != null)
             {
+                //MessageModel message = messageModel;
+                //message.ChatGroupModel = currentGroup;
+                //message.UserModel = currentUser;
+
                 group.Messages.Add(messageModel);
+                //group.Messages.Add(new MessageModel()
+                //{
+                //    IsFirstMessage = messageModel.IsFirstMessage,
+                //    Message = messageModel.Message,
+                //    UserModel = new UserModel()
+                //    {
+                //        Groups = currentUser.Groups,
+                //        //Messages = currentUser.Messages,
+                //        UserStatus = currentUser.UserStatus,
+                //        UserProfile = currentUser.UserProfile
+                //    },
+                //    ChatGroupModel = currentGroup,
+                //    Time = messageModel.Time,
+                //    UserModelId = currentUser.Id
+
+                //});
 
                 await _dbContext.SaveChangesAsync();
 
-                await SendConcreteGroup(currentGroup.Name, group);
+                string serializedGroup = JsonConvert.SerializeObject(group, Formatting.None,
+                new JsonSerializerSettings { ReferenceLoopHandling = ReferenceLoopHandling.Ignore });
+
+                await SendConcreteGroup(currentGroup.Name, serializedGroup);
             }
 
             //bool isFirstMessage = FirstMessageModel.CheckMessage(messageModel.UserModel.UserProfile.Username);
@@ -303,7 +338,7 @@ namespace ChatServer.Hubs
             //await Clients.All.SendAsync("ReceiveMessage", messageModel);
         }
 
-        private async Task SendConcreteGroup(ChatType groupName, ChatGroupModel group)
+        private async Task SendConcreteGroup(ChatType groupName, string group)
         {
             if (groupName == ChatType.Public)
             {

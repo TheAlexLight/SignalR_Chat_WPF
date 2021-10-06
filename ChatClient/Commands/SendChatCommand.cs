@@ -31,6 +31,10 @@ namespace ChatClient.Commands
                 {
                     Message = _viewModel.Message,
                     Time = DateTime.Now,
+                    UserModel = _viewModel.CurrentUser,
+                    UserModelId = _viewModel.CurrentUser.Id,
+                    ChatGroupModel = _viewModel.CurrentChatGroup,
+                    ChatGroupModelId = _viewModel.CurrentChatGroup.Id,
                 };
 
                 if (_viewModel.CurrentChatGroup.Name == ChatType.Private)
