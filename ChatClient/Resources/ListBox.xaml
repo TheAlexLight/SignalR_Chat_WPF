@@ -155,8 +155,6 @@
                                         <Setter Property="BorderBrush" TargetName="userActiveBorder" Value="Green"/>
                                     </DataTrigger>
                                 </DataTemplate.Triggers>
-                                <!--<TextBlock x:Name="usernameTextBlock" 
-                                                       Text="{Binding UserProfile.Username}"/>-->
                             </DataTemplate>
                         </ListBox.ItemTemplate>
                         <ListBox.Style>

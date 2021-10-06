@@ -90,7 +90,7 @@ namespace ChatServer.Hubs
                     }
 
                     await SendPublicGroup();
-                    #region
+                    #region roleAssign
                     //List<IdentityError> errors = await _roleController.Create("User");
                     //List<IdentityError> errors2 = await _roleController.Create("Admin");
 
@@ -199,11 +199,6 @@ namespace ChatServer.Hubs
             await Clients.Caller.SendAsync("ReceiveCurrentGroup", serializedGroup);
         }
 
-        //private async Task UpdatePublicChat(GroupName groupName)
-        //{
-        //    await SendCurrentGroup(groupName);
-        //}
-
         private async Task UpdateChat(UserHandler userHandler)
         {
             await SendCurrentUser(userHandler);
@@ -211,30 +206,8 @@ namespace ChatServer.Hubs
             //await SendSavedMessages();
         }
 
-        //private async Task SendCurrentGroup(GroupName groupName)
-        //{
-        //    ChatGroupModel group = _dbContext.Groups
-        //        .FirstOrDefault(g => g.Name == groupName);
-
-        //    if (group == null)
-        //    {
-        //        _dbContext.Groups
-        //    }
-
-        //    await SendConcreteGroup(groupName, group);
-
-        //    //List<MessageModel> messages = await _dbContext.Messages.Include(m => m.UserModel)
-        //    //                   .Where(m => m.GroupName == "mainChat")
-        //    //                   .ToListAsync();
-           
-
-        //    //await Clients.All.SendAsync("ReceiveSavedMessages", messages);
-        //}
-
         public async Task SendCurrentUser(UserHandler userHandler)
         {
-            //User user = await _userManager.FindByNameAsync(userHandler.ConnectedUsername);
-
             User user = await _dbContext.Users
                     .FirstOrDefaultAsync(u => u.UserName == userHandler.ConnectedUsername);
             
@@ -274,7 +247,7 @@ namespace ChatServer.Hubs
 
             if (group != null)
             {
-                messageModel.
+                messageModel.IsFirstMessage = FirstMessageModel.CheckMessage(messageModel.UserModel.UserProfile.Username);
                 group.Messages.Add(messageModel);
 
                 await _dbContext.SaveChangesAsync();
@@ -284,13 +257,6 @@ namespace ChatServer.Hubs
 
                 await SendConcreteGroup(currentGroup.Name, serializedGroup);
             }
-
-            //bool isFirstMessage = FirstMessageModel.CheckMessage(messageModel.UserModel.UserProfile.Username);
-            //messageModel.IsFirstMessage = isFirstMessage;
-
-           // await _dbContext.AddAsync(messageModel);
-
-            //await Clients.All.SendAsync("ReceiveMessage", messageModel);
         }
 
         private async Task SendConcreteGroup(ChatType groupName, string group)
@@ -301,7 +267,7 @@ namespace ChatServer.Hubs
             }
             else
             {
-                    await Clients.Caller.SendAsync("ReceiveCurrentGroup", group);
+             await Clients.Caller.SendAsync("ReceiveCurrentGroup", group);
             }
         }
 
