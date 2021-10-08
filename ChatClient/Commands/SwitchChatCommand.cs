@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace ChatClient.Commands
@@ -20,10 +21,24 @@ namespace ChatClient.Commands
 
         public override void Execute(object parameter)
         {
-            if (parameter is ChatType currentChatCtype)
+            if (parameter is ChatType currentChatType)
             {
-                _viewModel.CurrentChatType = currentChatCtype;
-                _viewModel.ChatService.SwitchChat(currentChatCtype);
+                _viewModel.CurrentChatType = currentChatType;
+                _viewModel.Message = string.Empty;
+                //_viewModel.AllUsers.Clear();
+
+                if (currentChatType == ChatType.Private)
+                {
+                    _viewModel.SelectedUserIndex = -1;
+                }
+                else
+                {
+                    _viewModel.SelectedUserIndex = 0;
+                }
+
+                _viewModel.ChatService.SwitchChat(currentChatType);
+
+                Thread.Sleep(100);
             }
         }
     }

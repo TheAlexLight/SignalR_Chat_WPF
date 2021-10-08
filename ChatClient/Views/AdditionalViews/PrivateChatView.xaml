@@ -7,14 +7,15 @@
              xmlns:controls="clr-namespace:ChatClient.Controls"
              xmlns:i="http://schemas.microsoft.com/xaml/behaviors" xmlns:viewmodels="clr-namespace:ChatClient.ViewModels" d:DataContext="{d:DesignInstance Type=viewmodels:ChatViewModel}"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
+             d:DesignHeight="450" d:DesignWidth="550">
     <Grid Background="White">
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
-            <ColumnDefinition Width="2*"/>
+            <ColumnDefinition Width="2*">
+            </ColumnDefinition>
         </Grid.ColumnDefinitions>
 
-        <Grid Grid.Column="0">
+        <Grid Grid.Column="0" Width="Auto">
             <Grid.RowDefinitions>
                 <RowDefinition Height="35"/>
                 <RowDefinition/>
@@ -40,13 +41,6 @@
                         </controls:WatermarkService.Watermark>
                     </TextBox>
                 </AdornerDecorator>
-                <!--<TextBox 
-                     VerticalAlignment="Center"
-                     FontSize="20"
-                     Height="35"
-                     Background="#ECECF4"
-                    Padding="0,2,0,0"
-                    Text="{Binding UsersFilter,UpdateSourceTrigger=PropertyChanged}"/>-->
             </Border>
 
             <Border  Grid.Row="1" 
@@ -79,7 +73,8 @@
                                     Height="30"
                                 Name="userActiveBorder"
                                 BorderThickness="2.5"
-                                Margin="5,0,0,0">
+                                Margin="5,0,0,0"
+                                    DockPanel.Dock="Left">
                                 <Border.Style>
                                     <Style TargetType="{x:Type Border}">
                                         <Setter Property="BorderBrush" Value="DarkRed"/>
@@ -95,7 +90,7 @@
                                         Orientation="Horizontal">
                                 <TextBlock Text="{Binding CurrentUser.UserProfile.Username}"
                                        Foreground="Black"
-                                       Margin="10,-5,10,0"
+                                       Margin="10,-5,0,0"
                                        FontSize="22"
                                        Name="userTextBlock"
                                        VerticalAlignment="Center"
@@ -158,6 +153,34 @@
                     </Button>
                 </Grid>
             </Border>
+        </Grid>
+
+        <Grid Grid.Column="1" 
+              Panel.ZIndex="3"
+              Background="{StaticResource mainMessageBoxColors}">
+            <Grid.Style>
+                <Style TargetType="{x:Type Grid}">
+                    <Setter Property="Visibility" Value="Collapsed"/>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding ElementName=userList, Path=SelectedIndex}"
+                                     Value="-1">
+                            <Setter Property="Visibility" 
+                                    Value="Visible"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Grid.Style>
+            <TextBlock HorizontalAlignment="Center"
+                       VerticalAlignment="Center"
+                       Text="Select contact to start"
+                       FontSize="24"
+                       TextWrapping="Wrap"
+                       Margin="0,0,0,40"/>
+            <TextBlock Text="messaging"
+                       HorizontalAlignment="Center"
+                       VerticalAlignment="Center"
+                       Margin="0,40,0,0"
+                       FontSize="24"/>
         </Grid>
     </Grid>
 </UserControl>

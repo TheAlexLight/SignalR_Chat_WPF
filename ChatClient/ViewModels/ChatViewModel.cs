@@ -57,6 +57,7 @@ namespace ChatClient.ViewModels
         private UserModel _currentUser;
         private MuteStatusModel _muteStatus;
         private ChatGroupModel _currentChatGroup;
+        private int _selectedUserIndex;
 
         private ChatType _currentChatType;
 
@@ -325,6 +326,29 @@ namespace ChatClient.ViewModels
                 {
                     FilterUsersCollectionView.Refresh();
                 }
+            }
+        }
+
+        public int SelectedUserIndex
+        {
+            get => _selectedUserIndex;
+            set
+            {
+                    Window window = Application.Current.MainWindow;
+
+                    if (value == -1)
+                    {
+                    //window.MinWidth = 260;
+                    //window.Width = 260;
+                    }
+                    else
+                    {
+                    //window.MinWidth = 470;
+                    //window.Width = 550;
+                    }
+
+                _selectedUserIndex = value;
+                OnPropertyChanged();
             }
         }
     }

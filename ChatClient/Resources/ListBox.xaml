@@ -182,7 +182,7 @@
         <Setter Property="ItemsSource" Value="{Binding AllUsers}"/>
         <Setter Property="FontSize" Value="20"/>
         <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
-        <Setter Property="SelectedIndex" Value="-1"/>
+        <Setter Property="SelectedIndex" Value="{Binding SelectedUserIndex}"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate>
