@@ -22,6 +22,7 @@
                 <ResourceDictionary Source="pack://application:,,,/ChatClient;component/Resources/Images/Filter.xaml"/>
                 <ResourceDictionary Source="pack://application:,,,/ChatClient;component/Resources/Images/ThreeDots.xaml"/>
                 <ResourceDictionary Source="pack://application:,,,/ChatClient;component/Resources/Images/Settings.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/ChatClient;component/Resources/Images/CloseTab.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>

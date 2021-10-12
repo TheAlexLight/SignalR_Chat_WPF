@@ -7,7 +7,7 @@
         <ResourceDictionary Source="pack://application:,,,/ChatClient;component/Resources/Images/ThreeDots.xaml"/>
     </ResourceDictionary.MergedDictionaries>
 
-    <converters:DurationTimeConverter x:Key="durationTimeConverter"/>
+    <converters:MultiBindingConverter x:Key="multiBindingConverter"/>
 
     <SolidColorBrush x:Key="highLightedIcon" 
                      Color="#B0D2E3"/>
@@ -65,7 +65,7 @@
         <Setter Property="Command" Value="{Binding RelativeSource={RelativeSource AncestorType= {x:Type UserControl}}, Path=DataContext.BanUserCommand}"/>
         <Setter Property="CommandParameter">
             <Setter.Value>
-                <MultiBinding Converter="{StaticResource durationTimeConverter}">
+                <MultiBinding Converter="{StaticResource multiBindingConverter}">
                     <Binding ElementName="activeUsersListBox" Path="SelectedItem"/>
                     <Binding Mode="TwoWay" 
                                                  Path="(viewmodels:ChatViewModel.DurationTime)"
@@ -79,7 +79,7 @@
         <Setter Property="Command" Value="{Binding RelativeSource={RelativeSource AncestorType= {x:Type UserControl}}, Path=DataContext.MuteUserCommand}"/>
         <Setter Property="CommandParameter">
             <Setter.Value>
-                <MultiBinding Converter="{StaticResource durationTimeConverter}">
+                <MultiBinding Converter="{StaticResource multiBindingConverter}">
                     <Binding ElementName="activeUsersListBox" Path="SelectedItem"/>
                     <Binding Mode="TwoWay" 
                                                  Path="(viewmodels:ChatViewModel.DurationTime)"

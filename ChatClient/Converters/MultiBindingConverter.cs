@@ -8,7 +8,7 @@ using System.Windows.Data;
 
 namespace ChatClient.Converters
 {
-    public class DurationTimeConverter : IMultiValueConverter
+    public class MultiBindingConverter : IMultiValueConverter
     {
         public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
         {

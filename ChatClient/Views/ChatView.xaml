@@ -15,7 +15,7 @@
 
     <UserControl.Resources>
         <ResourceDictionary>
-            <converters:DurationTimeConverter x:Key="durationTimeConverter"/>
+            <converters:MultiBindingConverter x:Key="multiBindingConverter"/>
         </ResourceDictionary>
     </UserControl.Resources>
 
@@ -39,6 +39,7 @@
             </Border>-->
 
             <Border Grid.Row="1" 
+                    Name="sideChatPanel"
                     Background="{StaticResource mainMessageBoxColors}"
                     BorderBrush="#AAAEB2"
                     BorderThickness="1">
@@ -178,5 +179,19 @@
                                          Grid.ColumnSpan="2"
                                          Style="{StaticResource privateChat}">
         </additionalViews:PrivateChatView>
+
+        <additionalViews:UserInfoView Grid.ColumnSpan="3" Panel.ZIndex="4">
+            <additionalViews:UserInfoView.Style>
+                <Style TargetType="{x:Type additionalViews:UserInfoView}">
+                    <Setter Property="Visibility" Value="Collapsed"/>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding IsUserInfoOpened}"
+                                     Value="True">
+                            <Setter Property="Visibility" Value="Visible"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </additionalViews:UserInfoView.Style>
+        </additionalViews:UserInfoView>
     </Grid>
 </UserControl>

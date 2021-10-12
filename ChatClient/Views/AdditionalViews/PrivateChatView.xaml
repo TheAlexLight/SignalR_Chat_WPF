@@ -5,6 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:ChatClient.Views.AdditionalViews"
              xmlns:controls="clr-namespace:ChatClient.Controls"
+             xmlns:additionalViews="clr-namespace:ChatClient.Views.AdditionalViews"
              xmlns:i="http://schemas.microsoft.com/xaml/behaviors" xmlns:viewmodels="clr-namespace:ChatClient.ViewModels" d:DataContext="{d:DesignInstance Type=viewmodels:ChatViewModel}"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="550">
@@ -67,24 +68,12 @@
                         <Border Grid.Row="1" BorderBrush="#AAAEB2"
                             BorderThickness="0,0,1,0">
                         <DockPanel Background="{StaticResource typeMessageGridColors}">
-                            <Border CornerRadius="25" 
+                            <Border
                                     Background="CornflowerBlue" 
-                                    Width="30" 
-                                    Height="30"
                                 Name="userActiveBorder"
-                                BorderThickness="2.5"
                                 Margin="5,0,0,0"
-                                    DockPanel.Dock="Left">
-                                <Border.Style>
-                                    <Style TargetType="{x:Type Border}">
-                                        <Setter Property="BorderBrush" Value="DarkRed"/>
-                                        <Style.Triggers>
-                                            <DataTrigger Binding="{Binding CurrentUser.UserProfile.IsOnline}" Value="True">
-                                                <Setter Property="BorderBrush" Value="Green"/>
-                                            </DataTrigger>
-                                        </Style.Triggers>
-                                    </Style>
-                                </Border.Style>
+                                    DockPanel.Dock="Left"
+                                Style="{StaticResource userIcon}">
                             </Border>
                             <StackPanel VerticalAlignment="Center"
                                         Orientation="Horizontal">
@@ -121,11 +110,17 @@
                 <Border BorderBrush="#AAAEB2"
                         BorderThickness="1"
                         Background="#ECECF4">
-                    <TextBlock HorizontalAlignment="Center"
-                           Text="Info about user"
-                           VerticalAlignment="Center"
-                           FontSize="24">
-                    </TextBlock>
+                    <Button Content="{Binding ElementName=userList  
+                        , Path=SelectedItem.UserProfile.Username}"
+                            Style="{StaticResource userInfoButton}"
+                            Command="{Binding OpenUserInfoWIndowCommand}">
+                        <Button.CommandParameter>
+                            <MultiBinding Converter ="{StaticResource multiBindingConverter}">
+                                <Binding Source="true"/>
+                                <Binding ElementName="userList" Path="SelectedItem"/>
+                            </MultiBinding>
+                        </Button.CommandParameter>
+                    </Button>
                 </Border>
             </Grid>
 
@@ -155,21 +150,10 @@
             </Border>
         </Grid>
 
-        <Grid Grid.Column="1" 
+        <!--<Grid Grid.Column="1" 
               Panel.ZIndex="3"
+              Style="{StaticResource privateMessagesGrid}"
               Background="{StaticResource mainMessageBoxColors}">
-            <Grid.Style>
-                <Style TargetType="{x:Type Grid}">
-                    <Setter Property="Visibility" Value="Collapsed"/>
-                    <Style.Triggers>
-                        <DataTrigger Binding="{Binding ElementName=userList, Path=SelectedIndex}"
-                                     Value="-1">
-                            <Setter Property="Visibility" 
-                                    Value="Visible"/>
-                        </DataTrigger>
-                    </Style.Triggers>
-                </Style>
-            </Grid.Style>
             <TextBlock HorizontalAlignment="Center"
                        VerticalAlignment="Center"
                        Text="Select contact to start"
@@ -181,6 +165,6 @@
                        VerticalAlignment="Center"
                        Margin="0,40,0,0"
                        FontSize="24"/>
-        </Grid>
+        </Grid>-->
     </Grid>
 </UserControl>

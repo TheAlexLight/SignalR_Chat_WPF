@@ -25,7 +25,6 @@ namespace ChatClient.Commands
             {
                 _viewModel.CurrentChatType = currentChatType;
                 _viewModel.Message = string.Empty;
-                //_viewModel.AllUsers.Clear();
 
                 if (currentChatType == ChatType.Private)
                 {

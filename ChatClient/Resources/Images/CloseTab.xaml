@@ -1,0 +1,7 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+  <Geometry x:Key="closeTabGeometry">F1 M32,32z M0,0z M17.459,16.014L25.698,7.82C26.093,7.429 26.093,6.796 25.698,6.406 25.304,6.015 24.664,6.015 24.27,6.406L16.038,14.593 7.73,6.284C7.336,5.889 6.696,5.889 6.302,6.284 5.908,6.68 5.908,7.321 6.302,7.716L14.604,16.019 6.272,24.305C5.878,24.696 5.878,25.329 6.272,25.719 6.666,26.11 7.306,26.11 7.7,25.719L16.025,17.44 24.3,25.716C24.694,26.111 25.334,26.111 25.728,25.716 26.122,25.32 26.122,24.679 25.728,24.284L17.459,16.014z</Geometry>
+  <DrawingGroup x:Key="closeTabDrawingGroup" ClipGeometry="M0,0 V32 H32 V0 H0 Z">
+    <GeometryDrawing Brush="#FF121313" Geometry="{StaticResource closeTabGeometry}" />
+  </DrawingGroup>
+  <DrawingImage x:Key="closeTabDrawingImage" Drawing="{StaticResource closeTabDrawingGroup}" />
+</ResourceDictionary>

@@ -13,6 +13,9 @@
     <Compile Update="Views\AdditionalViews\PrivateChatView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="Views\AdditionalViews\UserInfoView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="Views\BanView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -58,6 +61,9 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Views\AdditionalViews\PrivateChatView.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\AdditionalViews\UserInfoView.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Views\BanView.xaml">

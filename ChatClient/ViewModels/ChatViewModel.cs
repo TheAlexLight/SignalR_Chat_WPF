@@ -54,10 +54,12 @@ namespace ChatClient.ViewModels
         //private ObservableCollection<MessageModel> _messages;
         private ObservableCollection<UserModel> _allUsers;
         private ObservableCollection<Group> _groups;
-        private UserModel _currentUser;
+        private UserModel _currentUser; 
+        private UserModel _selectedUser; 
         private MuteStatusModel _muteStatus;
         private ChatGroupModel _currentChatGroup;
         private int _selectedUserIndex;
+        private bool _isUserInfoOpened;
 
         private ChatType _currentChatType;
 
@@ -71,6 +73,8 @@ namespace ChatClient.ViewModels
         public ICommand MuteUserCommand { get; private set; }
         public ICommand SwitchChatCommand { get; private set; }
         public ICommand UpdatePrivateMessagesCommand { get; private set; }
+        public ICommand OpenUserInfoWIndowCommand { get; private set; }
+        
 
         public static readonly DependencyProperty TimeDurationProperty = DependencyProperty.RegisterAttached("DurationTime"
                 , typeof(string), typeof(ChatViewModel), new PropertyMetadata(null));
@@ -95,6 +99,7 @@ namespace ChatClient.ViewModels
             SwitchChatCommand = new SwitchChatCommand(this);
             RemoveToolBarOverflowCommand = new RemoveToolBarOverfowCommand();
             UpdatePrivateMessagesCommand = new UpdatePrivateMessagesCommand(this);
+            OpenUserInfoWIndowCommand = new OpenUserInfoWIndowCommand(this);
             //Messages = new();
             MuteStatus = new();
             UsersFilter = string.Empty;
@@ -245,6 +250,16 @@ namespace ChatClient.ViewModels
             }
         }
 
+        public UserModel SelectedUser
+        {
+            get => _selectedUser;
+            set
+            {
+                _selectedUser = value;
+                OnPropertyChanged();
+            }
+        }
+
         public string Message
         {
             get => _message;
@@ -326,6 +341,16 @@ namespace ChatClient.ViewModels
                 {
                     FilterUsersCollectionView.Refresh();
                 }
+            }
+        }
+
+        public bool IsUserInfoOpened
+        {
+            get => _isUserInfoOpened;
+            set
+            {
+                _isUserInfoOpened = value;
+                OnPropertyChanged();
             }
         }
 
