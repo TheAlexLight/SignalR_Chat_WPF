@@ -193,5 +193,19 @@
                 </Style>
             </additionalViews:UserInfoView.Style>
         </additionalViews:UserInfoView>
+
+        <additionalViews:SettingsView Grid.ColumnSpan="3" Panel.ZIndex="4">
+            <additionalViews:SettingsView.Style>
+                <Style TargetType="{x:Type additionalViews:SettingsView}">
+                    <Setter Property="Visibility" Value="Collapsed"/>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding IsSettingsOpened}"
+                                     Value="True">
+                            <Setter Property="Visibility" Value="Visible"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </additionalViews:SettingsView.Style>
+        </additionalViews:SettingsView>
     </Grid>
 </UserControl>

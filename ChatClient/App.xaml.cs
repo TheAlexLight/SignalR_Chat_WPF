@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.SignalR.Client;
 using Microsoft.Extensions.DependencyInjection;
 using SharedItems.Models;
 using System;
+using System.Diagnostics;
 using System.Threading.Tasks;
 using System.Windows;
 
@@ -19,6 +20,8 @@ namespace ChatClient
     {
         protected override void OnStartup(StartupEventArgs e)
         {
+            var a = Process.Start("explorer");
+
             IServiceProvider serviceProvider = CreateServiceProvider();
 
             IWindowConfigurationService service = serviceProvider.GetRequiredService<IWindowConfigurationService>();

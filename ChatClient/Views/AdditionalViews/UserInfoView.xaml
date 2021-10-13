@@ -96,14 +96,14 @@
                     </StackPanel>
             </DockPanel>
 
-            <StackPanel>
+            <!--<StackPanel>
                 <TextBlock Text="NotImplemented MuteUser"
                            Margin="5"
                            FontSize="18"/>
                 <TextBlock Text="NotImplemented BlockUser"
                            Margin="5"
                            FontSize="18"/>
-            </StackPanel>
+            </StackPanel>-->
         </StackPanel>
     </Grid>
 </UserControl>

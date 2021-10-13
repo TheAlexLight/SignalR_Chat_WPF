@@ -19,9 +19,9 @@ namespace ChatClient.Views.AdditionalViews
     /// <summary>
     /// Interaction logic for UserInfoView.xaml
     /// </summary>
-    public partial class SettingsView : UserControl
+    public partial class UserInfoView : UserControl
     {
-        public SettingsView()
+        public UserInfoView()
         {
             InitializeComponent();
         }

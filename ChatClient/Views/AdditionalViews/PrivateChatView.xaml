@@ -85,14 +85,15 @@
                                        VerticalAlignment="Center"
                                            DockPanel.Dock="Left"/>
                             </StackPanel>
-                            <Image Source="{StaticResource settingsDrawingImage}"
-                                       VerticalAlignment="Center"
-                                       DockPanel.Dock="Right"
-                                    HorizontalAlignment="Right"
-                                       Width="28"
-                                       Height="28"
-                                   Margin="5"
-                                   Panel.ZIndex="2"/>
+                            <Button Style="{StaticResource settingsButton}"
+                                    Command="{Binding OpenSettingsCommand}">
+                                <Button.CommandParameter>
+                                    <MultiBinding Converter ="{StaticResource multiBindingConverter}">
+                                        <Binding Source="true"/>
+                                        <Binding ElementName="userList" Path="SelectedItem"/>
+                                    </MultiBinding>
+                                </Button.CommandParameter>
+                            </Button>
                         </DockPanel>
                     </Border>
                 </Grid>

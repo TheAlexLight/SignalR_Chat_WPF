@@ -63,6 +63,9 @@
     <Page Update="Views\AdditionalViews\PrivateChatView.xaml">
       <SubType>Designer</SubType>
     </Page>
+    <Page Update="Views\AdditionalViews\SettingsView.xaml">
+      <SubType>Designer</SubType>
+    </Page>
     <Page Update="Views\AdditionalViews\UserInfoView.xaml">
       <SubType>Designer</SubType>
     </Page>

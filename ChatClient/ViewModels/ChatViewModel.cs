@@ -60,6 +60,7 @@ namespace ChatClient.ViewModels
         private ChatGroupModel _currentChatGroup;
         private int _selectedUserIndex;
         private bool _isUserInfoOpened;
+        private bool _isSettingsOpened;
 
         private ChatType _currentChatType;
 
@@ -74,6 +75,7 @@ namespace ChatClient.ViewModels
         public ICommand SwitchChatCommand { get; private set; }
         public ICommand UpdatePrivateMessagesCommand { get; private set; }
         public ICommand OpenUserInfoWIndowCommand { get; private set; }
+        public ICommand OpenSettingsCommand { get; private set; }
         
 
         public static readonly DependencyProperty TimeDurationProperty = DependencyProperty.RegisterAttached("DurationTime"
@@ -100,6 +102,7 @@ namespace ChatClient.ViewModels
             RemoveToolBarOverflowCommand = new RemoveToolBarOverfowCommand();
             UpdatePrivateMessagesCommand = new UpdatePrivateMessagesCommand(this);
             OpenUserInfoWIndowCommand = new OpenUserInfoWIndowCommand(this);
+            OpenSettingsCommand = new OpenSettingsCommand(this);
             //Messages = new();
             MuteStatus = new();
             UsersFilter = string.Empty;
@@ -350,6 +353,16 @@ namespace ChatClient.ViewModels
             set
             {
                 _isUserInfoOpened = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public bool IsSettingsOpened
+        {
+            get => _isSettingsOpened;
+            set
+            {
+                _isSettingsOpened = value;
                 OnPropertyChanged();
             }
         }
