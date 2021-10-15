@@ -20,8 +20,6 @@ namespace ChatClient
     {
         protected override void OnStartup(StartupEventArgs e)
         {
-            var a = Process.Start("explorer");
-
             IServiceProvider serviceProvider = CreateServiceProvider();
 
             IWindowConfigurationService service = serviceProvider.GetRequiredService<IWindowConfigurationService>();

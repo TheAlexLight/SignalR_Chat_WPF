@@ -4,11 +4,16 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:ChatClient.Views.AdditionalViews"
+             xmlns:converters="clr-namespace:ChatClient.Converters"
              xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
              xmlns:viewmodels="clr-namespace:ChatClient.ViewModels" 
              d:DataContext="{d:DesignInstance Type=viewmodels:ChatViewModel}"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
+
+    <UserControl.Resources>
+        <converters:ByteToImageConverter x:Key="byteToImageConverter"/>
+    </UserControl.Resources>
     <Grid Name="fullCoveredGrid" >
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
@@ -81,12 +86,20 @@
                 </DockPanel>
                 <Border Width="50"
                     Height="50"
-                    Background="CornflowerBlue" 
                     Name="userActiveBorder"
                     Margin="5,0,0,0"
                     HorizontalAlignment="Center"
-                    Style="{StaticResource userIcon}"/>
-                <Button Style="{StaticResource changePhotoButton}">
+                        Padding="2"
+                    Style="{StaticResource userIcon}">
+                    <Ellipse >
+                        <Ellipse.Fill>
+                            <ImageBrush ImageSource="{Binding CurrentUser.UserProfile.Image, Converter={StaticResource byteToImageConverter}}"
+                                        Stretch="UniformToFill"/>
+                        </Ellipse.Fill>
+                    </Ellipse>
+                </Border>
+                <Button Style="{StaticResource changePhotoButton}"
+                        Command="{Binding ChangePhotoCommand}">
                     <TextBlock Text="Change Photo"  
                        FontSize="20"
                        Margin="5"/>

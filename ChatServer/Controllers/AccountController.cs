@@ -5,6 +5,7 @@ using SharedItems.Models.AuthenticationModels;
 using SharedItems.Models.StatusModels;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -78,8 +79,9 @@ namespace ChatServer.Controllers
         {
             _dbContext.UserProfiles.Add(new UserProfileModel()
             {
-                UserModelId = createdUser.UserModel.Id
-            });
+                UserModelId = createdUser.UserModel.Id,
+                Image = File.ReadAllBytes("Resources/Default/defaultUser.png")
+        });
 
             await _dbContext.SaveChangesAsync();
         }

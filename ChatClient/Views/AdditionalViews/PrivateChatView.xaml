@@ -4,11 +4,15 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:ChatClient.Views.AdditionalViews"
+             xmlns:converters="clr-namespace:ChatClient.Converters"
              xmlns:controls="clr-namespace:ChatClient.Controls"
              xmlns:additionalViews="clr-namespace:ChatClient.Views.AdditionalViews"
              xmlns:i="http://schemas.microsoft.com/xaml/behaviors" xmlns:viewmodels="clr-namespace:ChatClient.ViewModels" d:DataContext="{d:DesignInstance Type=viewmodels:ChatViewModel}"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="550">
+    <UserControl.Resources>
+        <converters:ByteToImageConverter x:Key="byteToImageConverter"/>
+    </UserControl.Resources>
     <Grid Background="White">
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
@@ -69,11 +73,16 @@
                             BorderThickness="0,0,1,0">
                         <DockPanel Background="{StaticResource typeMessageGridColors}">
                             <Border
-                                    Background="CornflowerBlue" 
                                 Name="userActiveBorder"
                                 Margin="5,0,0,0"
                                     DockPanel.Dock="Left"
                                 Style="{StaticResource userIcon}">
+                                <Ellipse >
+                                    <Ellipse.Fill>
+                                        <ImageBrush ImageSource="{Binding CurrentUser.UserProfile.Image, Converter={StaticResource byteToImageConverter}}"
+                                        Stretch="UniformToFill"/>
+                                    </Ellipse.Fill>
+                                </Ellipse>
                             </Border>
                             <StackPanel VerticalAlignment="Center"
                                         Orientation="Horizontal">
@@ -151,7 +160,7 @@
             </Border>
         </Grid>
 
-        <!--<Grid Grid.Column="1" 
+        <Grid Grid.Column="1" 
               Panel.ZIndex="3"
               Style="{StaticResource privateMessagesGrid}"
               Background="{StaticResource mainMessageBoxColors}">
@@ -166,6 +175,6 @@
                        VerticalAlignment="Center"
                        Margin="0,40,0,0"
                        FontSize="24"/>
-        </Grid>-->
+        </Grid>
     </Grid>
 </UserControl>

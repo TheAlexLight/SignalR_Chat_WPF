@@ -44,7 +44,10 @@ namespace ChatServer
                 opts.Password.RequireNonAlphanumeric = true;
             })
                 .AddEntityFrameworkStores<ApplicationContext>();
-            services.AddSignalR();
+            services.AddSignalR(options =>
+            {
+                options.MaximumReceiveMessageSize = null;
+            });
             //    .AddMessagePackProtocol(options=> 
             //{
             //    options.SerializerOptions = MessagePackSerializerOptions.Standard

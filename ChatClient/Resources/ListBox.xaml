@@ -18,6 +18,7 @@
 
     <converters:MessageLineNormalizeConverter x:Key="normalizedMessage"/>
     <converters:MultiValueEqualityConverter x:Key="equalityConverter"/>
+    <converters:ByteToImageConverter x:Key="byteToImageConverter"/>
 
     <LinearGradientBrush x:Key="mainMessageBoxColors" StartPoint="0.5,0" EndPoint="0.5,1">
         <GradientStop Color="#E6E7FF" Offset="0"/>
@@ -66,10 +67,16 @@
                                         <Border CornerRadius="25" 
                                                 BorderBrush="DarkRed" 
                                                 BorderThickness="2.5"
-                                    Background="CornflowerBlue" 
                                     Width="29" 
                                     Height="29"
-                                            Name="userActiveBorder"/>
+                                            Name="userActiveBorder">
+                                            <Ellipse >
+                                                <Ellipse.Fill>
+                                                    <ImageBrush ImageSource="{Binding UserProfile.Image, Converter={StaticResource byteToImageConverter}}"
+                                                                Stretch="UniformToFill"/>
+                                                </Ellipse.Fill>
+                                            </Ellipse>
+                                        </Border>
                                         <Image Source="{StaticResource muteDrawingImage}" 
                                Width="15" 
                                Height="15"
@@ -199,12 +206,18 @@
                 <DataTemplate>
                     <StackPanel Orientation="Horizontal">
                         <Border CornerRadius="25" 
-                                    Background="CornflowerBlue" 
                                     Width="30" 
                                     Height="30"
                                 Name="userActiveBorder"
                                 BorderBrush="DarkRed"
-                                BorderThickness="2.5"/>
+                                BorderThickness="2.5">
+                            <Ellipse >
+                                <Ellipse.Fill>
+                                    <ImageBrush ImageSource="{Binding UserProfile.Image, Converter={StaticResource byteToImageConverter}}"
+                                                                Stretch="UniformToFill"/>
+                                </Ellipse.Fill>
+                            </Ellipse>
+                        </Border>
                         <Image Source="{StaticResource muteDrawingImage}" 
                                Width="15" 
                                Height="15"
@@ -258,10 +271,15 @@
                 <DataTemplate>
                     <StackPanel Orientation="Horizontal">
                         <Border CornerRadius="25" 
-                                    Background="CornflowerBlue" 
                                 BorderThickness="2.5"
                                     Width="30" 
                                     Height="30">
+                            <Ellipse >
+                                <Ellipse.Fill>
+                                    <ImageBrush ImageSource="{Binding UserModel.UserProfile.Image, Converter={StaticResource byteToImageConverter}}"
+                                                                Stretch="UniformToFill"/>
+                                </Ellipse.Fill>
+                            </Ellipse>
                             <Border.Style>
                                 <Style TargetType="{x:Type Border}">
                                     <Setter Property="BorderBrush" Value="DarkRed"/>

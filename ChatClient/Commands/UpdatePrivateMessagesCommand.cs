@@ -1,4 +1,5 @@
 ﻿using ChatClient.ViewModels;
+using SharedItems.Enums;
 using SharedItems.Models;
 using System;
 using System.Collections.Generic;
@@ -19,7 +20,7 @@ namespace ChatClient.Commands
 
         public override void Execute(object parameter)
         {
-            if (parameter is UserModel SelectedUser)
+            if ( _viewModel.CurrentChatType == ChatType.Private && parameter is UserModel SelectedUser )
             {
                 _viewModel.ChatService.UpdatePrivateMessages(SelectedUser, _viewModel.CurrentUser);
             }

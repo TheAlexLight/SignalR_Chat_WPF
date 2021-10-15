@@ -1,6 +1,7 @@
 ﻿using ChatClient.Commands;
 using ChatClient.Commands.AuthenticationCommands;
 using ChatClient.Commands.ContextMenuCommands;
+using ChatClient.Commands.CustomViewsCommands;
 using ChatClient.Commands.ToolBarCommands;
 using ChatClient.Enums;
 using ChatClient.Interfaces;
@@ -76,6 +77,7 @@ namespace ChatClient.ViewModels
         public ICommand UpdatePrivateMessagesCommand { get; private set; }
         public ICommand OpenUserInfoWIndowCommand { get; private set; }
         public ICommand OpenSettingsCommand { get; private set; }
+        public ICommand ChangePhotoCommand { get; private set; }
         
 
         public static readonly DependencyProperty TimeDurationProperty = DependencyProperty.RegisterAttached("DurationTime"
@@ -103,6 +105,7 @@ namespace ChatClient.ViewModels
             UpdatePrivateMessagesCommand = new UpdatePrivateMessagesCommand(this);
             OpenUserInfoWIndowCommand = new OpenUserInfoWIndowCommand(this);
             OpenSettingsCommand = new OpenSettingsCommand(this);
+            ChangePhotoCommand = new ChangePhotoCommand(this);
             //Messages = new();
             MuteStatus = new();
             UsersFilter = string.Empty;
@@ -200,7 +203,13 @@ namespace ChatClient.ViewModels
             offlineGroup.GroupedUsers = new ObservableCollection<UserModel>(CurrentChatGroup.Users
                     .Except(bannedGroup.GroupedUsers).Except(onlineGroup.GroupedUsers).ToList());
 
-            UsersCollectionView.Refresh();
+            try
+            {
+                UsersCollectionView.Refresh();
+            }
+            catch (Exception)
+            {            }
+            
         }
 
         private void ChatService_UserListReceived(ObservableCollection<UserModel> allUsers)
@@ -213,8 +222,12 @@ namespace ChatClient.ViewModels
                 FilterUsersCollectionView.Filter = FilterUsers;
             }
 
-
-            FilterUsersCollectionView.Refresh();
+            try
+            {
+                FilterUsersCollectionView.Refresh();
+            }
+            catch
+            {}
         }
 
         private async void ChatService_ReceivedBan(BanStatusModel model)
@@ -280,10 +293,10 @@ namespace ChatClient.ViewModels
             {
                 _allUsers = value;
                 OnPropertyChanged();
-                if (FilterUsersCollectionView != null)
-                {
-                    FilterUsersCollectionView.Refresh();
-                }
+                //if (FilterUsersCollectionView != null)
+                //{
+                //    FilterUsersCollectionView.Refresh();
+                //}
             }
         }
 

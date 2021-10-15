@@ -5,15 +5,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Windows;
 
-namespace ChatClient.Commands
+namespace ChatClient.Commands.CustomViewsCommands
 {
-    public class OpenUserInfoWIndowCommand : CommandBase
+    public class OpenSettingsCommand : CommandBase
     {
         private readonly ChatViewModel _viewModel;
 
-        public OpenUserInfoWIndowCommand(ChatViewModel viewModel)
+        public OpenSettingsCommand(ChatViewModel viewModel)
         {
             _viewModel = viewModel;
         }
@@ -22,11 +21,11 @@ namespace ChatClient.Commands
         {
             object[] values = (object[])parameter;
 
-            if (values[0] is string temporaryUserInfoState)
+            if (values[0] is string temporarySettingsState)
             {
-                if (bool.TryParse(temporaryUserInfoState, out bool userInfoOpenedState))
+                if (bool.TryParse(temporarySettingsState, out bool userSettingsState))
                 {
-                    _viewModel.IsUserInfoOpened = userInfoOpenedState;
+                    _viewModel.IsSettingsOpened = userSettingsState;
                 }
             }
 

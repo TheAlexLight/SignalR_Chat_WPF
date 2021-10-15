@@ -81,7 +81,7 @@ namespace ChatServer.Hubs
                     user.UserModel.UserProfile.IsOnline = true;
                     await _dbContext.SaveChangesAsync();
 
-                    await SendCurrentUser(userHandler);
+                   // await SendCurrentUser(userHandler);
 
                     if (user.UserModel.UserStatus.BanStatus.IsBanned)
                     {
@@ -269,6 +269,21 @@ namespace ChatServer.Hubs
             {
              await Clients.Caller.SendAsync("ReceiveCurrentGroup", group);
             }
+        }
+
+        public async Task SendChangePhoto(UserModel currentUser, byte[] photo)
+        {
+            UserModel userModel = _dbContext.UserModels.FirstOrDefault(um => um == currentUser);
+
+            userModel.UserProfile.Image = photo;
+
+            await _dbContext.SaveChangesAsync();
+
+            UserHandler userHandler = Account.Users.FirstOrDefault(u => u.ConnectedUsername == currentUser.UserProfile.Username);
+
+            await UpdateChat(userHandler);
+
+            //await Clients.Caller.SendAsync("ReceiveCurrentGroup", userModel);
         }
 
         public async Task SendUserBan(string username, BanStatusModel model)

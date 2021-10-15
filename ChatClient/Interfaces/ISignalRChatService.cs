@@ -33,5 +33,6 @@ namespace ChatClient.Interfaces
         public Task KickUser(string username);
         public Task SwitchChat(ChatType chatType);
         public Task UpdatePrivateMessages(UserModel selectedUser, UserModel currentUser);
+        public Task ChangePhoto(UserModel currentUser, byte[] photo);
     }
 }
