@@ -15,11 +15,14 @@
     </UserControl.Resources>
     <Grid Background="White">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition/>
-            <ColumnDefinition Width="2*">
-            </ColumnDefinition>
+            <ColumnDefinition MinWidth="1" Width="{Binding UsersColumnWidth, Mode=TwoWay}"/>
+            <ColumnDefinition Width="{Binding MessagesColumnWidth, Mode=TwoWay}"
+                              Style="{StaticResource privateMessagesColumn}"/>
         </Grid.ColumnDefinitions>
 
+        <GridSplitter Grid.Column="0"
+                      Style="{StaticResource gridSpliiter}"/>
+        
         <Grid Grid.Column="0" Width="Auto">
             <Grid.RowDefinitions>
                 <RowDefinition Height="35"/>
@@ -57,7 +60,7 @@
                         <RowDefinition Height="45"/>
                     </Grid.RowDefinitions>
                     <Border BorderBrush="#AAAEB2"
-                            BorderThickness="0,1,1,1">
+                            BorderThickness="0,1,0,1">
                         <ListBox Grid.Row="0"
                              Style="{StaticResource privateUsersListBox}"
                              Name="userList">
@@ -71,11 +74,16 @@
                         </Border>
                         <Border Grid.Row="1" BorderBrush="#AAAEB2"
                             BorderThickness="0,0,1,0">
-                        <DockPanel Background="{StaticResource typeMessageGridColors}">
+                        <Grid Background="{StaticResource typeMessageGridColors}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="40"/>
+                                <ColumnDefinition/>
+                                <ColumnDefinition Width="40"/>
+                            </Grid.ColumnDefinitions>
                             <Border
                                 Name="userActiveBorder"
                                 Margin="5,0,0,0"
-                                    DockPanel.Dock="Left"
+                                Grid.Column="0"
                                 Style="{StaticResource userIcon}">
                                 <Ellipse >
                                     <Ellipse.Fill>
@@ -84,18 +92,17 @@
                                     </Ellipse.Fill>
                                 </Ellipse>
                             </Border>
-                            <StackPanel VerticalAlignment="Center"
-                                        Orientation="Horizontal">
-                                <TextBlock Text="{Binding CurrentUser.UserProfile.Username}"
+                            
+                            <TextBlock Text="{Binding CurrentUser.UserProfile.Username}"
                                        Foreground="Black"
-                                       Margin="10,-5,0,0"
+                                       Margin="5,-5,0,0"
                                        FontSize="22"
                                        Name="userTextBlock"
                                        VerticalAlignment="Center"
-                                           DockPanel.Dock="Left"/>
-                            </StackPanel>
+                                       Grid.Column="1"/>
                             <Button Style="{StaticResource settingsButton}"
-                                    Command="{Binding OpenSettingsCommand}">
+                                    Command="{Binding OpenSettingsCommand}"
+                                    Grid.Column="2">
                                 <Button.CommandParameter>
                                     <MultiBinding Converter ="{StaticResource multiBindingConverter}">
                                         <Binding Source="true"/>
@@ -103,7 +110,7 @@
                                     </MultiBinding>
                                 </Button.CommandParameter>
                             </Button>
-                        </DockPanel>
+                        </Grid>
                     </Border>
                 </Grid>
             </Border>
@@ -118,7 +125,7 @@
 
             <Grid Grid.Row="0">
                 <Border BorderBrush="#AAAEB2"
-                        BorderThickness="1"
+                        BorderThickness="0,1,1,1"
                         Background="#ECECF4">
                     <Button Content="{Binding ElementName=userList  
                         , Path=SelectedItem.UserProfile.Username}"
@@ -139,7 +146,7 @@
 
             <Border Grid.Row="2"
                     BorderBrush="#AAAEB2"
-                    BorderThickness="1,0,1,0">
+                    BorderThickness="0,0,1,1">
                 <Grid Grid.Row="2"
                   Background="{StaticResource typeMessageGridColors}">
                     <Grid.ColumnDefinitions>
@@ -149,7 +156,8 @@
 
                     <TextBox Grid.Column="0"    
                      Style="{StaticResource typeMessage}"
-                     Text="{Binding Message}"/>
+                     Text="{Binding Message}" 
+                             Margin="5"/>
                     <Button  Margin="0,0,10,0" Grid.Column="1" Width="50" Height="45"  
                         Command="{Binding SendChatMessageCommand}"
                          CommandParameter="{Binding ElementName=userList, Path=SelectedItem}"
@@ -165,16 +173,12 @@
               Style="{StaticResource privateMessagesGrid}"
               Background="{StaticResource mainMessageBoxColors}">
             <TextBlock HorizontalAlignment="Center"
+                       TextAlignment="Center"
                        VerticalAlignment="Center"
-                       Text="Select contact to start"
+                       Text="Select contact to start messaging"
                        FontSize="24"
                        TextWrapping="Wrap"
-                       Margin="0,0,0,40"/>
-            <TextBlock Text="messaging"
-                       HorizontalAlignment="Center"
-                       VerticalAlignment="Center"
-                       Margin="0,40,0,0"
-                       FontSize="24"/>
+                       Margin="0,0,0,20"/>
         </Grid>
     </Grid>
 </UserControl>

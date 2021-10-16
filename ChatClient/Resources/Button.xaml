@@ -221,6 +221,7 @@
         <Setter Property="Width" Value="40"/>
         <Setter Property="Height" Value="40"/>
         <Setter Property="Margin" Value="5,15,5,5"/>
+        <Setter Property="Focusable" Value="False"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type Button}">
@@ -251,6 +252,7 @@
         <Setter Property="Width" Value="40"/>
         <Setter Property="Height" Value="40"/>
         <Setter Property="Margin" Value="5"/>
+        <Setter Property="Focusable" Value="False"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type Button}">
@@ -327,7 +329,6 @@
         <Setter Property="FontSize" Value="24"/>
         <Setter Property="Foreground" Value="#F1F3FA"/>
         <Setter Property="HorizontalAlignment" Value="Right"/>
-        <Setter Property="Margin" Value="5"/>
         <Setter Property="Cursor" Value="Hand"/>
         <Setter Property="Focusable" Value="False"/>
         <Setter Property="Template">
@@ -338,9 +339,8 @@
                             CornerRadius="10"
                             Padding="5,2,5,2">
                         <Image Source="{StaticResource settingsDrawingImage}"
-                                       VerticalAlignment="Center"
-                                       DockPanel.Dock="Right"
-                                    HorizontalAlignment="Right"
+                                       VerticalAlignment="Stretch"
+                                    HorizontalAlignment="Stretch"
                                        Width="28"
                                        Height="28"
                                    Panel.ZIndex="2"/>

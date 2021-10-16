@@ -21,23 +21,15 @@
 
     <Grid Background="#C0C8D5">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="60"/>
-            <ColumnDefinition/>
-            <ColumnDefinition Width="185"/>
+            <ColumnDefinition Width="60" MinWidth="1"/>
+            <ColumnDefinition MinWidth="1" Width="{Binding UsersColumnWidth, Mode=TwoWay}"/>
+            <ColumnDefinition Width="{Binding MessagesColumnWidth, Mode=TwoWay}" MinWidth="1"/>
         </Grid.ColumnDefinitions>
 
+        <GridSplitter Grid.Column="1"
+                      Style="{StaticResource gridSpliiter}"/>
+
         <Grid Grid.Column ="0">
-            <!--<Grid.RowDefinitions>
-                <RowDefinition Height="35"/>
-                <RowDefinition/>
-            </Grid.RowDefinitions>-->
-
-            <!--<Border Background="{StaticResource mainMessageBoxColors}"
-                    BorderBrush="#AAAEB2"
-                    BorderThickness="1,1,1,0"
-                    Grid.Row="0">
-            </Border>-->
-
             <Border Grid.Row="1" 
                     Name="sideChatPanel"
                     Background="{StaticResource mainMessageBoxColors}"
@@ -90,7 +82,7 @@
         </Grid>
 
         <Border  Grid.Column="2" 
-                 BorderThickness="1,0,1,0"
+                 BorderThickness="0,0,1,0"
                  BorderBrush="#AAAEB2">
             <Grid>
                 <Grid.RowDefinitions>
@@ -101,7 +93,8 @@
                 <Border Style="{StaticResource chatBorder}"
                     Grid.Row="0">
                     <TextBlock Style="{StaticResource chatTitle}"
-                           Text="Users"/>
+                           Text="Users"
+                               HorizontalAlignment="Center"/>
                 </Border>
 
                 <Grid Grid.Row="1" Background="{StaticResource mainMessageBoxColors}">

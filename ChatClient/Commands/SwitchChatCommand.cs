@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace ChatClient.Commands
 {
@@ -28,10 +29,14 @@ namespace ChatClient.Commands
 
                 if (currentChatType == ChatType.Private)
                 {
+                    _viewModel.UsersColumnWidth = new GridLength(1, GridUnitType.Star);
+                    _viewModel.MessagesColumnWidth = new GridLength(2, GridUnitType.Star);
                     _viewModel.SelectedUserIndex = -1;
                 }
                 else
                 {
+                    _viewModel.UsersColumnWidth = new GridLength(1, GridUnitType.Star);
+                    _viewModel.MessagesColumnWidth = new GridLength(0.7, GridUnitType.Star);
                     _viewModel.SelectedUserIndex = 0;
                 }
 

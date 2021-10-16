@@ -20,7 +20,7 @@ namespace ChatClient.Commands
 
         public override void Execute(object parameter)
         {
-            if ( _viewModel.CurrentChatType == ChatType.Private && parameter is UserModel SelectedUser )
+            if (_viewModel.CurrentChatType == ChatType.Private && parameter is UserModel SelectedUser )
             {
                 _viewModel.ChatService.UpdatePrivateMessages(SelectedUser, _viewModel.CurrentUser);
             }

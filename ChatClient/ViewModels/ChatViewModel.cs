@@ -62,6 +62,8 @@ namespace ChatClient.ViewModels
         private int _selectedUserIndex;
         private bool _isUserInfoOpened;
         private bool _isSettingsOpened;
+        private GridLength _usersColumnWidth;
+        private GridLength _messagesColumnWidth;
 
         private ChatType _currentChatType;
 
@@ -110,6 +112,8 @@ namespace ChatClient.ViewModels
             MuteStatus = new();
             UsersFilter = string.Empty;
             AllUsers = new ObservableCollection<UserModel>();
+            UsersColumnWidth = new GridLength(1, GridUnitType.Star);
+            MessagesColumnWidth = new GridLength(0.7, GridUnitType.Star);
 
             CreateGroups();
 
@@ -366,6 +370,26 @@ namespace ChatClient.ViewModels
             set
             {
                 _isUserInfoOpened = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public GridLength UsersColumnWidth
+        {
+            get => _usersColumnWidth;
+            set
+            {
+                _usersColumnWidth = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public GridLength MessagesColumnWidth
+        {
+            get => _messagesColumnWidth;
+            set
+            {
+                _messagesColumnWidth = value;
                 OnPropertyChanged();
             }
         }

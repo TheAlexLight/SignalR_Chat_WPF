@@ -189,6 +189,8 @@
         <Setter Property="ItemsSource" Value="{Binding AllUsers}"/>
         <Setter Property="FontSize" Value="20"/>
         <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+        <Setter Property="Focusable" Value="False"/>
+        <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Hidden"/>
         <Setter Property="SelectedIndex" Value="{Binding SelectedUserIndex}"/>
         <Setter Property="Template">
             <Setter.Value>
@@ -266,6 +268,7 @@
         <Setter Property="ItemsSource" Value="{Binding CurrentChatGroup.Messages}"/>
         <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Hidden"/>
         <Setter Property="Background" Value="{StaticResource mainMessageBoxColors}"/>
+        <Setter Property="BorderThickness" Value="0,1,0,1"/>
         <Setter Property="ItemTemplate">
             <Setter.Value>
                 <DataTemplate>
