@@ -10,57 +10,29 @@
              d:DataContext="{d:DesignInstance Type=viewmodels:ChatViewModel}"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-
     <UserControl.Resources>
         <converters:ByteToImageConverter x:Key="byteToImageConverter"/>
     </UserControl.Resources>
-    <Grid Name="fullCoveredGrid" >
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition/>
-                <ColumnDefinition Width="350"/>
-                <ColumnDefinition/>
-            </Grid.ColumnDefinitions>
-            <Grid.Background>
-                <SolidColorBrush Color="Black" Opacity="0.8"/>
-            </Grid.Background>
+    <Grid Name="fullCoveredGrid" MouseDown="Grid_MouseDown">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition Width="350"/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <Grid.Background>
+            <SolidColorBrush Color="Black" Opacity="0.8"/>
+        </Grid.Background>
 
-            <Grid Grid.Column="0" Background="Transparent">
-                <i:Interaction.Triggers>
-                    <i:EventTrigger EventName="MouseDown">
-                        <i:InvokeCommandAction Command="{Binding OpenSettingsCommand}">
-                            <i:InvokeCommandAction.CommandParameter>
-                                <MultiBinding Converter ="{StaticResource multiBindingConverter}">
-                                    <Binding Source="false"/>
-                                </MultiBinding>
-                            </i:InvokeCommandAction.CommandParameter>
-                        </i:InvokeCommandAction>
-                    </i:EventTrigger>
-                </i:Interaction.Triggers>
-            </Grid>
-
-            <Grid Grid.Column="2" Background="Transparent">
-                <i:Interaction.Triggers>
-                    <i:EventTrigger EventName="MouseDown">
-                        <i:InvokeCommandAction Command="{Binding OpenSettingsCommand}">
-                            <i:InvokeCommandAction.CommandParameter>
-                                <MultiBinding Converter ="{StaticResource multiBindingConverter}">
-                                    <Binding Source="false"/>
-                                </MultiBinding>
-                            </i:InvokeCommandAction.CommandParameter>
-                        </i:InvokeCommandAction>
-                    </i:EventTrigger>
-                </i:Interaction.Triggers>
-            </Grid>
-
-            <Grid  VerticalAlignment="Center"
-                   Grid.Column="1">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="200"/>
-                    <RowDefinition Height="210"/>
-                </Grid.RowDefinitions>
+        <Grid VerticalAlignment="Center"
+                   Grid.Column="1"
+               MouseDown="Grid_MouseDown">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="200"/>
+                <RowDefinition Height="210"/>
+            </Grid.RowDefinitions>
             <Border CornerRadius="10,10,0,0" 
                 BorderThickness="2,2,2,0" 
-                    Padding="2,2,2,0" 
+                    Padding="2.5,2.5,2.5,0" 
                 BorderBrush="Gray">
                 <StackPanel Grid.Row="0" 
                     Background="{StaticResource mainMessageBoxColors}"
@@ -114,7 +86,7 @@
             <Border CornerRadius="0,0,5,5"
                     BorderThickness="2,0,2,2"
                     BorderBrush="Gray"
-                    Grid.Row="1" Padding="2,0,2,2">
+                    Grid.Row="1" Padding="2.5,0,2.5,2.5">
                 <Border Background="#AAABB2">
                     <StackPanel Orientation="Vertical">
                         <TextBlock Text="Username"

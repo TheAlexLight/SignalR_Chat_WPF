@@ -46,7 +46,7 @@ namespace ChatClient.ViewModels
                     top: 110,
                     width: 550,
                     height: 400,
-                    minWidth: 470,
+                    minWidth: 530,
                     minHeight: 350);
             }
         }

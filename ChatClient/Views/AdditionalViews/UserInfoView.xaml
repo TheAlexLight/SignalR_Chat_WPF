@@ -9,47 +9,22 @@
              d:DataContext="{d:DesignInstance Type=viewmodels:ChatViewModel}"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    <Grid Name="fullCoveredGrid" >
+    <Grid Name="fullCoveredGrid" 
+          MouseDown="Grid_MouseDown">
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
-            <ColumnDefinition Width="2*"/>
+            <ColumnDefinition Width="350"/>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
         <Grid.Background>
             <SolidColorBrush Color="Black" Opacity="0.8"/>
         </Grid.Background>
 
-        <Grid Grid.Column="0" Background="Transparent">
-            <i:Interaction.Triggers>
-                <i:EventTrigger EventName="MouseDown">
-                    <i:InvokeCommandAction Command="{Binding OpenUserInfoWIndowCommand}">
-                        <i:InvokeCommandAction.CommandParameter>
-                            <MultiBinding Converter ="{StaticResource multiBindingConverter}">
-                                <Binding Source="false"/>
-                            </MultiBinding>
-                        </i:InvokeCommandAction.CommandParameter>
-                    </i:InvokeCommandAction>
-                </i:EventTrigger>
-            </i:Interaction.Triggers>
-        </Grid>
-
-        <Grid Grid.Column="2" Background="Transparent">
-            <i:Interaction.Triggers>
-                <i:EventTrigger EventName="MouseDown">
-                    <i:InvokeCommandAction Command="{Binding OpenUserInfoWIndowCommand}">
-                        <i:InvokeCommandAction.CommandParameter>
-                            <MultiBinding Converter ="{StaticResource multiBindingConverter}">
-                                <Binding Source="false"/>
-                            </MultiBinding>
-                        </i:InvokeCommandAction.CommandParameter>
-                    </i:InvokeCommandAction>
-                </i:EventTrigger>
-            </i:Interaction.Triggers>
-        </Grid>
-
-        <StackPanel Grid.Column="1" 
+        <Grid Grid.Column="1" 
                     Background="{StaticResource mainMessageBoxColors}"
-                    IsHitTestVisible="True">
+                    IsHitTestVisible="True"
+                    MouseDown="Grid_MouseDown"
+                    Name="qwe">
             <DockPanel Grid.Row="0" VerticalAlignment="Top">
                 <TextBlock Text="UserInfo"
                        FontSize="28"
@@ -104,6 +79,6 @@
                            Margin="5"
                            FontSize="18"/>
             </StackPanel>-->
-        </StackPanel>
+        </Grid>
     </Grid>
 </UserControl>

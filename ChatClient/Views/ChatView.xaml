@@ -22,7 +22,8 @@
     <Grid Background="#C0C8D5">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="60" MinWidth="1"/>
-            <ColumnDefinition MinWidth="1" Width="{Binding UsersColumnWidth, Mode=TwoWay}"/>
+            <ColumnDefinition MinWidth="260" 
+                              Width="{Binding UsersColumnWidth, Mode=TwoWay}"/>
             <ColumnDefinition Width="{Binding MessagesColumnWidth, Mode=TwoWay}"
                               MinWidth="200"/>
         </Grid.ColumnDefinitions>

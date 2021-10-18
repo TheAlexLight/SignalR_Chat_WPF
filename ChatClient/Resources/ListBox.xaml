@@ -64,7 +64,7 @@
                                         <ColumnDefinition/>
                                         <ColumnDefinition Width="20"/>
                                     </Grid.ColumnDefinitions>
-                                    <DockPanel  Background="#F0F0FF">
+                                    <DockPanel  Background="#F0F0FF" Name="dockPanel">
                                         <Border CornerRadius="25" 
                                                 BorderBrush="DarkRed" 
                                                 BorderThickness="2.5"
@@ -94,7 +94,8 @@
   
                                     </DockPanel>
                                     <Menu Style="{StaticResource userMenu}" 
-                              Grid.Column="1">
+                              Grid.Column="1"
+                                          Name="menu">
                                         <MenuItem Style="{StaticResource userMenuItem}"
                                                   Width="30"
                                                   Height="30"
@@ -158,9 +159,15 @@
                                         <Setter Property="BorderBrush" TargetName="userActiveBorder" Value="Green"/>
                                     </DataTrigger>
                                     <Trigger Property="IsMouseOver" Value="True">
+                                        <Setter TargetName="dockPanel"
+                                                Property="Background"
+                                                Value="#C3D7F2"/>
+                                        <Setter TargetName="menu"
+                                                Property="Background"
+                                                Value="#C3D7F2"/>
                                         <Setter TargetName="UsernameText"
                                                 Property="Background"
-                                                Value="#86A0C4"/>
+                                                Value="#C3D7F2"/>
                                     </Trigger>
                                 </DataTemplate.Triggers>
                             </DataTemplate>

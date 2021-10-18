@@ -27,17 +27,4 @@
     <ProjectReference Include="..\SharedItems\SharedItems.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Compile Update="Views\AdditionalViews\SettingsView.xaml.cs">
-      <SubType>Code</SubType>
-    </Compile>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Page Update="Views\AdditionalViews\SettingsView.xaml">
-      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
-      <SubType>Designer</SubType>
-    </Page>
-  </ItemGroup>
-
 </Project>
