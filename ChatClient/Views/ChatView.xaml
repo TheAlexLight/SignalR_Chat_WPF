@@ -23,7 +23,8 @@
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="60" MinWidth="1"/>
             <ColumnDefinition MinWidth="1" Width="{Binding UsersColumnWidth, Mode=TwoWay}"/>
-            <ColumnDefinition Width="{Binding MessagesColumnWidth, Mode=TwoWay}" MinWidth="1"/>
+            <ColumnDefinition Width="{Binding MessagesColumnWidth, Mode=TwoWay}"
+                              MinWidth="200"/>
         </Grid.ColumnDefinitions>
 
         <GridSplitter Grid.Column="1"

@@ -8,6 +8,7 @@
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="pack://application:,,,/ChatClient;component/Resources/Images/Mute.xaml"/>
         <ResourceDictionary Source="pack://application:,,,/ChatClient;component/Resources/Images/ThreeDots.xaml"/>
+        <ResourceDictionary Source="pack://application:,,,/ChatClient;component/Resources/Images/MessageStatus.xaml"/>
         <ResourceDictionary Source="Menu.xaml"/>
     </ResourceDictionary.MergedDictionaries>
     <!--<ResourceDictionary x:Key="iconsDictionary">
@@ -19,6 +20,7 @@
     <converters:MessageLineNormalizeConverter x:Key="normalizedMessage"/>
     <converters:MultiValueEqualityConverter x:Key="equalityConverter"/>
     <converters:ByteToImageConverter x:Key="byteToImageConverter"/>
+    <converters:MessageStatusToImageConverter x:Key="messageStatusToImageConverter"/>
 
     <LinearGradientBrush x:Key="mainMessageBoxColors" StartPoint="0.5,0" EndPoint="0.5,1">
         <GradientStop Color="#E6E7FF" Offset="0"/>
@@ -30,11 +32,11 @@
     </LinearGradientBrush>
 
     <Style x:Key="usersListBox" x:Name="usersListBox" TargetType="{x:Type ListBox}">
-        <!--<Setter Property="ItemsSource" Value="{Binding Source={StaticResource ListBoxItems}}"/>-->
         <Setter Property="FontSize" Value="20"/>
         <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
         <Setter Property="SelectedIndex" Value="0"/>
         <Setter Property="Background" Value="{StaticResource mainMessageBoxColors}"/>
+        <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Disabled"/>
         <Setter Property="ItemContainerStyle">
             <Setter.Value>
                 <Style TargetType="{x:Type ListBoxItem }">
@@ -51,19 +53,18 @@
             <Setter.Value>
                 <DataTemplate>
                     <ListBox ItemsSource="{Binding GroupedUsers}"
-                             HorizontalContentAlignment="Stretch"
-                             HorizontalAlignment="Stretch"
-                             VerticalAlignment="Stretch"
                              Margin="-15,-5,-10,-5"
                              BorderThickness="0"
-                             Background="#F0F0FF">
+                             Background="#F0F0FF"
+                             ScrollViewer.HorizontalScrollBarVisibility="Disabled">
                         <ListBox.ItemTemplate>
                             <DataTemplate>
-                                <DockPanel HorizontalAlignment="Stretch" 
-                                           VerticalAlignment="Stretch"
-                                           Background="#F0F0FF">
-                                    <StackPanel Orientation="Horizontal"
-                                                Background="#F0F0FF">
+                                <Grid Background="#F0F0FF">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition/>
+                                        <ColumnDefinition Width="20"/>
+                                    </Grid.ColumnDefinitions>
+                                    <DockPanel  Background="#F0F0FF">
                                         <Border CornerRadius="25" 
                                                 BorderBrush="DarkRed" 
                                                 BorderThickness="2.5"
@@ -78,27 +79,22 @@
                                             </Ellipse>
                                         </Border>
                                         <Image Source="{StaticResource muteDrawingImage}" 
-                               Width="15" 
-                               Height="15"
-                               Margin="5,10,-5,5"
-                               Visibility="Collapsed"
-                               Name="muteImage"/>
-                                        <StackPanel Background="#F0F0FF">
-                                            <TextBlock Text="{Binding UserProfile.Username}"
-                                       Foreground="{Binding UserProfile.UsernameColor}"
-                                       Margin="10,0,0,0"
-                                       FontSize="22"
-                                                       Background="#F0F0FF"/>
-                                            <!--<TextBlock Text="{Binding UserProfile.StatusMessage}"
-                                   Margin="10,-5,10,0"
-                                       FontStyle="Italic"
-                                       Foreground="#5F5C5A"
-                                       FontSize="16"
-                                       FontWeight="SemiBold"/>-->
-                                        </StackPanel>
-                                    </StackPanel>
+                                               Width="15" 
+                                               Height="15"
+                                               Margin="5,10,-5,5"
+                                               Visibility="Collapsed"
+                                               Name="muteImage"/>
+                                        <TextBlock Text="{Binding UserProfile.Username}"
+                                                   Foreground="{Binding UserProfile.UsernameColor}"
+                                                   Margin="10,0,0,0"
+                                                   FontSize="22"
+                                                   Background="#F0F0FF"
+                                                   TextTrimming="CharacterEllipsis"
+                                                   Name="UsernameText"/>
+  
+                                    </DockPanel>
                                     <Menu Style="{StaticResource userMenu}" 
-                                          DockPanel.Dock="Right" >
+                              Grid.Column="1">
                                         <MenuItem Style="{StaticResource userMenuItem}"
                                                   Width="30"
                                                   Height="30"
@@ -153,7 +149,7 @@
                                             </MenuItem>
                                         </MenuItem>
                                     </Menu>
-                                </DockPanel>
+                                </Grid>
                                 <DataTemplate.Triggers>
                                     <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType={x:Type UserControl}}, Path=DataContext.MuteStatus.IsMuted}" Value="True">
                                         <Setter Property="Visibility" TargetName="muteImage" Value="Visible"/>
@@ -161,6 +157,11 @@
                                     <DataTrigger Binding="{Binding UserProfile.IsOnline}" Value="True">
                                         <Setter Property="BorderBrush" TargetName="userActiveBorder" Value="Green"/>
                                     </DataTrigger>
+                                    <Trigger Property="IsMouseOver" Value="True">
+                                        <Setter TargetName="UsernameText"
+                                                Property="Background"
+                                                Value="#86A0C4"/>
+                                    </Trigger>
                                 </DataTemplate.Triggers>
                             </DataTemplate>
                         </ListBox.ItemTemplate>
@@ -190,7 +191,7 @@
         <Setter Property="FontSize" Value="20"/>
         <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
         <Setter Property="Focusable" Value="False"/>
-        <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Hidden"/>
+        <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Disabled"/>
         <Setter Property="SelectedIndex" Value="{Binding SelectedUserIndex}"/>
         <Setter Property="Template">
             <Setter.Value>
@@ -206,44 +207,37 @@
         <Setter Property="ItemTemplate">
             <Setter.Value>
                 <DataTemplate>
-                    <StackPanel Orientation="Horizontal">
-                        <Border CornerRadius="25" 
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition Width="20"/>
+                        </Grid.ColumnDefinitions>
+                        <DockPanel Grid.Column="0">
+                            <Border CornerRadius="25"  
                                     Width="30" 
                                     Height="30"
                                 Name="userActiveBorder"
                                 BorderBrush="DarkRed"
                                 BorderThickness="2.5">
-                            <Ellipse >
-                                <Ellipse.Fill>
-                                    <ImageBrush ImageSource="{Binding UserProfile.Image, Converter={StaticResource byteToImageConverter}}"
+                                <Ellipse >
+                                    <Ellipse.Fill>
+                                        <ImageBrush ImageSource="{Binding UserProfile.Image, Converter={StaticResource byteToImageConverter}}"
                                                                 Stretch="UniformToFill"/>
-                                </Ellipse.Fill>
-                            </Ellipse>
-                        </Border>
-                        <Image Source="{StaticResource muteDrawingImage}" 
-                               Width="15" 
-                               Height="15"
-                               Margin="5,10,-5,5"
-                               Visibility="Collapsed"
-                               Name="muteImage"/>
-                        <StackPanel>
+                                    </Ellipse.Fill>
+                                </Ellipse>
+                            </Border>
                             <TextBlock Text="{Binding UserProfile.Username}"
                                        Foreground="{Binding UserProfile.UsernameColor}"
-                                       Margin="10,-5,10,0"
+                                       Margin="10,0,10,0"
                                        FontSize="22"
-                                       Name="userTextBlock"/>
-                            <!--<TextBlock Text="{Binding UserProfile.StatusMessage}"
-                                   Margin="10,-5,10,0"
-                                       FontStyle="Italic"
-                                       Foreground="#5F5C5A"
-                                       FontSize="16"
-                                       FontWeight="SemiBold"/>-->
-                        </StackPanel>
-                    </StackPanel>
+                                       Name="userTextBlock"
+                                       TextTrimming="CharacterEllipsis"
+                                       Grid.Column="0"/>
+                        </DockPanel>
+                        <Image Source="{StaticResource checkedDrawingImage}"
+                               Grid.Column="1"/>
+                    </Grid>
                     <DataTemplate.Triggers>
-                        <DataTrigger Binding="{Binding UserStatus.MuteStatus.IsMuted}" Value="True">
-                            <Setter Property="Visibility" TargetName="muteImage" Value="Visible"/>
-                        </DataTrigger>
                         <DataTrigger Binding="{Binding UserProfile.IsOnline}" Value="True">
                             <Setter Property="BorderBrush" TargetName="userActiveBorder" Value="Green"/>
                         </DataTrigger>
@@ -296,6 +290,13 @@
                         </Border>
                         <StackPanel Width="400">
                             <StackPanel Orientation="Horizontal">
+                                <i:Interaction.Triggers>
+                                <i:EventTrigger EventName="Loaded">
+                                        <i:InvokeCommandAction Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type UserControl}}
+                                            , Path=DataContext.ElementLoadedCommand}"
+                                                               CommandParameter="{Binding }"/>
+                                </i:EventTrigger>
+                                </i:Interaction.Triggers>
                                 <TextBlock Text="{Binding Path=UserModel.UserProfile.Username}"
                                        Foreground="{Binding Path=UserModel.UserProfile.UsernameColor}"
                                        Margin="10,0,5,0"
@@ -305,6 +306,12 @@
                                            Margin="0,6,0,0"
                                            Foreground="#848484"
                                            FontWeight="SemiBold"/>
+                                <Image Source="{Binding CheckStatus
+                                    , Converter={StaticResource messageStatusToImageConverter}
+                                    , Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                       Width="15"
+                                       Height="15"
+                                       Margin="5,0,0,0"/>
                             </StackPanel>
                             <TextBlock Text="{Binding Message}"
                                        x:Name="message"

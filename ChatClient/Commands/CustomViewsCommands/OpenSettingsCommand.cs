@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace ChatClient.Commands.CustomViewsCommands
 {
@@ -26,6 +27,18 @@ namespace ChatClient.Commands.CustomViewsCommands
                 if (bool.TryParse(temporarySettingsState, out bool userSettingsState))
                 {
                     _viewModel.IsSettingsOpened = userSettingsState;
+
+
+                    Window window = Application.Current.MainWindow;
+
+                    if (userSettingsState)
+                    {  
+                        window.MinHeight = 450;
+                    }
+                    else
+                    {
+                        window.MinHeight = 350;
+                    }
                 }
             }
 

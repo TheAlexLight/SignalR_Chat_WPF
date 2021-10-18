@@ -23,6 +23,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Input;
+using System.Windows.Media;
 
 namespace ChatClient.ViewModels
 {
@@ -80,7 +81,9 @@ namespace ChatClient.ViewModels
         public ICommand OpenUserInfoWIndowCommand { get; private set; }
         public ICommand OpenSettingsCommand { get; private set; }
         public ICommand ChangePhotoCommand { get; private set; }
-        
+        public ICommand ElementLoadedCommand { get; private set; }
+
+
 
         public static readonly DependencyProperty TimeDurationProperty = DependencyProperty.RegisterAttached("DurationTime"
                 , typeof(string), typeof(ChatViewModel), new PropertyMetadata(null));
@@ -108,6 +111,7 @@ namespace ChatClient.ViewModels
             OpenUserInfoWIndowCommand = new OpenUserInfoWIndowCommand(this);
             OpenSettingsCommand = new OpenSettingsCommand(this);
             ChangePhotoCommand = new ChangePhotoCommand(this);
+            ElementLoadedCommand = new ElementLoadedCommand(this);
             //Messages = new();
             MuteStatus = new();
             UsersFilter = string.Empty;

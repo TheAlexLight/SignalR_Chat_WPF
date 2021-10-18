@@ -15,9 +15,10 @@
     </UserControl.Resources>
     <Grid Background="White">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition MinWidth="1" Width="{Binding UsersColumnWidth, Mode=TwoWay}"/>
+            <ColumnDefinition MinWidth="200" Width="{Binding UsersColumnWidth, Mode=TwoWay}"/>
             <ColumnDefinition Width="{Binding MessagesColumnWidth, Mode=TwoWay}"
-                              Style="{StaticResource privateMessagesColumn}"/>
+                              Style="{StaticResource privateMessagesColumn}"
+                              MinWidth="300"/>
         </Grid.ColumnDefinitions>
 
         <GridSplitter Grid.Column="0"
@@ -95,11 +96,12 @@
                             
                             <TextBlock Text="{Binding CurrentUser.UserProfile.Username}"
                                        Foreground="Black"
-                                       Margin="5,-5,0,0"
+                                       Margin="5,0,0,0"
                                        FontSize="22"
                                        Name="userTextBlock"
                                        VerticalAlignment="Center"
-                                       Grid.Column="1"/>
+                                       Grid.Column="1"
+                                       TextTrimming="CharacterEllipsis"/>
                             <Button Style="{StaticResource settingsButton}"
                                     Command="{Binding OpenSettingsCommand}"
                                     Grid.Column="2">

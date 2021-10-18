@@ -35,6 +35,7 @@ namespace ChatClient.Commands
                     UserModelId = _viewModel.CurrentUser.Id,
                     ChatGroupModel = _viewModel.CurrentChatGroup,
                     ChatGroupModelId = _viewModel.CurrentChatGroup.Id,
+                    CheckStatus = MessageStatus.Received
                 };
 
                 if (_viewModel.CurrentChatGroup.Name == ChatType.Private)
