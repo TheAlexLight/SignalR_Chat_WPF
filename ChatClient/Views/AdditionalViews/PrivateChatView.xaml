@@ -18,7 +18,7 @@
             <ColumnDefinition MinWidth="200" Width="{Binding UsersColumnWidth, Mode=TwoWay}"/>
             <ColumnDefinition Width="{Binding MessagesColumnWidth, Mode=TwoWay}"
                               Style="{StaticResource privateMessagesColumn}"
-                              MinWidth="300"/>
+                              MinWidth="260"/>
         </Grid.ColumnDefinitions>
 
         <GridSplitter Grid.Column="0"

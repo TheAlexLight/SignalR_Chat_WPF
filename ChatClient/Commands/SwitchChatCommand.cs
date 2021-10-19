@@ -36,7 +36,7 @@ namespace ChatClient.Commands
                 else
                 {
                     _viewModel.UsersColumnWidth = new GridLength(1, GridUnitType.Star);
-                    _viewModel.MessagesColumnWidth = new GridLength(0.7, GridUnitType.Star);
+                    _viewModel.MessagesColumnWidth = new GridLength(0.75, GridUnitType.Star);
                     _viewModel.SelectedUserIndex = 0;
                 }
 

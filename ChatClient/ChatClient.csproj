@@ -24,6 +24,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\ChatServer\ChatServer.csproj" />
     <ProjectReference Include="..\SharedItems\SharedItems.csproj" />
   </ItemGroup>
 
