@@ -38,15 +38,17 @@ namespace ChatClient.Extensions
             //throw new NotImplementedException();
         }
 
-        private static void MessagesChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        private async static void MessagesChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             if (d is ScrollViewerExtension scroll && !scroll._messagesHandled)
             {
                 if (scroll.MessageCollection != null && scroll.MessageCollection.Count != 0)
                 {
-                    int visibleCount = (int)(scroll.ActualHeight / scroll.MessageHeight);
-                    int scipMessagesCount = scroll.MessageCollection.Where(m => m.CheckStatus == MessageStatus.Read).Count();
-                    scroll.ScrollToVerticalOffset(scipMessagesCount);
+                    await Task.Delay(300);
+                    double messagesHeightCount = scroll.MessageCollection.Where(m => m.CheckStatus == MessageStatus.Read).Select(m=>m.MessageHeight).Sum();
+                    int visibleCount = (int)Math.Ceiling((messagesHeightCount * scroll.ViewportHeight / scroll.ActualHeight) - scroll.ViewportHeight);
+                    //int scipMessagesCount = scroll.MessageCollection.Where(m => m.CheckStatus == MessageStatus.Read).Count();
+                    scroll.ScrollToVerticalOffset(visibleCount);
                     scroll._messagesHandled = true;
                 }
             }

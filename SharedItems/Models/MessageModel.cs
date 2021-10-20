@@ -20,6 +20,7 @@ namespace SharedItems.Models
         }
 
         private MessageStatus _checkStatus;
+        private double _messageHeight;
 
         public int Id { get; set; }
         public int UserModelId { get; set; }
@@ -36,6 +37,20 @@ namespace SharedItems.Models
                 OnPropertyChanged();
             }
         }
+
+        public double MessageHeight
+        {
+            get => _messageHeight;
+            set
+            {
+                if(value != 0)
+                {
+                    _messageHeight = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
         public int Count { get; set; }
         public string Message { get; set; }
         [JsonIgnore]

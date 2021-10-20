@@ -19,9 +19,10 @@ namespace ChatClient.Commands
         public override void Execute(object parameter)
         {
             object[] values = parameter as object[];
-
             if (values[0] is MessageModel message)
             {
+                message.MessageHeight = ((StackPanel)values[1]).ActualHeight;
+
                 if (IsUserVisible((FrameworkElement)values[1], (FrameworkElement)values[2])
                     && message.CheckStatus == MessageStatus.Received)
                 {
@@ -39,9 +40,10 @@ namespace ChatClient.Commands
 
             Rect bounds = element.TransformToAncestor(container).TransformBounds(new Rect(0.0, 0.0, element.ActualWidth, element.ActualHeight));
             Rect rect = new Rect(0.0, 0.0, container.ActualWidth, container.ActualHeight);
-            return rect.Contains(bounds.TopLeft) || rect.Contains(bounds.BottomRight);
+            //return rect.Contains(bounds.TopLeft) || rect.Contains(bounds.BottomRight);
             //return rect.IntersectsWith(bounds);
-            //return rect.Contains(bounds);
+            return rect.Contains(bounds);
+            //return rect.Contains(bounds.BottomRight) && rect.Contains(bounds.TopLeft);
         }
     }
 }

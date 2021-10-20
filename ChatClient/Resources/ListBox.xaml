@@ -16,6 +16,7 @@
     <converters:MultiValueEqualityConverter x:Key="equalityConverter"/>
     <converters:ByteToImageConverter x:Key="byteToImageConverter"/>
     <converters:MessageStatusToImageConverter x:Key="messageStatusToImageConverter"/>
+    <converters:Class1 x:Key="classConverter"/>
 
     <LinearGradientBrush x:Key="mainMessageBoxColors" StartPoint="0.5,0" EndPoint="0.5,1">
         <GradientStop Color="#E6E7FF" Offset="0"/>
@@ -280,7 +281,7 @@
                 <ControlTemplate>
                     <extensions:ScrollViewerExtension MessageCollection="{Binding RelativeSource={RelativeSource AncestorType={x:Type ListBox}}
                             ,Path=ItemsSource}"
-                                                      MessageHeight="45"
+                                                      MessageHeight="0"
                                                       AlwaysScrollToEnd="{Binding  Source=True, AsyncState=True}"
                                                       Background="{StaticResource mainMessageBoxColors}">
                         <ItemsPresenter/>
@@ -291,7 +292,8 @@
         <Setter Property="ItemTemplate">
             <Setter.Value>
                 <DataTemplate>
-                    <StackPanel Orientation="Horizontal" Name="stackPanel">
+                    <StackPanel Orientation="Horizontal" 
+                                Name="stackPanel">
                         <i:Interaction.Triggers>
                             <i:EventTrigger EventName="LayoutUpdated">
                                 <i:InvokeCommandAction Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type UserControl}}
@@ -301,6 +303,16 @@
                                             <Binding Path="."/>
                                             <Binding ElementName="stackPanel"/>
                                             <Binding RelativeSource="{RelativeSource AncestorType={x:Type ListBox}}"/>
+                                        </MultiBinding>
+                                    </i:InvokeCommandAction.CommandParameter>
+                                </i:InvokeCommandAction>
+                            </i:EventTrigger>
+                            <i:EventTrigger EventName="SizeChanged">
+                                <i:InvokeCommandAction Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type UserControl}}
+                                            , Path=DataContext.ElementLoadedCommand}">
+                                    <i:InvokeCommandAction.CommandParameter>
+                                        <MultiBinding Converter="{StaticResource multiBindingConverter}">
+                                            <Binding ElementName="stackPanel"/>
                                         </MultiBinding>
                                     </i:InvokeCommandAction.CommandParameter>
                                 </i:InvokeCommandAction>
@@ -327,7 +339,7 @@
                                 </Style>
                             </Border.Style>
                         </Border>
-                        <StackPanel Width="400">
+                        <StackPanel>
                             <StackPanel Orientation="Horizontal">
                                 <TextBlock Text="{Binding Path=UserModel.UserProfile.Username}"
                                        Foreground="{Binding Path=UserModel.UserProfile.UsernameColor}"
