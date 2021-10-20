@@ -1,6 +1,7 @@
 ﻿using ChatClient.ViewModels;
 using SharedItems.Enums;
 using SharedItems.Models;
+using SharedItems.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,24 +16,32 @@ namespace ChatClient.Commands
 {
     public class ElementLoadedCommand : CommandBase
     {
-        private readonly ChatViewModel _viewModel;
-
-        public ElementLoadedCommand(ChatViewModel viewModel)
-        {
-            _viewModel = viewModel;
-        }
-
         public override void Execute(object parameter)
         {
-            if (parameter is MessageModel message)
+            object[] values = parameter as object[];
+
+            if (values[0] is MessageModel message)
             {
-                if (message.CheckStatus == MessageStatus.Received)
+                if (IsUserVisible((FrameworkElement)values[1], (FrameworkElement)values[2])
+                    && message.CheckStatus == MessageStatus.Received)
                 {
                     message.CheckStatus = MessageStatus.Read;
-                    //var a = _viewModel.CurrentChatGroup.Messages.ToList()[0].CheckStatus;
-                    //a = MessageStatus.Read;
                 }
             }
+        }
+
+        private bool IsUserVisible(FrameworkElement element, FrameworkElement container)
+        {
+            if (!element.IsVisible)
+            {
+                return false;
+            }
+
+            Rect bounds = element.TransformToAncestor(container).TransformBounds(new Rect(0.0, 0.0, element.ActualWidth, element.ActualHeight));
+            Rect rect = new Rect(0.0, 0.0, container.ActualWidth, container.ActualHeight);
+            return rect.Contains(bounds.TopLeft) || rect.Contains(bounds.BottomRight);
+            //return rect.IntersectsWith(bounds);
+            //return rect.Contains(bounds);
         }
     }
 }

@@ -48,6 +48,11 @@ namespace ChatServer
             {
                 options.MaximumReceiveMessageSize = null;
             });
+                //.AddJsonProtocol(options =>
+                //{
+                //    options.PayloadSerializerOptions.MaxDepth = 64;
+                //    //options.PayloadSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve;
+                //});
             //    .AddMessagePackProtocol(options=> 
             //{
             //    options.SerializerOptions = MessagePackSerializerOptions.Standard

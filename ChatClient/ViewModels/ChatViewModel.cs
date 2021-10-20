@@ -111,7 +111,7 @@ namespace ChatClient.ViewModels
             OpenUserInfoWIndowCommand = new OpenUserInfoWIndowCommand(this);
             OpenSettingsCommand = new OpenSettingsCommand(this);
             ChangePhotoCommand = new ChangePhotoCommand(this);
-            ElementLoadedCommand = new ElementLoadedCommand(this);
+            ElementLoadedCommand = new ElementLoadedCommand();
             //Messages = new();
             MuteStatus = new();
             UsersFilter = string.Empty;

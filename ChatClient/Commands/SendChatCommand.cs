@@ -3,6 +3,7 @@ using ChatClient.Services;
 using ChatClient.ViewModels;
 using SharedItems.Enums;
 using SharedItems.Models;
+using SharedItems.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,7 +28,7 @@ namespace ChatClient.Commands
         {
             try
             {
-                MessageModel model = new MessageModel()
+                MessageViewModel model = new MessageViewModel()
                 {
                     Message = _viewModel.Message,
                     Time = DateTime.Now,

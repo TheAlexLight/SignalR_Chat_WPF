@@ -62,7 +62,7 @@
                            Text="Chat"/>
             </Border>
 
-            <ListBox Grid.Row="1"
+            <ListBox Grid.Row="1" Grid.Column="0"
                 Style="{StaticResource messagesListBox}"/>
 
             <Grid Grid.Row="2"

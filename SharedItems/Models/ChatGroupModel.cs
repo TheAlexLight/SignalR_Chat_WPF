@@ -1,4 +1,5 @@
 ﻿using SharedItems.Enums;
+using SharedItems.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;

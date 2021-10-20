@@ -14,6 +14,7 @@ using SharedItems.Models.AuthenticationModels;
 using SharedItems.Models.StatusModels;
 using SharedItems.Enums;
 using Newtonsoft.Json;
+using SharedItems.ViewModels;
 
 namespace ChatServer.Hubs
 {

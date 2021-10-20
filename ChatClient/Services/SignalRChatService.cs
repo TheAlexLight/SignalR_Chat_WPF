@@ -8,6 +8,7 @@ using SharedItems.Enums;
 using SharedItems.Models;
 using SharedItems.Models.AuthenticationModels;
 using SharedItems.Models.StatusModels;
+using SharedItems.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -64,7 +65,7 @@ namespace ChatClient.Services
             await Connection.SendAsync("SendReconnection", username);
         }
 
-        public async Task SendMessage(MessageModel message, ChatGroupModel currentGroup, UserModel selectedUser, UserModel currentUser)
+        public async Task SendMessage(MessageViewModel message, ChatGroupModel currentGroup, UserModel selectedUser, UserModel currentUser)
         {
             string messageJsonString = JsonConvert.SerializeObject(message);
             await Connection.SendAsync("SendMessage", messageJsonString, currentGroup, selectedUser, currentUser);

@@ -279,7 +279,8 @@
             <Setter.Value>
                 <ControlTemplate>
                     <extensions:ScrollViewerExtension MessageCollection="{Binding RelativeSource={RelativeSource AncestorType={x:Type ListBox}}
-                            ,Path=ItemsSource, Mode=TwoWay, IsAsync=True}"
+                            ,Path=ItemsSource}"
+                                                      MessageHeight="45"
                                                       AlwaysScrollToEnd="{Binding  Source=True, AsyncState=True}"
                                                       Background="{StaticResource mainMessageBoxColors}">
                         <ItemsPresenter/>
@@ -290,7 +291,21 @@
         <Setter Property="ItemTemplate">
             <Setter.Value>
                 <DataTemplate>
-                    <StackPanel Orientation="Horizontal">
+                    <StackPanel Orientation="Horizontal" Name="stackPanel">
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="LayoutUpdated">
+                                <i:InvokeCommandAction Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type UserControl}}
+                                            , Path=DataContext.ElementLoadedCommand}">
+                                    <i:InvokeCommandAction.CommandParameter>
+                                        <MultiBinding Converter="{StaticResource multiBindingConverter}">
+                                            <Binding Path="."/>
+                                            <Binding ElementName="stackPanel"/>
+                                            <Binding RelativeSource="{RelativeSource AncestorType={x:Type ListBox}}"/>
+                                        </MultiBinding>
+                                    </i:InvokeCommandAction.CommandParameter>
+                                </i:InvokeCommandAction>
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
                         <Border CornerRadius="25" 
                                 BorderThickness="2.5"
                                     Width="30" 
@@ -314,13 +329,6 @@
                         </Border>
                         <StackPanel Width="400">
                             <StackPanel Orientation="Horizontal">
-                                <i:Interaction.Triggers>
-                                <i:EventTrigger EventName="Loaded">
-                                        <i:InvokeCommandAction Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type UserControl}}
-                                            , Path=DataContext.ElementLoadedCommand}"
-                                                               CommandParameter="{Binding }"/>
-                                </i:EventTrigger>
-                                </i:Interaction.Triggers>
                                 <TextBlock Text="{Binding Path=UserModel.UserProfile.Username}"
                                        Foreground="{Binding Path=UserModel.UserProfile.UsernameColor}"
                                        Margin="10,0,5,0"
@@ -331,8 +339,7 @@
                                            Foreground="#848484"
                                            FontWeight="SemiBold"/>
                                 <Image Source="{Binding CheckStatus
-                                    , Converter={StaticResource messageStatusToImageConverter}
-                                    , Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                    , Converter={StaticResource messageStatusToImageConverter}}"
                                        Width="15"
                                        Height="15"
                                        Margin="5,0,0,0"/>
