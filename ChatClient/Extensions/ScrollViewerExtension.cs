@@ -72,10 +72,8 @@ namespace ChatClient.Extensions
             {
                 _scrollOffset = e.VerticalOffset;
             }
-            else
-            {
-                _scrollViewerExtension.ScrollToVerticalOffset(_scrollOffset);
-            }
+
+            _scrollViewerExtension.ScrollToVerticalOffset(_scrollOffset);
 
             base.OnScrollChanged(e);
         }

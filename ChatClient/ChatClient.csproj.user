@@ -57,6 +57,9 @@
     <Page Update="Resources\PasswordBox.xaml">
       <SubType>Designer</SubType>
     </Page>
+    <Page Update="Resources\ScrollBar.xaml">
+      <SubType>Designer</SubType>
+    </Page>
     <Page Update="Resources\ToolBar.xaml">
       <SubType>Designer</SubType>
     </Page>

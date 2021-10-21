@@ -233,6 +233,7 @@ namespace ChatServer.Hubs
         {
             ChatGroupModel group;
             MessageModel messageModel = JsonConvert.DeserializeObject<MessageModel>(message);
+            messageModel.UserModel = currentUser;
 
             if (currentGroup.Name == ChatType.Public)
             {

@@ -16,7 +16,7 @@ namespace ChatClient.Converters
 
             if (value is double margin)
             {
-                margin -= 60;
+                margin -= 80;
 
                 result = margin;
             }
