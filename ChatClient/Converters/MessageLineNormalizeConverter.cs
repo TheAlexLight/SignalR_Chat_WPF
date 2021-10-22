@@ -14,11 +14,11 @@ namespace ChatClient.Converters
         {
             double result = 0;
 
-            if (value is double margin)
+            if (value is double overflowWidth)
             {
-                margin -= 80;
+                overflowWidth -= 62;
 
-                result = margin;
+                result = overflowWidth;
             }
 
             return result;

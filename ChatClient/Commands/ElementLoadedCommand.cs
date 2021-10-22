@@ -21,7 +21,7 @@ namespace ChatClient.Commands
             object[] values = parameter as object[];
             if (values[0] is MessageModel message)
             {
-                message.MessageHeight = ((StackPanel)values[1]).ActualHeight;
+                message.MessageHeight = ((FrameworkElement)values[1]).ActualHeight;
 
                 if (IsUserVisible((FrameworkElement)values[1], (FrameworkElement)values[2])
                     && message.CheckStatus == MessageStatus.Received)

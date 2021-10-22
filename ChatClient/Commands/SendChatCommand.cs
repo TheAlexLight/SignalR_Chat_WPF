@@ -30,7 +30,7 @@ namespace ChatClient.Commands
             {
                 MessageViewModel model = new MessageViewModel()
                 {
-                    Message = _viewModel.Message,
+                    Message = _viewModel.Message.Trim(),
                     Time = DateTime.Now,
                     UserModel = _viewModel.CurrentUser,
                     UserModelId = _viewModel.CurrentUser.Id,

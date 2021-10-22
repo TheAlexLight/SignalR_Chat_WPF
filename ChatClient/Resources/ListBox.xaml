@@ -287,7 +287,9 @@
                                                       Background="{StaticResource mainMessageBoxColors}"
                                                       HorizontalScrollBarVisibility="Disabled"
                                                       Template="{StaticResource scrollViewerControlTemplate}">
-                        <ItemsPresenter/>
+                        <Border>
+                            <ItemsPresenter/>
+                        </Border>
                     </extensions:ScrollViewerExtension>
                 </ControlTemplate>
             </Setter.Value>
@@ -295,8 +297,7 @@
         <Setter Property="ItemTemplate">
             <Setter.Value>
                 <DataTemplate>
-                    <StackPanel Orientation="Horizontal" 
-                                Name="stackPanel">
+                    <DockPanel Name="stackPanel">
                         <i:Interaction.Triggers>
                             <i:EventTrigger EventName="LayoutUpdated">
                                 <i:InvokeCommandAction Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type UserControl}}
@@ -332,8 +333,9 @@
                                 </Style>
                             </Border.Style>
                         </Border>
-                        <StackPanel>
-                            <StackPanel Orientation="Horizontal">
+                        <DockPanel>
+                            <StackPanel Orientation="Horizontal"
+                                        DockPanel.Dock="Top">
                                 <TextBlock Text="{Binding Path=UserModel.UserProfile.Username}"
                                        Foreground="{Binding Path=UserModel.UserProfile.UsernameColor}"
                                        Margin="10,0,5,0"
@@ -351,16 +353,13 @@
                             </StackPanel>
                             <TextBlock Text="{Binding Message}"
                                        x:Name="message"
-                                   Margin="10,-5,0,0"
+                                       Margin="10,-5,0,0"
                                        Foreground="Black"
                                        FontSize="20"
-                                       MaxWidth="{Binding RelativeSource={RelativeSource AncestorType={x:Type ScrollViewer}}, Path=ActualWidth
-                                                , Converter={StaticResource normalizedMessage}}"
                                        TextWrapping="Wrap"
-                                       HorizontalAlignment="Left"
-                                       VerticalAlignment="Top"/>
-                        </StackPanel>
-                    </StackPanel>
+                                       HorizontalAlignment="Left"/>
+                        </DockPanel>
+                    </DockPanel>
                 </DataTemplate>
             </Setter.Value>
         </Setter>
