@@ -14,7 +14,6 @@
         <ResourceDictionary Source="ScrollBar.xaml"/>
     </ResourceDictionary.MergedDictionaries>
 
-    <converters:MessageLineNormalizeConverter x:Key="normalizedMessage"/>
     <converters:MultiValueEqualityConverter x:Key="equalityConverter"/>
     <converters:ByteToImageConverter x:Key="byteToImageConverter"/>
     <converters:MessageStatusToImageConverter x:Key="messageStatusToImageConverter"/>
@@ -38,10 +37,9 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate>
-                    <extensions:ScrollViewerExtension AlwaysScrollToEnd="True"
-                                                      Background="{StaticResource mainMessageBoxColors}">
+                    <ScrollViewer Background="{StaticResource mainMessageBoxColors}">
                         <ItemsPresenter/>
-                    </extensions:ScrollViewerExtension>
+                    </ScrollViewer>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
@@ -211,10 +209,9 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate>
-                    <extensions:ScrollViewerExtension AlwaysScrollToEnd="True"
-                                                      Background="{StaticResource mainMessageBoxColors}">
+                    <ScrollViewer Background="{StaticResource mainMessageBoxColors}">
                         <ItemsPresenter/>
-                    </extensions:ScrollViewerExtension>
+                    </ScrollViewer>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
@@ -286,7 +283,8 @@
                                                       AlwaysScrollToEnd="{Binding  Source=True, AsyncState=True}"
                                                       Background="{StaticResource mainMessageBoxColors}"
                                                       HorizontalScrollBarVisibility="Disabled"
-                                                      Template="{StaticResource scrollViewerControlTemplate}">
+                                                      Template="{StaticResource scrollViewerControlTemplate}"
+                                                      x:Name="scroll">
                         <Border>
                             <ItemsPresenter/>
                         </Border>
@@ -297,16 +295,31 @@
         <Setter Property="ItemTemplate">
             <Setter.Value>
                 <DataTemplate>
-                    <DockPanel Name="stackPanel">
+                    <DockPanel Name="dockPanel">
                         <i:Interaction.Triggers>
-                            <i:EventTrigger EventName="LayoutUpdated">
+                            <i:EventTrigger  EventName="ScrollChanged"
+                                             SourceObject="{Binding RelativeSource={RelativeSource AncestorType={x:Type extensions:ScrollViewerExtension}}}"
+                                             SourceName="scroll">
                                 <i:InvokeCommandAction Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type UserControl}}
-                                            , Path=DataContext.ElementLoadedCommand}">
+                                            , Path=DataContext.MessageReadCommand}">
                                     <i:InvokeCommandAction.CommandParameter>
                                         <MultiBinding Converter="{StaticResource multiBindingConverter}">
                                             <Binding Path="."/>
-                                            <Binding ElementName="stackPanel"/>
+                                            <Binding ElementName="dockPanel"/>
                                             <Binding RelativeSource="{RelativeSource AncestorType={x:Type ListBox}}"/>
+                                            <Binding Source="2"/>
+                                        </MultiBinding>
+                                    </i:InvokeCommandAction.CommandParameter>
+                                </i:InvokeCommandAction>
+                            </i:EventTrigger>
+                            <i:EventTrigger  EventName="Loaded">
+                                <i:InvokeCommandAction Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type UserControl}}
+                                            , Path=DataContext.MessageLoadedCommand}">
+                                    <i:InvokeCommandAction.CommandParameter>
+                                        <MultiBinding Converter="{StaticResource multiBindingConverter}">
+                                            <Binding Path="."/>
+                                            <Binding ElementName="dockPanel"/>
+                                            <Binding Source="2"/>
                                         </MultiBinding>
                                     </i:InvokeCommandAction.CommandParameter>
                                 </i:InvokeCommandAction>
@@ -342,7 +355,7 @@
                                        FontSize="18"/>
                                 <TextBlock Text="{Binding Path=Time}"
                                            FontSize="11"
-                                           Margin="0,6,0,0"
+                                           Margin="0,5,0,0"
                                            Foreground="#848484"
                                            FontWeight="SemiBold"/>
                                 <Image Source="{Binding CheckStatus
@@ -364,4 +377,6 @@
             </Setter.Value>
         </Setter>
     </Style>
+
+
 </ResourceDictionary>

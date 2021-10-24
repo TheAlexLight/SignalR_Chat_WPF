@@ -81,7 +81,8 @@ namespace ChatClient.ViewModels
         public ICommand OpenUserInfoWIndowCommand { get; private set; }
         public ICommand OpenSettingsCommand { get; private set; }
         public ICommand ChangePhotoCommand { get; private set; }
-        public ICommand ElementLoadedCommand { get; private set; }
+        public ICommand MessageReadCommand { get; private set; }
+        public ICommand MessageLoadedCommand { get; private set; }
 
 
 
@@ -111,7 +112,8 @@ namespace ChatClient.ViewModels
             OpenUserInfoWIndowCommand = new OpenUserInfoWIndowCommand(this);
             OpenSettingsCommand = new OpenSettingsCommand(this);
             ChangePhotoCommand = new ChangePhotoCommand(this);
-            ElementLoadedCommand = new ElementLoadedCommand();
+            MessageReadCommand = new MessageReadCommand();
+            MessageLoadedCommand = new MessageLoadedCommand();
             //Messages = new();
             MuteStatus = new();
             UsersFilter = string.Empty;
