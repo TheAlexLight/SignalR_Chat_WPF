@@ -1,0 +1,274 @@
+﻿<UserControl x:Class="ChatClient.Views.AdditionalViews.ChangeUserSettingsView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:ChatClient.Views.AdditionalViews"
+             xmlns:sharedItems="clr-namespace:SharedItems.Enums;assembly=SharedItems"
+             xmlns:additionalViews="clr-namespace:ChatClient.Views.AdditionalViews" 
+             xmlns:viewmodels="clr-namespace:ChatClient.ViewModels" 
+             xmlns:validators="clr-namespace:ChatClient.Validators"
+             d:DataContext="{d:DesignInstance Type=viewmodels:ChatViewModel}"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <Grid Name="mainGrid"
+          MouseDown="Grid_MouseDown">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition Width="300"/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <Grid.Background>
+            <SolidColorBrush Color="Black" Opacity="0.8"/>
+        </Grid.Background>
+        <Border CornerRadius="10"
+                BorderThickness="2" 
+                Padding="2" 
+                BorderBrush="Gray"
+                Grid.Column="1"
+                Height="{Binding ElementName=usernameMainGrid, Path=ActualHeight}">
+            <Border.Style>
+                <Style TargetType="{x:Type Border}">
+                    <Setter Property="Visibility" Value="Collapsed"/>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding UserSettingsType}"
+                                     Value="Username">
+                            <Setter Property="Visibility" Value="Visible"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Border.Style>
+            <Grid VerticalAlignment="Center"
+                   Grid.Column="1"
+                  Name="usernameMainGrid"
+               MouseDown="Grid_MouseDown"
+              Background="#C9C8C8">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="40"/>
+                    <RowDefinition Height="80"/>
+                    <RowDefinition Height="80"/>
+                    <RowDefinition Height="55"/>
+                </Grid.RowDefinitions>
+                <TextBlock Text="Change Username"
+                           FontWeight="DemiBold"
+                           Style="{StaticResource title}"
+                           Grid.Row="0"/>
+                <StackPanel Orientation="Vertical"
+                            Grid.Row="1">
+                    <TextBlock Text="New Username"
+                               Style="{StaticResource changeUserSettingsTextBlock}"/>
+                    <TextBox  Style="{StaticResource changeSettingsField}">
+                        <TextBox.Text>
+                            <Binding Path="UsernameSettingsField" 
+                                     UpdateSourceTrigger="PropertyChanged">
+                                <Binding.ValidationRules>
+                                    <validators:UsernameValidator/>
+                                </Binding.ValidationRules>
+                            </Binding>
+                        </TextBox.Text>
+                    </TextBox>
+                </StackPanel>
+                <StackPanel Orientation="Vertical"
+                            Grid.Row="2">
+                    <TextBlock Text="Current password"
+                               Style="{StaticResource changeUserSettingsTextBlock}"/>
+                    <Border Style="{StaticResource changeUserSettingsField}" BorderBrush="Black">
+                            <additionalViews:BindablePasswordBox
+                            Style="{StaticResource passwordField}"
+                            ClearPassword="{Binding NeedToClearPassword}"/>
+                    </Border>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal"
+                            Grid.Row="3"
+                            HorizontalAlignment="Center">
+                    <Button Content="Cancel" 
+                            Style="{StaticResource changeUserSettingsButton}"
+                            Command="{Binding ChangeUserSettingsCommand}">
+                        <Button.CommandParameter>
+                            <MultiBinding Converter="{StaticResource multiBindingConverter}">
+                                <Binding Source="{x:Static sharedItems:ChangeSettingsType.None}"/>
+                            </MultiBinding>
+                        </Button.CommandParameter>
+                    </Button>
+                    <Button Content="Submit"
+                            Style="{StaticResource changeUserSettingsButton}"/>
+                </StackPanel>
+            </Grid>
+        </Border>
+        <Border CornerRadius="10"
+                BorderThickness="2" 
+                Padding="2" 
+                BorderBrush="Gray"
+                Grid.Column="1"
+                Height="{Binding ElementName=emailMainGrid, Path=ActualHeight}">
+            <Border.Style>
+                <Style TargetType="{x:Type Border}">
+                    <Setter Property="Visibility" Value="Collapsed"/>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding UserSettingsType}"
+                                     Value="Email">
+                            <Setter Property="Visibility" Value="Visible"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Border.Style>
+            <Grid VerticalAlignment="Center"
+                   Grid.Column="1"
+                  Name="emailMainGrid"
+               MouseDown="Grid_MouseDown"
+              Background="#C9C8C8">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="40"/>
+                    <RowDefinition Height="80"/>
+                    <RowDefinition Height="80"/>
+                    <RowDefinition Height="55"/>
+                </Grid.RowDefinitions>
+                <TextBlock Text="Change Email"
+                           FontWeight="DemiBold"
+                           Style="{StaticResource title}"
+                           Grid.Row="0"/>
+                <StackPanel Orientation="Vertical"
+                            Grid.Row="1">
+                    <TextBlock Text="New Email"
+                               Style="{StaticResource changeUserSettingsTextBlock}"/>
+                    <TextBox  Style="{StaticResource changeSettingsField}">
+                        <TextBox.Text>
+                            <Binding Path="EmailSettingsField" 
+                                     UpdateSourceTrigger="PropertyChanged">
+                                <Binding.ValidationRules>
+                                    <validators:EmailValidator/>
+                                </Binding.ValidationRules>
+                            </Binding>
+                        </TextBox.Text>
+                    </TextBox>
+                </StackPanel>
+                <StackPanel Orientation="Vertical"
+                            Grid.Row="2">
+                    <TextBlock Text="Current password"
+                               FontSize="20"
+                               Style="{StaticResource changeUserSettingsTextBlock}"/>
+                    <Border Style="{StaticResource changeUserSettingsField}" BorderBrush="Black">
+                        <additionalViews:BindablePasswordBox
+                            Style="{StaticResource passwordField}"
+                            ClearPassword="{Binding NeedToClearPassword}">
+                        </additionalViews:BindablePasswordBox>
+                    </Border>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal"
+                            Grid.Row="3"
+                            HorizontalAlignment="Center">
+                    <Button Content="Cancel" 
+                            Style="{StaticResource changeUserSettingsButton}"
+                            Command="{Binding ChangeUserSettingsCommand}">
+                        <Button.CommandParameter>
+                            <MultiBinding Converter="{StaticResource multiBindingConverter}">
+                                <Binding Source="{x:Static sharedItems:ChangeSettingsType.None}"/>
+                            </MultiBinding>
+                        </Button.CommandParameter>
+                    </Button>
+                    <Button Content="Submit"
+                            Style="{StaticResource changeUserSettingsButton}"/>
+                </StackPanel>
+            </Grid>
+        </Border>
+        <Border CornerRadius="10"
+                BorderThickness="2" 
+                Padding="2" 
+                BorderBrush="Gray"
+                Grid.Column="1"
+                Height="{Binding ElementName=passwordMainGrid, Path=ActualHeight}">
+            <Border.Style>
+                <Style TargetType="{x:Type Border}">
+                    <Setter Property="Visibility" Value="Collapsed"/>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding UserSettingsType}"
+                                     Value="Password">
+                            <Setter Property="Visibility" Value="Visible"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Border.Style>
+            <Grid VerticalAlignment="Center"
+                   Grid.Column="1"
+                  Name="passwordMainGrid"
+               MouseDown="Grid_MouseDown"
+              Background="#C9C8C8">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="40"/>
+                    <RowDefinition Height="80"/>
+                    <RowDefinition Height="80"/>
+                    <RowDefinition Height="80"/>
+                    <RowDefinition Height="55"/>
+                </Grid.RowDefinitions>
+                <TextBlock Text="Change Password"
+                           FontWeight="DemiBold"
+                           Style="{StaticResource title}"
+                           Grid.Row="0"/>
+                <StackPanel Orientation="Vertical"
+                            Grid.Row="1">
+                    <TextBlock Text="Current password"
+                               Style="{StaticResource changeUserSettingsTextBlock}"/>
+                    <Border Style="{StaticResource changeUserSettingsField}" BorderBrush="Black">
+                            <additionalViews:BindablePasswordBox
+                            Style="{StaticResource passwordField}"
+                            ClearPassword="{Binding NeedToClearPassword}"/>
+                    </Border>
+                </StackPanel>
+                <StackPanel Orientation="Vertical"
+                            Grid.Row="2">
+                    <TextBlock Text="New password"
+                               Style="{StaticResource changeUserSettingsTextBlock}"/>
+                    <Border Style="{StaticResource changeUserSettingsField}" BorderBrush="Black">
+                        <additionalViews:BindablePasswordBox
+                            Style="{StaticResource passwordField}"
+                            ClearPassword="{Binding NeedToClearPassword}">
+                            <additionalViews:BindablePasswordBox.Password>
+                                <Binding Path="Password"
+                                         ValidatesOnDataErrors="True">
+                                    <Binding.ValidationRules>
+                                        <validators:PasswordValidator/>
+                                    </Binding.ValidationRules>
+                                </Binding>
+                            </additionalViews:BindablePasswordBox.Password>
+                        </additionalViews:BindablePasswordBox>
+                    </Border>
+                </StackPanel>
+                <StackPanel Orientation="Vertical"
+                            Grid.Row="3">
+                    <TextBlock Text="Confirm password"
+                               Style="{StaticResource changeUserSettingsTextBlock}"/>
+                    <Border Style="{StaticResource changeUserSettingsField}" BorderBrush="Black">
+                        <additionalViews:BindablePasswordBox
+                            Style="{StaticResource passwordField}"
+                            ClearPassword="{Binding NeedToClearPassword}">
+                            <additionalViews:BindablePasswordBox.Password>
+                                <Binding Path="PasswordConfirm"
+                                         ValidatesOnDataErrors="True">
+                                    <Binding.ValidationRules>
+                                        <validators:PasswordValidator/>
+                                    </Binding.ValidationRules>
+                                </Binding>
+                            </additionalViews:BindablePasswordBox.Password>
+                        </additionalViews:BindablePasswordBox>
+                    </Border>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal"
+                            Grid.Row="4"
+                            HorizontalAlignment="Center">
+                    <Button Content="Cancel" 
+                            Style="{StaticResource changeUserSettingsButton}"
+                            Command="{Binding ChangeUserSettingsCommand}">
+                        <Button.CommandParameter>
+                            <MultiBinding Converter="{StaticResource multiBindingConverter}">
+                                <Binding Source="{x:Static sharedItems:ChangeSettingsType.None}"/>
+                            </MultiBinding>
+                        </Button.CommandParameter>
+                    </Button>
+                    <Button Content="Submit"
+                            Style="{StaticResource changeUserSettingsButton}"/>
+                </StackPanel>
+            </Grid>
+        </Border>
+    </Grid>
+    
+</UserControl>

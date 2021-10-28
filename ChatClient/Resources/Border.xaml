@@ -25,6 +25,13 @@
         <Setter Property="CornerRadius" Value="5"/>
     </Style>
 
+    <Style x:Key="changeUserSettingsField" TargetType="{x:Type Border}" BasedOn="{StaticResource field}">
+        <Setter Property="Width" Value="255"/>
+        <Setter Property="Padding" Value="1"/>
+        <Setter Property="BorderThickness" Value="1.5"/>
+        <Setter Property="Margin" Value="0"/>
+    </Style>
+
     <Style x:Key="chatBorder" TargetType="{x:Type Border}">
         <Setter Property="BorderBrush" Value="#C2AD35"/>
         <Setter Property="Background" Value="{StaticResource chatTitleColors}"/>

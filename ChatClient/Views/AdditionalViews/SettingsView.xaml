@@ -4,9 +4,10 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:ChatClient.Views.AdditionalViews"
+             xmlns:sharedItems="clr-namespace:SharedItems.Enums;assembly=SharedItems"
              xmlns:converters="clr-namespace:ChatClient.Converters"
              xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
-             xmlns:viewmodels="clr-namespace:ChatClient.ViewModels" 
+             xmlns:viewmodels="clr-namespace:ChatClient.ViewModels"
              d:DataContext="{d:DesignInstance Type=viewmodels:ChatViewModel}"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
@@ -23,20 +24,22 @@
             <SolidColorBrush Color="Black" Opacity="0.8"/>
         </Grid.Background>
 
-        <Grid VerticalAlignment="Center"
+        <Border CornerRadius="10" 
+                BorderThickness="2" 
+                    Padding="2.5" 
+                BorderBrush="Gray"
+                Grid.Column="1"
+                Height="{Binding ElementName=mainGrid, Path=ActualHeight}">
+            <Grid VerticalAlignment="Center"
                    Grid.Column="1"
-               MouseDown="Grid_MouseDown">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="200"/>
-                <RowDefinition Height="210"/>
-            </Grid.RowDefinitions>
-            <Border CornerRadius="10,10,0,0" 
-                BorderThickness="2,2,2,0" 
-                    Padding="2.5,2.5,2.5,0" 
-                BorderBrush="Gray">
+               MouseDown="Grid_MouseDown"
+                  Name="mainGrid">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="200"/>
+                    <RowDefinition Height="210"/>
+                </Grid.RowDefinitions>
                 <StackPanel Grid.Row="0" 
-                    Background="{StaticResource mainMessageBoxColors}"
-                    IsHitTestVisible="True">
+                    Background="{StaticResource mainMessageBoxColors}">
                     <DockPanel Grid.Row="0" VerticalAlignment="Top">
                         <TextBlock Text="Settings"
                        FontSize="28"
@@ -81,40 +84,70 @@
                        Margin="6"/>
                     </Button>
                 </StackPanel>
-            </Border>
-            <Border CornerRadius="0,0,5,5"
-                    BorderThickness="2,0,2,2"
-                    BorderBrush="Gray"
-                    Grid.Row="1" Padding="2.5,0,2.5,2.5">
-                <Border Background="#AAABB2">
-                    <StackPanel Orientation="Vertical">
-                        <TextBlock Text="Username"
+                <StackPanel Orientation="Vertical"
+                            Grid.Row="1"
+                            Background="#AAABB2">
+                    <TextBlock Text="Username"
                                Style="{StaticResource settingsField}"/>
-                        <DockPanel >
-                            <TextBlock Text="{Binding CurrentUser.UserProfile.Username}"
+                    <DockPanel >
+                        <TextBlock Text="{Binding CurrentUser.UserProfile.Username}"
                                            Style="{StaticResource settingsInsideField}"/>
-                            <Button DockPanel.Dock="Right"
-                                Style="{StaticResource changeFieldButton}"/>
-                        </DockPanel>
-                        <TextBlock Text="Email"
+                        <Button DockPanel.Dock="Right"
+                                Style="{StaticResource changeFieldButton}"
+                                Command="{Binding ChangeUserSettingsCommand}">
+                            <Button.CommandParameter>
+                                <MultiBinding Converter="{StaticResource multiBindingConverter}">
+                                    <Binding Source="{x:Static sharedItems:ChangeSettingsType.Username}"/>
+                                </MultiBinding>
+                            </Button.CommandParameter>
+                        </Button>
+                    </DockPanel>
+                    <TextBlock Text="Email"
                                Style="{StaticResource settingsField}"/>
-                        <DockPanel>
-                            <TextBlock Text="Custom email"
+                    <DockPanel>
+                        <TextBlock Text="{Binding CurrentUser.UserProfile.Email}"
                                    Style="{StaticResource settingsInsideField}"/>
-                            <Button DockPanel.Dock="Right"
-                                Style="{StaticResource changeFieldButton}"/>
-                        </DockPanel>
+                        <Button DockPanel.Dock="Right"
+                                Style="{StaticResource changeFieldButton}"
+                                Command="{Binding ChangeUserSettingsCommand}">
+                            <Button.CommandParameter>
+                                <MultiBinding Converter="{StaticResource multiBindingConverter}">
+                                    <Binding Source="{x:Static sharedItems:ChangeSettingsType.Email}"/>
+                                </MultiBinding>
+                            </Button.CommandParameter>
+                        </Button>
+                    </DockPanel>
 
-                        <DockPanel Margin="0,25,0,0">
-                            <TextBlock Text="Password"
+                    <DockPanel Margin="0,25,0,0">
+                        <TextBlock Text="Password"
                                    Style="{StaticResource settingsField}"
                                    Margin="5"/>
-                            <Button DockPanel.Dock="Right"
-                                Style="{StaticResource changeFieldButton}"/>
-                        </DockPanel>
-                    </StackPanel>
-                </Border>
-            </Border>
-        </Grid>
+                        <Button DockPanel.Dock="Right"
+                                Style="{StaticResource changeFieldButton}"
+                                Command="{Binding ChangeUserSettingsCommand}">
+                            <Button.CommandParameter>
+                                <MultiBinding Converter="{StaticResource multiBindingConverter}">
+                                    <Binding Source="{x:Static sharedItems:ChangeSettingsType.Password}"/>
+                                </MultiBinding>
+                            </Button.CommandParameter>
+                        </Button>
+                    </DockPanel>
+                </StackPanel>
+            </Grid>
+        </Border>
+        <local:ChangeUserSettingsView Grid.ColumnSpan="3" 
+                                      Panel.ZIndex="5">
+            <local:ChangeUserSettingsView.Style>
+                <Style TargetType="{x:Type local:ChangeUserSettingsView}">
+                    <Setter Property="Visibility" Value="Visible"/>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding UserSettingsType}"
+                                     Value="None">
+                            <Setter Property="Visibility" Value="Collapsed"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </local:ChangeUserSettingsView.Style>
+        </local:ChangeUserSettingsView>
     </Grid>
 </UserControl>

@@ -27,7 +27,7 @@ using System.Windows.Media;
 
 namespace ChatClient.ViewModels
 {
-    public class ChatViewModel : ChatViewModelBase
+    public class ChatViewModel : ChatViewModelBase, IDataErrorInfo
     {
         public ChatViewModel(INavigator navigator, ISignalRChatService chatService
                , IWindowConfigurationService windowConfigurationService) : base(navigator, chatService, windowConfigurationService)
@@ -53,6 +53,8 @@ namespace ChatClient.ViewModels
 
         private string _message;
         private string _usersFilter;
+        private string _usernameSettingsText;
+        private string _emailSettingsText;
         //private ObservableCollection<MessageModel> _messages;
         private ObservableCollection<UserModel> _allUsers;
         private ObservableCollection<Group> _groups;
@@ -63,10 +65,14 @@ namespace ChatClient.ViewModels
         private int _selectedUserIndex;
         private bool _isUserInfoOpened;
         private bool _isSettingsOpened;
+        private bool _needToClearPassword;
+        private string _password;
+        private string _passwordConfirm;
         private GridLength _usersColumnWidth;
         private GridLength _messagesColumnWidth;
 
         private ChatType _currentChatType;
+        private ChangeSettingsType _userSettingsType;
 
         public ICollectionView UsersCollectionView { get; private set; }
         public ICollectionView FilterUsersCollectionView { get; private set; }
@@ -83,6 +89,7 @@ namespace ChatClient.ViewModels
         public ICommand ChangePhotoCommand { get; private set; }
         public ICommand MessageReadCommand { get; private set; }
         public ICommand MessageLoadedCommand { get; private set; }
+        public ICommand ChangeUserSettingsCommand { get; private set; }
 
 
 
@@ -114,6 +121,7 @@ namespace ChatClient.ViewModels
             ChangePhotoCommand = new ChangePhotoCommand(this);
             MessageReadCommand = new MessageReadCommand();
             MessageLoadedCommand = new MessageLoadedCommand();
+            ChangeUserSettingsCommand = new ChangeUserSettingsCommand(this);
             //Messages = new();
             MuteStatus = new();
             UsersFilter = string.Empty;
@@ -184,6 +192,30 @@ namespace ChatClient.ViewModels
             });
 
             return viewModel;
+        }
+
+        public string Error { get; }
+
+        public string this[string propertyName]
+        {
+            get
+            {
+                string result = string.Empty;
+
+                propertyName ??= string.Empty;
+
+                if (propertyName != string.Empty
+                        && (propertyName == nameof(PasswordConfirm) || propertyName == nameof(Password))
+                        && PasswordConfirm != null && Password != null)
+                {
+                    if (!Password.Equals(PasswordConfirm, StringComparison.Ordinal))
+                    {
+                        result = "Passwords do not match";
+                    }
+                }
+
+                return result;
+            }
         }
 
         protected async override Task Reconnect()
@@ -406,6 +438,67 @@ namespace ChatClient.ViewModels
             set
             {
                 _isSettingsOpened = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public bool NeedToClearPassword
+        {
+            get => _needToClearPassword;
+            set
+            {
+                _needToClearPassword = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public string UsernameSettingsField
+        {
+            get => _usernameSettingsText;
+            set
+            {
+                _usernameSettingsText = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public string Password
+        {
+            get => _password;
+            set
+            {
+                _password = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public string PasswordConfirm
+        {
+            get => _passwordConfirm;
+            set
+            {
+                _passwordConfirm = value;
+                OnPropertyChanged();
+                OnPropertyChanged(nameof(Password));
+            }
+        }
+
+        public string EmailSettingsField
+        {
+            get => _emailSettingsText;
+            set
+            {
+                _emailSettingsText = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public ChangeSettingsType UserSettingsType
+        {
+            get => _userSettingsType;
+            set
+            {
+                _userSettingsType = value;
                 OnPropertyChanged();
             }
         }

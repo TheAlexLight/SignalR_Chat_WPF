@@ -23,7 +23,8 @@ namespace ChatClient.ViewModels
 
             if (window != null)
             {
-                windowConfigurationService.SetWindowStartupData(window: window, width: 385, height: 545);
+               window = windowConfigurationService.SetWindowStartupData(window: window, width: 385, height: 545
+                    , left: window.Left, top: window.Top, minWidth: 385, minHeight: 545);
             }
 
             NavigateLoginCommand = new NavigateCommand<LoginViewModel>(

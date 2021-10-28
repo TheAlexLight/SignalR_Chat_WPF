@@ -36,7 +36,11 @@ namespace ChatClient.ViewModels
 
             if (window != null)
             {
-                windowConfigurationService.SetWindowStartupData(window: window, width: 385, height: 385);
+                windowConfigurationService.SetWindowStartupData(window: window, width: 385, height: 385
+                    , left: window.Left, top: window.Top, minWidth: 385, minHeight: 385);
+
+                window.MaxHeight = 385;
+                window.MaxHeight = double.PositiveInfinity;
             }
         }
 

@@ -28,17 +28,9 @@ namespace ChatClient.Commands.CustomViewsCommands
                 {
                     _viewModel.IsSettingsOpened = userSettingsState;
 
-
                     Window window = Application.Current.MainWindow;
 
-                    if (userSettingsState)
-                    {  
-                        window.MinHeight = 450;
-                    }
-                    else
-                    {
-                        window.MinHeight = 350;
-                    }
+                    window.MinHeight = userSettingsState ? 450 : 350;
                 }
             }
 

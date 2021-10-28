@@ -10,6 +10,9 @@
     <Compile Update="Views\AdditionalViews\BindablePasswordBox.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="Views\AdditionalViews\ChangeUserSettingsView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="Views\AdditionalViews\PrivateChatView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -64,6 +67,9 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Views\AdditionalViews\BindablePasswordBox.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\AdditionalViews\ChangeUserSettingsView.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Views\AdditionalViews\PrivateChatView.xaml">

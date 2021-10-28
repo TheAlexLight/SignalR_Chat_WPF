@@ -20,6 +20,11 @@ namespace ChatClient.Views.AdditionalViews
     /// </summary>
     public partial class BindablePasswordBox : UserControl
     {
+        public BindablePasswordBox()
+        {
+            InitializeComponent();
+        }
+
         private bool _isPasswordChanging;
 
         public string Password
@@ -28,11 +33,31 @@ namespace ChatClient.Views.AdditionalViews
             set => SetValue(PasswordProperty, value);
         }
 
+        public bool ClearPassword
+        {
+            get => (bool)GetValue(ClearPasswordProperty);
+            set => SetValue(ClearPasswordProperty, value);
+        }
+
         // Using a DependencyProperty as the backing store for Password.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty PasswordProperty =
             DependencyProperty.Register(nameof(Password), typeof(string), typeof(BindablePasswordBox), 
                     new FrameworkPropertyMetadata(string.Empty, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault,
                             PasswordPropertyChanged, null, false, UpdateSourceTrigger.PropertyChanged));
+
+        public static readonly DependencyProperty ClearPasswordProperty =
+            DependencyProperty.Register(nameof(ClearPassword), typeof(bool), typeof(BindablePasswordBox),
+                    new FrameworkPropertyMetadata(false, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault,
+                            ClearPasswordPropertyChanged, null, false, UpdateSourceTrigger.PropertyChanged));
+
+        private static void ClearPasswordPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            if (d is BindablePasswordBox passwordBox && (bool)e.NewValue)
+            {
+                passwordBox.Password = string.Empty;
+                passwordBox.ClearPassword = !passwordBox.ClearPassword;
+            }
+        }
 
         private static void PasswordPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
@@ -40,11 +65,6 @@ namespace ChatClient.Views.AdditionalViews
             {
                 passwordBox.UpdatePasswordBox();
             }
-        }
-
-        public BindablePasswordBox()
-        {
-            InitializeComponent();
         }
 
         private void PasswordBox_PasswordChanged(object sender, RoutedEventArgs e)

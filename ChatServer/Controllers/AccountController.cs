@@ -79,6 +79,7 @@ namespace ChatServer.Controllers
         {
             _dbContext.UserProfiles.Add(new UserProfileModel()
             {
+                Email = createdUser.Email,
                 UserModelId = createdUser.UserModel.Id,
                 Image = File.ReadAllBytes("Resources/Default/defaultUser.png")
         });

@@ -82,7 +82,8 @@
                                     <Binding Path="Password"
                                          ValidatesOnDataErrors="True">
                                         <Binding.ValidationRules>
-                                            <validators:PasswordValidator/>
+                                            <validators:PasswordValidator
+                                                ValidationStep="UpdatedValue"/>
                                         </Binding.ValidationRules>
                                     </Binding>
                                 </additionalViews:BindablePasswordBox.Password>
@@ -104,7 +105,7 @@
                                     <Binding Path="PasswordConfirm" 
                                          ValidatesOnDataErrors="True">
                                         <Binding.ValidationRules>
-                                            <validators:PasswordValidator/>
+                                            <validators:PasswordValidator ValidationStep="UpdatedValue" />
                                         </Binding.ValidationRules>
                                     </Binding>
                                 </additionalViews:BindablePasswordBox.Password>

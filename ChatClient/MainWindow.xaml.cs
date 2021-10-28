@@ -26,5 +26,15 @@ namespace ChatClient
 
             DataContext = dataContext;
         }
+
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            Window window = sender as Window;
+
+            window.Width = 385;
+            window.Height = 385;
+            window.MinWidth = 385;
+            window.MinHeight = 385;
+        }
     }
 }
