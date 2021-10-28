@@ -31,6 +31,7 @@ namespace ChatClient.Services
         public event Action ReceivedKick;
         public event Action<BanStatusModel> ReceivedBan;
         public event Action<MuteStatusModel> ReceivedMute;
+        public event Func<bool, string, string, Task> ReceivedUserPropertyChange;
 
         public SignalRChatService(HubConnectionBuilder connectionBuilder)
         {
@@ -53,6 +54,7 @@ namespace ChatClient.Services
             Connection.On<BanStatusModel>("ReceiveBan", (model) => ReceivedBan?.Invoke(model));
             Connection.On<MuteStatusModel>("ReceiveMute", (model) => ReceivedMute?.Invoke(model));
             Connection.On("ReceiveKick", () => ReceivedKick?.Invoke());
+            Connection.On<bool, string, string>("ReceiveUserPropertyChange", (success, propertyName, message) => ReceivedUserPropertyChange?.Invoke(success, propertyName, message));
         }
 
         public async Task Connect()
@@ -108,6 +110,21 @@ namespace ChatClient.Services
         public async Task ChangePhoto(UserModel currentUser, byte[] photo)
         {
             await Connection.SendAsync("SendChangePhoto", currentUser, photo);
+        }
+
+        public async Task SubmitUsernameChange(UserModel user, string username, string password)
+        {
+            await Connection.SendAsync("SendSubmitUsernameChange", user, username, password);
+        }
+
+        public async Task SubmitEmailChange(UserModel user, string email, string password)
+        {
+            await Connection.SendAsync("SendSubmitEmailChange", user, email, password);
+        }
+
+        public async Task SubmitPasswordChange(UserModel user, string newPassword, string currentPassword)
+        {
+            await Connection.SendAsync("SendSubmitPasswordChange", user, newPassword, currentPassword);
         }
     }
 }

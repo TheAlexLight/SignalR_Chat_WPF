@@ -1,5 +1,6 @@
 ﻿using ChatClient.Commands;
 using ChatClient.Commands.AuthenticationCommands;
+using ChatClient.Commands.ChangeUserPropertyCommand;
 using ChatClient.Commands.ContextMenuCommands;
 using ChatClient.Commands.CustomViewsCommands;
 using ChatClient.Commands.ToolBarCommands;
@@ -89,6 +90,9 @@ namespace ChatClient.ViewModels
         public ICommand ChangePhotoCommand { get; private set; }
         public ICommand MessageReadCommand { get; private set; }
         public ICommand MessageLoadedCommand { get; private set; }
+        public ICommand ChangeUsernameCommand { get; private set; }
+        public ICommand ChangeEmailCommand { get; private set; }
+        public ICommand ChangePasswordCommand { get; private set; }
         public ICommand ChangeUserSettingsCommand { get; private set; }
 
 
@@ -122,6 +126,9 @@ namespace ChatClient.ViewModels
             MessageReadCommand = new MessageReadCommand();
             MessageLoadedCommand = new MessageLoadedCommand();
             ChangeUserSettingsCommand = new ChangeUserSettingsCommand(this);
+            ChangeUsernameCommand = new ChangeUsernameCommand(this);
+            ChangePasswordCommand = new ChangePasswordCommand(this);
+            ChangeEmailCommand = new ChangeEmailCommand(this);
             //Messages = new();
             MuteStatus = new();
             UsersFilter = string.Empty;
@@ -145,6 +152,7 @@ namespace ChatClient.ViewModels
             chatService.ReceivedBan += ChatService_ReceivedBan;
             chatService.ReceivedKick += ChatService_ReceivedKick;
             chatService.ReceivedMute += ChatService_ReceivedMute;
+            chatService.ReceivedUserPropertyChange += ChatService_ReceivedUserPropertyChange;
         }
 
         private bool FilterUsers(object obj)
@@ -296,6 +304,25 @@ namespace ChatClient.ViewModels
 
             navigationService.Navigate();
             MessageBox.Show("You have been kicked.");
+        }
+
+        private Task ChatService_ReceivedUserPropertyChange(bool success, string PropertyName, string message)
+        {
+            if (success)
+            {
+                Task.Run(() =>
+                {
+                    MessageBox.Show(string.Format("{0} was changed successfully", PropertyName));
+                });
+                
+                ChangeUserSettingsCommand.Execute(ChangeSettingsType.None);
+            }
+            else
+            {
+                MessageBox.Show(message);
+            }
+
+            return Task.CompletedTask;
         }
 
         public UserModel CurrentUser

@@ -23,6 +23,7 @@ namespace ChatClient.Interfaces
         public event Action<BanStatusModel> ReceivedBan;
         public event Action ReceivedKick;
         public event Action<MuteStatusModel> ReceivedMute;
+        public event Func<bool, string, string, Task> ReceivedUserPropertyChange;
 
         public Task Connect();
         public Task Reconnect(string username);
@@ -35,5 +36,8 @@ namespace ChatClient.Interfaces
         public Task SwitchChat(ChatType chatType);
         public Task UpdatePrivateMessages(UserModel selectedUser, UserModel currentUser);
         public Task ChangePhoto(UserModel currentUser, byte[] photo);
+        public Task SubmitUsernameChange(UserModel user, string username, string password);
+        public Task SubmitEmailChange(UserModel user, string username, string password);
+        public Task SubmitPasswordChange(UserModel user, string username, string password);
     }
 }

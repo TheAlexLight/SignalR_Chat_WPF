@@ -25,6 +25,7 @@ namespace ChatServer.Hubs
         private readonly ApplicationContext _dbContext;
         private readonly AccountController _account;
         private readonly RoleController _roleController;
+        private readonly AuthorizationHelper _authorizationHelper;
 
         public ChatHub(UserManager<User> userManager, RoleManager<IdentityRole> roleManager, ApplicationContext dbContext)
         {
@@ -34,6 +35,7 @@ namespace ChatServer.Hubs
 
             _account = new AccountController(_userManager, _dbContext);
             _roleController = new RoleController(_roleManager, _userManager);
+            _authorizationHelper = new();
         }
 
         public async Task SendRegistration(UserRegistrationModel model)
@@ -72,17 +74,17 @@ namespace ChatServer.Hubs
                 if (userHandler != null)
                 {
                     User user = _dbContext.Users
-                        .Include(u=>u.UserModel)
+                        .Include(u => u.UserModel)
                             .ThenInclude(u => u.UserStatus)
                                 .ThenInclude(userStatus => userStatus.BanStatus)
-                        .Include(u=>u.UserModel)
-                            .ThenInclude(um=>um.UserProfile)
+                        .Include(u => u.UserModel)
+                            .ThenInclude(um => um.UserProfile)
                         .FirstOrDefault(u => u.UserName == model.Username);
 
                     user.UserModel.UserProfile.IsOnline = true;
                     await _dbContext.SaveChangesAsync();
 
-                   // await SendCurrentUser(userHandler);
+                    // await SendCurrentUser(userHandler);
 
                     if (user.UserModel.UserStatus.BanStatus.IsBanned)
                     {
@@ -115,7 +117,7 @@ namespace ChatServer.Hubs
         private async Task SendPublicGroup()
         {
             ChatGroupModel group = _dbContext.Groups
-                .Include(g=>g.Users)
+                .Include(g => g.Users)
                 .FirstOrDefault(g => g.Name == ChatType.Public);
 
             if (group == null)
@@ -143,7 +145,7 @@ namespace ChatServer.Hubs
             UserHandler userHandler = Account.Users.FirstOrDefault(a => a.ConnectedIds == Context.ConnectionId);
             userHandler.ConnectedUsername = username;
 
-           await UpdateChat(userHandler);
+            await UpdateChat(userHandler);
         }
 
         public async Task SendSwitchChat(ChatType chatType)
@@ -170,16 +172,17 @@ namespace ChatServer.Hubs
         public async Task SendUpdatePrivateMessages(UserModel selectedUser, UserModel currentUser)
         {
             ChatGroupModel group = _dbContext.Groups
-                    .FirstOrDefault(g => g.Name == ChatType.Private 
+                    .FirstOrDefault(g => g.Name == ChatType.Private
                         && g.Users.Contains(selectedUser)
                         && g.Users.Contains(currentUser));
 
             if (group == null)
             {
                 group = new ChatGroupModel()
-                { 
+                {
                     Name = ChatType.Private
                 };
+
                 group.Users = new List<UserModel>();
 
                 group.Users.Add(_dbContext.UserModels
@@ -211,16 +214,16 @@ namespace ChatServer.Hubs
         {
             User user = await _dbContext.Users
                     .FirstOrDefaultAsync(u => u.UserName == userHandler.ConnectedUsername);
-            
+
             string userRole = ((List<string>)await _userManager.GetRolesAsync(user))[0];
 
             user.UserModel.UserProfile.Role = userRole;
-            user.UserModel.UserProfile.Username = user.UserName;
 
             await _dbContext.SaveChangesAsync();
 
             await Clients.Client(userHandler.ConnectedIds).SendAsync("ReceiveCurrentUser", user.UserModel);
         }
+
 
         public async Task SendUserList()
         {
@@ -241,10 +244,10 @@ namespace ChatServer.Hubs
             }
             else
             {
-               group = _dbContext.Groups
-                        .FirstOrDefault(g => g.Name == currentGroup.Name 
-                        && g.Users.Contains(selectedUser)
-                        && g.Users.Contains(currentUser));
+                group = _dbContext.Groups
+                         .FirstOrDefault(g => g.Name == currentGroup.Name
+                         && g.Users.Contains(selectedUser)
+                         && g.Users.Contains(currentUser));
             }
 
             if (group != null)
@@ -261,6 +264,105 @@ namespace ChatServer.Hubs
             }
         }
 
+        public async Task SendSubmitUsernameChange(UserModel user, string username, string password)
+        {
+            User foundUser = await _userManager.FindByNameAsync(user.UserProfile.Username);
+
+            if (foundUser != null)
+            {
+                if (!_dbContext.Users.Any(up => up.UserName.Equals(username)))
+                {
+                    if (_authorizationHelper.ValidatePassword(_userManager, foundUser, password) == PasswordVerificationResult.Success)
+                    {
+                        foundUser.UserName = username;
+                        foundUser.UserModel.UserProfile.Username = username;
+
+                        await _userManager.UpdateAsync(foundUser);
+                        await _dbContext.SaveChangesAsync();
+
+                        await Clients.Caller.SendAsync("ReceiveUserPropertyChange", true, "Username", string.Empty);
+
+                        UserHandler userHandler = Account.Users.FirstOrDefault(a => a.ConnectedIds == Context.ConnectionId);
+                        userHandler.ConnectedUsername = username;
+                        await UpdateChat(userHandler);
+                    }
+                    else
+                    {
+                        string errorMessage = "Current password doesn't match";
+                        await Clients.Caller.SendAsync("ReceiveUserPropertyChange", false, string.Empty, errorMessage);
+                    }
+                }
+                else
+                {
+                    string errorMessage = "Username is already exist";
+                    await Clients.Caller.SendAsync("ReceiveUserPropertyChange", false, string.Empty, errorMessage);
+                }
+            }
+        }
+
+        public async Task SendSubmitEmailChange(UserModel user, string email, string password)
+        {
+            User foundUser = await _userManager.FindByNameAsync(user.UserProfile.Username);
+
+            if (foundUser != null)
+            {
+                if (!_dbContext.Users.Any(up => up.Email.Equals(email)))
+                {
+                    if (_authorizationHelper.ValidatePassword(_userManager, foundUser, password) == PasswordVerificationResult.Success)
+                    {
+                        foundUser.Email = email;
+                        foundUser.UserModel.UserProfile.Email = email;
+
+                        await _userManager.UpdateAsync(foundUser);
+                        await _dbContext.SaveChangesAsync();
+
+                        await Clients.Caller.SendAsync("ReceiveUserPropertyChange", true, "Email", string.Empty);
+
+                        UserHandler userHandler = Account.Users.FirstOrDefault(a => a.ConnectedIds == Context.ConnectionId);
+                        userHandler.ConnectedUsername = user.UserProfile.Username;
+                        await UpdateChat(userHandler);
+                    }
+                    else
+                    {
+                        string errorMessage = "Current password doesn't match";
+                        await Clients.Caller.SendAsync("ReceiveUserPropertyChange", false, string.Empty, errorMessage);
+                    }
+                }
+                else
+                {
+                    string errorMessage = "Email is already exist";
+                    await Clients.Caller.SendAsync("ReceiveUserPropertyChange", false, string.Empty, errorMessage);
+                }
+            }
+        }
+
+        public async Task SendSubmitPasswordChange(UserModel user, string newPassword, string currentPassword)
+        {
+            User foundUser = await _userManager.FindByNameAsync(user.UserProfile.Username);
+
+            if (foundUser != null)
+            {
+                if (_authorizationHelper.ValidatePassword(_userManager, foundUser, currentPassword) == PasswordVerificationResult.Success)
+                {
+                    foundUser.PasswordHash = _userManager.PasswordHasher.HashPassword(foundUser, newPassword);
+
+                    await _dbContext.SaveChangesAsync();
+
+                    await Clients.Caller.SendAsync("ReceiveUserPropertyChange", true, "Password", string.Empty);
+
+                    UserHandler userHandler = Account.Users.FirstOrDefault(a => a.ConnectedIds == Context.ConnectionId);
+                    userHandler.ConnectedUsername = user.UserProfile.Username;
+                    await UpdateChat(userHandler);
+                }
+                else
+                {
+                    string errorMessage = "Current password doesn't match";
+                    await Clients.Caller.SendAsync("ReceiveUserPropertyChange", false, string.Empty, errorMessage);
+                }
+            }
+        }
+
+
         private async Task SendConcreteGroup(ChatType groupName, string group)
         {
             if (groupName == ChatType.Public)
@@ -269,7 +371,7 @@ namespace ChatServer.Hubs
             }
             else
             {
-             await Clients.Caller.SendAsync("ReceiveCurrentGroup", group);
+                await Clients.Caller.SendAsync("ReceiveCurrentGroup", group);
             }
         }
 
@@ -298,14 +400,14 @@ namespace ChatServer.Hubs
                 .FirstOrDefault(u => u.UserName == username);
 
             user.UserModel.UserStatus.BanStatus = model;
-            
+
             await _dbContext.SaveChangesAsync();
 
             if (model.IsBanned)
             {
                 await Clients.Client(userHandler.ConnectedIds).SendAsync("ReceiveBan", model);
             }
-            
+
             await UpdateChat(userHandler);
         }
 
@@ -355,9 +457,9 @@ namespace ChatServer.Hubs
 
             if (user.ConnectedUsername != null)
             {
-               var dbUser = _dbContext.Users.Include(u => u.UserModel)
-                    .ThenInclude(um => um.UserProfile)
-                    .FirstOrDefault(u => u.UserName == user.ConnectedUsername);
+                var dbUser = _dbContext.Users.Include(u => u.UserModel)
+                     .ThenInclude(um => um.UserProfile)
+                     .FirstOrDefault(u => u.UserName == user.ConnectedUsername);
 
                 dbUser.UserModel.UserProfile.IsOnline = false;
                 await _dbContext.SaveChangesAsync();
@@ -367,7 +469,7 @@ namespace ChatServer.Hubs
 
             //await SendUserList();
 
-            
+
             return base.OnDisconnectedAsync(exception);
         }
     }

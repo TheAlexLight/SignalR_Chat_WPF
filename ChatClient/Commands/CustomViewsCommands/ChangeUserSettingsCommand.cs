@@ -20,12 +20,12 @@ namespace ChatClient.Commands.CustomViewsCommands
 
         public override void Execute(object parameter)
         {
-            object[] values = parameter as object[];
+            //object[] values = parameter as object[];
 
-            if (values[0] is ChangeSettingsType settingsType)
+            if (parameter is ChangeSettingsType settingsType)
             {
-                if (values.Length != 2)
-                {
+                //if (values.Length != 2)
+                //{
                     _viewModel.UserSettingsType = settingsType;
 
                     if (settingsType == ChangeSettingsType.None)
@@ -36,7 +36,7 @@ namespace ChatClient.Commands.CustomViewsCommands
                         _viewModel.Password = string.Empty;
                         _viewModel.PasswordConfirm = string.Empty;
                     }
-                }
+                //}
             }
         }
     }

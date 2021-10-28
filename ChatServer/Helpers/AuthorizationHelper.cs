@@ -36,5 +36,10 @@ namespace ChatServer.Helpers
 
             return error;
         }
+
+        public PasswordVerificationResult ValidatePassword(UserManager<User> userManager, User user, string password)
+        {
+            return userManager.PasswordHasher.VerifyHashedPassword(user, user.PasswordHash, password);
+        }
     }
 }

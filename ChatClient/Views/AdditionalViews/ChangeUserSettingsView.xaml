@@ -75,7 +75,8 @@
                     <Border Style="{StaticResource changeUserSettingsField}" BorderBrush="Black">
                             <additionalViews:BindablePasswordBox
                             Style="{StaticResource passwordField}"
-                            ClearPassword="{Binding NeedToClearPassword}"/>
+                            ClearPassword="{Binding NeedToClearPassword}"
+                                x:Name="currentUsernamePassword"/>
                     </Border>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal"
@@ -83,15 +84,12 @@
                             HorizontalAlignment="Center">
                     <Button Content="Cancel" 
                             Style="{StaticResource changeUserSettingsButton}"
-                            Command="{Binding ChangeUserSettingsCommand}">
-                        <Button.CommandParameter>
-                            <MultiBinding Converter="{StaticResource multiBindingConverter}">
-                                <Binding Source="{x:Static sharedItems:ChangeSettingsType.None}"/>
-                            </MultiBinding>
-                        </Button.CommandParameter>
-                    </Button>
+                            Command="{Binding ChangeUserSettingsCommand}"
+                            CommandParameter="{x:Static sharedItems:ChangeSettingsType.None}"/>
                     <Button Content="Submit"
-                            Style="{StaticResource changeUserSettingsButton}"/>
+                            Style="{StaticResource changeUserSettingsButton}"
+                            Command="{Binding ChangeUsernameCommand}"
+                            CommandParameter="{Binding ElementName=currentUsernamePassword, Path=Password}"/>
                 </StackPanel>
             </Grid>
         </Border>
@@ -150,7 +148,8 @@
                     <Border Style="{StaticResource changeUserSettingsField}" BorderBrush="Black">
                         <additionalViews:BindablePasswordBox
                             Style="{StaticResource passwordField}"
-                            ClearPassword="{Binding NeedToClearPassword}">
+                            ClearPassword="{Binding NeedToClearPassword}"
+                            x:Name="currentEmailPassword">
                         </additionalViews:BindablePasswordBox>
                     </Border>
                 </StackPanel>
@@ -159,15 +158,12 @@
                             HorizontalAlignment="Center">
                     <Button Content="Cancel" 
                             Style="{StaticResource changeUserSettingsButton}"
-                            Command="{Binding ChangeUserSettingsCommand}">
-                        <Button.CommandParameter>
-                            <MultiBinding Converter="{StaticResource multiBindingConverter}">
-                                <Binding Source="{x:Static sharedItems:ChangeSettingsType.None}"/>
-                            </MultiBinding>
-                        </Button.CommandParameter>
-                    </Button>
+                            Command="{Binding ChangeUserSettingsCommand}"
+                            CommandParameter="{x:Static sharedItems:ChangeSettingsType.None}"/>
                     <Button Content="Submit"
-                            Style="{StaticResource changeUserSettingsButton}"/>
+                            Style="{StaticResource changeUserSettingsButton}"
+                            Command="{Binding ChangeEmailCommand}"
+                            CommandParameter="{Binding ElementName=currentEmailPassword, Path=Password}"/>
                 </StackPanel>
             </Grid>
         </Border>
@@ -211,7 +207,8 @@
                     <Border Style="{StaticResource changeUserSettingsField}" BorderBrush="Black">
                             <additionalViews:BindablePasswordBox
                             Style="{StaticResource passwordField}"
-                            ClearPassword="{Binding NeedToClearPassword}"/>
+                            ClearPassword="{Binding NeedToClearPassword}"
+                                x:Name="currentPassword"/>
                     </Border>
                 </StackPanel>
                 <StackPanel Orientation="Vertical"
@@ -257,15 +254,12 @@
                             HorizontalAlignment="Center">
                     <Button Content="Cancel" 
                             Style="{StaticResource changeUserSettingsButton}"
-                            Command="{Binding ChangeUserSettingsCommand}">
-                        <Button.CommandParameter>
-                            <MultiBinding Converter="{StaticResource multiBindingConverter}">
-                                <Binding Source="{x:Static sharedItems:ChangeSettingsType.None}"/>
-                            </MultiBinding>
-                        </Button.CommandParameter>
-                    </Button>
+                            Command="{Binding ChangeUserSettingsCommand}"
+                            CommandParameter="{x:Static sharedItems:ChangeSettingsType.None}"/>
                     <Button Content="Submit"
-                            Style="{StaticResource changeUserSettingsButton}"/>
+                            Style="{StaticResource changeUserSettingsButton}"
+                            Command="{Binding ChangePasswordCommand}"
+                            CommandParameter="{Binding ElementName=currentPassword, Path=Password}"/>
                 </StackPanel>
             </Grid>
         </Border>

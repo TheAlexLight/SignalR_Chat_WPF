@@ -37,9 +37,9 @@ namespace ChatClient.Views.AdditionalViews
             {
                 if (grid == mainGrid)
                 {
-                    object[] values = new object[1];
-                    values[0] = ChangeSettingsType.None;
-                    _changeUserSettingsCommand.Execute(values);
+                    //object[] values = new object[1];
+                    //values[0] = ChangeSettingsType.None;
+                    _changeUserSettingsCommand.Execute(ChangeSettingsType.None);
                 }
 
                 e.Handled = true;
