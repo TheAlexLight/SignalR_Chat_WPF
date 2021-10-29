@@ -28,8 +28,9 @@ namespace ChatClient.Commands
         {
             try
             {
-                MessageViewModel model = new MessageViewModel()
+                MessageModel model = new MessageModel()
                 {
+                    Sender = _viewModel.CurrentUser.UserProfile.Username,
                     Message = _viewModel.Message.Trim(),
                     Time = DateTime.Now,
                     UserModel = _viewModel.CurrentUser,

@@ -67,10 +67,15 @@ namespace ChatClient.Services
             await Connection.SendAsync("SendReconnection", username);
         }
 
-        public async Task SendMessage(MessageViewModel message, ChatGroupModel currentGroup, UserModel selectedUser, UserModel currentUser)
+        public async Task SendMessage(MessageModel message, ChatGroupModel currentGroup, UserModel selectedUser, UserModel currentUser)
         {
             string messageJsonString = JsonConvert.SerializeObject(message);
             await Connection.SendAsync("SendMessage", messageJsonString, currentGroup, selectedUser, currentUser);
+        }
+
+        public async Task UpdateMessage(MessageModel message, ChatGroupModel currentGroup)
+        {
+            await Connection.SendAsync("SendUpdateMessage", message, currentGroup);
         }
 
         public async Task Registration(UserRegistrationModel model)

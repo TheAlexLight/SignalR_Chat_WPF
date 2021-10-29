@@ -257,10 +257,25 @@ namespace ChatServer.Hubs
 
                 await _dbContext.SaveChangesAsync();
 
-                string serializedGroup = JsonConvert.SerializeObject(group, Formatting.None,
-                new JsonSerializerSettings { ReferenceLoopHandling = ReferenceLoopHandling.Ignore });
+                await SendConcreteGroup(currentGroup.Name, group);
+            }
+        }
 
-                await SendConcreteGroup(currentGroup.Name, serializedGroup);
+        public async Task SendUpdateMessage(MessageModel message, ChatGroupModel currentGroup)
+        {
+            ChatGroupModel foundGroup = await _dbContext.Groups.FirstOrDefaultAsync(g => g == currentGroup);
+
+            if (foundGroup != null)
+            {
+                MessageModel dbMessage = foundGroup.Messages.FirstOrDefault(m => m.Id == message.Id);
+
+                dbMessage.CheckStatus = message.CheckStatus;
+      
+                await _dbContext.SaveChangesAsync();
+
+                ChatGroupModel group = await _dbContext.Groups.FirstOrDefaultAsync(g => g == currentGroup);
+
+                await SendConcreteGroup(ChatType.Private, group);
             }
         }
 
@@ -363,15 +378,25 @@ namespace ChatServer.Hubs
         }
 
 
-        private async Task SendConcreteGroup(ChatType groupName, string group)
+        private async Task SendConcreteGroup(ChatType groupName, ChatGroupModel group)
         {
+            string serializedGroup = JsonConvert.SerializeObject(group, Formatting.None,
+            new JsonSerializerSettings { ReferenceLoopHandling = ReferenceLoopHandling.Ignore });
+
             if (groupName == ChatType.Public)
             {
-                await Clients.All.SendAsync("ReceiveCurrentGroup", group);
+                await Clients.All.SendAsync("ReceiveCurrentGroup", serializedGroup);
             }
             else
             {
-                await Clients.Caller.SendAsync("ReceiveCurrentGroup", group);
+                foreach (UserModel user in group.Users)
+                {
+                    UserHandler userHandler = Account.Users.FirstOrDefault(u => u.ConnectedUsername == user.UserProfile.Username);
+                    if (userHandler != null)
+                    {
+                        await Clients.Client(userHandler.ConnectedIds).SendAsync("ReceiveCurrentGroup", serializedGroup);
+                    }
+                }
             }
         }
 

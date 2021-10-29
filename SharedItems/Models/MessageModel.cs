@@ -53,6 +53,7 @@ namespace SharedItems.Models
 
         public int Count { get; set; }
         public string Message { get; set; }
+        public string Sender { get; set; }
         [JsonIgnore]
         public virtual UserModel UserModel { get; set; }
 

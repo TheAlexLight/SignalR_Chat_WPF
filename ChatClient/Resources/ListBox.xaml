@@ -17,7 +17,6 @@
     <converters:MultiValueEqualityConverter x:Key="equalityConverter"/>
     <converters:ByteToImageConverter x:Key="byteToImageConverter"/>
     <converters:MessageStatusToImageConverter x:Key="messageStatusToImageConverter"/>
-    <converters:Class1 x:Key="classConverter"/>
 
     <LinearGradientBrush x:Key="mainMessageBoxColors" StartPoint="0.5,0" EndPoint="0.5,1">
         <GradientStop Color="#E6E7FF" Offset="0"/>
@@ -245,8 +244,9 @@
                                        TextTrimming="CharacterEllipsis"
                                        Grid.Column="0"/>
                         </DockPanel>
-                        <Image Source="{StaticResource checkedDrawingImage}"
-                               Grid.Column="1"/>
+                        <!--<Image Source="{StaticResource checkedDrawingImage}"
+                               Grid.Column="1"/>-->
+                        <TextBlock Text="{Binding .}"/>
                     </Grid>
                     <DataTemplate.Triggers>
                         <DataTrigger Binding="{Binding UserProfile.IsOnline}" Value="True">

@@ -15,6 +15,7 @@ namespace ChatClient.Extensions
     public class ScrollViewerExtension : ScrollViewer
     {
         private bool _messagesHandled;
+        private bool AutoScroll = false;
 
         public static readonly DependencyProperty MessageCollectionProperty;
         
@@ -40,6 +41,33 @@ namespace ChatClient.Extensions
             double messagesHeightCount = MessageCollection.Where(m => m.CheckStatus == MessageStatus.Read).Select(m => m.MessageHeight).Sum();
             ScrollToVerticalOffset(messagesHeightCount - ViewportHeight);
             _messagesHandled = true;
+        }
+
+        protected override void OnScrollChanged(ScrollChangedEventArgs e)
+        {
+            // User scroll event : set or unset auto-scroll mode
+            if (e.ExtentHeightChange == 0)
+            {   // Content unchanged : user scroll event
+                if (VerticalOffset == ScrollableHeight)
+                {   // Scroll bar is in bottom
+                    // Set auto-scroll mode
+                    AutoScroll = true;
+                }
+                else
+                {   // Scroll bar isn't in bottom
+                    // Unset auto-scroll mode
+                    AutoScroll = false;
+                }
+            }
+
+            // Content scroll event : auto-scroll eventually
+            if (AutoScroll && e.ExtentHeightChange != 0)
+            {   // Content changed and auto-scroll mode set
+                // Autoscroll
+                ScrollToVerticalOffset(ExtentHeight);
+            }
+
+            base.OnScrollChanged(e);
         }
 
         public List<MessageModel> MessageCollection

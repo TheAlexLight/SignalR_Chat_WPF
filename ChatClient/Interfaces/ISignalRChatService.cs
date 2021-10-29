@@ -27,7 +27,8 @@ namespace ChatClient.Interfaces
 
         public Task Connect();
         public Task Reconnect(string username);
-        public Task SendMessage(MessageViewModel message, ChatGroupModel currentGroup, UserModel selectedUsr, UserModel currentUser);
+        public Task SendMessage(MessageModel message, ChatGroupModel currentGroup, UserModel selectedUsr, UserModel currentUser);
+        public Task UpdateMessage(MessageModel newMessage, ChatGroupModel currentGroup);
         public Task Registration(UserRegistrationModel model);
         public Task Login(UserLoginModel model);
         public Task SendBan(string username, BanStatusModel model);
