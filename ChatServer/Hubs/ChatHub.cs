@@ -200,6 +200,11 @@ namespace ChatServer.Hubs
             string serializedGroup = JsonConvert.SerializeObject(group, Formatting.None,
                 new JsonSerializerSettings { ReferenceLoopHandling = ReferenceLoopHandling.Ignore });
 
+            UserHandler userHandler = Account.Users.FirstOrDefault(a => a.ConnectedIds == Context.ConnectionId);
+            userHandler.ConnectedUsername = currentUser.UserProfile.Username;
+            //await UpdateChat(userHandler);
+            await SendCurrentUser(userHandler);
+
             await Clients.Caller.SendAsync("ReceiveCurrentGroup", serializedGroup);
         }
 
@@ -229,7 +234,10 @@ namespace ChatServer.Hubs
         {
             List<UserModel> users = _dbContext.UserModels.ToList();
 
-            await Clients.All.SendAsync("ReceiveUserList", users);
+            string users2 = JsonConvert.SerializeObject(users, Formatting.None,
+                new JsonSerializerSettings { ReferenceLoopHandling = ReferenceLoopHandling.Ignore });
+
+            await Clients.All.SendAsync("ReceiveUserList", users2);
         }
 
         public async Task SendMessage(string message, ChatGroupModel currentGroup, UserModel selectedUser, UserModel currentUser)

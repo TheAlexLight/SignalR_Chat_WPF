@@ -67,6 +67,7 @@ namespace ChatClient.ViewModels
         private bool _isUserInfoOpened;
         private bool _isSettingsOpened;
         private bool _needToClearPassword;
+        private bool _needToUpdateMessagesCount;
         private string _password;
         private string _passwordConfirm;
         private GridLength _usersColumnWidth;
@@ -233,13 +234,14 @@ namespace ChatClient.ViewModels
 
         private void ChatService_CurrentUserReceived(UserModel currentUser)
         {
-            CurrentUser = currentUser;
+                CurrentUser = currentUser; 
         }
 
         private void ChatService_CurrentGroupReceived(string currentGroup)
         {
             ChatGroupModel group = JsonConvert.DeserializeObject<ChatGroupModel>(currentGroup);
-            CurrentChatGroup = group;
+
+            CurrentChatGroup =  group;
 
             Group bannedGroup = Groups.FirstOrDefault(g => g.Name.Equals(nameof(UserGroups.Banned)));
             bannedGroup.GroupedUsers = new ObservableCollection<UserModel>(CurrentChatGroup.Users
@@ -258,13 +260,15 @@ namespace ChatClient.ViewModels
                 UsersCollectionView.Refresh();
             }
             catch (Exception)
-            {            }
-            
+            { }
+
         }
 
-        private void ChatService_UserListReceived(ObservableCollection<UserModel> allUsers)
+        private void ChatService_UserListReceived(string allUsers)
         {
-            AllUsers = allUsers;
+            int selectedIndex = SelectedUserIndex;
+            AllUsers = JsonConvert.DeserializeObject<ObservableCollection<UserModel>>(allUsers);
+            SelectedUserIndex = selectedIndex;
 
             if (FilterUsersCollectionView == null)
             {
@@ -277,7 +281,7 @@ namespace ChatClient.ViewModels
                 FilterUsersCollectionView.Refresh();
             }
             catch
-            {}
+            { }
         }
 
         private async void ChatService_ReceivedBan(BanStatusModel model)
@@ -362,10 +366,6 @@ namespace ChatClient.ViewModels
             {
                 _allUsers = value;
                 OnPropertyChanged();
-                //if (FilterUsersCollectionView != null)
-                //{
-                //    FilterUsersCollectionView.Refresh();
-                //}
             }
         }
 
@@ -479,6 +479,16 @@ namespace ChatClient.ViewModels
             }
         }
 
+        public bool NeedToUpdateMessagesCount
+        {
+            get => _needToUpdateMessagesCount;
+            set
+            {
+                _needToUpdateMessagesCount = value;
+                OnPropertyChanged();
+            }
+        }
+
         public string UsernameSettingsField
         {
             get => _usernameSettingsText;
@@ -535,19 +545,6 @@ namespace ChatClient.ViewModels
             get => _selectedUserIndex;
             set
             {
-                    Window window = Application.Current.MainWindow;
-
-                    if (value == -1)
-                    {
-                    //window.MinWidth = 260;
-                    //window.Width = 260;
-                    }
-                    else
-                    {
-                    //window.MinWidth = 470;
-                    //window.Width = 550;
-                    }
-
                 _selectedUserIndex = value;
                 OnPropertyChanged();
             }

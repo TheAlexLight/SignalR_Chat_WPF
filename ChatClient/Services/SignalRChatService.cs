@@ -25,7 +25,7 @@ namespace ChatClient.Services
         public event Action<bool, string> ReceiveRegistrationResult;
         public event Action<bool> ReceiveLoginResult;
         public event Action<UserModel> CurrentUserReceived;
-        public event Action<ObservableCollection<UserModel>> UserListReceived;
+        public event Action<string> UserListReceived;
         public event Action<string> CurrentGroupReceived;
         //public event Action<MessageModel> MessageReceived;
         public event Action ReceivedKick;
@@ -47,7 +47,7 @@ namespace ChatClient.Services
         {
             Connection.On<bool, string>("ReceiveRegistrationResult", (result, error) => ReceiveRegistrationResult?.Invoke(result, error));
             Connection.On<bool>("ReceiveLoginResult", (result) => ReceiveLoginResult?.Invoke(result));
-            Connection.On<ObservableCollection<UserModel>>("ReceiveUserList", (activeUsers) => UserListReceived?.Invoke(activeUsers));
+            Connection.On<string>("ReceiveUserList", (activeUsers) => UserListReceived?.Invoke(activeUsers));
             Connection.On<string>("ReceiveCurrentGroup", (group) => CurrentGroupReceived?.Invoke(group));
             Connection.On<UserModel>("ReceiveCurrentUser", (currentUser) => CurrentUserReceived?.Invoke(currentUser));
             //Connection.On<MessageModel>("ReceiveMessage", (messageModel) => MessageReceived?.Invoke(messageModel));

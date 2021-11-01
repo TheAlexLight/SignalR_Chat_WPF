@@ -52,8 +52,6 @@ namespace ChatClient.Commands
                     await _chatService.SendMessage(model, _viewModel.CurrentChatGroup, null, _viewModel.CurrentUser);
                 }
 
-                
-
                 _viewModel.ErrorMessage = string.Empty;
                 _viewModel.Message = "";
             }
@@ -62,6 +60,9 @@ namespace ChatClient.Commands
                 _viewModel.ErrorMessage = "Unable to send message.";
                 _viewModel.Message = "";
             }
+
+            _viewModel.NeedToUpdateMessagesCount = true;
+            _viewModel.NeedToUpdateMessagesCount = false;
         }
     }
 }
