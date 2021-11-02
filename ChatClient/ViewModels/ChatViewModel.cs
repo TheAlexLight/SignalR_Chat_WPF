@@ -278,7 +278,7 @@ namespace ChatClient.ViewModels
 
         private void ChatService_UserListReceived(List<UserModel> allUsers)
         {
-            if (AllUsers.Count != 0)
+            if (AllUsers.Count != 0 && SelectedUserIndex != -1)
             {
                 _temporarySelectedItem = AllUsers[SelectedUserIndex];
             }

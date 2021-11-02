@@ -148,6 +148,11 @@ namespace ChatServer.Hubs
             UserHandler userHandler = Account.Users.FirstOrDefault(a => a.ConnectedIds == Context.ConnectionId);
             userHandler.ConnectedUsername = username;
 
+            UserProfileModel user = await _dbContext.UserProfiles
+                    .FirstOrDefaultAsync(u => u.Username == username);
+
+            user.IsOnline = true;
+
             await UpdateChat(userHandler);
         }
 

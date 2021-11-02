@@ -91,7 +91,7 @@ namespace ChatClient.ViewModels
             if (ReconnectionCommand != null)
             {
                 ReconnectionCommand.RaiseCanExecuteChanged();
-            } 
+            }
 
             return Task.CompletedTask;
         }

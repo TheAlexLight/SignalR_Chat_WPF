@@ -21,7 +21,9 @@ namespace ChatClient.Converters
             UserModel currentUser = values[1] as UserModel;
             UserModel selectedUser = values[0] as UserModel;
 
-            if (selectedUser.Groups != null)
+            if (selectedUser.Groups != null 
+                    && currentUser != null
+                    && selectedUser != null)
             {
                 var e = selectedUser.Groups.FirstOrDefault(u => u.Name == ChatType.Private
                 && u.Users.Any(u => u.UserProfile.Username == currentUser.UserProfile.Username));

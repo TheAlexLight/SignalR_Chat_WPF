@@ -159,7 +159,7 @@
 
     <Style x:Key="reconnectionButton" TargetType="{x:Type Button}" BasedOn="{StaticResource submitButton}">
         <Setter Property="Template" Value="{StaticResource authorizationControlTemplate}"/>
-        <Setter Property="Template">
+        <!--<Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type Button}">
                     <Border x:Name="insideBorder" BorderBrush="#6D4F02" Background="{StaticResource registrationBasicColors}" 
@@ -187,7 +187,7 @@
             <DataTrigger Binding="{Binding IsLoading}" Value="True">
                 <Setter Property="IsEnabled" Value="False"/>
             </DataTrigger>
-        </Style.Triggers>
+        </Style.Triggers>-->
     </Style>
 
     <Style x:Key="sendMessage" TargetType="{x:Type Button}" BasedOn="{StaticResource submitButton}">

@@ -40,15 +40,19 @@ namespace ChatClient.Commands.AuthenticationCommands
 
             if (await _viewModel.ConnectToServer(_viewModel) != HubConnectionState.Disconnected)
             {
-                await _viewModel.ChatService.Reconnect(_currentUser.UserProfile.Username);
+                string username = _currentUser == null && _viewModel is ChatViewModel chatViewModel
+                ? chatViewModel.CurrentUser.UserProfile.Username
+                : _currentUser.UserProfile.Username;
+
+                await _viewModel.ChatService.Reconnect(username);
 
                 if (parameter is BanStatusModel banStatus)
                 {
-                    await _viewModel.ChatService.SendBan(_currentUser.UserProfile.Username, banStatus);
+                    await _viewModel.ChatService.SendBan(username, banStatus);
                 }
-            }
 
-            _navigationCommand.Execute(null);
+                _navigationCommand.Execute(null);
+            }
 
             _viewModel.IsLoading = false;
             RaiseCanExecuteChanged();

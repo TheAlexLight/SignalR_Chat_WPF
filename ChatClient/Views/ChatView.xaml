@@ -168,7 +168,6 @@
         <Grid Grid.ColumnSpan="3" Style="{StaticResource getBannedLayout}"/>
 
         <additionalViews:ConnectionLostView Grid.ColumnSpan="3"
-                                           Visibility="Collapsed"
                                             Style="{StaticResource connectionLost}"/>
         <additionalViews:PrivateChatView Grid.Column="1" 
                                          Grid.ColumnSpan="2"
