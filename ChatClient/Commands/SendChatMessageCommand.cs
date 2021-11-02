@@ -13,12 +13,12 @@ using System.Windows.Input;
 
 namespace ChatClient.Commands
 {
-    public class SendChatCommand : CommandBase
+    public class SendChatMessageCommand : CommandBase
     {
         private readonly ChatViewModel _viewModel;
         private readonly ISignalRChatService _chatService;
 
-        public SendChatCommand(ChatViewModel viewModel, ISignalRChatService chatService)
+        public SendChatMessageCommand(ChatViewModel viewModel, ISignalRChatService chatService)
         {
             _viewModel = viewModel;
             _chatService = chatService;
@@ -33,11 +33,11 @@ namespace ChatClient.Commands
                     Sender = _viewModel.CurrentUser.UserProfile.Username,
                     Message = _viewModel.Message.Trim(),
                     Time = DateTime.Now,
-                    UserModel = _viewModel.CurrentUser,
+                    //UserModel = _viewModel.CurrentUser,
                     UserModelId = _viewModel.CurrentUser.Id,
                     ChatGroupModel = _viewModel.CurrentChatGroup,
                     ChatGroupModelId = _viewModel.CurrentChatGroup.Id,
-                    CheckStatus = MessageStatus.Received
+                    CheckStatus = MessageStatus.Received,
                 };
 
                 if (_viewModel.CurrentChatGroup.Name == ChatType.Private)
@@ -62,7 +62,6 @@ namespace ChatClient.Commands
             }
 
             _viewModel.NeedToUpdateMessagesCount = true;
-            _viewModel.NeedToUpdateMessagesCount = false;
         }
     }
 }

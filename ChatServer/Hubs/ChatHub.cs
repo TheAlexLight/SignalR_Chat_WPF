@@ -177,20 +177,18 @@ namespace ChatServer.Hubs
 
             group ??= await _groupsHelper.AddUsersToPrivateGroup(_dbContext, currentUser.UserProfile.Username, selectedUser.UserProfile.Username);
 
-            //var watch = System.Diagnostics.Stopwatch.StartNew();
-
-            //// the code that you want to measure comes here
-            //watch.Stop();
-            //var elapsedMs = watch.ElapsedMilliseconds;
-            //Trace.WriteLine(elapsedMs);
-
             UserHandler userHandler = Account.Users.FirstOrDefault(a => a.ConnectedIds == Context.ConnectionId);
             userHandler.ConnectedUsername = currentUser.UserProfile.Username;
             await SendCurrentUser(userHandler);
 
             await Clients.Caller.SendAsync("ReceiveCurrentGroup", group);
 
-            
+            //var watch = System.Diagnostics.Stopwatch.StartNew();
+
+            //// the code that you want to measure comes here
+            //watch.Stop();
+            //var elapsedMs = watch.ElapsedMilliseconds;
+            //Trace.WriteLine(elapsedMs);
         }
 
         private async Task UpdateChat(UserHandler userHandler)
@@ -223,7 +221,7 @@ namespace ChatServer.Hubs
         public async Task SendMessage(MessageModel message, ChatGroupModel currentGroup, UserModel selectedUser, UserModel currentUser)
         {
             ChatGroupModel group;
-            message.UserModel = currentUser;
+            //message.UserModel = currentUser;
 
             if (currentGroup.Name == ChatType.Public)
             {
@@ -239,7 +237,7 @@ namespace ChatServer.Hubs
 
             if (group != null)
             {
-                message.IsFirstMessage = FirstMessageModel.CheckMessage(message.UserModel.UserProfile.Username);
+                //message.IsFirstMessage = FirstMessageModel.CheckMessage(message.UserModel.UserProfile.Username);
                 group.Messages.Add(message);
 
                 await _dbContext.SaveChangesAsync();

@@ -2,6 +2,7 @@
 using SharedItems.Models;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -26,7 +27,8 @@ namespace ChatClient.Extensions
         }
 
         private static void MessagesChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
+        {   
+
             if (d is ScrollViewerExtension scroll && !scroll._messagesHandled)
             {
                 if (scroll.MessageCollection != null && scroll.MessageCollection.Count != 0)
@@ -67,7 +69,7 @@ namespace ChatClient.Extensions
                 ScrollToVerticalOffset(ExtentHeight);
             }
 
-            base.OnScrollChanged(e);
+            base.OnScrollChanged(e); 
         }
 
         public List<MessageModel> MessageCollection

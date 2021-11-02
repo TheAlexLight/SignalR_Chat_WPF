@@ -15,6 +15,7 @@ using SharedItems.Models.StatusModels;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
@@ -64,6 +65,8 @@ namespace ChatClient.ViewModels
         private UserModel _selectedUser; 
         private MuteStatusModel _muteStatus;
         private ChatGroupModel _currentChatGroup;
+        private UserModel _temporarySelectedItem = null;
+        private object _selectedItem;
         private int _selectedUserIndex;
         private bool _isUserInfoOpened;
         private bool _isSettingsOpened;
@@ -115,7 +118,7 @@ namespace ChatClient.ViewModels
 
         private void InitializeFields(ISignalRChatService chatService)
         {
-            SendChatMessageCommand = new SendChatCommand(this, chatService);
+            SendChatMessageCommand = new SendChatMessageCommand(this, chatService);
             ReconnectionCommand = new ReconnectionCommand(this, CurrentUser);
             BanUserCommand = new BanUserCommand(this);
             KickUserCommand = new KickUserCommand(this);
@@ -241,30 +244,45 @@ namespace ChatClient.ViewModels
 
         private void ChatService_CurrentGroupReceived(ChatGroupModel currentGroup)
         {
-            CurrentChatGroup =  currentGroup;
-
-            Group bannedGroup = Groups.FirstOrDefault(g => g.Name.Equals(nameof(UserGroups.Banned)));
-            bannedGroup.GroupedUsers = new ObservableCollection<UserModel>(CurrentChatGroup.Users
-                    .Where(u => u.UserStatus.BanStatus.IsBanned).ToList());
-
-            Group onlineGroup = Groups.FirstOrDefault(g => g.Name.Equals(nameof(UserGroups.Online)));
-            onlineGroup.GroupedUsers = new ObservableCollection<UserModel>(CurrentChatGroup.Users
-                    .Where(u => u.UserProfile.IsOnline).Except(bannedGroup.GroupedUsers).ToList());
-
-            Group offlineGroup = Groups.FirstOrDefault(g => g.Name.Equals(nameof(UserGroups.Offline)));
-            offlineGroup.GroupedUsers = new ObservableCollection<UserModel>(CurrentChatGroup.Users
-                    .Except(bannedGroup.GroupedUsers).Except(onlineGroup.GroupedUsers).ToList());
-
-            try
+            if (currentGroup.Name == CurrentChatType)
             {
-                UsersCollectionView.Refresh();
+                var watch = System.Diagnostics.Stopwatch.StartNew();
+
+                CurrentChatGroup = currentGroup;
+
+                Group bannedGroup = Groups.FirstOrDefault(g => g.Name.Equals(nameof(UserGroups.Banned)));
+                bannedGroup.GroupedUsers = new ObservableCollection<UserModel>(CurrentChatGroup.Users
+                        .Where(u => u.UserStatus.BanStatus.IsBanned).ToList());
+
+                Group onlineGroup = Groups.FirstOrDefault(g => g.Name.Equals(nameof(UserGroups.Online)));
+                onlineGroup.GroupedUsers = new ObservableCollection<UserModel>(CurrentChatGroup.Users
+                        .Where(u => u.UserProfile.IsOnline).Except(bannedGroup.GroupedUsers).ToList());
+
+                Group offlineGroup = Groups.FirstOrDefault(g => g.Name.Equals(nameof(UserGroups.Offline)));
+                offlineGroup.GroupedUsers = new ObservableCollection<UserModel>(CurrentChatGroup.Users
+                        .Except(bannedGroup.GroupedUsers).Except(onlineGroup.GroupedUsers).ToList());
+
+                try
+                {
+                    UsersCollectionView.Refresh();
+                }
+                catch (Exception)
+                { }
+
+                // the code that you want to measure comes here
+                watch.Stop();
+                var elapsedMs = watch.ElapsedMilliseconds;
+                Trace.WriteLine(elapsedMs);
             }
-            catch (Exception)
-            { }
         }
 
         private void ChatService_UserListReceived(List<UserModel> allUsers)
         {
+            if (AllUsers.Count != 0)
+            {
+                _temporarySelectedItem = AllUsers[SelectedUserIndex];
+            }
+
             AllUsers = new ObservableCollection<UserModel>(allUsers);
 
             if (FilterUsersCollectionView == null)
@@ -506,6 +524,25 @@ namespace ChatClient.ViewModels
             }
         }
 
+        public object SelectedItem
+        {
+            get => _selectedItem;
+            set
+            {
+                if (value == null && _temporarySelectedItem != null)
+                {
+                    _selectedItem = _temporarySelectedItem;
+                    _temporarySelectedItem = null;
+                }
+                else
+                {
+                    _selectedItem = value;
+                }
+
+                OnPropertyChanged();
+            }
+        }
+
         public string Password
         {
             get => _password;
@@ -555,8 +592,10 @@ namespace ChatClient.ViewModels
                 if (CanCloseChat || value != -1)
                 {
                     _selectedUserIndex = value;
-                    OnPropertyChanged();
                 }
+
+                OnPropertyChanged();
+                OnPropertyChanged(nameof(AllUsers));
             }
         }
     }

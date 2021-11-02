@@ -206,6 +206,7 @@
         <Setter Property="Focusable" Value="False"/>
         <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Disabled"/>
         <Setter Property="SelectedIndex" Value="{Binding SelectedUserIndex}"/>
+        <Setter Property="SelectedItem" Value="{Binding SelectedItem, Mode=TwoWay}"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate>
