@@ -14,7 +14,9 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
+
 
 namespace ChatClient.Services
 {
@@ -25,8 +27,8 @@ namespace ChatClient.Services
         public event Action<bool, string> ReceiveRegistrationResult;
         public event Action<bool> ReceiveLoginResult;
         public event Action<UserModel> CurrentUserReceived;
-        public event Action<string> UserListReceived;
-        public event Action<string> CurrentGroupReceived;
+        public event Action<List<UserModel>> UserListReceived;
+        public event Action<ChatGroupModel> CurrentGroupReceived;
         //public event Action<MessageModel> MessageReceived;
         public event Action ReceivedKick;
         public event Action<BanStatusModel> ReceivedBan;
@@ -36,9 +38,14 @@ namespace ChatClient.Services
         public SignalRChatService(HubConnectionBuilder connectionBuilder)
         {
             Connection = connectionBuilder
+                .AddJsonProtocol(options =>
+                {
+                    options.PayloadSerializerOptions.MaxDepth = 64;
+                    options.PayloadSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve;
+                })
                     .WithUrl("http://localhost:5000/chat")
                     .WithAutomaticReconnect()
-                    .Build(); ;
+                    .Build();
 
             GetChatHubMessagesInvoke();
         }
@@ -47,8 +54,8 @@ namespace ChatClient.Services
         {
             Connection.On<bool, string>("ReceiveRegistrationResult", (result, error) => ReceiveRegistrationResult?.Invoke(result, error));
             Connection.On<bool>("ReceiveLoginResult", (result) => ReceiveLoginResult?.Invoke(result));
-            Connection.On<string>("ReceiveUserList", (activeUsers) => UserListReceived?.Invoke(activeUsers));
-            Connection.On<string>("ReceiveCurrentGroup", (group) => CurrentGroupReceived?.Invoke(group));
+            Connection.On<List<UserModel>>("ReceiveUserList", (users) => UserListReceived?.Invoke(users));
+            Connection.On<ChatGroupModel>("ReceiveCurrentGroup", (group) => CurrentGroupReceived?.Invoke(group));
             Connection.On<UserModel>("ReceiveCurrentUser", (currentUser) => CurrentUserReceived?.Invoke(currentUser));
             //Connection.On<MessageModel>("ReceiveMessage", (messageModel) => MessageReceived?.Invoke(messageModel));
             Connection.On<BanStatusModel>("ReceiveBan", (model) => ReceivedBan?.Invoke(model));
@@ -69,8 +76,7 @@ namespace ChatClient.Services
 
         public async Task SendMessage(MessageModel message, ChatGroupModel currentGroup, UserModel selectedUser, UserModel currentUser)
         {
-            string messageJsonString = JsonConvert.SerializeObject(message);
-            await Connection.SendAsync("SendMessage", messageJsonString, currentGroup, selectedUser, currentUser);
+            await Connection.SendAsync("SendMessage", message, currentGroup, selectedUser, currentUser);
         }
 
         public async Task UpdateMessage(MessageModel message, ChatGroupModel currentGroup)
@@ -109,7 +115,7 @@ namespace ChatClient.Services
         }
         public async Task UpdatePrivateMessages(UserModel selectedUser, UserModel currentUser)
         {
-            await Connection.SendAsync("SendUpdatePrivateMEssages", selectedUser, currentUser);
+            await Connection.SendAsync("SendUpdatePrivateMessages", selectedUser, currentUser);
         }
 
         public async Task ChangePhoto(UserModel currentUser, byte[] photo)

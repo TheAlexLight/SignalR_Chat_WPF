@@ -16,6 +16,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -68,6 +69,7 @@ namespace ChatClient.ViewModels
         private bool _isSettingsOpened;
         private bool _needToClearPassword;
         private bool _needToUpdateMessagesCount;
+        private bool _canCloseChat;
         private string _password;
         private string _passwordConfirm;
         private GridLength _usersColumnWidth;
@@ -237,11 +239,9 @@ namespace ChatClient.ViewModels
                 CurrentUser = currentUser; 
         }
 
-        private void ChatService_CurrentGroupReceived(string currentGroup)
+        private void ChatService_CurrentGroupReceived(ChatGroupModel currentGroup)
         {
-            ChatGroupModel group = JsonConvert.DeserializeObject<ChatGroupModel>(currentGroup);
-
-            CurrentChatGroup =  group;
+            CurrentChatGroup =  currentGroup;
 
             Group bannedGroup = Groups.FirstOrDefault(g => g.Name.Equals(nameof(UserGroups.Banned)));
             bannedGroup.GroupedUsers = new ObservableCollection<UserModel>(CurrentChatGroup.Users
@@ -261,14 +261,11 @@ namespace ChatClient.ViewModels
             }
             catch (Exception)
             { }
-
         }
 
-        private void ChatService_UserListReceived(string allUsers)
+        private void ChatService_UserListReceived(List<UserModel> allUsers)
         {
-            int selectedIndex = SelectedUserIndex;
-            AllUsers = JsonConvert.DeserializeObject<ObservableCollection<UserModel>>(allUsers);
-            SelectedUserIndex = selectedIndex;
+            AllUsers = new ObservableCollection<UserModel>(allUsers);
 
             if (FilterUsersCollectionView == null)
             {
@@ -479,6 +476,16 @@ namespace ChatClient.ViewModels
             }
         }
 
+        public bool CanCloseChat
+        {
+            get => _canCloseChat;
+            set
+            {
+                _canCloseChat = value;
+                OnPropertyChanged();
+            }
+        }
+
         public bool NeedToUpdateMessagesCount
         {
             get => _needToUpdateMessagesCount;
@@ -545,8 +552,11 @@ namespace ChatClient.ViewModels
             get => _selectedUserIndex;
             set
             {
-                _selectedUserIndex = value;
-                OnPropertyChanged();
+                if (CanCloseChat || value != -1)
+                {
+                    _selectedUserIndex = value;
+                    OnPropertyChanged();
+                }
             }
         }
     }

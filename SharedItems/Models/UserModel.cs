@@ -17,7 +17,6 @@ namespace SharedItems.Models
         public virtual UserProfileModel UserProfile { get; set; }
         public virtual UserStatusModel UserStatus { get; set; }
 
-        [JsonIgnore]
         public virtual ICollection<ChatGroupModel> Groups { get; set; }
     }
 }

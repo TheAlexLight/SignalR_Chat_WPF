@@ -27,14 +27,14 @@ namespace ChatServer
         }
         public void ConfigureServices(IServiceCollection services)
         {
-            
+
 
             services.AddDbContext<ApplicationContext>(options =>
                     options
                     .UseSqlServer(Configuration.GetConnectionString("DefaultConnection"))
                     .UseLazyLoadingProxies());
 
-            services.AddIdentity<User, IdentityRole>(opts=> 
+            services.AddIdentity<User, IdentityRole>(opts =>
             {
                 opts.User.RequireUniqueEmail = true;
                 opts.Password.RequiredLength = 6;
@@ -47,18 +47,18 @@ namespace ChatServer
             services.AddSignalR(options =>
             {
                 options.MaximumReceiveMessageSize = null;
-            });
-                //.AddJsonProtocol(options =>
+            })
+                .AddJsonProtocol(options =>
+                {
+                    options.PayloadSerializerOptions.MaxDepth = 64;
+                    options.PayloadSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve;
+                });
+                //.AddMessagePackProtocol(options =>
                 //{
-                //    options.PayloadSerializerOptions.MaxDepth = 64;
-                //    //options.PayloadSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve;
+                //options.SerializerOptions = MessagePackSerializerOptions.Standard
+                //    .WithResolver(MessagePack.Resolvers.StandardResolver.Instance)
+                //    .WithSecurity(MessagePackSecurity.UntrustedData);
                 //});
-            //    .AddMessagePackProtocol(options=> 
-            //{
-            //    options.SerializerOptions = MessagePackSerializerOptions.Standard
-            //        .WithResolver(MessagePack.Resolvers.StandardResolver.Instance)
-            //        .WithSecurity(MessagePackSecurity.UntrustedData);
-            //});
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

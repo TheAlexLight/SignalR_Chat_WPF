@@ -21,7 +21,6 @@ namespace SharedItems.Models
 
         public int Id { get; set; }
         public ChatType Name { get; set; }
-        [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public virtual ICollection<UserModel> Users { get; set; }
         
         public virtual ICollection<MessageModel> Messages { get; set; }

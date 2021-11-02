@@ -16,27 +16,27 @@ namespace ChatClient.Converters
     {
         public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
         {
-            var a = values[0] as UserModel;
-            var d = values[1] as UserModel;
-            //var e = a.Groups.FirstOrDefault(u => u.Name == ChatType.Private 
-            //    && u.Users.Any(u=>u.UserProfile.Username == d.UserProfile.Username));
-            ////ChatGroupModel b = a.Groups.FirstOrDefault(g => g.Name == ChatType.Private);
-            ////int c = b.Messages.Where(m => m.Sender != a.UserProfile.Username && m.CheckStatus != MessageStatus.Read).Count();
-
             string result = string.Empty;
 
-            //if (e != null)
-            //{
-            //    int count = e.Messages.Where(m => m.Sender != d.UserProfile.Username
-            //        && m.CheckStatus != MessageStatus.Read).Count();
+            UserModel currentUser = values[1] as UserModel;
+            UserModel selectedUser = values[0] as UserModel;
 
-            //    if (count != 0)
-            //    {
-            //        result = count.ToString();
-            //    }
+            if (selectedUser.Groups != null)
+            {
+                var e = selectedUser.Groups.FirstOrDefault(u => u.Name == ChatType.Private
+                && u.Users.Any(u => u.UserProfile.Username == currentUser.UserProfile.Username));
 
-            //    //result = e.Messages.Count.ToString();
-            //}
+                if (e != null)
+                {
+                    int count = e.Messages.Where(m => m.Sender != currentUser.UserProfile.Username
+                        && m.CheckStatus != MessageStatus.Read).Count();
+
+                    if (count != 0)
+                    {
+                        result = count.ToString();
+                    }
+                }
+            }
 
             return result;
             //return c.ToString();

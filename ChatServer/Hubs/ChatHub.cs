@@ -15,6 +15,10 @@ using SharedItems.Models.StatusModels;
 using SharedItems.Enums;
 using Newtonsoft.Json;
 using SharedItems.ViewModels;
+using System.Diagnostics;
+using System.IO;
+using System.Runtime.Serialization;
+using System.Runtime.Serialization.Formatters.Binary;
 
 namespace ChatServer.Hubs
 {
@@ -26,6 +30,7 @@ namespace ChatServer.Hubs
         private readonly AccountController _account;
         private readonly RoleController _roleController;
         private readonly AuthorizationHelper _authorizationHelper;
+        private readonly GroupsHelper _groupsHelper;
 
         public ChatHub(UserManager<User> userManager, RoleManager<IdentityRole> roleManager, ApplicationContext dbContext)
         {
@@ -36,6 +41,7 @@ namespace ChatServer.Hubs
             _account = new AccountController(_userManager, _dbContext);
             _roleController = new RoleController(_roleManager, _userManager);
             _authorizationHelper = new();
+            _groupsHelper = new();
         }
 
         public async Task SendRegistration(UserRegistrationModel model)
@@ -134,10 +140,7 @@ namespace ChatServer.Hubs
 
             await _dbContext.SaveChangesAsync();
 
-            string serializedGroup = JsonConvert.SerializeObject(group, Formatting.None,
-                new JsonSerializerSettings { ReferenceLoopHandling = ReferenceLoopHandling.Ignore });
-
-            await Clients.All.SendAsync("ReceiveCurrentGroup", serializedGroup);
+            await Clients.All.SendAsync("ReceiveCurrentGroup", group);
         }
 
         public async Task SendReconnection(string username)
@@ -162,57 +165,38 @@ namespace ChatServer.Hubs
                 group = new ChatGroupModel();
             }
 
-            string serializedGroup = JsonConvert.SerializeObject(group, Formatting.None,
-                new JsonSerializerSettings { ReferenceLoopHandling = ReferenceLoopHandling.Ignore });
-
-
-            await Clients.Caller.SendAsync("ReceiveCurrentGroup", serializedGroup);
+            await Clients.Caller.SendAsync("ReceiveCurrentGroup", group);
         }
 
         public async Task SendUpdatePrivateMessages(UserModel selectedUser, UserModel currentUser)
         {
-            ChatGroupModel group = _dbContext.Groups
-                    .FirstOrDefault(g => g.Name == ChatType.Private
+            ChatGroupModel group = await _dbContext.Groups
+                    .FirstOrDefaultAsync(g => g.Name == ChatType.Private
                         && g.Users.Contains(selectedUser)
                         && g.Users.Contains(currentUser));
 
-            if (group == null)
-            {
-                group = new ChatGroupModel()
-                {
-                    Name = ChatType.Private
-                };
+            group ??= await _groupsHelper.AddUsersToPrivateGroup(_dbContext, currentUser.UserProfile.Username, selectedUser.UserProfile.Username);
 
-                group.Users = new List<UserModel>();
+            //var watch = System.Diagnostics.Stopwatch.StartNew();
 
-                group.Users.Add(_dbContext.UserModels
-                        .FirstOrDefault(u => u.UserProfile.Username
-                            == selectedUser.UserProfile.Username));
-                group.Users.Add(_dbContext.UserModels
-                        .FirstOrDefault(u => u.UserProfile.Username
-                            == currentUser.UserProfile.Username));
-                //group.Users.Add(currentUser);
-
-                _dbContext.Groups.Add(group);
-                int result = await _dbContext.SaveChangesAsync();
-            }
-
-            string serializedGroup = JsonConvert.SerializeObject(group, Formatting.None,
-                new JsonSerializerSettings { ReferenceLoopHandling = ReferenceLoopHandling.Ignore });
+            //// the code that you want to measure comes here
+            //watch.Stop();
+            //var elapsedMs = watch.ElapsedMilliseconds;
+            //Trace.WriteLine(elapsedMs);
 
             UserHandler userHandler = Account.Users.FirstOrDefault(a => a.ConnectedIds == Context.ConnectionId);
             userHandler.ConnectedUsername = currentUser.UserProfile.Username;
-            //await UpdateChat(userHandler);
             await SendCurrentUser(userHandler);
 
-            await Clients.Caller.SendAsync("ReceiveCurrentGroup", serializedGroup);
+            await Clients.Caller.SendAsync("ReceiveCurrentGroup", group);
+
+            
         }
 
         private async Task UpdateChat(UserHandler userHandler)
         {
             await SendCurrentUser(userHandler);
             await SendUserList();
-            //await SendSavedMessages();
         }
 
         public async Task SendCurrentUser(UserHandler userHandler)
@@ -229,22 +213,17 @@ namespace ChatServer.Hubs
             await Clients.Client(userHandler.ConnectedIds).SendAsync("ReceiveCurrentUser", user.UserModel);
         }
 
-
         public async Task SendUserList()
         {
             List<UserModel> users = _dbContext.UserModels.ToList();
 
-            string users2 = JsonConvert.SerializeObject(users, Formatting.None,
-                new JsonSerializerSettings { ReferenceLoopHandling = ReferenceLoopHandling.Ignore });
-
-            await Clients.All.SendAsync("ReceiveUserList", users2);
+            await Clients.All.SendAsync("ReceiveUserList", users);
         }
 
-        public async Task SendMessage(string message, ChatGroupModel currentGroup, UserModel selectedUser, UserModel currentUser)
+        public async Task SendMessage(MessageModel message, ChatGroupModel currentGroup, UserModel selectedUser, UserModel currentUser)
         {
             ChatGroupModel group;
-            MessageModel messageModel = JsonConvert.DeserializeObject<MessageModel>(message);
-            messageModel.UserModel = currentUser;
+            message.UserModel = currentUser;
 
             if (currentGroup.Name == ChatType.Public)
             {
@@ -260,10 +239,14 @@ namespace ChatServer.Hubs
 
             if (group != null)
             {
-                messageModel.IsFirstMessage = FirstMessageModel.CheckMessage(messageModel.UserModel.UserProfile.Username);
-                group.Messages.Add(messageModel);
+                message.IsFirstMessage = FirstMessageModel.CheckMessage(message.UserModel.UserProfile.Username);
+                group.Messages.Add(message);
 
                 await _dbContext.SaveChangesAsync();
+
+                UserHandler userHandler = Account.Users.FirstOrDefault(a => a.ConnectedIds == Context.ConnectionId);
+                userHandler.ConnectedUsername = currentUser.UserProfile.Username;
+                await UpdateChat(userHandler);
 
                 await SendConcreteGroup(currentGroup.Name, group);
             }
@@ -388,12 +371,9 @@ namespace ChatServer.Hubs
 
         private async Task SendConcreteGroup(ChatType groupName, ChatGroupModel group)
         {
-            string serializedGroup = JsonConvert.SerializeObject(group, Formatting.None,
-            new JsonSerializerSettings { ReferenceLoopHandling = ReferenceLoopHandling.Ignore });
-
             if (groupName == ChatType.Public)
             {
-                await Clients.All.SendAsync("ReceiveCurrentGroup", serializedGroup);
+                await Clients.All.SendAsync("ReceiveCurrentGroup", group);
             }
             else
             {
@@ -402,7 +382,7 @@ namespace ChatServer.Hubs
                     UserHandler userHandler = Account.Users.FirstOrDefault(u => u.ConnectedUsername == user.UserProfile.Username);
                     if (userHandler != null)
                     {
-                        await Clients.Client(userHandler.ConnectedIds).SendAsync("ReceiveCurrentGroup", serializedGroup);
+                        await Clients.Client(userHandler.ConnectedIds).SendAsync("ReceiveCurrentGroup", group);
                     }
                 }
             }

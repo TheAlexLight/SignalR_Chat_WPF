@@ -26,6 +26,7 @@ namespace ChatClient.Commands
             {
                 _viewModel.CurrentChatType = currentChatType;
                 _viewModel.Message = string.Empty;
+                _viewModel.CanCloseChat = true;
 
                 if (currentChatType == ChatType.Private)
                 {
@@ -41,6 +42,7 @@ namespace ChatClient.Commands
                 }
 
                 _viewModel.ChatService.SwitchChat(currentChatType);
+                _viewModel.CanCloseChat = false;
 
                 Thread.Sleep(100);
             }
