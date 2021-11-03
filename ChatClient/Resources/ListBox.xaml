@@ -288,6 +288,7 @@
         <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto"/>
         <Setter Property="Background" Value="{StaticResource mainMessageBoxColors}"/>
         <Setter Property="BorderThickness" Value="0,1,0,1"/>
+        <Setter Property="VirtualizingPanel.ScrollUnit" Value="Pixel"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate>
@@ -296,10 +297,9 @@
                                                       Background="{StaticResource mainMessageBoxColors}"
                                                       HorizontalScrollBarVisibility="Disabled"
                                                       Template="{StaticResource scrollViewerControlTemplate}"
-                                                      x:Name="scroll">
-                        <Border>
-                            <ItemsPresenter/>
-                        </Border>
+                                                      x:Name="scroll"
+                                                      CanContentScroll="True">
+                        <ItemsPresenter/>
                     </extensions:ScrollViewerExtension>
                 </ControlTemplate>
             </Setter.Value>

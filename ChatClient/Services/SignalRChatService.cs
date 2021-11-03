@@ -118,6 +118,11 @@ namespace ChatClient.Services
             await Connection.SendAsync("SendUpdatePrivateMessages", selectedUser, currentUser);
         }
 
+        public async Task UpdateMessage(MessageModel message)
+        {
+            await Connection.SendAsync("UpdateMessage", message);
+        }
+
         public async Task ChangePhoto(UserModel currentUser, byte[] photo)
         {
             await Connection.SendAsync("SendChangePhoto", currentUser, photo);

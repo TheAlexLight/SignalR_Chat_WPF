@@ -130,7 +130,7 @@ namespace ChatClient.ViewModels
             OpenSettingsCommand = new OpenSettingsCommand(this);
             ChangePhotoCommand = new ChangePhotoCommand(this);
             MessageReadCommand = new MessageReadCommand(this);
-            MessageLoadedCommand = new MessageLoadedCommand();
+            MessageLoadedCommand = new MessageLoadedCommand(this);
             ChangeUserSettingsCommand = new ChangeUserSettingsCommand(this);
             ChangeUsernameCommand = new ChangeUsernameCommand(this);
             ChangePasswordCommand = new ChangePasswordCommand(this);

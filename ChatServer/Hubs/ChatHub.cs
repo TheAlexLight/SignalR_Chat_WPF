@@ -153,6 +153,8 @@ namespace ChatServer.Hubs
 
             user.IsOnline = true;
 
+            await _dbContext.SaveChangesAsync();
+
             await UpdateChat(userHandler);
         }
 
@@ -187,13 +189,16 @@ namespace ChatServer.Hubs
             await SendCurrentUser(userHandler);
 
             await Clients.Caller.SendAsync("ReceiveCurrentGroup", group);
+        }
 
-            //var watch = System.Diagnostics.Stopwatch.StartNew();
+        public async Task UpdateMessage(MessageModel message)
+        {
+            MessageModel dbMessage = await _dbContext.Messages
+                     .FirstOrDefaultAsync(m => m.Id == message.Id);
 
-            //// the code that you want to measure comes here
-            //watch.Stop();
-            //var elapsedMs = watch.ElapsedMilliseconds;
-            //Trace.WriteLine(elapsedMs);
+            dbMessage.MessageHeight = message.MessageHeight;
+
+            await _dbContext.SaveChangesAsync();
         }
 
         private async Task UpdateChat(UserHandler userHandler)

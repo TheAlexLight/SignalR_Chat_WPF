@@ -28,7 +28,6 @@ namespace ChatClient.Extensions
 
         private static void MessagesChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {   
-
             if (d is ScrollViewerExtension scroll && !scroll._messagesHandled)
             {
                 if (scroll.MessageCollection != null && scroll.MessageCollection.Count != 0)
