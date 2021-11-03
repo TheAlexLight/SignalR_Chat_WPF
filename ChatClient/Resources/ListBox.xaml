@@ -336,6 +336,21 @@
                                     </i:InvokeCommandAction.CommandParameter>
                                 </i:InvokeCommandAction>
                             </i:EventTrigger>
+                            <i:EventTrigger  EventName="Loaded"
+                                             SourceObject="{Binding RelativeSource={RelativeSource AncestorType={x:Type extensions:ScrollViewerExtension}}}"
+                                             SourceName="scroll">
+                                <i:InvokeCommandAction Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type UserControl}}
+                                            , Path=DataContext.MessageReadCommand}">
+                                    <i:InvokeCommandAction.CommandParameter>
+                                        <MultiBinding Converter="{StaticResource multiBindingConverter}">
+                                            <Binding Path="."/>
+                                            <Binding ElementName="dockPanel"/>
+                                            <Binding RelativeSource="{RelativeSource AncestorType={x:Type ListBox}}"/>
+                                            <Binding Source="2"/>
+                                        </MultiBinding>
+                                    </i:InvokeCommandAction.CommandParameter>
+                                </i:InvokeCommandAction>
+                            </i:EventTrigger>
                         </i:Interaction.Triggers>
                         <Border CornerRadius="25" 
                                 BorderThickness="2.5"

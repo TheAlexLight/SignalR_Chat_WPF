@@ -246,8 +246,6 @@ namespace ChatClient.ViewModels
         {
             if (currentGroup.Name == CurrentChatType)
             {
-                var watch = System.Diagnostics.Stopwatch.StartNew();
-
                 CurrentChatGroup = currentGroup;
 
                 Group bannedGroup = Groups.FirstOrDefault(g => g.Name.Equals(nameof(UserGroups.Banned)));
@@ -268,11 +266,6 @@ namespace ChatClient.ViewModels
                 }
                 catch (Exception)
                 { }
-
-                // the code that you want to measure comes here
-                watch.Stop();
-                var elapsedMs = watch.ElapsedMilliseconds;
-                Trace.WriteLine(elapsedMs);
             }
         }
 

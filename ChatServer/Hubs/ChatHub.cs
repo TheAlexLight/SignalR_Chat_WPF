@@ -151,8 +151,6 @@ namespace ChatServer.Hubs
             UserProfileModel user = await _dbContext.UserProfiles
                     .FirstOrDefaultAsync(u => u.Username == username);
 
-            user.IsOnline = true;
-
             await _dbContext.SaveChangesAsync();
 
             await UpdateChat(userHandler);
@@ -272,9 +270,10 @@ namespace ChatServer.Hubs
       
                 await _dbContext.SaveChangesAsync();
 
-                ChatGroupModel group = await _dbContext.Groups.FirstOrDefaultAsync(g => g == currentGroup);
+                UserHandler userHandler = Account.Users.FirstOrDefault(a => a.ConnectedIds == Context.ConnectionId);
 
-                await SendConcreteGroup(ChatType.Private, group);
+                await UpdateChat(userHandler);
+                await SendConcreteGroup(ChatType.Private, foundGroup);
             }
         }
 
@@ -385,6 +384,8 @@ namespace ChatServer.Hubs
             }
             else
             {
+                await Clients.Caller.SendAsync("ReceiveCurrentGroup", group);
+
                 foreach (UserModel user in group.Users)
                 {
                     UserHandler userHandler = Account.Users.FirstOrDefault(u => u.ConnectedUsername == user.UserProfile.Username);
@@ -474,22 +475,22 @@ namespace ChatServer.Hubs
 
         public override async Task<Task> OnDisconnectedAsync(Exception exception)
         {
-            UserHandler user = Account.Users.FirstOrDefault(a => a.ConnectedIds == Context.ConnectionId);
+            UserHandler userHandler = Account.Users.FirstOrDefault(a => a.ConnectedIds == Context.ConnectionId);
+            UserModel userModel = null;
 
-            if (user.ConnectedUsername != null)
+            if (userHandler.ConnectedUsername != null)
             {
-                var dbUser = _dbContext.Users.Include(u => u.UserModel)
-                     .ThenInclude(um => um.UserProfile)
-                     .FirstOrDefault(u => u.UserName == user.ConnectedUsername);
+                 userModel = await _dbContext.UserModels
+                     .FirstOrDefaultAsync(um => um.UserProfile.Username == userHandler.ConnectedUsername);
 
-                dbUser.UserModel.UserProfile.IsOnline = false;
+                userModel.UserProfile.IsOnline = false;
                 await _dbContext.SaveChangesAsync();
             }
 
-            Account.Users.Remove(user);
+            Account.Users.Remove(userHandler);
 
-            //await SendUserList();
-
+            await UpdateChat(userHandler);
+            await Clients.All.SendAsync("ReceiveCurrentGroup", userModel.Groups.FirstOrDefault(g=>g.Name==ChatType.Public));
 
             return base.OnDisconnectedAsync(exception);
         }
