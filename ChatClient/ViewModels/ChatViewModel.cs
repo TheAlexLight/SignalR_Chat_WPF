@@ -19,6 +19,7 @@ using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -342,7 +343,27 @@ namespace ChatClient.ViewModels
 
         public void OnFilesDropped(string[] files)
         {
-           // throw new NotImplementedException();
+            foreach (string image in files)
+            {
+                string imageExtension = Path.GetExtension(image).ToUpperInvariant();
+
+                if (imageExtension == ".JPG"
+                        || imageExtension == ".JPEG"
+                        || imageExtension == ".PNG"
+                        || imageExtension == ".BMP")
+                {
+                    object[] parameters = new object[3];
+                    parameters[0] = MessageInformationType.Image;
+                    parameters[2] = image;
+
+                    if (CurrentChatType == ChatType.Private)
+                    {
+                        parameters[1] = (UserModel)SelectedItem;
+                    }
+
+                    SendChatMessageCommand.Execute(parameters);
+                }
+            }
         }
 
         public UserModel CurrentUser

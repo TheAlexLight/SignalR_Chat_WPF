@@ -19,19 +19,22 @@ namespace ChatClient.Extensions
 
         private static void OnPropChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            if (!(d is FrameworkElement fe))
+            if (d is not FrameworkElement frameworkElement)
+            {
                 throw new InvalidOperationException();
+            }
+
             if ((bool)e.NewValue)
             {
-                fe.AllowDrop = true;
-                fe.Drop += OnDrop;
-                fe.PreviewDragOver += OnPreviewDragOver;
+                frameworkElement.AllowDrop = true;
+                frameworkElement.Drop += OnDrop;
+                frameworkElement.PreviewDragOver += OnPreviewDragOver;
             }
             else
             {
-                fe.AllowDrop = false;
-                fe.Drop -= OnDrop;
-                fe.PreviewDragOver -= OnPreviewDragOver;
+                frameworkElement.AllowDrop = false;
+                frameworkElement.Drop -= OnDrop;
+                frameworkElement.PreviewDragOver -= OnPreviewDragOver;
             }
         }
 
@@ -39,25 +42,33 @@ namespace ChatClient.Extensions
         {
             // NOTE: PreviewDragOver subscription is required at least when FrameworkElement is a TextBox
             // because it appears that TextBox by default prevent Drag on preview...
-            e.Effects = DragDropEffects.Move;
+            e.Effects = DragDropEffects.Copy;
             e.Handled = true;
         }
 
         private static void OnDrop(object sender, DragEventArgs e)
         {
-            var dataContext = ((FrameworkElement)sender).DataContext;
-            if (!(dataContext is IFilesDropped filesDropped))
+            object dataContext = ((FrameworkElement)sender).DataContext;
+            
+            if (dataContext is not IFilesDropped filesDropped)
             {
                 if (dataContext != null)
+                {
                     Trace.TraceError($"Binding error, '{dataContext.GetType().Name}' doesn't implement '{nameof(IFilesDropped)}'.");
+                }
+
                 return;
             }
 
             if (!e.Data.GetDataPresent(DataFormats.FileDrop))
+            {
                 return;
+            }
 
             if (e.Data.GetData(DataFormats.FileDrop) is string[] files)
+            {
                 filesDropped.OnFilesDropped(files);
+            }
         }
 
         public static void SetIsEnabled(DependencyObject element, bool value)

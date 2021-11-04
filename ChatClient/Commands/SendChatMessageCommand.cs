@@ -7,6 +7,7 @@ using SharedItems.Models;
 using SharedItems.ViewModels;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -39,7 +40,17 @@ namespace ChatClient.Commands
                         messageInformationModel.TextMessage = _viewModel.Message.TextMessage.Trim();
                         break;
                     case MessageInformationType.Image:
-                        byte[] imageInBytes = OpenImageFile();
+                        byte[] imageInBytes;
+
+                        if (values.Length == 3)
+                        {
+                            imageInBytes = File.ReadAllBytes((string)values[2]);
+                        }
+                        else
+                        {
+                            imageInBytes = OpenImageFile(); ;
+                        }
+                        
 
                         if (imageInBytes != null)
                         {
