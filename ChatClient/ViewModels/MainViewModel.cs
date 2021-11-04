@@ -2,6 +2,7 @@
 using ChatClient.Enums;
 using ChatClient.Interfaces;
 using ChatClient.Stores;
+using SharedItems.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;

@@ -27,7 +27,9 @@ namespace ChatClient.Commands
         public override void Execute(object parameter)
         {
             object[] values = parameter as object[];
-            if (values[0] is MessageModel message && message.Sender != _viewModel.CurrentUser.UserProfile.Username)
+            if (values[0] is MessageModel message 
+                    && _viewModel.CurrentUser != null 
+                    && message.Sender != _viewModel.CurrentUser.UserProfile.Username)
             {
                 if (IsUserVisible((FrameworkElement)values[1], (FrameworkElement)values[2])
                     && message.CheckStatus == MessageStatus.Received)

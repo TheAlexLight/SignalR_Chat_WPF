@@ -25,7 +25,7 @@ namespace ChatClient.Commands
             if (parameter is ChatType currentChatType)
             {
                 _viewModel.CurrentChatType = currentChatType;
-                _viewModel.Message = string.Empty;
+                _viewModel.Message.TextMessage = string.Empty;
                 _viewModel.CanCloseChat = true;
 
                 if (currentChatType == ChatType.Private)

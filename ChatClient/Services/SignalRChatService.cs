@@ -127,6 +127,10 @@ namespace ChatClient.Services
         {
             await Connection.SendAsync("SendChangePhoto", currentUser, photo);
         }
+        //public async Task SendImage(UserModel currentUser, byte[] image)
+        //{
+        //    await Connection.SendAsync("SendImage", currentUser, image);
+        //}
 
         public async Task SubmitUsernameChange(UserModel user, string username, string password)
         {

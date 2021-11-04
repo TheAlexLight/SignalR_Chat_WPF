@@ -1,4 +1,5 @@
-﻿using ChatClient.Interfaces;
+﻿using ChatClient.Helpers;
+using ChatClient.Interfaces;
 using ChatClient.Services;
 using ChatClient.ViewModels;
 using SharedItems.Enums;
@@ -26,42 +27,77 @@ namespace ChatClient.Commands
 
         public override async void Execute(object parameter)
         {
-            try
-            {
-                MessageModel model = new MessageModel()
-                {
-                    Sender = _viewModel.CurrentUser.UserProfile.Username,
-                    Message = _viewModel.Message.Trim(),
-                    Time = DateTime.Now,
-                    //UserModel = _viewModel.CurrentUser,
-                    UserModelId = _viewModel.CurrentUser.Id,
-                    ChatGroupModel = _viewModel.CurrentChatGroup,
-                    ChatGroupModelId = _viewModel.CurrentChatGroup.Id,
-                    CheckStatus = MessageStatus.Received,
-                };
+            object[] values = parameter as object[];
 
-                if (_viewModel.CurrentChatGroup.Name == ChatType.Private)
+            if (values[0] is MessageInformationType messageInformationType)
+            {
+                MessageInformationModel messageInformationModel = new();
+
+                switch (messageInformationType)
                 {
-                    if (parameter is UserModel selectedUser)
+                    case MessageInformationType.Text:
+                        messageInformationModel.TextMessage = _viewModel.Message.TextMessage.Trim();
+                        break;
+                    case MessageInformationType.Image:
+                        byte[] imageInBytes = OpenImageFile();
+
+                        if (imageInBytes != null)
+                        {
+                            messageInformationModel.ImageMessage = imageInBytes;
+                        }
+
+                        break;
+                }
+
+                try
+                {
+                    MessageModel model = new MessageModel()
                     {
-                        await _chatService.SendMessage(model, _viewModel.CurrentChatGroup, selectedUser, _viewModel.CurrentUser);
+                        Sender = _viewModel.CurrentUser.UserProfile.Username,
+                        Message = messageInformationModel,
+                        Time = DateTime.Now,
+                        UserModelId = _viewModel.CurrentUser.Id,
+                        ChatGroupModel = _viewModel.CurrentChatGroup,
+                        ChatGroupModelId = _viewModel.CurrentChatGroup.Id,
+                        CheckStatus = MessageStatus.Received,
+                        MessageInformationType = messageInformationType
+                    };
+
+                    if (_viewModel.CurrentChatGroup.Name == ChatType.Private)
+                    {
+                        if (values[1] is UserModel selectedUser)
+                        {
+                            await _chatService.SendMessage(model, _viewModel.CurrentChatGroup, selectedUser, _viewModel.CurrentUser);
+                        }
                     }
+                    else
+                    {
+                        await _chatService.SendMessage(model, _viewModel.CurrentChatGroup, null, _viewModel.CurrentUser);
+                    }
+
+                    _viewModel.ErrorMessage = string.Empty;
+                    _viewModel.Message.TextMessage = "";
                 }
-                else
+                catch (Exception)
                 {
-                    await _chatService.SendMessage(model, _viewModel.CurrentChatGroup, null, _viewModel.CurrentUser);
+                    _viewModel.ErrorMessage = "Unable to send message.";
+                    _viewModel.Message.TextMessage = "";
                 }
 
-                _viewModel.ErrorMessage = string.Empty;
-                _viewModel.Message = "";
+                _viewModel.NeedToUpdateMessagesCount = true;
             }
-            catch (Exception)
-            {
-                _viewModel.ErrorMessage = "Unable to send message.";
-                _viewModel.Message = "";
-            }
+        }
 
-            _viewModel.NeedToUpdateMessagesCount = true;
+        private byte[] OpenImageFile()
+        {
+            SelectFileHelper helper = new();
+
+            string filter = "Image Files(*.jpg; *.jpeg; *.gif; *.bmp; *.png)" +
+                    "   |*.jpg; *.jpeg; *.gif; *.bmp; *.png";
+
+            byte[] imageInBytes = helper.SelectFileInBytes(filter);
+
+            return imageInBytes;
         }
     }
 }

@@ -5,7 +5,10 @@
         <ResourceDictionary Source="../Resources/Images/Send.xaml"/>
         <ResourceDictionary Source="../Resources/Images/Chats.xaml"/>
         <ResourceDictionary Source="../Resources/Images/Settings.xaml"/>
+        <ResourceDictionary Source="../Resources/Images/PaperClip.xaml"/>
         <ResourceDictionary Source="ListBox.xaml"/>
+        <ResourceDictionary Source="Border.xaml"/>
+        <ResourceDictionary Source="Grid.xaml"/>
     </ResourceDictionary.MergedDictionaries>
 
     <LinearGradientBrush x:Key="registrationBasicColors" StartPoint="0.5,0" EndPoint="0.5,1">
@@ -391,6 +394,40 @@
         <Setter Property="Height" Value="35"/>
         <Setter Property="Width" Value="80"/>
         <Setter Property="FontSize" Value="20"/>
+    </Style>
+
+    <Style x:Key="paperClipButton" TargetType="{x:Type Button}">
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="Focusable" Value="False"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <Border Height="35" Width="30"
+                            CornerRadius="5"
+                            BorderBrush="#9B9B9B"
+                            BorderThickness="2"
+                            Padding="1"
+                            Margin="5,5,0,5"
+                            Background="{StaticResource typeMessageGridColors}"
+                            Name="clipBorder">
+                        <Image Source="{StaticResource paperclipDrawingImage}"/>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="clipBorder" 
+                                    Property="Background" 
+                                    Value="#C4C5C9"/>
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter TargetName="clipBorder" 
+                                    Property="Background" 
+                                    Value="#BCBDC2"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
     </Style>
 
 </ResourceDictionary>

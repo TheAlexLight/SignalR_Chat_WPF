@@ -8,6 +8,7 @@
              xmlns:controls="clr-namespace:ChatClient.Controls"
              xmlns:additionalViews="clr-namespace:ChatClient.Views.AdditionalViews"
              xmlns:extensions="clr-namespace:ChatClient.Extensions"
+             xmlns:sharedItems="clr-namespace:SharedItems.Enums;assembly=SharedItems"
              xmlns:i="http://schemas.microsoft.com/xaml/behaviors" xmlns:viewmodels="clr-namespace:ChatClient.ViewModels" d:DataContext="{d:DesignInstance Type=viewmodels:ChatViewModel}"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="550">
@@ -153,19 +154,33 @@
                 <Grid Grid.Row="2"
                   Background="{StaticResource typeMessageGridColors}">
                     <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="35"/>
                         <ColumnDefinition Width="3.7*"/>
                         <ColumnDefinition MinWidth="60" MaxWidth="60"/>
                     </Grid.ColumnDefinitions>
-
-                    <TextBox Grid.Column="0"    
+                    <Button Style="{StaticResource paperClipButton}"
+                            Command="{Binding SendChatMessageCommand}">
+                        <Button.CommandParameter>
+                            <MultiBinding Converter ="{StaticResource multiBindingConverter}">
+                                <Binding Source="{x:Static sharedItems:MessageInformationType.Image}"/>
+                                <Binding ElementName="userList" Path="SelectedItem"/>
+                            </MultiBinding>
+                        </Button.CommandParameter>
+                    </Button>
+                    <TextBox Grid.Column="1"    
                      Style="{StaticResource typeMessage}"
-                     Text="{Binding Message}" 
+                     Text="{Binding Message.TextMessage}" 
                              Margin="5"/>
-                    <Button  Margin="0,0,10,0" Grid.Column="1" Width="50" Height="45"  
+                    <Button  Margin="0,0,10,0" Grid.Column="2" Width="50" Height="45"  
                         Command="{Binding SendChatMessageCommand}"
-                         CommandParameter="{Binding ElementName=userList, Path=SelectedItem}"
                         Style="{StaticResource sendImageMessage}">
                         <Image Stretch="Fill" Source="{StaticResource directDrawingImage}" />
+                        <Button.CommandParameter>
+                            <MultiBinding Converter ="{StaticResource multiBindingConverter}">
+                                <Binding Source="{x:Static sharedItems:MessageInformationType.Text}"/>
+                                <Binding ElementName="userList" Path="SelectedItem"/>
+                            </MultiBinding>
+                        </Button.CommandParameter>
                     </Button>
                 </Grid>
             </Border>

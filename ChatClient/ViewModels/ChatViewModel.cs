@@ -12,6 +12,7 @@ using Newtonsoft.Json;
 using SharedItems.Enums;
 using SharedItems.Models;
 using SharedItems.Models.StatusModels;
+using SharedItems.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -30,7 +31,7 @@ using System.Windows.Media;
 
 namespace ChatClient.ViewModels
 {
-    public class ChatViewModel : ChatViewModelBase, IDataErrorInfo
+    public class ChatViewModel : ChatViewModelBase, IDataErrorInfo, IFilesDropped
     {
         public ChatViewModel(INavigator navigator, ISignalRChatService chatService
                , IWindowConfigurationService windowConfigurationService) : base(navigator, chatService, windowConfigurationService)
@@ -54,7 +55,7 @@ namespace ChatClient.ViewModels
             }
         }
 
-        private string _message;
+        private MessageInformationModel _message;
         private string _usersFilter;
         private string _usernameSettingsText;
         private string _emailSettingsText;
@@ -100,6 +101,7 @@ namespace ChatClient.ViewModels
         public ICommand ChangeEmailCommand { get; private set; }
         public ICommand ChangePasswordCommand { get; private set; }
         public ICommand ChangeUserSettingsCommand { get; private set; }
+        //public ICommand SendImageCommand { get; private set; }
 
 
 
@@ -135,7 +137,8 @@ namespace ChatClient.ViewModels
             ChangeUsernameCommand = new ChangeUsernameCommand(this);
             ChangePasswordCommand = new ChangePasswordCommand(this);
             ChangeEmailCommand = new ChangeEmailCommand(this);
-            //Messages = new();
+            //SendImageCommand = new SendImageCommand(this);
+            Message = new();
             MuteStatus = new();
             UsersFilter = string.Empty;
             AllUsers = new ObservableCollection<UserModel>();
@@ -337,6 +340,11 @@ namespace ChatClient.ViewModels
             return Task.CompletedTask;
         }
 
+        public void OnFilesDropped(string[] files)
+        {
+           // throw new NotImplementedException();
+        }
+
         public UserModel CurrentUser
         {
             get => _currentUser;
@@ -357,7 +365,7 @@ namespace ChatClient.ViewModels
             }
         }
 
-        public string Message
+        public MessageInformationModel Message
         {
             get => _message;
             set

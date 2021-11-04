@@ -14,7 +14,7 @@ using System.Windows.Input;
 
 namespace ChatClient.ViewModels
 {
-    public class RegistrationViewModel : ChatViewModelBase, IDataErrorInfo/*, INotifyDataErrorInfo*/
+    public class RegistrationViewModel : ChatViewModelBase, IDataErrorInfo, IFilesDropped/*, INotifyDataErrorInfo*/
     {
         public RegistrationViewModel(INavigator navigator, ISignalRChatService chatService
                , IWindowConfigurationService windowConfigurationService) : base(navigator, chatService, windowConfigurationService)
@@ -125,6 +125,11 @@ namespace ChatClient.ViewModels
             {
                 MessageBox.Show(error);
             }
+        }
+
+        public void OnFilesDropped(string[] files)
+        {
+            throw new NotImplementedException();
         }
     }
 }

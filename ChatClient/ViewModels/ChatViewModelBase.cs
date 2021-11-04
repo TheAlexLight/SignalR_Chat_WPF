@@ -5,6 +5,7 @@ using ChatClient.Interfaces;
 using ChatClient.Services;
 using ChatClient.Stores;
 using Microsoft.AspNetCore.SignalR.Client;
+using SharedItems.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;

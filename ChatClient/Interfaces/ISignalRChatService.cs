@@ -38,6 +38,7 @@ namespace ChatClient.Interfaces
         public Task UpdatePrivateMessages(UserModel selectedUser, UserModel currentUser);
         public Task UpdateMessage(MessageModel message);
         public Task ChangePhoto(UserModel currentUser, byte[] photo);
+        //public Task SendImage(UserModel currentUser, byte[] image);
         public Task SubmitUsernameChange(UserModel user, string username, string password);
         public Task SubmitEmailChange(UserModel user, string username, string password);
         public Task SubmitPasswordChange(UserModel user, string username, string password);

@@ -24,6 +24,7 @@
                 <ResourceDictionary Source="pack://application:,,,/ChatClient;component/Resources/Images/ThreeDots.xaml"/>
                 <ResourceDictionary Source="pack://application:,,,/ChatClient;component/Resources/Images/Settings.xaml"/>
                 <ResourceDictionary Source="pack://application:,,,/ChatClient;component/Resources/Images/CloseTab.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/ChatClient;component/Resources/Images/PaperClip.xaml"/>
             </ResourceDictionary.MergedDictionaries>
             <sys:Double x:Key="{x:Static SystemParameters.HorizontalScrollBarHeightKey}">50</sys:Double>
         </ResourceDictionary>

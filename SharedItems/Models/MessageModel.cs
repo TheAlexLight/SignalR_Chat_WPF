@@ -1,4 +1,5 @@
 ﻿using SharedItems.Enums;
+using SharedItems.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -52,7 +53,8 @@ namespace SharedItems.Models
         }
 
         public int Count { get; set; }
-        public string Message { get; set; }
+        public virtual MessageInformationModel Message { get; set; }
+        public MessageInformationType MessageInformationType { get; set; }
         public string Sender { get; set; }
         public virtual UserModel UserModel { get; set; }
 

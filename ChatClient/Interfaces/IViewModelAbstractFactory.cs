@@ -1,5 +1,6 @@
 ﻿using ChatClient.Enums;
 using ChatClient.ViewModels;
+using SharedItems.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;

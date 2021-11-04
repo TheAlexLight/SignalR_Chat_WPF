@@ -1,4 +1,5 @@
-﻿using ChatClient.ViewModels;
+﻿using ChatClient.Helpers;
+using ChatClient.ViewModels;
 using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
@@ -24,24 +25,16 @@ namespace ChatClient.Commands
 
         public override void Execute(object parameter)
         {
-            try
-            {
-                OpenFileDialog fileDialog = new OpenFileDialog();
-
-                fileDialog.Filter = "Image Files(*.jpg; *.jpeg; *.gif; *.bmp; *.png)" +
+            string filter = "Image Files(*.jpg; *.jpeg; *.gif; *.bmp; *.png)" +
                     "   |*.jpg; *.jpeg; *.gif; *.bmp; *.png";
 
-                if (fileDialog.ShowDialog() == true)
-                {
-                    //byte[] imageIntoBytes = Encoding.UTF8.GetBytes(fileDialog.FileName);
-                    byte[] imageIntoBytes = File.ReadAllBytes(fileDialog.FileName);
+            SelectFileHelper helper = new SelectFileHelper();
 
-                    _viewModel.ChatService.ChangePhoto(_viewModel.CurrentUser, imageIntoBytes);
-                }
-            }
-            catch (Exception e)
+            byte[] imageInBytes = helper.SelectFileInBytes(filter);
+
+            if (imageInBytes != null)
             {
-                MessageBox.Show(string.Format("An error occured: {0}",e.Message));
+                _viewModel.ChatService.ChangePhoto(_viewModel.CurrentUser, imageInBytes);
             }
         }
     }

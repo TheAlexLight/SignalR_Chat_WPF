@@ -68,7 +68,7 @@ namespace ChatClient.Extensions
                 ScrollToVerticalOffset(ExtentHeight);
             }
 
-            base.OnScrollChanged(e); 
+            base.OnScrollChanged(e);
         }
 
         public List<MessageModel> MessageCollection

@@ -289,6 +289,7 @@
         <Setter Property="Background" Value="{StaticResource mainMessageBoxColors}"/>
         <Setter Property="BorderThickness" Value="0,1,0,1"/>
         <Setter Property="VirtualizingPanel.ScrollUnit" Value="Pixel"/>
+        <Setter Property="extensions:DropFilesBehaviorExtension.IsEnabled" Value="True"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate>
@@ -391,15 +392,30 @@
                                        Height="15"
                                        Margin="5,0,0,0"/>
                             </StackPanel>
-                            <TextBlock Text="{Binding Message}"
-                                       x:Name="message"
+                            <TextBlock Text="{Binding Message.TextMessage}"
+                                       x:Name="textMessage"
                                        Margin="10,-5,0,0"
                                        Foreground="Black"
                                        FontSize="20"
                                        TextWrapping="Wrap"
-                                       HorizontalAlignment="Left"/>
+                                       HorizontalAlignment="Left"
+                                       Visibility="Collapsed"/>
+                            <Image x:Name="imageMessage" 
+                                   Source="{Binding Message.ImageMessage, Converter={StaticResource byteToImageConverter}}"
+                                   MaxHeight="350"
+                                   MaxWidth="350"
+                                   Visibility="Collapsed"
+                                   HorizontalAlignment="Left"/>
                         </DockPanel>
                     </DockPanel>
+                    <DataTemplate.Triggers>
+                        <DataTrigger Binding="{Binding MessageInformationType}" Value="Text">
+                            <Setter TargetName="textMessage" Property="Visibility" Value="Visible"/>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding MessageInformationType}" Value="Image">
+                            <Setter TargetName="imageMessage" Property="Visibility" Value="Visible"/>
+                        </DataTrigger>
+                    </DataTemplate.Triggers>
                 </DataTemplate>
             </Setter.Value>
         </Setter>

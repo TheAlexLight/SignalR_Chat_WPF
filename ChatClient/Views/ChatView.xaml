@@ -74,7 +74,7 @@
 
                 <TextBox Grid.Column="0"    
                      Style="{StaticResource typeMessage}"
-                     Text="{Binding Message}"/>
+                     Text="{Binding Message.TextMessage}"/>
                 <Button  Margin="0,0,10,0" Grid.Column="1" Width="50" Height="45"  
                         Command="{Binding SendChatMessageCommand}"
                         Style="{StaticResource sendImageMessage}">

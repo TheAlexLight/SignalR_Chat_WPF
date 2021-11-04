@@ -230,7 +230,7 @@ namespace ChatServer.Hubs
         {
             ChatGroupModel group;
             //message.UserModel = currentUser;
-
+                
             if (currentGroup.Name == ChatType.Public)
             {
                 group = _dbContext.Groups.FirstOrDefault(g => g.Name == currentGroup.Name);
@@ -408,9 +408,20 @@ namespace ChatServer.Hubs
             UserHandler userHandler = Account.Users.FirstOrDefault(u => u.ConnectedUsername == currentUser.UserProfile.Username);
 
             await UpdateChat(userHandler);
-
-            //await Clients.Caller.SendAsync("ReceiveCurrentGroup", userModel);
         }
+
+        //public async Task SendImage(UserModel currentUser, MessageModel photo)
+        //{
+        //    UserModel userModel = _dbContext.UserModels.FirstOrDefault(um => um == currentUser);
+
+        //    userModel.UserProfile.Image = photo;
+
+        //    await _dbContext.SaveChangesAsync();
+
+        //    UserHandler userHandler = Account.Users.FirstOrDefault(u => u.ConnectedUsername == currentUser.UserProfile.Username);
+
+        //    await UpdateChat(userHandler);
+        //}
 
         public async Task SendUserBan(string username, BanStatusModel model)
         {

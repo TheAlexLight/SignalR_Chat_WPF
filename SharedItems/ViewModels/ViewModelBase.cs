@@ -6,7 +6,7 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ChatClient.ViewModels
+namespace SharedItems.ViewModels
 {
    public class ViewModelBase : INotifyPropertyChanged
     {
