@@ -194,9 +194,12 @@ namespace ChatServer.Hubs
             MessageModel dbMessage = await _dbContext.Messages
                      .FirstOrDefaultAsync(m => m.Id == message.Id);
 
-            dbMessage.MessageHeight = message.MessageHeight;
+            dbMessage.CheckStatus = message.CheckStatus;
+            //dbMessage.MessageHeight = message.MessageHeight;
 
             await _dbContext.SaveChangesAsync();
+
+            //await SendUserList();
         }
 
         private async Task UpdateChat(UserHandler userHandler)
@@ -273,7 +276,7 @@ namespace ChatServer.Hubs
                 UserHandler userHandler = Account.Users.FirstOrDefault(a => a.ConnectedIds == Context.ConnectionId);
 
                 await UpdateChat(userHandler);
-                await SendConcreteGroup(ChatType.Private, foundGroup);
+                //await SendConcreteGroup(ChatType.Private, foundGroup);
             }
         }
 
@@ -384,7 +387,7 @@ namespace ChatServer.Hubs
             }
             else
             {
-                await Clients.Caller.SendAsync("ReceiveCurrentGroup", group);
+                //await Clients.Caller.SendAsync("ReceiveCurrentGroup", group);
 
                 foreach (UserModel user in group.Users)
                 {

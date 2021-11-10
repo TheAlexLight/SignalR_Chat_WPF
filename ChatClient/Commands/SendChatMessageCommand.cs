@@ -56,6 +56,10 @@ namespace ChatClient.Commands
                         {
                             messageInformationModel.ImageMessage = imageInBytes;
                         }
+                        else
+                        {
+                            return;
+                        }
 
                         break;
                 }

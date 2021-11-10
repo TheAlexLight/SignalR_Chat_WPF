@@ -293,8 +293,7 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate>
-                    <extensions:ScrollViewerExtension MessageCollection="{Binding RelativeSource={RelativeSource AncestorType={x:Type ListBox}}
-                            ,Path=ItemsSource}"
+                    <extensions:ScrollViewerExtension 
                                                       Background="{StaticResource mainMessageBoxColors}"
                                                       HorizontalScrollBarVisibility="Disabled"
                                                       Template="{StaticResource scrollViewerControlTemplate}"
@@ -325,7 +324,7 @@
                                     </i:InvokeCommandAction.CommandParameter>
                                 </i:InvokeCommandAction>
                             </i:EventTrigger>
-                            <i:EventTrigger  EventName="Loaded">
+                            <!--<i:EventTrigger  EventName="Loaded">
                                 <i:InvokeCommandAction Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type UserControl}}
                                             , Path=DataContext.MessageLoadedCommand}">
                                     <i:InvokeCommandAction.CommandParameter>
@@ -336,7 +335,7 @@
                                         </MultiBinding>
                                     </i:InvokeCommandAction.CommandParameter>
                                 </i:InvokeCommandAction>
-                            </i:EventTrigger>
+                            </i:EventTrigger>-->
                             <i:EventTrigger  EventName="Loaded"
                                              SourceObject="{Binding RelativeSource={RelativeSource AncestorType={x:Type extensions:ScrollViewerExtension}}}"
                                              SourceName="scroll">

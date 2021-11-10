@@ -52,12 +52,13 @@ namespace ChatServer
                     options.PayloadSerializerOptions.MaxDepth = 64;
                     options.PayloadSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve;
                 });
-                //.AddMessagePackProtocol(options =>
-                //{
-                //options.SerializerOptions = MessagePackSerializerOptions.Standard
-                //    .WithResolver(MessagePack.Resolvers.StandardResolver.Instance)
-                //    .WithSecurity(MessagePackSecurity.UntrustedData);
-                //});
+            //.AddMessagePackProtocol();
+            //.AddMessagePackProtocol(options =>
+            //{
+            //    options.SerializerOptions = MessagePackSerializerOptions.Standard
+            //        .WithResolver(MessagePack.Resolvers.StandardResolver.Instance)
+            //        .WithSecurity(MessagePackSecurity.UntrustedData);
+            //});
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

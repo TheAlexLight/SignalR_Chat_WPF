@@ -28,7 +28,7 @@ namespace ChatClient.Commands
                 FrameworkElement control = (FrameworkElement)values[1];
                 message.MessageHeight = control.ActualHeight + margin.Top + margin.Bottom;
 
-                _viewModel.ChatService.UpdateMessage(message);
+                //_viewModel.ChatService.UpdateMessage(message);
             }
         }
     }

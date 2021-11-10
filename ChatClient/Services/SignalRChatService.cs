@@ -1,5 +1,6 @@
 ﻿using ChatClient.Enums;
 using ChatClient.Interfaces;
+using MessagePack;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.SignalR.Client;
 using Microsoft.Extensions.DependencyInjection;
@@ -38,6 +39,13 @@ namespace ChatClient.Services
         public SignalRChatService(HubConnectionBuilder connectionBuilder)
         {
             Connection = connectionBuilder
+                //.AddMessagePackProtocol()
+                //.AddMessagePackProtocol(options =>
+                //{
+                //    options.SerializerOptions = MessagePackSerializerOptions.Standard
+                //        .WithResolver(MessagePack.Resolvers.StandardResolver.Instance)
+                //        .WithSecurity(MessagePackSecurity.UntrustedData);
+                //})
                 .AddJsonProtocol(options =>
                 {
                     options.PayloadSerializerOptions.MaxDepth = 64;

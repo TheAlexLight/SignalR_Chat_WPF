@@ -50,7 +50,7 @@ namespace ChatClient.Commands
             Rect bounds = element.TransformToAncestor(container).TransformBounds(new Rect(0.0, 0.0, element.ActualWidth, element.ActualHeight));
             Rect rect = new Rect(0.0, 0.0, container.ActualWidth, container.ActualHeight);
 
-            return rect.Contains(bounds);
+            return rect.Contains(bounds.BottomRight) && rect.Contains(bounds.BottomLeft);
         }
     }
 }

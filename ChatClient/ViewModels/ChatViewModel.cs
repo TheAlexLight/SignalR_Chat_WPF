@@ -5,6 +5,7 @@ using ChatClient.Commands.ContextMenuCommands;
 using ChatClient.Commands.CustomViewsCommands;
 using ChatClient.Commands.ToolBarCommands;
 using ChatClient.Enums;
+using ChatClient.Extensions;
 using ChatClient.Interfaces;
 using ChatClient.Services;
 using ChatClient.Stores;
@@ -75,6 +76,7 @@ namespace ChatClient.ViewModels
         private bool _needToClearPassword;
         private bool _needToUpdateMessagesCount;
         private bool _canCloseChat;
+        private string _resetScroll;
         private string _password;
         private string _passwordConfirm;
         private GridLength _usersColumnWidth;
@@ -251,6 +253,13 @@ namespace ChatClient.ViewModels
             if (currentGroup.Name == CurrentChatType)
             {
                 CurrentChatGroup = currentGroup;
+
+               //ScrollViewerExtension.SetResetScrollPosition(CurrentChatGroup, )
+
+                //if (AllUsers.Count != 0)
+                //{
+                //    ResetScroll = AllUsers[SelectedUserIndex].UserProfile.Username;
+                //}
 
                 Group bannedGroup = Groups.FirstOrDefault(g => g.Name.Equals(nameof(UserGroups.Banned)));
                 bannedGroup.GroupedUsers = new ObservableCollection<UserModel>(CurrentChatGroup.Users
@@ -602,6 +611,16 @@ namespace ChatClient.ViewModels
             set
             {
                 _userSettingsType = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public string ResetScroll
+        {
+            get => _resetScroll;
+            set
+            {
+                _resetScroll = value;
                 OnPropertyChanged();
             }
         }
