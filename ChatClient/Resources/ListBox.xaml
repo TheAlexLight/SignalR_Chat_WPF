@@ -2,6 +2,7 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:converters="clr-namespace:ChatClient.Converters"
                     xmlns:extensions="clr-namespace:ChatClient.Extensions"
+                    xmlns:helpers="clr-namespace:ChatClient.Helpers"
                     xmlns:viewmodels="clr-namespace:ChatClient.ViewModels"
                     xmlns:i="http://schemas.microsoft.com/xaml/behaviors">
 
@@ -282,23 +283,32 @@
         </Setter>
     </Style>
 
-    <Style x:Key="messagesListBox" TargetType="{x:Type ListBox}" BasedOn="{StaticResource usersListBox}">
+    <Style x:Key="messagesListBox" x:Name="messagesList" TargetType="{x:Type ItemsControl}">
         <Setter Property="ItemsSource" Value="{Binding CurrentChatGroup.Messages}"/>
         <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Disabled"/>
         <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto"/>
         <Setter Property="Background" Value="{StaticResource mainMessageBoxColors}"/>
         <Setter Property="BorderThickness" Value="0,1,0,1"/>
         <Setter Property="VirtualizingPanel.ScrollUnit" Value="Pixel"/>
+        <Setter Property="FontSize" Value="20"/>
         <Setter Property="extensions:DropFilesBehaviorExtension.IsEnabled" Value="True"/>
+        <Setter Property="ItemsPanel">
+            <Setter.Value>
+                <ItemsPanelTemplate>
+                    <VirtualizingStackPanel IsVirtualizing="True"
+                              VirtualizationMode="Recycling" />
+                </ItemsPanelTemplate>
+            </Setter.Value>
+        </Setter>
         <Setter Property="Template">
             <Setter.Value>
-                <ControlTemplate>
+                <ControlTemplate TargetType="{x:Type ItemsControl}">
                     <extensions:ScrollViewerExtension 
-                                                      Background="{StaticResource mainMessageBoxColors}"
-                                                      HorizontalScrollBarVisibility="Disabled"
-                                                      Template="{StaticResource scrollViewerControlTemplate}"
-                                                      x:Name="scroll"
-                                                      CanContentScroll="True">
+                        Background="{StaticResource mainMessageBoxColors}"
+                        HorizontalScrollBarVisibility="Disabled"
+                        Template="{StaticResource scrollViewerControlTemplate}"
+                        x:Name="scroll"
+                        CanContentScroll="True">
                         <ItemsPresenter/>
                     </extensions:ScrollViewerExtension>
                 </ControlTemplate>
@@ -307,7 +317,16 @@
         <Setter Property="ItemTemplate">
             <Setter.Value>
                 <DataTemplate>
-                    <DockPanel Name="dockPanel">
+                    <Border CornerRadius="5"
+                            BorderThickness="1"
+                            BorderBrush="Black"
+                            Margin="5"
+                            Padding="5"
+                            Background="#CACCE9"
+                            MaxWidth="400"
+                            HorizontalAlignment="Left">
+                        <DockPanel Name="dockPanel"
+                               Background="Transparent">
                         <i:Interaction.Triggers>
                             <i:EventTrigger  EventName="ScrollChanged"
                                              SourceObject="{Binding RelativeSource={RelativeSource AncestorType={x:Type extensions:ScrollViewerExtension}}}"
@@ -318,7 +337,7 @@
                                         <MultiBinding Converter="{StaticResource multiBindingConverter}">
                                             <Binding Path="."/>
                                             <Binding ElementName="dockPanel"/>
-                                            <Binding RelativeSource="{RelativeSource AncestorType={x:Type ListBox}}"/>
+                                            <Binding RelativeSource="{RelativeSource AncestorType={x:Type ItemsControl}}"/>
                                             <Binding Source="2"/>
                                         </MultiBinding>
                                     </i:InvokeCommandAction.CommandParameter>
@@ -345,7 +364,7 @@
                                         <MultiBinding Converter="{StaticResource multiBindingConverter}">
                                             <Binding Path="."/>
                                             <Binding ElementName="dockPanel"/>
-                                            <Binding RelativeSource="{RelativeSource AncestorType={x:Type ListBox}}"/>
+                                            <Binding RelativeSource="{RelativeSource AncestorType={x:Type ItemsControl}}"/>
                                             <Binding Source="2"/>
                                         </MultiBinding>
                                     </i:InvokeCommandAction.CommandParameter>
@@ -373,40 +392,57 @@
                                 </Style>
                             </Border.Style>
                         </Border>
-                        <DockPanel>
-                            <StackPanel Orientation="Horizontal"
+                            <DockPanel>
+                                <StackPanel Orientation="Horizontal"
                                         DockPanel.Dock="Top">
-                                <TextBlock Text="{Binding Path=UserModel.UserProfile.Username}"
+                                    <TextBlock Text="{Binding Path=UserModel.UserProfile.Username}"
                                        Foreground="{Binding Path=UserModel.UserProfile.UsernameColor}"
                                        Margin="10,0,5,0"
                                        FontSize="18"/>
-                                <TextBlock Text="{Binding Path=Time}"
+                                    <TextBlock Text="{Binding Path=Time}"
                                            FontSize="11"
                                            Margin="0,5,0,0"
                                            Foreground="#848484"
                                            FontWeight="SemiBold"/>
-                                <Image Source="{Binding CheckStatus
+                                    <Image Source="{Binding CheckStatus
                                     , Converter={StaticResource messageStatusToImageConverter}}"
                                        Width="15"
                                        Height="15"
                                        Margin="5,0,0,0"/>
-                            </StackPanel>
-                            <TextBlock Text="{Binding Message.TextMessage}"
+                                </StackPanel>
+                                <StackPanel>
+                                    <TextBlock 
                                        x:Name="textMessage"
                                        Margin="10,-5,0,0"
                                        Foreground="Black"
                                        FontSize="20"
                                        TextWrapping="Wrap"
                                        HorizontalAlignment="Left"
-                                       Visibility="Collapsed"/>
-                            <Image x:Name="imageMessage" 
+                                       Visibility="Collapsed"
+                                       helpers:HyperlinksDetetectionHelper.Text="{Binding Message.TextMessage, Mode=TwoWay}"/>
+                                    <TextBlock x:Name="pageDescription"
+                                       Visibility="Collapsed"
+                                           TextWrapping="Wrap"
+                                           Margin="10,5,10,5"
+                                               FontSize="16"/>
+                                    <Image x:Name="pageImage"
+                                   Visibility="Collapsed"
+                                   Source="{Binding RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}
+                                       , Path=DataContext.DescriptionImage}"
+                                       MaxHeight="400"
+                                       MaxWidth="400"
+                                       HorizontalAlignment="Left"
+                                       Margin="10,0,10,5"/>
+                                </StackPanel>
+                                <Image x:Name="imageMessage" 
                                    Source="{Binding Message.ImageMessage, Converter={StaticResource byteToImageConverter}}"
-                                   MaxHeight="350"
-                                   MaxWidth="350"
+                                   MaxHeight="300"
+                                   MaxWidth="300"
                                    Visibility="Collapsed"
                                    HorizontalAlignment="Left"/>
-                        </DockPanel>
+                            </DockPanel>
                     </DockPanel>
+                    </Border>
                     <DataTemplate.Triggers>
                         <DataTrigger Binding="{Binding MessageInformationType}" Value="Text">
                             <Setter TargetName="textMessage" Property="Visibility" Value="Visible"/>

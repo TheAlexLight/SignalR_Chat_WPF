@@ -30,6 +30,7 @@ using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Media.Imaging;
 
 namespace ChatClient.ViewModels
 {
@@ -79,6 +80,8 @@ namespace ChatClient.ViewModels
         private string _resetScroll;
         private string _password;
         private string _passwordConfirm;
+        private string _descriptionText;
+        private BitmapImage _descriptionImage;
         private GridLength _usersColumnWidth;
         private GridLength _messagesColumnWidth;
 
@@ -601,6 +604,26 @@ namespace ChatClient.ViewModels
             set
             {
                 _emailSettingsText = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public string DescriptionText
+        {
+            get => _descriptionText;
+            set
+            {
+                _descriptionText = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public BitmapImage DescriptionImage
+        {
+            get => _descriptionImage;
+            set
+            {
+                _descriptionImage = value;
                 OnPropertyChanged();
             }
         }

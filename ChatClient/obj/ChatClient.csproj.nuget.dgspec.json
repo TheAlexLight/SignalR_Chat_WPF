@@ -48,6 +48,10 @@
         "net5.0-windows7.0": {
           "targetAlias": "net5.0-windows",
           "dependencies": {
+            "CefSharp.Wpf.NETCore": {
+              "target": "Package",
+              "version": "[95.7.141, )"
+            },
             "Microsoft.AspNetCore.SignalR.Client": {
               "target": "Package",
               "version": "[5.0.11, )"
@@ -63,6 +67,18 @@
             "Microsoft.Xaml.Behaviors.Wpf": {
               "target": "Package",
               "version": "[1.1.31, )"
+            },
+            "chromiumembeddedframework.runtime.win-arm64": {
+              "target": "Package",
+              "version": "[95.7.14, )"
+            },
+            "chromiumembeddedframework.runtime.win-x64": {
+              "target": "Package",
+              "version": "[95.7.14, )"
+            },
+            "chromiumembeddedframework.runtime.win-x86": {
+              "target": "Package",
+              "version": "[95.7.14, )"
             }
           },
           "imports": [

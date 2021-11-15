@@ -17,6 +17,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="CefSharp.Wpf.NETCore" Version="95.7.141" />
     <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="5.0.11" />
     <PackageReference Include="Microsoft.AspNetCore.SignalR.Protocols.MessagePack" Version="5.0.10" />
     <PackageReference Include="Microsoft.Extensions.Identity.Core" Version="5.0.9" />
