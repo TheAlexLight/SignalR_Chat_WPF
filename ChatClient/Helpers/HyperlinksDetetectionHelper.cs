@@ -1,11 +1,16 @@
 ﻿using CefSharp;
 using CefSharp.Wpf;
+using SharedItems.Models;
+using Syroot.Windows.IO;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -30,26 +35,26 @@ namespace ChatClient.Helpers
             new PropertyMetadata(null, OnTextChanged));
 
             ChromiumWebBrowserPanelProperty = DependencyProperty.RegisterAttached(
-                "ChromiumWebBrowserPanel",
-                typeof(Panel),
+                "ChromiumWebBrowser",
+                typeof(ChromiumWebBrowser),
                 typeof(HyperlinksDetetectionHelper),
                 new PropertyMetadata(null, OnChromiumWebBrowserPanelChanged));
         }
 
         private static void OnChromiumWebBrowserPanelChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            if (e.NewValue is Panel panel)
+            if (e.NewValue is ChromiumWebBrowser chromiumBrowser)
             {
-                _chromiumWebBrouserPanel = panel;
+                WebBrowser = chromiumBrowser;
+
+                WebBrowser.FrameLoadEnd += WebBrowser_FrameLoadEnd;
             }
         }
 
         private static readonly Regex _regexUrl = new Regex(@"(?#Protocol)(?:(?:ht|f)tp(?:s?)\:\/\/|~/|/)?(?#Username:Password)(?:\w+:\w+@)?(?#Subdomains)(?:(?:[-\w]+\.)+(?#TopLevel Domains)(?:com|org|net|gov|mil|biz|info|mobi|name|aero|jobs|museum|travel|[a-z]{2}))(?#Port)(?::[\d]{1,5})?(?#Directories)(?:(?:(?:/(?:[-\w~!$+|.,=]|%[a-f\d]{2})+)+|/)+|\?|#)?(?#Query)(?:(?:\?(?:[-\w~!$+|.,*:]|%[a-f\d{2}])+=(?:[-\w~!$+|.,*:=]|%[a-f\d]{2})*)(?:&(?:[-\w~!$+|.,*:]|%[a-f\d{2}])+=(?:[-\w~!$+|.,*:=]|%[a-f\d]{2})*)*)*(?#Anchor)(?:#(?:[-\w~!$+|.,*:=]|%[a-f\d]{2})*)?");
-        
-        private static Panel _chromiumWebBrouserPanel;
-        private static ChromiumWebBrowser _webBrouser;
+
+        public static ChromiumWebBrowser WebBrowser { get; set; }
         private static bool _isFrameLoaded;
-        private static Panel _panel;
 
         public static string GetText(DependencyObject d)
         { return d.GetValue(TextProperty) as string; }
@@ -57,10 +62,10 @@ namespace ChatClient.Helpers
         public static void SetText(DependencyObject d, string value)
         { d.SetValue(TextProperty, value); }
 
-        public static Panel GetChromiumWebBrowserPanel(DependencyObject d)
-        { return (Panel)d.GetValue(ChromiumWebBrowserPanelProperty); }
+        public static ChromiumWebBrowser GetChromiumWebBrowser(DependencyObject d)
+        { return (ChromiumWebBrowser)d.GetValue(ChromiumWebBrowserPanelProperty); }
 
-        public static void SetChromiumWebBrowserPanel(DependencyObject d, Panel value)
+        public static void SetChromiumWebBrowser(DependencyObject d, ChromiumWebBrowser value)
         { d.SetValue(ChromiumWebBrowserPanelProperty, value); }
 
         private static void OnTextChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
@@ -74,7 +79,7 @@ namespace ChatClient.Helpers
 
             textBlock.Inlines.Clear();
 
-            var newText = (string)e.NewValue;
+            string newText = (string)e.NewValue;
 
             if (string.IsNullOrEmpty(newText))
             {
@@ -106,10 +111,6 @@ namespace ChatClient.Helpers
                     textBlock.Inlines.Add(match.ToString());
                 }
 
-                
-
-                
-
                 // Update the last matched position
                 lastPosition = match.Index + match.Length;
             }
@@ -119,133 +120,108 @@ namespace ChatClient.Helpers
             {
                 textBlock.Inlines.Add(new Run(newText.Substring(lastPosition)));
             }
-
-            if (_chromiumWebBrouserPanel != null && _regexUrl.Matches(newText).Count != 0)
-            {
-                Match lastRegex = _regexUrl.Matches(newText).Last();
-
-                AddAdditionalInfo(lastRegex, textBlock);
-            }
         }
 
-        private static void AddAdditionalInfo(Match lastRegex, FrameworkElement textControl)
+        public static async Task<HyperlinkDescriptionModel> ReceivePageSource(Match lastRegex)
         {
-            _webBrouser = new ChromiumWebBrowser()
-            {
-                Width = 1,
-                Height = 1,
-                Visibility = Visibility.Collapsed
-            };
-
             Hyperlink link = SetLinkAddress(lastRegex);
+            WebBrowser.Address = string.Empty;
 
             if (link.NavigateUri != null)
             {
-                _webBrouser.Address = link.NavigateUri.ToString();
+                WebBrowser.Address = link.NavigateUri.ToString();
 
-                if (textControl.Parent is Panel panel)
+                _isFrameLoaded = false;
+
+                while (!_isFrameLoaded)
                 {
-                    _panel = panel;
-                    panel.Children.Add(_webBrouser);
+                    await Task.Delay(25);
                 }
-                else
-                {
-                    return;
-                }
-
-                Panel mainPanel = GetChromiumWebBrowserPanel(_chromiumWebBrouserPanel);
-
-                //mainPanel.Children.Add(_webBrouser);
-
-                _webBrouser.Loaded += _webBrouser_Loaded;
-                _webBrouser.FrameLoadEnd += _webBrouser_FrameLoadEnd;
             }
+
+            string webPageSource = await WebBrowser.GetSourceAsync();
+
+            HyperlinkDescriptionModel hyperlinkDescription = new HyperlinkDescriptionModel();
+
+            if (webPageSource != string.Empty)
+            {
+               hyperlinkDescription = ReadWebSource(webPageSource);
+            }
+
+            return hyperlinkDescription;
         }
 
-        private static void ReadWebSource(string webPageSource)
+        private static HyperlinkDescriptionModel ReadWebSource(string webPageSource)
         {
+            const string PAGE_TITLE_START_KEY = "og:site_name\" content=\"";
             const string PAGE_DESCRIPTION_START_KEY = "<meta name=\"description\" content=\"";
             const string PAGE_IMAGE_START_KEY = "og:image\" content=\"";
 
-            string pageDescription;
-            string pageImage;
+            string pageTitle = ReceiveTagDescription(webPageSource, PAGE_TITLE_START_KEY);
+            string pageDescription = ReceiveTagDescription(webPageSource, PAGE_DESCRIPTION_START_KEY);
+            string pageImage = ReceiveTagDescription(webPageSource, PAGE_IMAGE_START_KEY);
 
-            int pageDescriptionStartIndex = webPageSource.IndexOf(PAGE_DESCRIPTION_START_KEY);
-            int pageImageStartIndex = webPageSource.IndexOf(PAGE_IMAGE_START_KEY);
+            HyperlinkDescriptionModel hyperlinkDescription = new HyperlinkDescriptionModel();
 
-            if (pageDescriptionStartIndex != -1 && pageImageStartIndex != -1)
+            if (pageTitle != string.Empty
+                && pageDescription != string.Empty
+                && pageImage != string.Empty)
             {
-                string pageDescriptionStart = webPageSource
-                    .Substring(pageDescriptionStartIndex)
-                    .Replace(PAGE_DESCRIPTION_START_KEY, "");
+                hyperlinkDescription.HyperlinkTitle = pageTitle;
+                hyperlinkDescription.HyperlinkDescription = pageDescription;
 
-                string pageImageStart = webPageSource
-                    .Substring(pageImageStartIndex)
-                    .Replace(PAGE_IMAGE_START_KEY, "");
+                string downloadsPath = new KnownFolder(KnownFolderType.Downloads).Path;
 
-                pageDescription = pageDescriptionStart.Substring(0, pageDescriptionStart.IndexOf("\">"));
-                pageImage = pageImageStart.Substring(0, pageImageStart.IndexOf("\">"));
+                string temporaryImagePath = string.Format("{0}\\lastSentMessageDescriptionImage.jpg", downloadsPath);
 
-                TextBlock pageDescriptionChild = null; //= Application.Current.Dispatcher.Invoke(() => UIHelper.FindChild<TextBlock>(_panel, "pageDescription"));
-                Image pageImageChild = null; //= Application.Current.Dispatcher.Invoke(() => UIHelper.FindChild<Image>(_panel, "pageImage"));
-                                             //TextBlock pageDescriptionChild = UIHelper.FindChild<TextBlock>(_panel, "pageDescription");
-                                             //Image pageImageChild = UIHelper.FindChild<Image>(_panel, "pageImage");
-
-                Application.Current.Dispatcher.Invoke(() =>
+                using (WebClient client = new WebClient())
                 {
-                    pageDescriptionChild = UIHelper.FindChild<TextBlock>(_panel, "pageDescription");
-                    pageImageChild = UIHelper.FindChild<Image>(_panel, "pageImage");
-                }, DispatcherPriority.ContextIdle);
+                    client.DownloadFile(new Uri(pageImage), temporaryImagePath);
+                }
 
-                pageDescriptionChild.Dispatcher.Invoke(() =>
+                hyperlinkDescription.HyperlinkImage = File.ReadAllBytes(temporaryImagePath);
+
+                try
                 {
-                    //pageDescriptionChild = UIHelper.FindChild<TextBlock>(_panel, "pageDescription");
-                    pageDescriptionChild.Text = pageDescription;
-                    pageDescriptionChild.Visibility = Visibility.Visible;
-                }, DispatcherPriority.ContextIdle);
-
-                pageImageChild.Dispatcher.Invoke(() =>
+                    File.Delete(temporaryImagePath);
+                }
+                catch (Exception)
                 {
-                    //pageImageChild = UIHelper.FindChild<Image>(_panel, "pageImage");
-                    pageImageChild.Source = new BitmapImage(new Uri(pageImage));
-                    pageImageChild.Visibility = Visibility.Visible;
-                }, DispatcherPriority.ContextIdle);
-
-                //Application.Current.Dispatcher.Invoke(() =>
-                //{
-                //    pageDescriptionChild = UIHelper.FindChild<TextBlock>(_panel, "pageDescription"); 
-                //    pageImageChild = UIHelper.FindChild<Image>(_panel, "pageImage");
-                    
-                //    pageDescriptionChild.Text = pageDescription;
-                //    pageDescriptionChild.Visibility = Visibility.Visible;
-                    
-                //    pageImageChild.Source = new BitmapImage(new Uri(pageImage));
-                //    pageImageChild.Visibility = Visibility.Visible;
-
-                //}, DispatcherPriority.ContextIdle);
- 
+                    //Do something
+                }
             }
+
+            return hyperlinkDescription;
         }
 
-        private static async void _webBrouser_FrameLoadEnd(object sender, CefSharp.FrameLoadEndEventArgs e)
+        private static string ReceiveTagDescription(string webPageSource, string tagName)
+        {
+            int pageTagDescriptionIndex = webPageSource.IndexOf(tagName);
+
+            if (pageTagDescriptionIndex == -1)
+            {
+                return string.Empty;
+            }
+
+            string pageTagDescriptionStart = webPageSource
+                   .Substring(pageTagDescriptionIndex)
+                   .Replace(tagName, "");
+
+           string pageTagDescription = pageTagDescriptionStart.Substring(0, pageTagDescriptionStart.IndexOf("\">"));
+
+            return pageTagDescription;
+        }
+
+        private static void WebBrowser_FrameLoadEnd(object sender, CefSharp.FrameLoadEndEventArgs e)
         {
             if (!_isFrameLoaded)
             {
-                string webPageSource = await _webBrouser.GetSourceAsync();
-                
-                ReadWebSource(webPageSource);
                 _isFrameLoaded = true;
             }
         }
 
-        private static void _webBrouser_Loaded(object sender, RoutedEventArgs e)
-        {
-            _webBrouser.Visibility = Visibility.Hidden;
-        }
-
         private static Hyperlink SetLinkAddress(Match match)
         {
-
             Hyperlink link = null;
 
             string[] possibleLinks = new string[2];
@@ -281,9 +257,8 @@ namespace ChatClient.Helpers
 
         private static void OnUrlClick(object sender, RoutedEventArgs e)
         {
-            var link = (Hyperlink)sender;
-            // Do something with link.NavigateUri like:
-            //Process.Start(link.NavigateUri.ToString());
+            Hyperlink link = (Hyperlink)sender;
+
             Process.Start(new ProcessStartInfo(link.NavigateUri.AbsoluteUri)
             {
                 UseShellExecute = true

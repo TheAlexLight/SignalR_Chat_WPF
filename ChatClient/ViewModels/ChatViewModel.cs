@@ -68,7 +68,7 @@ namespace ChatClient.ViewModels
         private UserModel _currentUser; 
         private UserModel _selectedUser; 
         private MuteStatusModel _muteStatus;
-        private ChatGroupModel _currentChatGroup;
+        private ChatGroupViewModel _currentChatGroup;
         private UserModel _temporarySelectedItem = null;
         private object _selectedItem;
         private int _selectedUserIndex;
@@ -148,6 +148,7 @@ namespace ChatClient.ViewModels
             MuteStatus = new();
             UsersFilter = string.Empty;
             AllUsers = new ObservableCollection<UserModel>();
+            CurrentChatGroup = new();
             UsersColumnWidth = new GridLength(1, GridUnitType.Star);
             MessagesColumnWidth = new GridLength(0.7, GridUnitType.Star);
 
@@ -255,7 +256,18 @@ namespace ChatClient.ViewModels
         {
             if (currentGroup.Name == CurrentChatType)
             {
-                CurrentChatGroup = currentGroup;
+                CurrentChatGroup.CurrentChatGroupModel = currentGroup;
+
+                Application.Current.Dispatcher.Invoke(() =>
+                {
+                    CurrentChatGroup.MessagesViewModel.Clear();
+                });
+                
+
+                foreach (MessageModel messageModel in CurrentChatGroup.CurrentChatGroupModel.Messages)
+                {
+                    CurrentChatGroup.MessagesViewModel.Add(new MessageViewModel(messageModel));
+                }
 
                //ScrollViewerExtension.SetResetScrollPosition(CurrentChatGroup, )
 
@@ -265,15 +277,15 @@ namespace ChatClient.ViewModels
                 //}
 
                 Group bannedGroup = Groups.FirstOrDefault(g => g.Name.Equals(nameof(UserGroups.Banned)));
-                bannedGroup.GroupedUsers = new ObservableCollection<UserModel>(CurrentChatGroup.Users
+                bannedGroup.GroupedUsers = new ObservableCollection<UserModel>(CurrentChatGroup.CurrentChatGroupModel.Users
                         .Where(u => u.UserStatus.BanStatus.IsBanned).ToList());
 
                 Group onlineGroup = Groups.FirstOrDefault(g => g.Name.Equals(nameof(UserGroups.Online)));
-                onlineGroup.GroupedUsers = new ObservableCollection<UserModel>(CurrentChatGroup.Users
+                onlineGroup.GroupedUsers = new ObservableCollection<UserModel>(CurrentChatGroup.CurrentChatGroupModel.Users
                         .Where(u => u.UserProfile.IsOnline).Except(bannedGroup.GroupedUsers).ToList());
 
                 Group offlineGroup = Groups.FirstOrDefault(g => g.Name.Equals(nameof(UserGroups.Offline)));
-                offlineGroup.GroupedUsers = new ObservableCollection<UserModel>(CurrentChatGroup.Users
+                offlineGroup.GroupedUsers = new ObservableCollection<UserModel>(CurrentChatGroup.CurrentChatGroupModel.Users
                         .Except(bannedGroup.GroupedUsers).Except(onlineGroup.GroupedUsers).ToList());
 
                 try
@@ -438,7 +450,7 @@ namespace ChatClient.ViewModels
             }
         }
 
-        public ChatGroupModel CurrentChatGroup
+        public ChatGroupViewModel CurrentChatGroup
         {
             get => _currentChatGroup;
             set

@@ -56,6 +56,7 @@ namespace SharedItems.Models
         public virtual MessageInformationModel Message { get; set; }
         public MessageInformationType MessageInformationType { get; set; }
         public string Sender { get; set; }
+        public virtual HyperlinkDescriptionModel HyperlinkDescriptionModel { get; set; }
         public virtual UserModel UserModel { get; set; }
 
         public virtual ChatGroupModel ChatGroupModel { get; set; }

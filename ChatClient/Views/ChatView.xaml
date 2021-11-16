@@ -9,6 +9,8 @@
              xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
              xmlns:converters="clr-namespace:ChatClient.Converters"
              xmlns:enums="clr-namespace:SharedItems.Enums;assembly=SharedItems"
+             xmlns:helpers="clr-namespace:ChatClient.Helpers"
+             xmlns:wpf="clr-namespace:CefSharp.Wpf;assembly=CefSharp.Wpf"
              d:DataContext="{d:DesignInstance Type=viewmodels:ChatViewModel}"
              mc:Ignorable="d" 
              d:DesignHeight="400" d:DesignWidth="550">
@@ -201,5 +203,15 @@
                 </Style>
             </additionalViews:SettingsView.Style>
         </additionalViews:SettingsView>
+
+        <wpf:ChromiumWebBrowser Width="300" 
+                                Height="300"
+                                Visibility="Visible"
+                                Name="webBrowser"
+                                Panel.ZIndex="0"
+                                Grid.Column="1"
+                                helpers:HyperlinksDetetectionHelper.ChromiumWebBrowser="{Binding ElementName=webBrowser}">
+
+        </wpf:ChromiumWebBrowser>
     </Grid>
 </UserControl>
