@@ -25,7 +25,7 @@ namespace ChatClient.Views
             InitializeComponent();
         }
 
-        private void registrationField_TextOrPasswordChanged(object sender, RoutedEventArgs e)
+        private void RegistrationField_TextOrPasswordChanged(object sender, RoutedEventArgs e)
         {
             btnRegistration.IsEnabled = !Validation.GetHasError(pwBoxPassword)
                     && !Validation.GetHasError(pwBoxPasswordConfirm)

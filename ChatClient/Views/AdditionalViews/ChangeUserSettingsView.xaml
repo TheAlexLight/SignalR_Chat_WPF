@@ -57,7 +57,9 @@
                             Grid.Row="1">
                     <TextBlock Text="New Username"
                                Style="{StaticResource changeUserSettingsTextBlock}"/>
-                    <TextBox  Style="{StaticResource changeSettingsField}">
+                    <TextBox  Style="{StaticResource changeSettingsField}"
+                              TextChanged="UsernameTextControl_TextOrPasswordChanged"
+                              Name="username">
                         <TextBox.Text>
                             <Binding Path="UsernameSettingsField" 
                                      UpdateSourceTrigger="PropertyChanged">
@@ -71,12 +73,13 @@
                 <StackPanel Orientation="Vertical"
                             Grid.Row="2">
                     <TextBlock Text="Current password"
-                               Style="{StaticResource changeUserSettingsTextBlock}"/>
+                               Style="{StaticResource changeUserSettingsTextBlock}" />
                     <Border Style="{StaticResource changeUserSettingsField}" BorderBrush="Black">
                             <additionalViews:BindablePasswordBox
                             Style="{StaticResource passwordField}"
                             ClearPassword="{Binding NeedToClearPassword}"
-                                x:Name="currentUsernamePassword"/>
+                                x:Name="currentUsernamePassword"
+                                PasswordBox.PasswordChanged="UsernameTextControl_TextOrPasswordChanged"/>
                     </Border>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal"
@@ -87,9 +90,11 @@
                             Command="{Binding ChangeUserSettingsCommand}"
                             CommandParameter="{x:Static sharedItems:ChangeSettingsType.None}"/>
                     <Button Content="Submit"
+                            Name="submitUsername"
                             Style="{StaticResource changeUserSettingsButton}"
                             Command="{Binding ChangeUsernameCommand}"
-                            CommandParameter="{Binding ElementName=currentUsernamePassword, Path=Password}"/>
+                            CommandParameter="{Binding ElementName=currentUsernamePassword, Path=Password}"
+                            IsEnabled="False"/>
                 </StackPanel>
             </Grid>
         </Border>
@@ -129,7 +134,9 @@
                             Grid.Row="1">
                     <TextBlock Text="New Email"
                                Style="{StaticResource changeUserSettingsTextBlock}"/>
-                    <TextBox  Style="{StaticResource changeSettingsField}">
+                    <TextBox  Style="{StaticResource changeSettingsField}"
+                              Name="email"
+                              TextChanged="EmailTextControl_TextOrPasswordChanged">
                         <TextBox.Text>
                             <Binding Path="EmailSettingsField" 
                                      UpdateSourceTrigger="PropertyChanged">
@@ -149,7 +156,8 @@
                         <additionalViews:BindablePasswordBox
                             Style="{StaticResource passwordField}"
                             ClearPassword="{Binding NeedToClearPassword}"
-                            x:Name="currentEmailPassword">
+                            x:Name="currentEmailPassword"
+                            PasswordBox.PasswordChanged="EmailTextControl_TextOrPasswordChanged">
                         </additionalViews:BindablePasswordBox>
                     </Border>
                 </StackPanel>
@@ -163,7 +171,9 @@
                     <Button Content="Submit"
                             Style="{StaticResource changeUserSettingsButton}"
                             Command="{Binding ChangeEmailCommand}"
-                            CommandParameter="{Binding ElementName=currentEmailPassword, Path=Password}"/>
+                            CommandParameter="{Binding ElementName=currentEmailPassword, Path=Password}"
+                            Name="submitEmail"
+                            IsEnabled="False"/>
                 </StackPanel>
             </Grid>
         </Border>
@@ -208,7 +218,8 @@
                             <additionalViews:BindablePasswordBox
                             Style="{StaticResource passwordField}"
                             ClearPassword="{Binding NeedToClearPassword}"
-                                x:Name="currentPassword"/>
+                                x:Name="currentPassword"
+                                PasswordBox.PasswordChanged="PasswordTextControl_TextOrPasswordChanged"/>
                     </Border>
                 </StackPanel>
                 <StackPanel Orientation="Vertical"
@@ -218,7 +229,9 @@
                     <Border Style="{StaticResource changeUserSettingsField}" BorderBrush="Black">
                         <additionalViews:BindablePasswordBox
                             Style="{StaticResource passwordField}"
-                            ClearPassword="{Binding NeedToClearPassword}">
+                            ClearPassword="{Binding NeedToClearPassword}"
+                            x:Name="newPassword"
+                            PasswordBox.PasswordChanged="PasswordTextControl_TextOrPasswordChanged">
                             <additionalViews:BindablePasswordBox.Password>
                                 <Binding Path="Password"
                                          ValidatesOnDataErrors="True">
@@ -237,7 +250,9 @@
                     <Border Style="{StaticResource changeUserSettingsField}" BorderBrush="Black">
                         <additionalViews:BindablePasswordBox
                             Style="{StaticResource passwordField}"
-                            ClearPassword="{Binding NeedToClearPassword}">
+                            ClearPassword="{Binding NeedToClearPassword}"
+                            x:Name="newPasswordConfirm"
+                            PasswordBox.PasswordChanged="PasswordTextControl_TextOrPasswordChanged">
                             <additionalViews:BindablePasswordBox.Password>
                                 <Binding Path="PasswordConfirm"
                                          ValidatesOnDataErrors="True">
@@ -259,7 +274,9 @@
                     <Button Content="Submit"
                             Style="{StaticResource changeUserSettingsButton}"
                             Command="{Binding ChangePasswordCommand}"
-                            CommandParameter="{Binding ElementName=currentPassword, Path=Password}"/>
+                            CommandParameter="{Binding ElementName=currentPassword, Path=Password}"
+                            Name="submitPassword"
+                            IsEnabled="False"/>
                 </StackPanel>
             </Grid>
         </Border>

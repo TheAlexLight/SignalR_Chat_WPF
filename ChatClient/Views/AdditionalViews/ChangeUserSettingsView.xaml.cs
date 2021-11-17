@@ -37,13 +37,35 @@ namespace ChatClient.Views.AdditionalViews
             {
                 if (grid == mainGrid)
                 {
-                    //object[] values = new object[1];
-                    //values[0] = ChangeSettingsType.None;
                     _changeUserSettingsCommand.Execute(ChangeSettingsType.None);
                 }
 
                 e.Handled = true;
             }
+        }
+
+        private void UsernameTextControl_TextOrPasswordChanged(object sender, RoutedEventArgs e)
+        {
+            submitUsername.IsEnabled = !Validation.GetHasError(username)
+                && username.Text != string.Empty
+                && currentUsernamePassword.Password != null
+                && currentUsernamePassword.Password != string.Empty;
+        }
+
+        private void EmailTextControl_TextOrPasswordChanged(object sender, RoutedEventArgs e)
+        {
+            submitEmail.IsEnabled = !Validation.GetHasError(email)
+                && email.Text != string.Empty
+                && currentEmailPassword.Password != null
+                && currentEmailPassword.Password != string.Empty;
+        }
+
+        private void PasswordTextControl_TextOrPasswordChanged(object sender, RoutedEventArgs e)
+        {
+            submitPassword.IsEnabled = !Validation.GetHasError(newPassword)
+                && !Validation.GetHasError(newPasswordConfirm)
+                && currentPassword.Password != null
+                && currentPassword.Password != string.Empty;
         }
     }
 }

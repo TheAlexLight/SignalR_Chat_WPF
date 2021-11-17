@@ -9,7 +9,7 @@
              xmlns:validators="clr-namespace:ChatClient.Validators" 
              mc:Ignorable="d" 
              d:DesignHeight="800" d:DesignWidth="800"
-             Loaded="registrationField_TextOrPasswordChanged">
+             Loaded="RegistrationField_TextOrPasswordChanged">
     <Border Style="{StaticResource outerBorder}">
         <Grid Background="#4E535B">
             <Border x:Name="fullRegistrationBorder" 
@@ -38,7 +38,7 @@
                         <TextBox Style="{StaticResource enterField}"
                                  Grid.Row="1" Grid.Column="1"
                              x:Name="txtUsername"
-                                TextChanged="registrationField_TextOrPasswordChanged">
+                                TextChanged="RegistrationField_TextOrPasswordChanged">
                             <TextBox.Text>
                                 <Binding Path="Username" 
                                      UpdateSourceTrigger="PropertyChanged">
@@ -56,7 +56,7 @@
                         <TextBox Style="{StaticResource enterField}"
                                  Grid.Row="2" Grid.Column="2"
                                  x:Name="txtEmail"
-                                 TextChanged="registrationField_TextOrPasswordChanged">
+                                 TextChanged="RegistrationField_TextOrPasswordChanged">
                             <TextBox.Text>
                                 <Binding Path="Email" 
                                      UpdateSourceTrigger="PropertyChanged">
@@ -77,7 +77,7 @@
                             <additionalViews:BindablePasswordBox 
                         Style="{StaticResource passwordField}"
                             x:Name="pwBoxPassword"
-                            PasswordBox.PasswordChanged="registrationField_TextOrPasswordChanged">
+                            PasswordBox.PasswordChanged="RegistrationField_TextOrPasswordChanged">
                                 <additionalViews:BindablePasswordBox.Password>
                                     <Binding Path="Password"
                                          ValidatesOnDataErrors="True">
@@ -100,7 +100,7 @@
                             <additionalViews:BindablePasswordBox
                             Style="{StaticResource passwordField}"
                             x:Name="pwBoxPasswordConfirm"
-                            PasswordBox.PasswordChanged="registrationField_TextOrPasswordChanged">
+                            PasswordBox.PasswordChanged="RegistrationField_TextOrPasswordChanged">
                                 <additionalViews:BindablePasswordBox.Password>
                                     <Binding Path="PasswordConfirm" 
                                          ValidatesOnDataErrors="True">
