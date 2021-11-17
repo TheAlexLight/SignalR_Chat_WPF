@@ -71,4 +71,13 @@
         <Setter Property="FontSize" Value="24"/>
     </Style>
 
+    <Style x:Key="selectableTextBlock" TargetType="{x:Type TextBlock}">
+        <Setter Property="Focusable" Value="True"/>
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Cursor" Value="SizeNS"/>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
 </ResourceDictionary>

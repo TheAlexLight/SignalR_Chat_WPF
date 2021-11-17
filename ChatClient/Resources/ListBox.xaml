@@ -4,7 +4,8 @@
                     xmlns:extensions="clr-namespace:ChatClient.Extensions"
                     xmlns:helpers="clr-namespace:ChatClient.Helpers"
                     xmlns:viewmodels="clr-namespace:ChatClient.ViewModels"
-                    xmlns:i="http://schemas.microsoft.com/xaml/behaviors">
+                    xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+                    xmlns:behaviors="clr-namespace:ChatClient.Extensions.Behaviors">
 
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="pack://application:,,,/ChatClient;component/Resources/Images/Mute.xaml"/>
@@ -415,12 +416,18 @@
                                        x:Name="textMessage"
                                        Margin="10,-5,0,0"
                                        Foreground="Black"
+                                        Focusable="True"
                                        FontSize="20"
                                        TextWrapping="Wrap"
                                        HorizontalAlignment="Left"
                                        Visibility="Collapsed"
-                                       helpers:HyperlinksDetetectionHelper.Text="{Binding MessageModel.Message.TextMessage, Mode=TwoWay}"/>
-                                    <DockPanel Visibility="{Binding HyperlinkPanelVisibility}">
+                                       helpers:HyperlinksDetetectionHelper.Text="{Binding MessageModel.Message.TextMessage, Mode=TwoWay}"
+                                        Style="{StaticResource selectableTextBlock}">
+                                        <i:Interaction.Behaviors>
+                                            <behaviors:SelectableTextBlockBehavior/>
+                                        </i:Interaction.Behaviors>
+                                    </TextBlock>
+                                    <DockPanel Focusable="True" Visibility="{Binding HyperlinkPanelVisibility}">
                                         <Rectangle Width="3"
                                                Fill="#9193B2"
                                                Margin="5,0,0,0"/>
@@ -428,12 +435,22 @@
                                             <TextBlock Text="{Binding MessageModel.HyperlinkDescriptionModel.HyperlinkTitle}"
                                                        FontWeight="DemiBold"
                                                        Margin="10,5,0,0"
-                                                       FontSize="18"/>
+                                                       FontSize="18"
+                                                       Style="{StaticResource selectableTextBlock}">
+                                                 <i:Interaction.Behaviors>
+                                            <behaviors:SelectableTextBlockBehavior/>
+                                        </i:Interaction.Behaviors>
+                                            </TextBlock>
                                             <TextBlock TextWrapping="Wrap"
                                            Margin="10,0,10,5"
                                                FontSize="16"
                                                Text="{Binding MessageModel.HyperlinkDescriptionModel.HyperlinkDescription}"
-                                                       helpers:HyperlinksDetetectionHelper.Text="{Binding MessageModel.HyperlinkDescriptionModel.HyperlinkDescription}"/>
+                                                       helpers:HyperlinksDetetectionHelper.Text="{Binding MessageModel.HyperlinkDescriptionModel.HyperlinkDescription}"
+                                                       Style="{StaticResource selectableTextBlock}">
+                                                 <i:Interaction.Behaviors>
+                                            <behaviors:SelectableTextBlockBehavior/>
+                                        </i:Interaction.Behaviors>
+                                            </TextBlock>
                                             <Image Source="{Binding MessageModel.HyperlinkDescriptionModel.HyperlinkImage, Converter={StaticResource byteToImageConverter}}"
                                        MaxHeight="250"
                                        MaxWidth="250"

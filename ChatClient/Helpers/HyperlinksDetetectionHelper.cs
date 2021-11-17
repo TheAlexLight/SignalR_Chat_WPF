@@ -120,6 +120,11 @@ namespace ChatClient.Helpers
             {
                 textBlock.Inlines.Add(new Run(newText.Substring(lastPosition)));
             }
+
+            if (textBlock.Inlines.Last() is Hyperlink hyperlink)
+            {
+                textBlock.Inlines.Add(" ");
+            }
         }
 
         public static async Task<HyperlinkDescriptionModel> ReceivePageSource(Match lastRegex)
@@ -231,6 +236,7 @@ namespace ChatClient.Helpers
 
             try
             {
+
                 for (int i = 0; i < possibleLinks.Length; i++)
                 {
                     if (match.Value.Contains(possibleLinks[i]))
@@ -258,7 +264,7 @@ namespace ChatClient.Helpers
         private static void OnUrlClick(object sender, RoutedEventArgs e)
         {
             Hyperlink link = (Hyperlink)sender;
-
+                
             Process.Start(new ProcessStartInfo(link.NavigateUri.AbsoluteUri)
             {
                 UseShellExecute = true
