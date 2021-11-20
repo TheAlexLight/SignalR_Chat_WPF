@@ -29,22 +29,40 @@
         <GradientStop Color="#E6E7FF" Offset="1"/>
     </LinearGradientBrush>
 
-    <Style x:Key="usersListBox" x:Name="usersListBox" TargetType="{x:Type ListBox}">
+    <Style x:Key="publicUsersList" x:Name="publicUsersList" TargetType="{x:Type ItemsControl}">
         <Setter Property="FontSize" Value="20"/>
         <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
-        <Setter Property="SelectedIndex" Value="0"/>
-        <Setter Property="Background" Value="{StaticResource mainMessageBoxColors}"/>
+        <Setter Property="Background" Value="#DAD4E6"/>
         <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Disabled"/>
+        <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate>
-                    <ScrollViewer Background="{StaticResource mainMessageBoxColors}">
+                    <ScrollViewer Background="#DAD4E6">
                         <ItemsPresenter/>
                     </ScrollViewer>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
-        <Setter Property="ItemContainerStyle" x:Name="its">
+        <Setter Property="ItemsPanel">
+            <Setter.Value>
+                <ItemsPanelTemplate>
+                    <VirtualizingStackPanel IsVirtualizing="True" />
+                </ItemsPanelTemplate>
+            </Setter.Value>
+        </Setter>
+        <!--<Setter Property="ItemContainerStyle">
+            <Setter.Value>
+                <Style TargetType="{x:Type ContentPresenter}">
+                    <Style.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="ListBox.Background" Value="Violet"/>
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </Setter.Value>
+        </Setter>-->
+        <!--<Setter Property="ItemContainerStyle" x:Name="its">
             <Setter.Value>
                 <Style TargetType="{x:Type ListBoxItem }">
                     <Style.Triggers>
@@ -54,23 +72,32 @@
                     </Style.Triggers>
                 </Style>
             </Setter.Value>
-        </Setter>
+        </Setter>-->
         <Setter Property="ItemTemplate">
             <Setter.Value>
                 <DataTemplate>
                     <ListBox ItemsSource="{Binding GroupedUsers}"
-                             Margin="-15,-5,-10,-5"
+                             Margin="0,0,0,0"
                              BorderThickness="0"
                              Background="Transparent"
                              ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                        <!--<ListBox.ItemContainerStyle>
+                            <Style TargetType="{x:Type ListBoxItem}">
+                                <Style.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="True">
+                                        <Setter Property="Background" Value="Violet"/>
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </ListBox.ItemContainerStyle>-->
                         <ListBox.ItemTemplate>
                             <DataTemplate>
-                                <Grid Background="#F0F0FF">
+                                <Grid Background="Transparent">
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition/>
                                         <ColumnDefinition Width="20"/>
                                     </Grid.ColumnDefinitions>
-                                    <DockPanel  Background="#F0F0FF" Name="dockPanel">
+                                    <DockPanel  Background="Transparent" Name="dockPanel">
                                         <Border CornerRadius="25" 
                                                 BorderBrush="DarkRed" 
                                                 BorderThickness="2.5"
@@ -91,13 +118,12 @@
                                                Visibility="Collapsed"
                                                Name="muteImage"/>
                                         <TextBlock Text="{Binding UserProfile.Username}"
-                                                   Foreground="{Binding UserProfile.UsernameColor}"
+                                                   Foreground="Black"
                                                    Margin="10,0,0,0"
                                                    FontSize="22"
-                                                   Background="#F0F0FF"
+                                                   Background="Transparent"
                                                    TextTrimming="CharacterEllipsis"
                                                    Name="UsernameText"/>
-
                                     </DockPanel>
                                     <Menu Style="{StaticResource userMenu}" 
                               Grid.Column="1"
@@ -135,7 +161,7 @@
                                             <MenuItem Style="{StaticResource baseMenuItem}"
                                                       Header="Kick"
                                                       Command="{Binding RelativeSource={RelativeSource AncestorType= {x:Type UserControl}}, Path=DataContext.KickUserCommand}"
-                                                      CommandParameter="{Binding ElementName=activeUsersListBox,Path=SelectedItem}"/>
+                                                      CommandParameter="{Binding ElementName=menu, Path=DataContext}"/>
                                             <MenuItem Header="Mute" Style="{StaticResource muteMenuItem}">
                                                 <MenuItem Header="10 min" 
                                                           viewmodels:ChatViewModel.DurationTime="10"
@@ -164,7 +190,7 @@
                                     <DataTrigger Binding="{Binding UserProfile.IsOnline}" Value="True">
                                         <Setter Property="BorderBrush" TargetName="userActiveBorder" Value="Green"/>
                                     </DataTrigger>
-                                    <Trigger Property="IsMouseOver" Value="True">
+                                    <!--<Trigger Property="IsMouseOver" Value="True">
                                         <Setter TargetName="dockPanel"
                                                 Property="Background"
                                                 Value="#C3D7F2"/>
@@ -174,7 +200,7 @@
                                         <Setter TargetName="UsernameText"
                                                 Property="Background"
                                                 Value="#C3D7F2"/>
-                                    </Trigger>
+                                    </Trigger>-->
                                 </DataTemplate.Triggers>
                             </DataTemplate>
                         </ListBox.ItemTemplate>
@@ -292,7 +318,7 @@
                 <DataTemplate>
                     <DockPanel MaxWidth="400"
                                HorizontalAlignment="Left"
-                               Margin="5,0,5,0">
+                               Margin="10,5,5,0">
                         <Border CornerRadius="25" 
                                 BorderThickness="2.5"
                                     Width="30" 

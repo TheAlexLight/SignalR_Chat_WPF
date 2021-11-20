@@ -17,6 +17,7 @@
                 <ResourceDictionary Source="Resources/Menu.xaml"/>
                 <ResourceDictionary Source="Resources/ToolBar.xaml"/>
                 <ResourceDictionary Source="Resources/ScrollBar.xaml"/>
+                <ResourceDictionary Source="Resources/GroupItem.xaml"/>
 
                 <ResourceDictionary Source="Resources/Images/Send.xaml"/>
                 <ResourceDictionary Source="Resources/Images/Mute.xaml"/>

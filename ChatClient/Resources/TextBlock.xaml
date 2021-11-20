@@ -28,8 +28,9 @@
 
     <Style x:Key="chatTitle" TargetType="{x:Type TextBlock}" BasedOn="{StaticResource mainTitle}">
         <Setter Property="Margin" Value="0,-5,0,0"/>
-        <Setter Property="FontSize" Value="38"/>
+        <Setter Property="FontSize" Value="28"/>
         <Setter Property="HorizontalAlignment" Value="Center"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
     </Style>
 
     <Style x:Key="formText" TargetType="{x:Type TextBlock}" BasedOn="{StaticResource mainTitle}">

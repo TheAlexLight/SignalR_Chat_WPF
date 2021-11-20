@@ -9,9 +9,10 @@
              xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
              xmlns:converters="clr-namespace:ChatClient.Converters"
              xmlns:enums="clr-namespace:SharedItems.Enums;assembly=SharedItems"
-             xmlns:helpers="clr-namespace:ChatClient.Helpers"
-             xmlns:sharedItems="clr-namespace:SharedItems.Enums;assembly=SharedItems"
              xmlns:wpf="clr-namespace:CefSharp.Wpf;assembly=CefSharp.Wpf"
+             xmlns:helpers="clr-namespace:ChatClient.Helpers"
+             xmlns:controls="clr-namespace:ChatClient.Controls"
+             xmlns:sharedItems="clr-namespace:SharedItems.Enums;assembly=SharedItems"
              d:DataContext="{d:DesignInstance Type=viewmodels:ChatViewModel}"
              mc:Ignorable="d" 
              d:DesignHeight="400" d:DesignWidth="550">
@@ -25,10 +26,10 @@
     <Grid Background="#C0C8D5">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="60" MinWidth="1"/>
-            <ColumnDefinition MinWidth="260" 
+            <ColumnDefinition MinWidth="200" 
                               Width="{Binding UsersColumnWidth, Mode=TwoWay}"/>
             <ColumnDefinition Width="{Binding MessagesColumnWidth, Mode=TwoWay}"
-                              MinWidth="200"/>
+                              MinWidth="260"/>
         </Grid.ColumnDefinitions>
 
         <GridSplitter Grid.Column="1"
@@ -53,7 +54,6 @@
                         <Button.CommandParameter>
                             <MultiBinding Converter ="{StaticResource multiBindingConverter}">
                                 <Binding Source="true"/>
-                                <Binding ElementName="userList" Path="SelectedItem"/>
                             </MultiBinding>
                         </Button.CommandParameter>
                     </Button>
@@ -62,9 +62,9 @@
 
         </Grid>
 
-        <Grid Grid.Column="1">
+        <Grid Grid.Column="2">
             <Grid.RowDefinitions>
-                <RowDefinition Height="35"/>
+                <RowDefinition Height="45"/>
                 <RowDefinition Height="4*"/>
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
@@ -75,22 +75,38 @@
                            Text="Chat"/>
             </Border>
 
-            <ListBox Grid.Row="1" Grid.Column="0"
+            <ItemsControl Grid.Row="1" Grid.Column="0"
                 Style="{StaticResource messagesListBox}"/>
 
             <Grid Grid.Row="2"
-                  Background="{StaticResource typeMessageGridColors}">
+                  Background="#D8DFD3">
                 <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="45"/>
                     <ColumnDefinition Width="3.7*"/>
-                    <ColumnDefinition MinWidth="60" MaxWidth="60"/>
+                    <ColumnDefinition MinWidth="45" MaxWidth="45"/>
                 </Grid.ColumnDefinitions>
-
-                <TextBox Grid.Column="0"    
-                     Style="{StaticResource typeMessage}"
-                     Text="{Binding Message.TextMessage}"/>
-                <Button  Margin="0,0,10,0" Grid.Column="1" Width="50" Height="45"  
+                <Button Style="{StaticResource paperClipButton}"
+                            Command="{Binding SendChatMessageCommand}">
+                    <Button.CommandParameter>
+                        <MultiBinding Converter ="{StaticResource multiBindingConverter}">
+                            <Binding Source="{x:Static sharedItems:MessageInformationType.Image}"/>
+                        </MultiBinding>
+                    </Button.CommandParameter>
+                </Button>
+                <AdornerDecorator Grid.Column="1">
+                    <TextBox Style="{StaticResource adornerTextBox}"
+                     Text="{Binding Message.TextMessage}">
+                        <controls:WatermarkService.Watermark>
+                            <TextBlock Style="{StaticResource adornerTextBlock}">
+                                Write a message
+                            </TextBlock>
+                        </controls:WatermarkService.Watermark>
+                    </TextBox>
+                </AdornerDecorator>
+                <Button  Margin="0,0,5,0" Grid.Column="2" Width="35" Height="35    "  
                         Command="{Binding SendChatMessageCommand}"
-                        Style="{StaticResource sendImageMessage}">
+                        Style="{StaticResource sendImageMessage}"
+                        Cursor="Hand">
                     <Image Stretch="Fill" Source="{StaticResource directDrawingImage}" />
                     <Button.CommandParameter>
                         <MultiBinding Converter ="{StaticResource multiBindingConverter}">
@@ -101,87 +117,53 @@
             </Grid>
         </Grid>
 
-        <Border  Grid.Column="2" 
-                 BorderThickness="0"
-                 BorderBrush="#AAAEB2">
-            <Grid>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="35"/>
-                    <RowDefinition/>
-                </Grid.RowDefinitions>
+        <Grid Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="45"/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
 
-                <Border Style="{StaticResource chatBorder}"
+            <Border Background="#CFC5E3"
                     Grid.Row="0">
-                    <TextBlock Style="{StaticResource chatTitle}"
+                <TextBlock Style="{StaticResource chatTitle}"
                            Text="Users"
                                HorizontalAlignment="Center"/>
-                </Border>
+            </Border>
 
-                <Grid Grid.Row="1" Background="{StaticResource mainMessageBoxColors}">
-                    <ToolBarTray Style="{StaticResource filterToolBarTray}"
-                                 Background="{StaticResource mainMessageBoxColors}">
-                        <ToolBar Name="usersToolBar" Style="{StaticResource usersToolBar}"
-                                 Background="{StaticResource mainMessageBoxColors}">
-                            <i:Interaction.Triggers>
-                                <i:EventTrigger EventName="Loaded">
-                                    <i:InvokeCommandAction Command="{Binding RemoveToolBarOverflowCommand}"
+            <Grid Grid.Row="1" 
+                  Focusable="True">
+                <ToolBarTray Style="{StaticResource filterToolBarTray}"
+                                 Background="Transparent">
+                    <ToolBar Name="usersToolBar" Style="{StaticResource usersToolBar}">
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="Loaded">
+                                <i:InvokeCommandAction Command="{Binding RemoveToolBarOverflowCommand}"
                                                    CommandParameter="{Binding ElementName=usersToolBar}"/>
-                                </i:EventTrigger>
-                            </i:Interaction.Triggers>
-                        </ToolBar>
-                    </ToolBarTray>
-                    <ListBox Grid.RowSpan="2" Grid.Row="0" x:Name="activeUsersListBox"
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
+                    </ToolBar>
+                </ToolBarTray>
+                <ItemsControl Grid.RowSpan="2" Grid.Row="0" x:Name="activeUsersListBox"
                      ItemsSource="{Binding UsersCollectionView}"
                              BorderThickness="0"
-                             Style="{StaticResource usersListBox}">
-                        <ListBox.GroupStyle>
-                            <GroupStyle>
-                                <GroupStyle.Panel>
-                                    <ItemsPanelTemplate>
-                                        <VirtualizingStackPanel Orientation="Vertical"
+                             Style="{StaticResource publicUsersList}">
+                    <ItemsControl.GroupStyle>
+                        <GroupStyle>
+                            <GroupStyle.Panel>
+                                <ItemsPanelTemplate>
+                                    <VirtualizingStackPanel Orientation="Vertical"
                                                     HorizontalAlignment="Stretch"
                                                     VerticalAlignment="Stretch"/>
-                                    </ItemsPanelTemplate>
-                                </GroupStyle.Panel>
-                                <GroupStyle.ContainerStyle>
-                                    <Style TargetType="{x:Type GroupItem}">
-                                        <Setter Property="Template">
-                                            <Setter.Value>
-                                                <ControlTemplate>
-                                                    <Expander
-                                                        x:Name="expander"
-                                        Padding="0"                                           
-                                        BorderThickness="0"
-                                        IsExpanded="True"
-                                            HorizontalContentAlignment="Stretch"
-                                            HorizontalAlignment="Stretch"
-                                                        Margin="10,10,0,0">
-                                                        <ItemsPresenter/>
-                                                        <Expander.Header>
-                                                            <StackPanel Orientation="Horizontal">
-                                                                <TextBlock Text="{Binding Name}"/>
-                                                                <TextBlock Text="  ("/>
-                                                                <TextBlock Text="{Binding Items.CurrentItem.UsersCount}"/>
-                                                                <TextBlock Text=")"/>
-                                                            </StackPanel>
-                                                        </Expander.Header>
-                                                    </Expander>
-                                                    <ControlTemplate.Triggers>
-                                                        <DataTrigger Binding="{Binding Items.CurrentItem.IsChecked}" Value="False">
-                                                            <Setter TargetName="expander" Property="Visibility" Value="Collapsed"/>
-                                                        </DataTrigger>
-                                                    </ControlTemplate.Triggers>
-                                                </ControlTemplate>
-                                            </Setter.Value>
-                                        </Setter>
-                                    </Style>
-                                </GroupStyle.ContainerStyle>
-                            </GroupStyle>
-                        </ListBox.GroupStyle>
-                    </ListBox>
-                </Grid>
+                                </ItemsPanelTemplate>
+                            </GroupStyle.Panel>
+                            <GroupStyle.ContainerStyle>
+                                <Style TargetType="{x:Type GroupItem}" BasedOn="{StaticResource publicUsersGroup}"/>
+                            </GroupStyle.ContainerStyle>
+                        </GroupStyle>
+                    </ItemsControl.GroupStyle>
+                </ItemsControl>
             </Grid>
-        </Border>
+        </Grid>
 
         <Grid Grid.ColumnSpan="3" Style="{StaticResource getBannedLayout}"/>
 

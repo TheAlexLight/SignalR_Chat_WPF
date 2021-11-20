@@ -51,6 +51,9 @@
     <Page Update="Resources\Grid.xaml">
       <SubType>Designer</SubType>
     </Page>
+    <Page Update="Resources\GroupItem.xaml">
+      <SubType>Designer</SubType>
+    </Page>
     <Page Update="Resources\ListBox.xaml">
       <SubType>Designer</SubType>
     </Page>

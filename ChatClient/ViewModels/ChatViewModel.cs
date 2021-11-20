@@ -150,7 +150,7 @@ namespace ChatClient.ViewModels
             AllUsers = new ObservableCollection<UserModel>();
             CurrentChatGroup = new();
             UsersColumnWidth = new GridLength(1, GridUnitType.Star);
-            MessagesColumnWidth = new GridLength(0.7, GridUnitType.Star);
+            MessagesColumnWidth = new GridLength(2.5, GridUnitType.Star);
 
             CreateGroups();
 

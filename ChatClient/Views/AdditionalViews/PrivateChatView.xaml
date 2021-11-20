@@ -46,17 +46,16 @@
                 </TextBox>
             </AdornerDecorator>
 
-            <Grid Grid.Row="1"  Background="#ECECF4">
-                <ListBox Style="{StaticResource privateUsersListBox}"
-                         Name="userList">
-                    <i:Interaction.Triggers>
-                        <i:EventTrigger EventName="SelectionChanged">
-                            <i:InvokeCommandAction Command="{Binding UpdatePrivateMessagesCommand}"
+            <ListBox Style="{StaticResource privateUsersListBox}"
+                         Name="userList"
+                         Grid.Row="1">
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="SelectionChanged">
+                        <i:InvokeCommandAction Command="{Binding UpdatePrivateMessagesCommand}"
                                                    CommandParameter="{Binding ElementName=userList, Path=SelectedItem}"/>
-                        </i:EventTrigger>
-                    </i:Interaction.Triggers>
-                </ListBox>
-            </Grid>
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+            </ListBox>
         </Grid>
 
         <Grid Grid.Column="1">
@@ -124,10 +123,10 @@
             </Grid>
         </Grid>
 
-        <!--<Grid Grid.Column="1" 
+        <Grid Grid.Column="1" 
               Panel.ZIndex="3"
               Style="{StaticResource privateMessagesGrid}"
-              Background="{StaticResource mainMessageBoxColors}">
+              Background="#E6E6E6">
             <TextBlock HorizontalAlignment="Center"
                        TextAlignment="Center"
                        VerticalAlignment="Center"
@@ -135,6 +134,6 @@
                        FontSize="24"
                        TextWrapping="Wrap"
                        Margin="0,0,0,20"/>
-        </Grid>-->
+        </Grid>
     </Grid>
 </UserControl>

@@ -18,17 +18,15 @@
 
     <Style x:Key="usersToolBar" x:Name="usersToolBar" TargetType="{x:Type ToolBar}">
         <Setter Property="ToolBar.OverflowMode" Value="Never"/>
-        <Setter Property="Background" Value="{StaticResource mainMessageBoxColors}"/>
+        <Setter Property="Background" Value="Transparent"/>
         <Setter Property="BorderThickness" Value="0"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type ToolBar}">
-                    <Menu Background="{StaticResource mainMessageBoxColors}">
-                        <MenuItem ItemsSource="{Binding UsersCollectionView}"
+                    <Menu Background="{TemplateBinding Background}">
+                        <MenuItem Name="menuItem" ItemsSource="{Binding UsersCollectionView}"
                                           HorizontalAlignment="Right"
-                                          Background="{StaticResource mainMessageBoxColors}"
-                                          BorderBrush="#EEEEEE"
-                                          BorderThickness="2"
+                                          Background="{TemplateBinding Background}"
                                   Margin="5,5,0,0">
                             <MenuItem.Header>
                                 <Image Source="{StaticResource filterDrawingImage}"

@@ -21,7 +21,7 @@ namespace ChatClient.Commands.ToolBarCommands
 
         public override async void Execute(object parameter)
         {
-            if (parameter is UserModel)
+            if (parameter is UserModel user && user.UserProfile.IsOnline == true)
             {
                 UserModel selectedModel = parameter as UserModel;
 

@@ -30,14 +30,14 @@ namespace ChatClient.Commands
 
                 if (currentChatType == ChatType.Private)
                 {
-                    _viewModel.UsersColumnWidth = new GridLength(0.75, GridUnitType.Star);
+                    _viewModel.UsersColumnWidth = new GridLength(1, GridUnitType.Star);
                     _viewModel.MessagesColumnWidth = new GridLength(2.5, GridUnitType.Star);
                     _viewModel.SelectedUserIndex = -1;
                 }
                 else
                 {
                     _viewModel.UsersColumnWidth = new GridLength(1, GridUnitType.Star);
-                    _viewModel.MessagesColumnWidth = new GridLength(0.75, GridUnitType.Star);
+                    _viewModel.MessagesColumnWidth = new GridLength(2.5, GridUnitType.Star);
                     _viewModel.SelectedUserIndex = 0;
                 }
 
