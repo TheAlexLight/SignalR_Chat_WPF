@@ -657,3 +657,4 @@ C:\Users\oyudi\Alexander\Programming\SignalR_Chat_WPF\ChatClient\bin\Debug\net5.
 C:\Users\oyudi\Alexander\Programming\SignalR_Chat_WPF\ChatClient\bin\Debug\net5.0-windows\runtimes\win-x86\native\vk_swiftshader.dll
 C:\Users\oyudi\Alexander\Programming\SignalR_Chat_WPF\ChatClient\bin\Debug\net5.0-windows\runtimes\win-x86\native\vk_swiftshader_icd.json
 C:\Users\oyudi\Alexander\Programming\SignalR_Chat_WPF\ChatClient\bin\Debug\net5.0-windows\runtimes\win-x86\native\vulkan-1.dll
+C:\Users\oyudi\Alexander\Programming\SignalR_Chat_WPF\ChatClient\obj\Debug\net5.0-windows\ChatClient.csproj.AssemblyReference.cache

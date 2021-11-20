@@ -15,8 +15,7 @@
         <ResourceDictionary Source="ToolBar.xaml"/>
         <ResourceDictionary Source="ScrollBar.xaml"/>
     </ResourceDictionary.MergedDictionaries>
-
-    <converters:MultiValueEqualityConverter x:Key="equalityConverter"/>
+    
     <converters:ByteToImageConverter x:Key="byteToImageConverter"/>
     <converters:MessageStatusToImageConverter x:Key="messageStatusToImageConverter"/>
     <converters:UncheckedMessagesConverter x:Key="uncheckedMessagesConverter"/>
@@ -45,12 +44,11 @@
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
-        <Setter Property="ItemContainerStyle">
+        <Setter Property="ItemContainerStyle" x:Name="its">
             <Setter.Value>
                 <Style TargetType="{x:Type ListBoxItem }">
                     <Style.Triggers>
-                        <DataTrigger Binding ="{Binding RelativeSource={RelativeSource AncestorType={x:Type ListBox}}, Path=HasItems}" 
-                                                    Value="False">
+                        <DataTrigger Binding="{Binding UsersCount}" Value="0">
                             <Setter Property="Visibility" Value="Collapsed"/>
                         </DataTrigger>
                     </Style.Triggers>
@@ -63,7 +61,7 @@
                     <ListBox ItemsSource="{Binding GroupedUsers}"
                              Margin="-15,-5,-10,-5"
                              BorderThickness="0"
-                             Background="#F0F0FF"
+                             Background="Transparent"
                              ScrollViewer.HorizontalScrollBarVisibility="Disabled">
                         <ListBox.ItemTemplate>
                             <DataTemplate>
@@ -180,21 +178,6 @@
                                 </DataTemplate.Triggers>
                             </DataTemplate>
                         </ListBox.ItemTemplate>
-                        <!--<ListBox.Style>
-                            <Style TargetType="{x:Type ListBox}"
-           BasedOn="{StaticResource {x:Type ListBox}}">
-                                <Style.Triggers>
-                                    --><!-- Use ListBox.HasItems instead of Binding --><!--
-                                    <Trigger Property="HasItems" Value="False">
-                                        <Setter Property="Template">
-                                            <Setter.Value>
-                                                <ControlTemplate/>
-                                            </Setter.Value>
-                                        </Setter>
-                                    </Trigger>
-                                </Style.Triggers>
-                            </Style>
-                        </ListBox.Style>-->
                     </ListBox>
                 </DataTemplate>
             </Setter.Value>
@@ -266,17 +249,6 @@
                     <DataTemplate.Triggers>
                         <DataTrigger Binding="{Binding UserProfile.IsOnline}" Value="True">
                             <Setter Property="BorderBrush" TargetName="userActiveBorder" Value="Green"/>
-                        </DataTrigger>
-                        <DataTrigger Value="True">
-                            <DataTrigger.Binding>
-                                <MultiBinding Converter="{StaticResource equalityConverter}">
-                                    <Binding RelativeSource="{RelativeSource Self}" 
-                                             Path="DataContext.UserProfile.Username"/>
-                                    <Binding RelativeSource="{RelativeSource AncestorType={x:Type ListBox}}"
-                                             Path="DataContext.CurrentUser.UserProfile.Username"/>
-                                </MultiBinding>
-                            </DataTrigger.Binding>
-                            <Setter Property="Visibility"  Value="Collapsed"/>
                         </DataTrigger>
                     </DataTemplate.Triggers>
                 </DataTemplate>

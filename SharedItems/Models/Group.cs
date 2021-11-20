@@ -16,16 +16,16 @@ namespace SharedItems.Models
         public string Name { get; set; }
         public ObservableCollection<UserModel> GroupedUsers { get; set; }
         public bool IsChecked { get; set; }
-        public int UsersCount {
-            get
-            {
-                if (GroupedUsers != null)
-                {
-                    return GroupedUsers.Count;
-                }
+        public int UsersCount { get; set; }
+        //    //get
+        //    //{
+        //    //    if (GroupedUsers != null)
+        //    //    {
+        //    //        return GroupedUsers.Count;
+        //    //    }
 
-                return 0;
-            }
-        }
+        //    //    return 0;
+        //    //}
+        //}
     }
 }

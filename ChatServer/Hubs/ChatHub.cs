@@ -98,6 +98,7 @@ namespace ChatServer.Hubs
                         return;
                     }
 
+                    await UpdateChat(userHandler);
                     await SendPublicGroup();
                     #region roleAssign
                     //List<IdentityError> errors = await _roleController.Create("User");
@@ -115,7 +116,6 @@ namespace ChatServer.Hubs
                     //    //TODO: Send result
                     //}
                     #endregion
-                    await UpdateChat(userHandler);
                 }
             }
         }

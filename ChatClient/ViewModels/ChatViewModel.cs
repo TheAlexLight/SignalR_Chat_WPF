@@ -156,6 +156,36 @@ namespace ChatClient.ViewModels
 
             UsersCollectionView = CollectionViewSource.GetDefaultView(Groups);
             UsersCollectionView.GroupDescriptions.Add(new PropertyGroupDescription(nameof(Group.Name)));
+            UsersCollectionView.Filter = UsersGroupFilter;
+        }
+
+        private bool UsersGroupFilter(object obj)
+        {
+            Group group = obj as Group;
+
+            ICollectionView usersCollectionView = CollectionViewSource.GetDefaultView(group.GroupedUsers);
+
+            if (usersCollectionView != null)
+            {
+                usersCollectionView.Filter = user => ((UserModel)user).UserProfile.Username != CurrentUser.UserProfile.Username;
+
+                //return group.GroupedUsers.All(user => user.UserProfile.Username != CurrentUser.UserProfile.Username);
+            }
+
+            return true;  
+            //UsersCollectionView.GetDefaultView(group.GroupedUsers);
+
+
+            //bool result = false;
+
+
+
+            //if (obj is Group group && group.GroupedUsers != null)
+            //{
+            //    result = group.GroupedUsers.Any(u => u.UserProfile.Username != "User1");
+            //}
+
+            //return result;
         }
 
         private void InitializeEvents(ISignalRChatService chatService)
@@ -177,7 +207,8 @@ namespace ChatClient.ViewModels
 
             if (obj is UserModel user)
             {
-                result = user.UserProfile.Username.Contains(UsersFilter, StringComparison.InvariantCultureIgnoreCase);
+                result = user.UserProfile.Username.Contains(UsersFilter, StringComparison.InvariantCultureIgnoreCase)
+                    && user.UserProfile.Username != CurrentUser.UserProfile.Username;
             }
 
             return result;
@@ -280,13 +311,20 @@ namespace ChatClient.ViewModels
                 bannedGroup.GroupedUsers = new ObservableCollection<UserModel>(CurrentChatGroup.CurrentChatGroupModel.Users
                         .Where(u => u.UserStatus.BanStatus.IsBanned).ToList());
 
+                bannedGroup.UsersCount = bannedGroup.GroupedUsers.Where(user => user.UserProfile.Username != CurrentUser.UserProfile.Username).Count();
+
                 Group onlineGroup = Groups.FirstOrDefault(g => g.Name.Equals(nameof(UserGroups.Online)));
                 onlineGroup.GroupedUsers = new ObservableCollection<UserModel>(CurrentChatGroup.CurrentChatGroupModel.Users
                         .Where(u => u.UserProfile.IsOnline).Except(bannedGroup.GroupedUsers).ToList());
 
+                onlineGroup.UsersCount = onlineGroup.GroupedUsers.Where(user => user.UserProfile.Username != CurrentUser.UserProfile.Username).Count();
+
                 Group offlineGroup = Groups.FirstOrDefault(g => g.Name.Equals(nameof(UserGroups.Offline)));
                 offlineGroup.GroupedUsers = new ObservableCollection<UserModel>(CurrentChatGroup.CurrentChatGroupModel.Users
                         .Except(bannedGroup.GroupedUsers).Except(onlineGroup.GroupedUsers).ToList());
+
+                offlineGroup.UsersCount = offlineGroup.GroupedUsers.Where(user => user.UserProfile.Username != CurrentUser.UserProfile.Username).Count();
+
 
                 try
                 {
