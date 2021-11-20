@@ -1,19 +1,7 @@
 <ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
-  <Geometry x:Key="settingsGeometry">F1 M24,24z M0,0z M20.254,13.5L22.5,13.5A1,1,0,0,0,23.5,12.5L23.5,11.5A1,1,0,0,0,22.5,10.5L20.253,10.5A11.8,11.8,0,0,0,19.253,7.578L20.839,5.99A1,1,0,0,0,20.839,4.576L19.424,3.161A1,1,0,0,0,18.01,3.161L16.42,4.75A11.769,11.769,0,0,0,13.5,3.75L13.5,1.5A1,1,0,0,0,12.5,0.5L11.5,0.5A1,1,0,0,0,10.5,1.5L10.5,3.748A11.777,11.777,0,0,0,7.579,4.748L5.989,3.161A1,1,0,0,0,4.575,3.161L3.16,4.576A1,1,0,0,0,3.16,5.99L4.75,7.579A11.821,11.821,0,0,0,3.75,10.5L1.5,10.5A1,1,0,0,0,0.5,11.5L0.5,12.5A1,1,0,0,0,1.5,13.5L3.746,13.5A11.821,11.821,0,0,0,4.746,16.421L3.156,18.011A1,1,0,0,0,3.156,19.425L4.571,20.839A1,1,0,0,0,5.985,20.839L7.574,19.25A11.8,11.8,0,0,0,10.5,20.254L10.5,22.5A1,1,0,0,0,11.5,23.5L12.5,23.5A1,1,0,0,0,13.5,22.5L13.5,20.254A11.8,11.8,0,0,0,16.42,19.254L18.011,20.843A1,1,0,0,0,19.425,20.843L20.839,19.429A1,1,0,0,0,20.839,18.015L19.25,16.425A11.821,11.821,0,0,0,20.254,13.5z</Geometry>
+  <Geometry x:Key="settingsGeometry">F1 M24,24z M0,0z M12,15.5A3.5,3.5,0,0,1,8.5,12A3.5,3.5,0,0,1,12,8.5A3.5,3.5,0,0,1,15.5,12A3.5,3.5,0,0,1,12,15.5 M19.43,12.97C19.47,12.65 19.5,12.33 19.5,12 19.5,11.67 19.47,11.34 19.43,11L21.54,9.37C21.73,9.22,21.78,8.95,21.66,8.73L19.66,5.27C19.54,5.05,19.27,4.96,19.05,5.05L16.56,6.05C16.04,5.66,15.5,5.32,14.87,5.07L14.5,2.42C14.46,2.18,14.25,2,14,2L10,2C9.75,2,9.54,2.18,9.5,2.42L9.13,5.07C8.5,5.32,7.96,5.66,7.44,6.05L4.95,5.05C4.73,4.96,4.46,5.05,4.34,5.27L2.34,8.73C2.21,8.95,2.27,9.22,2.46,9.37L4.57,11C4.53,11.34 4.5,11.67 4.5,12 4.5,12.33 4.53,12.65 4.57,12.97L2.46,14.63C2.27,14.78,2.21,15.05,2.34,15.27L4.34,18.73C4.46,18.95,4.73,19.03,4.95,18.95L7.44,17.94C7.96,18.34,8.5,18.68,9.13,18.93L9.5,21.58C9.54,21.82,9.75,22,10,22L14,22C14.25,22,14.46,21.82,14.5,21.58L14.87,18.93C15.5,18.67,16.04,18.34,16.56,17.94L19.05,18.95C19.27,19.03,19.54,18.95,19.66,18.73L21.66,15.27C21.78,15.05,21.73,14.78,21.54,14.63L19.43,12.97z</Geometry>
   <DrawingGroup x:Key="settingsDrawingGroup" ClipGeometry="M0,0 V24 H24 V0 H0 Z">
-    <GeometryDrawing Geometry="{StaticResource settingsGeometry}">
-      <GeometryDrawing.Pen>
-        <Pen Brush="#FF000000" Thickness="1" StartLineCap="Round" EndLineCap="Round" LineJoin="Round" />
-      </GeometryDrawing.Pen>
-    </GeometryDrawing>
-    <GeometryDrawing>
-      <GeometryDrawing.Pen>
-        <Pen Brush="#FF000000" Thickness="1" StartLineCap="Round" EndLineCap="Round" LineJoin="Round" />
-      </GeometryDrawing.Pen>
-      <GeometryDrawing.Geometry>
-        <EllipseGeometry RadiusX="4.5" RadiusY="4.5" Center="12,12" />
-      </GeometryDrawing.Geometry>
-    </GeometryDrawing>
+    <GeometryDrawing Brush="#2B2B2D" Geometry="{StaticResource settingsGeometry}" />
   </DrawingGroup>
   <DrawingImage x:Key="settingsDrawingImage" Drawing="{StaticResource settingsDrawingGroup}" />
 </ResourceDictionary>

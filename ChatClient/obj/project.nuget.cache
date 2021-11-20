@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "iB4r7QAUI+Nj+Zzs0PULXIgQAoA7WCaNPR46EtmXJrFvwI6XLFsUsU20m/HVadXWps3cZLzzzdAtLvpTEb1qTQ==",
+  "dgSpecHash": "hO57IpaDvDmRHJ+isoFV78JJwVOO2rJf06LHukMM49KDNYb7Hj/Dk16IGKqieElXXA1UoZHMn2q4jFdpLV75/g==",
   "success": true,
-  "projectFilePath": "C:\\Users\\oyudi\\Alexander\\Programming\\WPF\\Chat\\ChatClient\\ChatClient.csproj",
+  "projectFilePath": "C:\\Users\\oyudi\\Alexander\\Programming\\SignalR_Chat_WPF\\ChatClient\\ChatClient.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\oyudi\\.nuget\\packages\\cefsharp.common.netcore\\95.7.141\\cefsharp.common.netcore.95.7.141.nupkg.sha512",
     "C:\\Users\\oyudi\\.nuget\\packages\\cefsharp.wpf.netcore\\95.7.141\\cefsharp.wpf.netcore.95.7.141.nupkg.sha512",

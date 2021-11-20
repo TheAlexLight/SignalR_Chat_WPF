@@ -39,14 +39,24 @@
                     Name="sideChatPanel"
                     Background="{StaticResource mainMessageBoxColors}"
                     BorderBrush="#AAAEB2"
-                    BorderThickness="1">
-                <StackPanel Background="{StaticResource mainMessageBoxColors}">
+                    BorderThickness="0">
+                <StackPanel Background="#E4E3E9">
                     <Button Style="{StaticResource publicChatButton}"
                         Command="{Binding SwitchChatCommand}"
                         CommandParameter="{x:Static enums:ChatType.Public}"/>
                     <Button Style="{StaticResource privateChatButton}"
                         Command="{Binding SwitchChatCommand}"
                         CommandParameter="{x:Static enums:ChatType.Private}"/>
+                    <Button Style="{StaticResource settingsButton}"
+                                    Command="{Binding OpenSettingsCommand}"
+                                    Grid.Column="2">
+                        <Button.CommandParameter>
+                            <MultiBinding Converter ="{StaticResource multiBindingConverter}">
+                                <Binding Source="true"/>
+                                <Binding ElementName="userList" Path="SelectedItem"/>
+                            </MultiBinding>
+                        </Button.CommandParameter>
+                    </Button>
                 </StackPanel>
             </Border>
 
@@ -92,7 +102,7 @@
         </Grid>
 
         <Border  Grid.Column="2" 
-                 BorderThickness="0,0,1,0"
+                 BorderThickness="0"
                  BorderBrush="#AAAEB2">
             <Grid>
                 <Grid.RowDefinitions>

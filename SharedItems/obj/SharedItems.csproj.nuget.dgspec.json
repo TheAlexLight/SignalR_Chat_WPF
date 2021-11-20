@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\oyudi\\Alexander\\Programming\\WPF\\Chat\\SharedItems\\SharedItems.csproj": {}
+    "C:\\Users\\oyudi\\Alexander\\Programming\\SignalR_Chat_WPF\\SharedItems\\SharedItems.csproj": {}
   },
   "projects": {
-    "C:\\Users\\oyudi\\Alexander\\Programming\\WPF\\Chat\\SharedItems\\SharedItems.csproj": {
+    "C:\\Users\\oyudi\\Alexander\\Programming\\SignalR_Chat_WPF\\SharedItems\\SharedItems.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\oyudi\\Alexander\\Programming\\WPF\\Chat\\SharedItems\\SharedItems.csproj",
+        "projectUniqueName": "C:\\Users\\oyudi\\Alexander\\Programming\\SignalR_Chat_WPF\\SharedItems\\SharedItems.csproj",
         "projectName": "SharedItems",
-        "projectPath": "C:\\Users\\oyudi\\Alexander\\Programming\\WPF\\Chat\\SharedItems\\SharedItems.csproj",
+        "projectPath": "C:\\Users\\oyudi\\Alexander\\Programming\\SignalR_Chat_WPF\\SharedItems\\SharedItems.csproj",
         "packagesPath": "C:\\Users\\oyudi\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\oyudi\\Alexander\\Programming\\WPF\\Chat\\SharedItems\\obj\\",
+        "outputPath": "C:\\Users\\oyudi\\Alexander\\Programming\\SignalR_Chat_WPF\\SharedItems\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -68,7 +68,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.403\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.100\\RuntimeIdentifierGraph.json"
         }
       }
     }

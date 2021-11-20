@@ -7,7 +7,7 @@
                 <RotateTransform  CenterX="40" CenterY="70" Angle="45"/>
             </TransformGroup>
         </DrawingGroup.Transform>
-        <GeometryDrawing Brush="#205D9D" Geometry="{StaticResource directGeometry}" />
+        <GeometryDrawing Brush="#654C6E" Geometry="{StaticResource directGeometry}" />
   </DrawingGroup>
   <DrawingImage x:Key="directDrawingImage" Drawing="{StaticResource directDrawingGroup}" />
 </ResourceDictionary>

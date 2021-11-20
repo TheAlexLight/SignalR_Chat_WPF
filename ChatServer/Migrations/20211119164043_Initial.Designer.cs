@@ -10,16 +10,31 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ChatServer.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    [Migration("20210916113550_UserProfileIsOnline")]
-    partial class UserProfileIsOnline
+    [Migration("20211119164043_Initial")]
+    partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
-                .HasAnnotation("ProductVersion", "5.0.9")
+                .HasAnnotation("ProductVersion", "5.0.10")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+            modelBuilder.Entity("ChatGroupModelUserModel", b =>
+                {
+                    b.Property<int>("GroupsId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("UsersId")
+                        .HasColumnType("int");
+
+                    b.HasKey("GroupsId", "UsersId");
+
+                    b.HasIndex("UsersId");
+
+                    b.ToTable("ChatGroupModelUserModel");
+                });
 
             modelBuilder.Entity("ChatServer.Models.User", b =>
                 {
@@ -220,6 +235,75 @@ namespace ChatServer.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
+            modelBuilder.Entity("SharedItems.Models.ChatGroupModel", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("Name")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Groups");
+                });
+
+            modelBuilder.Entity("SharedItems.Models.HyperlinkDescriptionModel", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("HyperlinkDescription")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<byte[]>("HyperlinkImage")
+                        .HasColumnType("varbinary(max)");
+
+                    b.Property<string>("HyperlinkTitle")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("MessageModelId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("MessageModelId")
+                        .IsUnique();
+
+                    b.ToTable("HyperlinkDescriptionModel");
+                });
+
+            modelBuilder.Entity("SharedItems.Models.MessageInformationModel", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<byte[]>("ImageMessage")
+                        .HasColumnType("varbinary(max)");
+
+                    b.Property<int>("MessageModelId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("TextMessage")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<byte[]>("VideoMessage")
+                        .HasColumnType("varbinary(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("MessageModelId")
+                        .IsUnique();
+
+                    b.ToTable("MessageInformationModel");
+                });
+
             modelBuilder.Entity("SharedItems.Models.MessageModel", b =>
                 {
                     b.Property<int>("Id")
@@ -227,13 +311,25 @@ namespace ChatServer.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("GroupName")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("ChatGroupModelId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("CheckStatus")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Count")
+                        .HasColumnType("int");
 
                     b.Property<bool>("IsFirstMessage")
                         .HasColumnType("bit");
 
-                    b.Property<string>("Message")
+                    b.Property<double>("MessageHeight")
+                        .HasColumnType("float");
+
+                    b.Property<int>("MessageInformationType")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Sender")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("Time")
@@ -244,26 +340,29 @@ namespace ChatServer.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("ChatGroupModelId");
+
                     b.HasIndex("UserModelId");
 
                     b.ToTable("Messages");
                 });
 
-            modelBuilder.Entity("SharedItems.Models.StatusModels.BanStatusModel", b =>
+            modelBuilder.Entity("SharedItems.Models.StatusModels.StatusBaseModel", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<string>("Discriminator")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int>("Duration")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("EndTime")
                         .HasColumnType("datetime2");
-
-                    b.Property<bool>("IsBanned")
-                        .HasColumnType("bit");
 
                     b.Property<bool>("IsPermanent")
                         .HasColumnType("bit");
@@ -273,40 +372,9 @@ namespace ChatServer.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("UserStatusModelId")
-                        .IsUnique();
+                    b.ToTable("StatusBaseModels");
 
-                    b.ToTable("BansStatus");
-                });
-
-            modelBuilder.Entity("SharedItems.Models.StatusModels.MuteStatusModel", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("Duration")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("EndTime")
-                        .HasColumnType("datetime2");
-
-                    b.Property<bool>("IsMuted")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("IsPermanent")
-                        .HasColumnType("bit");
-
-                    b.Property<int>("UserStatusModelId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UserStatusModelId")
-                        .IsUnique();
-
-                    b.ToTable("MutesStatus");
+                    b.HasDiscriminator<string>("Discriminator").HasValue("StatusBaseModel");
                 });
 
             modelBuilder.Entity("SharedItems.Models.StatusModels.UserStatusModel", b =>
@@ -353,8 +421,11 @@ namespace ChatServer.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("ImagePath")
+                    b.Property<string>("Email")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<byte[]>("Image")
+                        .HasColumnType("varbinary(max)");
 
                     b.Property<bool>("IsOnline")
                         .HasColumnType("bit");
@@ -380,6 +451,47 @@ namespace ChatServer.Migrations
                         .IsUnique();
 
                     b.ToTable("UserProfiles");
+                });
+
+            modelBuilder.Entity("SharedItems.Models.StatusModels.BanStatusModel", b =>
+                {
+                    b.HasBaseType("SharedItems.Models.StatusModels.StatusBaseModel");
+
+                    b.Property<bool>("IsBanned")
+                        .HasColumnType("bit");
+
+                    b.HasIndex("UserStatusModelId")
+                        .IsUnique();
+
+                    b.HasDiscriminator().HasValue("BanStatusModel");
+                });
+
+            modelBuilder.Entity("SharedItems.Models.StatusModels.MuteStatusModel", b =>
+                {
+                    b.HasBaseType("SharedItems.Models.StatusModels.StatusBaseModel");
+
+                    b.Property<bool>("IsMuted")
+                        .HasColumnType("bit");
+
+                    b.HasIndex("UserStatusModelId")
+                        .IsUnique();
+
+                    b.HasDiscriminator().HasValue("MuteStatusModel");
+                });
+
+            modelBuilder.Entity("ChatGroupModelUserModel", b =>
+                {
+                    b.HasOne("SharedItems.Models.ChatGroupModel", null)
+                        .WithMany()
+                        .HasForeignKey("GroupsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("SharedItems.Models.UserModel", null)
+                        .WithMany()
+                        .HasForeignKey("UsersId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -433,33 +545,41 @@ namespace ChatServer.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("SharedItems.Models.HyperlinkDescriptionModel", b =>
+                {
+                    b.HasOne("SharedItems.Models.MessageModel", null)
+                        .WithOne("HyperlinkDescriptionModel")
+                        .HasForeignKey("SharedItems.Models.HyperlinkDescriptionModel", "MessageModelId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("SharedItems.Models.MessageInformationModel", b =>
+                {
+                    b.HasOne("SharedItems.Models.MessageModel", null)
+                        .WithOne("Message")
+                        .HasForeignKey("SharedItems.Models.MessageInformationModel", "MessageModelId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("SharedItems.Models.MessageModel", b =>
                 {
-                    b.HasOne("SharedItems.Models.UserModel", "UserModel")
+                    b.HasOne("SharedItems.Models.ChatGroupModel", "ChatGroupModel")
                         .WithMany("Messages")
+                        .HasForeignKey("ChatGroupModelId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("SharedItems.Models.UserModel", "UserModel")
+                        .WithMany()
                         .HasForeignKey("UserModelId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.Navigation("ChatGroupModel");
+
                     b.Navigation("UserModel");
-                });
-
-            modelBuilder.Entity("SharedItems.Models.StatusModels.BanStatusModel", b =>
-                {
-                    b.HasOne("SharedItems.Models.StatusModels.UserStatusModel", null)
-                        .WithOne("BanStatus")
-                        .HasForeignKey("SharedItems.Models.StatusModels.BanStatusModel", "UserStatusModelId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("SharedItems.Models.StatusModels.MuteStatusModel", b =>
-                {
-                    b.HasOne("SharedItems.Models.StatusModels.UserStatusModel", null)
-                        .WithOne("MuteStatus")
-                        .HasForeignKey("SharedItems.Models.StatusModels.MuteStatusModel", "UserStatusModelId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
                 });
 
             modelBuilder.Entity("SharedItems.Models.StatusModels.UserStatusModel", b =>
@@ -487,9 +607,39 @@ namespace ChatServer.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("SharedItems.Models.StatusModels.BanStatusModel", b =>
+                {
+                    b.HasOne("SharedItems.Models.StatusModels.UserStatusModel", null)
+                        .WithOne("BanStatus")
+                        .HasForeignKey("SharedItems.Models.StatusModels.BanStatusModel", "UserStatusModelId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("SharedItems.Models.StatusModels.MuteStatusModel", b =>
+                {
+                    b.HasOne("SharedItems.Models.StatusModels.UserStatusModel", null)
+                        .WithOne("MuteStatus")
+                        .HasForeignKey("SharedItems.Models.StatusModels.MuteStatusModel", "UserStatusModelId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("ChatServer.Models.User", b =>
                 {
                     b.Navigation("UserModel");
+                });
+
+            modelBuilder.Entity("SharedItems.Models.ChatGroupModel", b =>
+                {
+                    b.Navigation("Messages");
+                });
+
+            modelBuilder.Entity("SharedItems.Models.MessageModel", b =>
+                {
+                    b.Navigation("HyperlinkDescriptionModel");
+
+                    b.Navigation("Message");
                 });
 
             modelBuilder.Entity("SharedItems.Models.StatusModels.UserStatusModel", b =>
@@ -501,8 +651,6 @@ namespace ChatServer.Migrations
 
             modelBuilder.Entity("SharedItems.Models.UserModel", b =>
                 {
-                    b.Navigation("Messages");
-
                     b.Navigation("UserProfile");
 
                     b.Navigation("UserStatus");

@@ -180,11 +180,11 @@
                                 </DataTemplate.Triggers>
                             </DataTemplate>
                         </ListBox.ItemTemplate>
-                        <ListBox.Style>
+                        <!--<ListBox.Style>
                             <Style TargetType="{x:Type ListBox}"
            BasedOn="{StaticResource {x:Type ListBox}}">
                                 <Style.Triggers>
-                                    <!-- Use ListBox.HasItems instead of Binding -->
+                                    --><!-- Use ListBox.HasItems instead of Binding --><!--
                                     <Trigger Property="HasItems" Value="False">
                                         <Setter Property="Template">
                                             <Setter.Value>
@@ -194,7 +194,7 @@
                                     </Trigger>
                                 </Style.Triggers>
                             </Style>
-                        </ListBox.Style>
+                        </ListBox.Style>-->
                     </ListBox>
                 </DataTemplate>
             </Setter.Value>
@@ -212,7 +212,7 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate>
-                    <ScrollViewer Background="{StaticResource mainMessageBoxColors}">
+                    <ScrollViewer Background="#DAD4E6">
                         <ItemsPresenter/>
                     </ScrollViewer>
                 </ControlTemplate>
@@ -241,7 +241,7 @@
                                 </Ellipse>
                             </Border>
                             <TextBlock Text="{Binding UserProfile.Username}"
-                                       Foreground="{Binding UserProfile.UsernameColor}"
+                                       Foreground="Black"
                                        Margin="10,0,10,0"
                                        FontSize="22"
                                        Name="userTextBlock"
@@ -305,7 +305,7 @@
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type ItemsControl}">
                     <extensions:ScrollViewerExtension 
-                        Background="{StaticResource mainMessageBoxColors}"
+                        Background="#E6E6E6"
                         HorizontalScrollBarVisibility="Disabled"
                         Template="{StaticResource scrollViewerControlTemplate}"
                         x:Name="scroll"
@@ -318,33 +318,59 @@
         <Setter Property="ItemTemplate">
             <Setter.Value>
                 <DataTemplate>
-                    <Border CornerRadius="5"
-                            BorderThickness="1"
+                    <DockPanel MaxWidth="400"
+                               HorizontalAlignment="Left"
+                               Margin="5,0,5,0">
+                        <Border CornerRadius="25" 
+                                BorderThickness="2.5"
+                                    Width="30" 
+                                    Height="30"
+                                VerticalAlignment="Top"
+                                Margin="0,10,0,0">
+                            <Ellipse >
+                                <Ellipse.Fill>
+                                    <ImageBrush ImageSource="{Binding MessageModel.UserModel.UserProfile.Image, Converter={StaticResource byteToImageConverter}}"
+                                                                Stretch="UniformToFill"/>
+                                </Ellipse.Fill>
+                            </Ellipse>
+                            <Border.Style>
+                                <Style TargetType="{x:Type Border}">
+                                    <Setter Property="BorderBrush" Value="DarkRed"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding MessageModel.UserModel.UserProfile.IsOnline}" Value="True">
+                                            <Setter Property="BorderBrush" Value="Green"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Border.Style>
+                        </Border>
+                        <Border CornerRadius="5"
+                            BorderThickness="0"
                             BorderBrush="Black"
                             Margin="5"
-                            Padding="5"
-                            Background="#CACCE9"
+                            Padding="5,5,10,5"
+                            Background="#D1D3EE"
                             MaxWidth="400"
                             HorizontalAlignment="Left">
-                        <DockPanel Name="dockPanel"
+                            <DockPanel Name="dockPanel"
                                Background="Transparent">
-                            <i:Interaction.Triggers>
-                                <i:EventTrigger  EventName="ScrollChanged"
+                                <i:Interaction.Triggers>
+                                    <i:EventTrigger  EventName="ScrollChanged"
                                              SourceObject="{Binding RelativeSource={RelativeSource AncestorType={x:Type extensions:ScrollViewerExtension}}}"
                                              SourceName="scroll">
-                                    <i:InvokeCommandAction Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type UserControl}}
+                                        <i:InvokeCommandAction Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type UserControl}}
                                             , Path=DataContext.MessageReadCommand}">
-                                        <i:InvokeCommandAction.CommandParameter>
-                                            <MultiBinding Converter="{StaticResource multiBindingConverter}">
-                                                <Binding Path="."/>
-                                                <Binding ElementName="dockPanel"/>
-                                                <Binding RelativeSource="{RelativeSource AncestorType={x:Type ItemsControl}}"/>
-                                                <Binding Source="2"/>
-                                            </MultiBinding>
-                                        </i:InvokeCommandAction.CommandParameter>
-                                    </i:InvokeCommandAction>
-                                </i:EventTrigger>
-                                <!--<i:EventTrigger  EventName="Loaded">
+                                            <i:InvokeCommandAction.CommandParameter>
+                                                <MultiBinding Converter="{StaticResource multiBindingConverter}">
+                                                    <Binding Path="."/>
+                                                    <Binding ElementName="dockPanel"/>
+                                                    <Binding RelativeSource="{RelativeSource AncestorType={x:Type ItemsControl}}"/>
+                                                    <Binding Source="2"/>
+                                                </MultiBinding>
+                                            </i:InvokeCommandAction.CommandParameter>
+                                        </i:InvokeCommandAction>
+                                    </i:EventTrigger>
+                                    <!--<i:EventTrigger  EventName="Loaded">
                                 <i:InvokeCommandAction Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type UserControl}}
                                             , Path=DataContext.MessageLoadedCommand}">
                                     <i:InvokeCommandAction.CommandParameter>
@@ -356,63 +382,42 @@
                                     </i:InvokeCommandAction.CommandParameter>
                                 </i:InvokeCommandAction>
                             </i:EventTrigger>-->
-                                <i:EventTrigger  EventName="Loaded"
+                                    <i:EventTrigger  EventName="Loaded"
                                              SourceObject="{Binding RelativeSource={RelativeSource AncestorType={x:Type extensions:ScrollViewerExtension}}}"
                                              SourceName="scroll">
-                                    <i:InvokeCommandAction Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type UserControl}}
+                                        <i:InvokeCommandAction Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type UserControl}}
                                             , Path=DataContext.MessageReadCommand}">
-                                        <i:InvokeCommandAction.CommandParameter>
-                                            <MultiBinding Converter="{StaticResource multiBindingConverter}">
-                                                <Binding Path="."/>
-                                                <Binding ElementName="dockPanel"/>
-                                                <Binding RelativeSource="{RelativeSource AncestorType={x:Type ItemsControl}}"/>
-                                                <Binding Source="2"/>
-                                            </MultiBinding>
-                                        </i:InvokeCommandAction.CommandParameter>
-                                    </i:InvokeCommandAction>
-                                </i:EventTrigger>
-                            </i:Interaction.Triggers>
-                            <Border CornerRadius="25" 
-                                BorderThickness="2.5"
-                                    Width="30" 
-                                    Height="30">
-                                <Ellipse >
-                                    <Ellipse.Fill>
-                                        <ImageBrush ImageSource="{Binding MessageModel.UserModel.UserProfile.Image, Converter={StaticResource byteToImageConverter}}"
-                                                                Stretch="UniformToFill"/>
-                                    </Ellipse.Fill>
-                                </Ellipse>
-                                <Border.Style>
-                                    <Style TargetType="{x:Type Border}">
-                                        <Setter Property="BorderBrush" Value="DarkRed"/>
-                                        <Style.Triggers>
-                                            <DataTrigger Binding="{Binding MessageModel.UserModel.UserProfile.IsOnline}" Value="True">
-                                                <Setter Property="BorderBrush" Value="Green"/>
-                                            </DataTrigger>
-                                        </Style.Triggers>
-                                    </Style>
-                                </Border.Style>
-                            </Border>
-                            <DockPanel>
-                                <StackPanel Orientation="Horizontal"
+                                            <i:InvokeCommandAction.CommandParameter>
+                                                <MultiBinding Converter="{StaticResource multiBindingConverter}">
+                                                    <Binding Path="."/>
+                                                    <Binding ElementName="dockPanel"/>
+                                                    <Binding RelativeSource="{RelativeSource AncestorType={x:Type ItemsControl}}"/>
+                                                    <Binding Source="2"/>
+                                                </MultiBinding>
+                                            </i:InvokeCommandAction.CommandParameter>
+                                        </i:InvokeCommandAction>
+                                    </i:EventTrigger>
+                                </i:Interaction.Triggers>
+                                <DockPanel>
+                                    <StackPanel Orientation="Horizontal"
                                         DockPanel.Dock="Top">
-                                    <TextBlock Text="{Binding Path=MessageModel.UserModel.UserProfile.Username}"
+                                        <TextBlock Text="{Binding Path=MessageModel.UserModel.UserProfile.Username}"
                                        Foreground="{Binding Path=MessageModel.UserModel.UserProfile.UsernameColor}"
                                        Margin="10,0,5,0"
                                        FontSize="18"/>
-                                    <TextBlock Text="{Binding Path=MessageModel.Time}"
+                                        <TextBlock Text="{Binding Path=MessageModel.Time}"
                                            FontSize="11"
                                            Margin="0,5,0,0"
                                            Foreground="#848484"
                                            FontWeight="SemiBold"/>
-                                    <Image Source="{Binding MessageModel.CheckStatus
+                                        <Image Source="{Binding MessageModel.CheckStatus
                                     , Converter={StaticResource messageStatusToImageConverter}}"
                                        Width="15"
                                        Height="15"
                                        Margin="5,0,0,0"/>
-                                </StackPanel>
-                                <StackPanel>
-                                    <TextBlock
+                                    </StackPanel>
+                                    <StackPanel>
+                                        <TextBlock
                                        x:Name="textMessage"
                                        Margin="10,-5,0,0"
                                        Foreground="Black"
@@ -426,13 +431,13 @@
                                         <i:Interaction.Behaviors>
                                             <behaviors:SelectableTextBlockBehavior/>
                                         </i:Interaction.Behaviors>
-                                    </TextBlock>
-                                    <DockPanel Focusable="True" Visibility="{Binding HyperlinkPanelVisibility}">
-                                        <Rectangle Width="3"
+                                        </TextBlock>
+                                        <DockPanel Focusable="True" Visibility="{Binding HyperlinkPanelVisibility}">
+                                            <Rectangle Width="3"
                                                Fill="#9193B2"
                                                Margin="5,0,0,0"/>
-                                        <StackPanel>
-                                            <TextBlock Text="{Binding MessageModel.HyperlinkDescriptionModel.HyperlinkTitle}"
+                                            <StackPanel>
+                                                <TextBlock Text="{Binding MessageModel.HyperlinkDescriptionModel.HyperlinkTitle}"
                                                        FontWeight="DemiBold"
                                                        Margin="10,5,0,0"
                                                        FontSize="18"
@@ -440,8 +445,8 @@
                                                  <i:Interaction.Behaviors>
                                             <behaviors:SelectableTextBlockBehavior/>
                                         </i:Interaction.Behaviors>
-                                            </TextBlock>
-                                            <TextBlock TextWrapping="Wrap"
+                                                </TextBlock>
+                                                <TextBlock TextWrapping="Wrap"
                                            Margin="10,0,10,5"
                                                FontSize="16"
                                                Text="{Binding MessageModel.HyperlinkDescriptionModel.HyperlinkDescription}"
@@ -450,24 +455,25 @@
                                                  <i:Interaction.Behaviors>
                                             <behaviors:SelectableTextBlockBehavior/>
                                         </i:Interaction.Behaviors>
-                                            </TextBlock>
-                                            <Image Source="{Binding MessageModel.HyperlinkDescriptionModel.HyperlinkImage, Converter={StaticResource byteToImageConverter}}"
+                                                </TextBlock>
+                                                <Image Source="{Binding MessageModel.HyperlinkDescriptionModel.HyperlinkImage, Converter={StaticResource byteToImageConverter}}"
                                        MaxHeight="250"
                                        MaxWidth="250"
                                        HorizontalAlignment="Left"
                                        Margin="10,0,10,5"/>
-                                        </StackPanel>
-                                    </DockPanel>
-                                </StackPanel>
-                                <Image x:Name="imageMessage" 
+                                            </StackPanel>
+                                        </DockPanel>
+                                    </StackPanel>
+                                    <Image x:Name="imageMessage" 
                                    Source="{Binding MessageModel.Message.ImageMessage, Converter={StaticResource byteToImageConverter}}"
                                    MaxHeight="300"
                                    MaxWidth="300"
                                    Visibility="Collapsed"
                                    HorizontalAlignment="Left"/>
+                                </DockPanel>
                             </DockPanel>
-                        </DockPanel>
-                    </Border>
+                        </Border>
+                    </DockPanel>
                     <DataTemplate.Triggers>
                         <DataTrigger Binding="{Binding MessageModel.MessageInformationType}" Value="Text">
                             <Setter TargetName="textMessage" Property="Visibility" Value="Visible"/>

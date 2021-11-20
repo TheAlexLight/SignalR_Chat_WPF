@@ -28,164 +28,103 @@
 
         <Grid Grid.Column="0" Width="Auto">
             <Grid.RowDefinitions>
-                <RowDefinition Height="35"/>
+                <RowDefinition Height="45"/>
                 <RowDefinition/>
             </Grid.RowDefinitions>
 
-            <Border Grid.Row="0"
-                    BorderBrush="#AAAEB2"
-                    BorderThickness="0,1,0,1"
-                    Background="{StaticResource mainMessageBoxColors}">
-                <AdornerDecorator>
-                    <TextBox VerticalAlignment="Center"
-                     FontSize="22"
-                             Height="35"
-                             Padding="0,2,0,0"
-                             Background="#ECECF4"
-                     Text="{Binding UsersFilter,UpdateSourceTrigger=PropertyChanged}">
-                        <controls:WatermarkService.Watermark>
-                            <TextBlock VerticalAlignment="Center"
-                                       Margin="5"
-                                       FontSize="22">
+            <AdornerDecorator Grid.Row="0">
+                <TextBox Style="{StaticResource adornerTextBox}"
+                         Background="#CFC5E3"
+                        Text="{Binding UsersFilter,UpdateSourceTrigger=PropertyChanged}"
+                         VerticalContentAlignment="Center">
+                    <controls:WatermarkService.Watermark>
+                        <TextBlock Style="{StaticResource adornerTextBlock}"
+                                   Margin="5">
                                 Search
-                            </TextBlock>
-                        </controls:WatermarkService.Watermark>
-                    </TextBox>
-                </AdornerDecorator>
-            </Border>
+                        </TextBlock>
+                    </controls:WatermarkService.Watermark>
+                </TextBox>
+            </AdornerDecorator>
 
-            <Border  Grid.Row="1" 
-                 BorderThickness="1,0,0,0"
-                 BorderBrush="#AAAEB2">
-                <Grid Grid.Row="0" Background="#ECECF4">
-                    <Grid.RowDefinitions>
-                        <RowDefinition/>
-                        <RowDefinition Height="45"/>
-                    </Grid.RowDefinitions>
-                    <Border BorderBrush="#AAAEB2"
-                            BorderThickness="0,1,0,1">
-                        <ListBox Grid.Row="0"
-                             Style="{StaticResource privateUsersListBox}"
-                             Name="userList">
-                            <i:Interaction.Triggers>
-                                <i:EventTrigger EventName="SelectionChanged">
-                                    <i:InvokeCommandAction Command="{Binding UpdatePrivateMessagesCommand}"
+            <Grid Grid.Row="1"  Background="#ECECF4">
+                <ListBox Style="{StaticResource privateUsersListBox}"
+                         Name="userList">
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="SelectionChanged">
+                            <i:InvokeCommandAction Command="{Binding UpdatePrivateMessagesCommand}"
                                                    CommandParameter="{Binding ElementName=userList, Path=SelectedItem}"/>
-                                </i:EventTrigger>
-                            </i:Interaction.Triggers>
-                        </ListBox>
-                    </Border>
-                    <Border Grid.Row="1" BorderBrush="#AAAEB2"
-                            BorderThickness="0,0,1,0">
-                        <Grid Background="{StaticResource typeMessageGridColors}">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="40"/>
-                                <ColumnDefinition/>
-                                <ColumnDefinition Width="40"/>
-                            </Grid.ColumnDefinitions>
-                            <Border
-                                Name="userActiveBorder"
-                                Margin="5,0,0,0"
-                                Grid.Column="0"
-                                Style="{StaticResource userIcon}">
-                                <Ellipse >
-                                    <Ellipse.Fill>
-                                        <ImageBrush ImageSource="{Binding CurrentUser.UserProfile.Image, Converter={StaticResource byteToImageConverter}}"
-                                        Stretch="UniformToFill"/>
-                                    </Ellipse.Fill>
-                                </Ellipse>
-                            </Border>
-
-                            <TextBlock Text="{Binding CurrentUser.UserProfile.Username}"
-                                       Foreground="Black"
-                                       Margin="5,0,0,0"
-                                       FontSize="22"
-                                       Name="userTextBlock"
-                                       VerticalAlignment="Center"
-                                       Grid.Column="1"
-                                       TextTrimming="CharacterEllipsis"/>
-                            <Button Style="{StaticResource settingsButton}"
-                                    Command="{Binding OpenSettingsCommand}"
-                                    Grid.Column="2">
-                                <Button.CommandParameter>
-                                    <MultiBinding Converter ="{StaticResource multiBindingConverter}">
-                                        <Binding Source="true"/>
-                                        <Binding ElementName="userList" Path="SelectedItem"/>
-                                    </MultiBinding>
-                                </Button.CommandParameter>
-                            </Button>
-                        </Grid>
-                    </Border>
-                </Grid>
-            </Border>
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+                </ListBox>
+            </Grid>
         </Grid>
 
         <Grid Grid.Column="1">
             <Grid.RowDefinitions>
-                <RowDefinition Height="35"/>
-                <RowDefinition/>
+                <RowDefinition Height="45"/>
+                <RowDefinition Height="190*"/>
+                <RowDefinition Height="152*"/>
+                <RowDefinition Height="27*"/>
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
-
+            
             <Grid Grid.Row="0">
-                <Border BorderBrush="#AAAEB2"
-                        BorderThickness="0,1,1,1"
-                        Background="#ECECF4">
-                    <Button Content="{Binding ElementName=userList  
+                <Button Content="{Binding ElementName=userList  
                         , Path=SelectedItem.UserProfile.Username}"
                             Style="{StaticResource userInfoButton}"
                             Command="{Binding OpenUserInfoWIndowCommand}">
-                        <Button.CommandParameter>
-                            <MultiBinding Converter ="{StaticResource multiBindingConverter}">
-                                <Binding Source="true"/>
-                                <Binding ElementName="userList" Path="SelectedItem"/>
-                            </MultiBinding>
-                        </Button.CommandParameter>
-                    </Button>
-                </Border>
+                    <Button.CommandParameter>
+                        <MultiBinding Converter ="{StaticResource multiBindingConverter}">
+                            <Binding Source="true"/>
+                            <Binding ElementName="userList" Path="SelectedItem"/>
+                        </MultiBinding>
+                    </Button.CommandParameter>
+                </Button>
             </Grid>
             <ItemsControl Style="{StaticResource messagesListBox}"
-                          Grid.Row="1"/>
-            <Border Grid.Row="2"
-                    BorderBrush="#AAAEB2"
-                    BorderThickness="0,0,1,1" Grid.RowSpan="2">
-                <Grid Grid.Row="2"
-                  Background="{StaticResource typeMessageGridColors}">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="35"/>
-                        <ColumnDefinition Width="3.7*"/>
-                        <ColumnDefinition MinWidth="60" MaxWidth="60"/>
-                    </Grid.ColumnDefinitions>
-                    <Button Style="{StaticResource paperClipButton}"
+                          Grid.Row="1" Grid.RowSpan="3"/>
+            <Grid Grid.Row="4"
+                  Background="#D8DFD3">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="35"/>
+                    <ColumnDefinition Width="3.7*"/>
+                    <ColumnDefinition MinWidth="45" MaxWidth="45"/>
+                </Grid.ColumnDefinitions>
+                <Button Style="{StaticResource paperClipButton}"
                             Command="{Binding SendChatMessageCommand}">
-                        <Button.CommandParameter>
-                            <MultiBinding Converter ="{StaticResource multiBindingConverter}">
-                                <Binding Source="{x:Static sharedItems:MessageInformationType.Image}"/>
-                                <Binding ElementName="userList" Path="SelectedItem"/>
-                            </MultiBinding>
-                        </Button.CommandParameter>
-                    </Button>
-                    <TextBox Grid.Column="1"    
-                     Style="{StaticResource typeMessage}"
-                     Text="{Binding Message.TextMessage}" 
-                             Margin="5"/>
-                    <Button  Margin="0,0,10,0" Grid.Column="2" Width="50" Height="45"  
+                    <Button.CommandParameter>
+                        <MultiBinding Converter ="{StaticResource multiBindingConverter}">
+                            <Binding Source="{x:Static sharedItems:MessageInformationType.Image}"/>
+                            <Binding ElementName="userList" Path="SelectedItem"/>
+                        </MultiBinding>
+                    </Button.CommandParameter>
+                </Button>
+                <AdornerDecorator Grid.Column="1">
+                    <TextBox Style="{StaticResource adornerTextBox}"
+                     Text="{Binding Message.TextMessage}">
+                        <controls:WatermarkService.Watermark>
+                            <TextBlock Style="{StaticResource adornerTextBlock}">
+                                Write a message
+                            </TextBlock>
+                        </controls:WatermarkService.Watermark>
+                    </TextBox>
+                </AdornerDecorator>
+                <Button  Margin="0,0,5,0" Grid.Column="2" Width="35" Height="35    "  
                         Command="{Binding SendChatMessageCommand}"
                         Style="{StaticResource sendImageMessage}"
                         Cursor="Hand">
-                        <Image Stretch="Fill" Source="{StaticResource directDrawingImage}" />
-                        <Button.CommandParameter>
-                            <MultiBinding Converter ="{StaticResource multiBindingConverter}">
-                                <Binding Source="{x:Static sharedItems:MessageInformationType.Text}"/>
-                                <Binding ElementName="userList" Path="SelectedItem"/>
-                            </MultiBinding>
-                        </Button.CommandParameter>
-                    </Button>
-                </Grid>
-            </Border>
+                    <Image Stretch="Fill" Source="{StaticResource directDrawingImage}" />
+                    <Button.CommandParameter>
+                        <MultiBinding Converter ="{StaticResource multiBindingConverter}">
+                            <Binding Source="{x:Static sharedItems:MessageInformationType.Text}"/>
+                            <Binding ElementName="userList" Path="SelectedItem"/>
+                        </MultiBinding>
+                    </Button.CommandParameter>
+                </Button>
+            </Grid>
         </Grid>
 
-        <Grid Grid.Column="1" 
+        <!--<Grid Grid.Column="1" 
               Panel.ZIndex="3"
               Style="{StaticResource privateMessagesGrid}"
               Background="{StaticResource mainMessageBoxColors}">
@@ -196,6 +135,6 @@
                        FontSize="24"
                        TextWrapping="Wrap"
                        Margin="0,0,0,20"/>
-        </Grid>
+        </Grid>-->
     </Grid>
 </UserControl>

@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "jvVBU0L/WZt1ZlDgMbm0vDqxuLgCxLCZjMkG8cFt9QzJmUJnIXImf2EiWYUv1I3kvumjpqud0CYDqXswhUgi5g==",
+  "dgSpecHash": "H6BxElOw+mdJ9WKlWp3enlqL7FVQqMsn4T91+WKaalMN7ujsTBP+NrCyodT+xGjtQbgZ/WkpQCb2X1yAcIAvZA==",
   "success": true,
-  "projectFilePath": "C:\\Users\\oyudi\\Alexander\\Programming\\WPF\\Chat\\ChatServer\\ChatServer.csproj",
+  "projectFilePath": "C:\\Users\\oyudi\\Alexander\\Programming\\SignalR_Chat_WPF\\ChatServer\\ChatServer.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\oyudi\\.nuget\\packages\\castle.core\\4.4.1\\castle.core.4.4.1.nupkg.sha512",
     "C:\\Users\\oyudi\\.nuget\\packages\\humanizer.core\\2.8.26\\humanizer.core.2.8.26.nupkg.sha512",

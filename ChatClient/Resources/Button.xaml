@@ -228,7 +228,8 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type Button}">
-                    <Border x:Name="insideBorder" BorderBrush="#6D4F02" Background="{StaticResource registrationBasicColors}" 
+                    <Border x:Name="insideBorder" BorderBrush="#6D4F02" 
+                            Background="#E6D87D" 
                             BorderThickness="1.3" 
                             CornerRadius="20"
                             Padding="2"
@@ -240,10 +241,10 @@
                     </Border>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsMouseOver" Value="True">
-                            <Setter TargetName="insideBorder" Property="Background" Value="#E1A71F"/>
+                            <Setter TargetName="insideBorder" Property="Background" Value="#A7ACBC"/>
                         </Trigger>
                         <Trigger Property="IsPressed" Value="True">
-                            <Setter TargetName="insideBorder" Property="Background" Value="#F0CC78"/>
+                            <Setter TargetName="insideBorder" Property="Background" Value="#B8BDD1"/>
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
@@ -261,7 +262,7 @@
                 <ControlTemplate TargetType="{x:Type Button}">
                     <Border x:Name="insideBorder" 
                             BorderBrush="#6D4F02" 
-                            Background="{StaticResource registrationBasicColors}"
+                            Background="#E6D87D"
                             BorderThickness="1.3" 
                             CornerRadius="20"
                             Padding="5"
@@ -273,10 +274,10 @@
                     </Border>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsMouseOver" Value="True">
-                            <Setter TargetName="insideBorder" Property="Background" Value="#E1A71F"/>
+                            <Setter TargetName="insideBorder" Property="Background" Value="#A7ACBC"/>
                         </Trigger>
                         <Trigger Property="IsPressed" Value="True">
-                            <Setter TargetName="insideBorder" Property="Background" Value="#F0CC78"/>
+                            <Setter TargetName="insideBorder" Property="Background" Value="#B8BDD1"/>
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
@@ -286,12 +287,12 @@
 
     <Style x:Key="userInfoButton" TargetType="{x:Type Button}">
         <Setter Property="Cursor" Value="Hand"/>
-        <Setter Property="FontSize" Value="24"/>
+        <Setter Property="FontSize" Value="26"/>
         <Setter Property="Foreground" Value="Black"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type Button}">
-                    <Border Background="{StaticResource mainMessageBoxColors}">
+                    <Border Background="#D8DFD3">
                         <ContentPresenter HorizontalAlignment="Center"
                                           VerticalAlignment="Center"/>
                     </Border>
@@ -331,26 +332,33 @@
     <Style x:Key="settingsButton" TargetType="{x:Type Button}">
         <Setter Property="FontSize" Value="24"/>
         <Setter Property="Foreground" Value="#F1F3FA"/>
-        <Setter Property="HorizontalAlignment" Value="Right"/>
+        <Setter Property="HorizontalAlignment" Value="Center"/>
         <Setter Property="Cursor" Value="Hand"/>
         <Setter Property="Focusable" Value="False"/>
+        <Setter Property="Margin" Value="5"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type Button}">
-                    <Border Background="Transparent"
+                    <Border Background="#E6D87D"
+                            BorderBrush="Black"
+                            BorderThickness="1"
                             Name="border"
-                            CornerRadius="10"
-                            Padding="5,2,5,2">
+                            CornerRadius="20"
+                            Padding="2">
                         <Image Source="{StaticResource settingsDrawingImage}"
                                        VerticalAlignment="Stretch"
                                     HorizontalAlignment="Stretch"
-                                       Width="28"
-                                       Height="28"
-                                   Panel.ZIndex="2"/>
+                                       Width="32"
+                                       Height="32"
+                                   Panel.ZIndex="2"
+                               Stretch="Fill"/>
                     </Border>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsMouseOver" Value="True">
                             <Setter TargetName="border" Property="Background" Value="#A7ACBC"/>
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter TargetName="border" Property="Background" Value="#B8BDD1"/>
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
@@ -408,25 +416,28 @@
                 <ControlTemplate TargetType="{x:Type Button}">
                     <Border Height="35" Width="30"
                             CornerRadius="5"
-                            BorderBrush="#9B9B9B"
+                            BorderBrush="Transparent"
                             BorderThickness="2"
                             Padding="1"
                             Margin="5,5,0,5"
-                            Background="{StaticResource typeMessageGridColors}"
+                            Background="Transparent"
                             Name="clipBorder">
                         <Image Source="{StaticResource paperclipDrawingImage}"/>
                     </Border>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsMouseOver" Value="True">
-                            <Setter TargetName="clipBorder" 
+                            <!--<Setter TargetName="clipBorder" 
                                     Property="Background" 
-                                    Value="#C4C5C9"/>
+                                    Value="#C4C5C9"/>-->
+                            <Setter TargetName="clipBorder"
+                                    Property="Cursor"
+                                    Value="Hand"/>
                         </Trigger>
-                        <Trigger Property="IsPressed" Value="True">
+                        <!--<Trigger Property="IsPressed" Value="True">
                             <Setter TargetName="clipBorder" 
                                     Property="Background" 
                                     Value="#BCBDC2"/>
-                        </Trigger>
+                        </Trigger>-->
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>

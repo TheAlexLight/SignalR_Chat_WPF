@@ -67,12 +67,12 @@ namespace ChatServer.Controllers
 
             await _dbContext.SaveChangesAsync();
 
-            _dbContext.MutesStatus.Add(new MuteStatusModel()
-            {
-                UserStatusModelId = createdUser.UserModel.UserStatus.Id
-            });
+            //_dbContext.MutesStatus.Add(new MuteStatusModel()
+            //{
+            //    UserStatusModelId = createdUser.UserModel.UserStatus.Id
+            //});
 
-            await _dbContext.SaveChangesAsync();
+            //await _dbContext.SaveChangesAsync();
         }
 
         private async Task AddUserProfileIds(User createdUser)
