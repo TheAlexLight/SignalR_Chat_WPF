@@ -162,35 +162,6 @@
 
     <Style x:Key="reconnectionButton" TargetType="{x:Type Button}" BasedOn="{StaticResource submitButton}">
         <Setter Property="Template" Value="{StaticResource authorizationControlTemplate}"/>
-        <!--<Setter Property="Template">
-            <Setter.Value>
-                <ControlTemplate TargetType="{x:Type Button}">
-                    <Border x:Name="insideBorder" BorderBrush="#6D4F02" Background="{StaticResource registrationBasicColors}" 
-                            BorderThickness="1.3" 
-                            CornerRadius="5"
-                            Margin="{TemplateBinding Padding}">
-                        <ContentPresenter HorizontalAlignment="Center"
-                                          VerticalAlignment="Center"/>
-                    </Border>
-                    <ControlTemplate.Triggers>
-                        <Trigger Property="IsMouseOver" Value="True">
-                            <Setter TargetName="insideBorder" Property="Background" Value="{StaticResource registrationMouseOverColors}"/>
-                        </Trigger>
-                        <Trigger Property="IsEnabled" Value="False">
-                            <Setter TargetName="insideBorder" Property="Background" Value="{StaticResource registrationIsDisabledColors}"/>
-                        </Trigger>
-                        <Trigger Property="IsPressed" Value="True">
-                            <Setter TargetName="insideBorder" Property="Background" Value="{StaticResource registrationIsPressedColors}"/>
-                        </Trigger>
-                    </ControlTemplate.Triggers>
-                </ControlTemplate>
-            </Setter.Value>
-        </Setter>
-        <Style.Triggers>
-            <DataTrigger Binding="{Binding IsLoading}" Value="True">
-                <Setter Property="IsEnabled" Value="False"/>
-            </DataTrigger>
-        </Style.Triggers>-->
     </Style>
 
     <Style x:Key="sendMessage" TargetType="{x:Type Button}" BasedOn="{StaticResource submitButton}">
@@ -221,8 +192,8 @@
     </Style>
 
     <Style x:Key="publicChatButton" TargetType="{x:Type Button}">
-        <Setter Property="Width" Value="40"/>
-        <Setter Property="Height" Value="40"/>
+        <Setter Property="Width" Value="37"/>
+        <Setter Property="Height" Value="37"/>
         <Setter Property="Margin" Value="5,15,5,5"/>
         <Setter Property="Focusable" Value="False"/>
         <Setter Property="Template">
@@ -234,8 +205,8 @@
                             CornerRadius="20"
                             Padding="2"
                             Margin="{TemplateBinding Padding}"
-                            Width="38"
-                            Height="38">
+                            Width="35"
+                            Height="35">
                         <Image Source="{StaticResource publicChatDrawingImage}"
                                Stretch="Fill"/>
                     </Border>
@@ -253,8 +224,8 @@
     </Style>
 
     <Style x:Key="privateChatButton" TargetType="{x:Type Button}">
-        <Setter Property="Width" Value="40"/>
-        <Setter Property="Height" Value="40"/>
+        <Setter Property="Width" Value="37"/>
+        <Setter Property="Height" Value="37"/>
         <Setter Property="Margin" Value="5"/>
         <Setter Property="Focusable" Value="False"/>
         <Setter Property="Template">
@@ -267,8 +238,8 @@
                             CornerRadius="20"
                             Padding="5"
                             Margin="{TemplateBinding Padding}"
-                            Width="38"
-                            Height="38">
+                            Width="35"
+                            Height="35">
                         <Image Source="{StaticResource privateChatDrawingImage}"
                                Stretch="Fill"/>
                     </Border>
@@ -344,7 +315,8 @@
                             BorderThickness="1"
                             Name="border"
                             CornerRadius="20"
-                            Padding="2">
+                            Width="35"
+                            Height="35">
                         <Image Source="{StaticResource settingsDrawingImage}"
                                        VerticalAlignment="Stretch"
                                     HorizontalAlignment="Stretch"

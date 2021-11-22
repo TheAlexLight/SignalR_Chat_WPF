@@ -18,6 +18,24 @@ namespace ChatClient.Extensions.Behaviors
         private TextPointer _endSelectPosition;
         private string _selectedText = string.Empty;
 
+        public static readonly DependencyProperty SelectedTextColorProperty;
+
+        static SelectableTextBlockBehavior()
+        {
+            SelectedTextColorProperty = DependencyProperty.RegisterAttached("SelectedTextColor"
+                    , typeof(SolidColorBrush), typeof(SelectableTextBlockBehavior), new PropertyMetadata((SolidColorBrush)new BrushConverter().ConvertFrom("#A2A6DF")));
+        }
+
+        public static SolidColorBrush GetSelectedTextColor(DependencyObject target)
+        {
+            return (SolidColorBrush)target.GetValue(SelectedTextColorProperty);
+        }
+
+        public static void SetSelectedTextColor(DependencyObject target, SolidColorBrush value)
+        {
+            target.SetValue(SelectedTextColorProperty, value);
+        }
+
         protected override void OnAttached()
         {
             base.OnAttached();
@@ -71,7 +89,7 @@ namespace ChatClient.Extensions.Behaviors
                     fullText.ApplyPropertyValue(TextElement.BackgroundProperty, textBlock.Background);
 
                     TextRange selectedText = new TextRange(_startSelectPosition, _endSelectPosition);
-                    selectedText.ApplyPropertyValue(TextElement.BackgroundProperty, (SolidColorBrush)new BrushConverter().ConvertFrom("#7CCCDC"));
+                    selectedText.ApplyPropertyValue(TextElement.BackgroundProperty, GetSelectedTextColor(textBlock)/*(SolidColorBrush)new BrushConverter().ConvertFrom("#7CCCDC")*/);
 
                     _selectedText = selectedText.Text;
                 }
@@ -112,7 +130,7 @@ namespace ChatClient.Extensions.Behaviors
                     {
                         fullText.ApplyPropertyValue(TextElement.BackgroundProperty, textBlock.Background);
 
-                        selectedText.ApplyPropertyValue(TextElement.BackgroundProperty, (SolidColorBrush)new BrushConverter().ConvertFrom("#7CCCDC"));
+                        selectedText.ApplyPropertyValue(TextElement.BackgroundProperty, GetSelectedTextColor(textBlock)/*(SolidColorBrush)new BrushConverter().ConvertFrom("#7CCCDC")*/);
 
                         _selectedText = selectedText.Text;
                     }

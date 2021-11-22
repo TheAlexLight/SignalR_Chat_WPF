@@ -70,14 +70,13 @@
             <Grid Grid.Row="0">
                 <Button Content="{Binding ElementName=userList  
                         , Path=SelectedItem.UserProfile.Username}"
-                            Style="{StaticResource userInfoButton}"
-                            Command="{Binding OpenUserInfoWIndowCommand}">
-                    <Button.CommandParameter>
+                            Style="{StaticResource userInfoButton}">
+                    <!--<Button.CommandParameter>
                         <MultiBinding Converter ="{StaticResource multiBindingConverter}">
                             <Binding Source="true"/>
                             <Binding ElementName="userList" Path="SelectedItem"/>
                         </MultiBinding>
-                    </Button.CommandParameter>
+                    </Button.CommandParameter>-->
                 </Button>
             </Grid>
             <ItemsControl Style="{StaticResource messagesListBox}"

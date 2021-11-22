@@ -51,28 +51,6 @@
                 </ItemsPanelTemplate>
             </Setter.Value>
         </Setter>
-        <!--<Setter Property="ItemContainerStyle">
-            <Setter.Value>
-                <Style TargetType="{x:Type ContentPresenter}">
-                    <Style.Triggers>
-                        <Trigger Property="IsMouseOver" Value="True">
-                            <Setter Property="ListBox.Background" Value="Violet"/>
-                        </Trigger>
-                    </Style.Triggers>
-                </Style>
-            </Setter.Value>
-        </Setter>-->
-        <!--<Setter Property="ItemContainerStyle" x:Name="its">
-            <Setter.Value>
-                <Style TargetType="{x:Type ListBoxItem }">
-                    <Style.Triggers>
-                        <DataTrigger Binding="{Binding UsersCount}" Value="0">
-                            <Setter Property="Visibility" Value="Collapsed"/>
-                        </DataTrigger>
-                    </Style.Triggers>
-                </Style>
-            </Setter.Value>
-        </Setter>-->
         <Setter Property="ItemTemplate">
             <Setter.Value>
                 <DataTemplate>
@@ -81,15 +59,6 @@
                              BorderThickness="0"
                              Background="Transparent"
                              ScrollViewer.HorizontalScrollBarVisibility="Disabled">
-                        <!--<ListBox.ItemContainerStyle>
-                            <Style TargetType="{x:Type ListBoxItem}">
-                                <Style.Triggers>
-                                    <Trigger Property="IsMouseOver" Value="True">
-                                        <Setter Property="Background" Value="Violet"/>
-                                    </Trigger>
-                                </Style.Triggers>
-                            </Style>
-                        </ListBox.ItemContainerStyle>-->
                         <ListBox.ItemTemplate>
                             <DataTemplate>
                                 <Grid Background="Transparent">
@@ -211,7 +180,7 @@
     </Style>
 
     <Style x:Key="privateUsersListBox" TargetType="{x:Type ListBox}">
-        <Setter Property="ItemsSource" Value="{Binding AllUsers}"/>
+        <Setter Property="ItemsSource" Value="{Binding AllUsers, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
         <Setter Property="FontSize" Value="20"/>
         <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
         <Setter Property="Focusable" Value="False"/>
@@ -261,7 +230,7 @@
                                Grid.Column="1"/>-->
                         <TextBlock Grid.Column="1">
                             <TextBlock.Text>
-                                <MultiBinding FallbackValue="" Converter="{StaticResource uncheckedMessagesConverter}" 
+                                <MultiBinding Converter="{StaticResource uncheckedMessagesConverter}" 
                                               UpdateSourceTrigger="PropertyChanged">
                                     <Binding Path="." Mode="TwoWay"/>
                                     <Binding Path="DataContext.CurrentUser" 

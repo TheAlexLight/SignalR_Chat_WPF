@@ -9,7 +9,7 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
 
-    <Grid Background="#F1F0EA">
+    <Grid Background="#E6E6E6">
         <Border Style="{StaticResource formBorder}"
                 Width="Auto"
                 Height="Auto">

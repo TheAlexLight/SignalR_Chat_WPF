@@ -157,7 +157,7 @@ namespace ChatServer.Hubs
 
             await _dbContext.SaveChangesAsync();
 
-            await UpdateChat(userHandler);
+           // await UpdateChat(userHandler);
         }
 
         public async Task SendSwitchChat(ChatType chatType)
@@ -230,7 +230,8 @@ namespace ChatServer.Hubs
         {
             List<UserModel> users = _dbContext.UserModels.ToList();
 
-            await Clients.All.SendAsync("ReceiveUserList", users);
+
+            await Clients.All.SendAsync("ReceiveUserList", new ObservableCollection<UserModel>(users));
         }
 
         public async Task SendMessage(MessageModel message, ChatGroupModel currentGroup, UserModel selectedUser, UserModel currentUser)

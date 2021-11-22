@@ -74,28 +74,5 @@ namespace ChatServer.Controllers
                await Create(roleName);
             }
         }
-
-        
-
-        //public async Task Edit(string id)
-        //{
-        //    User user = await _userManager.FindByIdAsync(id);
-
-        //    if (user != null)
-        //    {
-        //        var userRoles = await _userManager.GetRolesAsync(user);
-        //        var allRoles = _roleManager.Roles.ToList();
-
-        //        RoleModel roleModel = new RoleModel()
-        //        {
-        //            UserId = user.Id,
-        //            UserEmail = user.Email,
-        //            UserRoles = userRoles,
-        //            AllRoles = allRoles
-        //        };
-        //    }
-
-        //    IdentityRole role = await _roleManager.FindByIdAsync(id);
-        //}
     }
 }

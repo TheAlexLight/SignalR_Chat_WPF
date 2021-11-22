@@ -113,8 +113,8 @@
     <ControlTemplate x:Key="topLevelHeader"
                  TargetType="{x:Type MenuItem}">
         <Border x:Name="Border" 
-                Background="{StaticResource menuItemsBasicColors}"
-                BorderBrush="{StaticResource menuItemsBasicColors}"
+                Background="#B9BBE0"
+                BorderBrush="#B9BBE0"
                 CornerRadius="4"
                 BorderThickness="1">
             <Grid>
@@ -149,7 +149,7 @@
             </Trigger>
             <Trigger Property="IsHighlighted" Value="true">
                 <Setter Property="Background" TargetName="Border"
-                        Value="{StaticResource menuItemsMouseOverColors}">
+                        Value="#A8ABD5">
                 </Setter>
             </Trigger>
             <Trigger Property="IsPressed" Value="True">
@@ -195,7 +195,7 @@
                     <Border x:Name="SubmenuBorder"
                 SnapsToDevicePixels="True"
                 BorderThickness="1"
-                Background="{StaticResource menuItemsBasicColors}"
+                Background="#DAD4E6"
                             Width="55"
                             Margin="0">
                         <ScrollViewer CanContentScroll="True"
@@ -216,7 +216,7 @@
             </Trigger>
             <Trigger Property="IsHighlighted" Value="true">
                 <Setter Property="Background" TargetName="Border"
-                        Value="{StaticResource highLightedIcon}">
+                        Value="#B9BBE0">
                 </Setter>
             </Trigger>
             <Trigger Property="IsMouseOver" Value="True">

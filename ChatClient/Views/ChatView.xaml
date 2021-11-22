@@ -34,33 +34,74 @@
 
         <GridSplitter Grid.Column="1"
                       Style="{StaticResource gridSpliiter}"/>
-
         <Grid Grid.Column ="0">
-            <Border Grid.Row="1" 
-                    Name="sideChatPanel"
-                    Background="{StaticResource mainMessageBoxColors}"
-                    BorderBrush="#AAAEB2"
-                    BorderThickness="0">
-                <StackPanel Background="#E4E3E9">
-                    <Button Style="{StaticResource publicChatButton}"
+            <StackPanel Background="#E4E3E9">
+                <Button Style="{StaticResource publicChatButton}"
                         Command="{Binding SwitchChatCommand}"
                         CommandParameter="{x:Static enums:ChatType.Public}"/>
-                    <Button Style="{StaticResource privateChatButton}"
+                <Button Style="{StaticResource privateChatButton}"
                         Command="{Binding SwitchChatCommand}"
                         CommandParameter="{x:Static enums:ChatType.Private}"/>
-                    <Button Style="{StaticResource settingsButton}"
+                <Button Style="{StaticResource settingsButton}"
                                     Command="{Binding OpenSettingsCommand}"
                                     Grid.Column="2">
-                        <Button.CommandParameter>
-                            <MultiBinding Converter ="{StaticResource multiBindingConverter}">
-                                <Binding Source="true"/>
-                            </MultiBinding>
-                        </Button.CommandParameter>
-                    </Button>
-                </StackPanel>
+                    <Button.CommandParameter>
+                        <MultiBinding Converter ="{StaticResource multiBindingConverter}">
+                            <Binding Source="true"/>
+                        </MultiBinding>
+                    </Button.CommandParameter>
+                </Button>
+            </StackPanel>
+        </Grid>
+
+        <Grid Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="45"/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+
+            <Border Background="#CFC5E3"
+                    Grid.Row="0">
+                <TextBlock Style="{StaticResource chatTitle}"
+                           Text="Users"
+                               HorizontalAlignment="Center"/>
             </Border>
 
+            <Grid Grid.Row="1" 
+                  Focusable="True">
+                <ToolBarTray Style="{StaticResource filterToolBarTray}"
+                                 Background="Transparent">
+                    <ToolBar Name="usersToolBar" Style="{StaticResource usersToolBar}">
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="Loaded">
+                                <i:InvokeCommandAction Command="{Binding RemoveToolBarOverflowCommand}"
+                                                   CommandParameter="{Binding ElementName=usersToolBar}"/>
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
+                    </ToolBar>
+                </ToolBarTray>
+                <ItemsControl Grid.RowSpan="2" Grid.Row="0" x:Name="activeUsersListBox"
+                     ItemsSource="{Binding UsersCollectionView}"
+                             BorderThickness="0"
+                             Style="{StaticResource publicUsersList}">
+                    <ItemsControl.GroupStyle>
+                        <GroupStyle>
+                            <GroupStyle.Panel>
+                                <ItemsPanelTemplate>
+                                    <VirtualizingStackPanel Orientation="Vertical"
+                                                    HorizontalAlignment="Stretch"
+                                                    VerticalAlignment="Stretch"/>
+                                </ItemsPanelTemplate>
+                            </GroupStyle.Panel>
+                            <GroupStyle.ContainerStyle>
+                                <Style TargetType="{x:Type GroupItem}" BasedOn="{StaticResource publicUsersGroup}"/>
+                            </GroupStyle.ContainerStyle>
+                        </GroupStyle>
+                    </ItemsControl.GroupStyle>
+                </ItemsControl>
+            </Grid>
         </Grid>
+
 
         <Grid Grid.Column="2">
             <Grid.RowDefinitions>
@@ -116,55 +157,6 @@
                 </Button>
             </Grid>
         </Grid>
-
-        <Grid Grid.Column="1">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="45"/>
-                <RowDefinition/>
-            </Grid.RowDefinitions>
-
-            <Border Background="#CFC5E3"
-                    Grid.Row="0">
-                <TextBlock Style="{StaticResource chatTitle}"
-                           Text="Users"
-                               HorizontalAlignment="Center"/>
-            </Border>
-
-            <Grid Grid.Row="1" 
-                  Focusable="True">
-                <ToolBarTray Style="{StaticResource filterToolBarTray}"
-                                 Background="Transparent">
-                    <ToolBar Name="usersToolBar" Style="{StaticResource usersToolBar}">
-                        <i:Interaction.Triggers>
-                            <i:EventTrigger EventName="Loaded">
-                                <i:InvokeCommandAction Command="{Binding RemoveToolBarOverflowCommand}"
-                                                   CommandParameter="{Binding ElementName=usersToolBar}"/>
-                            </i:EventTrigger>
-                        </i:Interaction.Triggers>
-                    </ToolBar>
-                </ToolBarTray>
-                <ItemsControl Grid.RowSpan="2" Grid.Row="0" x:Name="activeUsersListBox"
-                     ItemsSource="{Binding UsersCollectionView}"
-                             BorderThickness="0"
-                             Style="{StaticResource publicUsersList}">
-                    <ItemsControl.GroupStyle>
-                        <GroupStyle>
-                            <GroupStyle.Panel>
-                                <ItemsPanelTemplate>
-                                    <VirtualizingStackPanel Orientation="Vertical"
-                                                    HorizontalAlignment="Stretch"
-                                                    VerticalAlignment="Stretch"/>
-                                </ItemsPanelTemplate>
-                            </GroupStyle.Panel>
-                            <GroupStyle.ContainerStyle>
-                                <Style TargetType="{x:Type GroupItem}" BasedOn="{StaticResource publicUsersGroup}"/>
-                            </GroupStyle.ContainerStyle>
-                        </GroupStyle>
-                    </ItemsControl.GroupStyle>
-                </ItemsControl>
-            </Grid>
-        </Grid>
-
         <Grid Grid.ColumnSpan="3" Style="{StaticResource getBannedLayout}"/>
 
         <additionalViews:ConnectionLostView Grid.ColumnSpan="3"

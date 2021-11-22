@@ -88,8 +88,8 @@ namespace ChatClient.ViewModels
         private ChatType _currentChatType;
         private ChangeSettingsType _userSettingsType;
 
-        public ICollectionView UsersCollectionView { get; private set; }
-        public ICollectionView FilterUsersCollectionView { get; private set; }
+        public ICollectionView UsersCollectionView { get; set; }
+        public ICollectionView FilterUsersCollectionView { get; set; }
 
         public ICommand SendChatMessageCommand { get; private set; }
         public ICommand RemoveToolBarOverflowCommand { get; private set; }
@@ -154,9 +154,13 @@ namespace ChatClient.ViewModels
 
             CreateGroups();
 
+
             UsersCollectionView = CollectionViewSource.GetDefaultView(Groups);
             UsersCollectionView.GroupDescriptions.Add(new PropertyGroupDescription(nameof(Group.Name)));
             UsersCollectionView.Filter = UsersGroupFilter;
+
+            FilterUsersCollectionView = CollectionViewSource.GetDefaultView(AllUsers);
+            FilterUsersCollectionView.Filter = FilterUsers;
         }
 
         private bool UsersGroupFilter(object obj)
@@ -297,7 +301,10 @@ namespace ChatClient.ViewModels
 
                 foreach (MessageModel messageModel in CurrentChatGroup.CurrentChatGroupModel.Messages)
                 {
-                    CurrentChatGroup.MessagesViewModel.Add(new MessageViewModel(messageModel));
+                    Application.Current.Dispatcher.Invoke(() =>
+                    {
+                        CurrentChatGroup.MessagesViewModel.Add(new MessageViewModel(messageModel));
+                    });
                 }
 
                //ScrollViewerExtension.SetResetScrollPosition(CurrentChatGroup, )
@@ -335,27 +342,23 @@ namespace ChatClient.ViewModels
             }
         }
 
-        private void ChatService_UserListReceived(List<UserModel> allUsers)
+        private void ChatService_UserListReceived(ObservableCollection<UserModel>/*List<UserModel>*/ allUsers)
         {
             if (AllUsers.Count != 0 && SelectedUserIndex != -1)
             {
                 _temporarySelectedItem = AllUsers[SelectedUserIndex];
             }
 
-            AllUsers = new ObservableCollection<UserModel>(allUsers);
-
-            if (FilterUsersCollectionView == null)
-            {
-                FilterUsersCollectionView = CollectionViewSource.GetDefaultView(AllUsers);
-                FilterUsersCollectionView.Filter = FilterUsers;
-            }
+            AllUsers = allUsers;
 
             try
             {
                 FilterUsersCollectionView.Refresh();
             }
             catch
-            { }
+            { 
+
+            }
         }
 
         private async void ChatService_ReceivedBan(BanStatusModel model)
@@ -461,11 +464,13 @@ namespace ChatClient.ViewModels
         public ObservableCollection<UserModel> AllUsers
         {
             get => _allUsers;
-            private set
+            set
             {
                 _allUsers = value;
+                FilterUsersCollectionView = CollectionViewSource.GetDefaultView(AllUsers);
+                FilterUsersCollectionView.Filter = FilterUsers;
                 OnPropertyChanged();
-            }
+            }   
         }
 
         public MuteStatusModel MuteStatus
