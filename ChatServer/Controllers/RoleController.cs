@@ -67,6 +67,16 @@ namespace ChatServer.Controllers
             }
         }
 
+        public async Task CreateRoleIfNotExists(string roleName, RoleManager<IdentityRole> roleManager)
+        {
+            if (!await roleManager.RoleExistsAsync(roleName))
+            {
+               await Create(roleName);
+            }
+        }
+
+        
+
         //public async Task Edit(string id)
         //{
         //    User user = await _userManager.FindByIdAsync(id);

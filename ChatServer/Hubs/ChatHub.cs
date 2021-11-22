@@ -19,6 +19,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
+using ChatServer.Enums;
 
 namespace ChatServer.Hubs
 {
@@ -54,6 +55,9 @@ namespace ChatServer.Hubs
             if (error == "")
             {
                 result = true;
+
+                await _roleController.CreateRoleIfNotExists(Role.User.ToString(), _roleManager);
+                await _roleController.CreateRoleIfNotExists(Role.Admin.ToString(), _roleManager);
 
                 List<string> addedRoles = new List<string>()
                 {
