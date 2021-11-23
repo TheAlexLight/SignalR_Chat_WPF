@@ -24,7 +24,6 @@ namespace ChatClient.Helpers
     public class HyperlinksDetetectionHelper
     {
         public static readonly DependencyProperty TextProperty;
-        public static readonly DependencyProperty ChromiumWebBrowserPanelProperty;
 
         static HyperlinksDetetectionHelper()
         {
@@ -33,40 +32,18 @@ namespace ChatClient.Helpers
             typeof(string),
             typeof(HyperlinksDetetectionHelper),
             new PropertyMetadata(null, OnTextChanged));
-
-            ChromiumWebBrowserPanelProperty = DependencyProperty.RegisterAttached(
-                "ChromiumWebBrowser",
-                typeof(ChromiumWebBrowser),
-                typeof(HyperlinksDetetectionHelper),
-                new PropertyMetadata(null, OnChromiumWebBrowserPanelChanged));
-        }
-
-        private static void OnChromiumWebBrowserPanelChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            if (e.NewValue is ChromiumWebBrowser chromiumBrowser)
-            {
-                WebBrowser = chromiumBrowser;
-
-                WebBrowser.FrameLoadEnd += WebBrowser_FrameLoadEnd;
-            }
         }
 
         private static readonly Regex _regexUrl = new Regex(@"(?#Protocol)(?:(?:ht|f)tp(?:s?)\:\/\/|~/|/)?(?#Username:Password)(?:\w+:\w+@)?(?#Subdomains)(?:(?:[-\w]+\.)+(?#TopLevel Domains)(?:com|org|net|gov|mil|biz|info|mobi|name|aero|jobs|museum|travel|[a-z]{2}))(?#Port)(?::[\d]{1,5})?(?#Directories)(?:(?:(?:/(?:[-\w~!$+|.,=]|%[a-f\d]{2})+)+|/)+|\?|#)?(?#Query)(?:(?:\?(?:[-\w~!$+|.,*:]|%[a-f\d{2}])+=(?:[-\w~!$+|.,*:=]|%[a-f\d]{2})*)(?:&(?:[-\w~!$+|.,*:]|%[a-f\d{2}])+=(?:[-\w~!$+|.,*:=]|%[a-f\d]{2})*)*)*(?#Anchor)(?:#(?:[-\w~!$+|.,*:=]|%[a-f\d]{2})*)?");
-
-        public static ChromiumWebBrowser WebBrowser { get; set; }
         private static bool _isFrameLoaded;
+        private static HttpWebRequest _myRequest;
+        private static string _responseString;
 
         public static string GetText(DependencyObject d)
         { return d.GetValue(TextProperty) as string; }
 
         public static void SetText(DependencyObject d, string value)
         { d.SetValue(TextProperty, value); }
-
-        public static ChromiumWebBrowser GetChromiumWebBrowser(DependencyObject d)
-        { return (ChromiumWebBrowser)d.GetValue(ChromiumWebBrowserPanelProperty); }
-
-        public static void SetChromiumWebBrowser(DependencyObject d, ChromiumWebBrowser value)
-        { d.SetValue(ChromiumWebBrowserPanelProperty, value); }
 
         private static void OnTextChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
@@ -130,11 +107,14 @@ namespace ChatClient.Helpers
         public static async Task<HyperlinkDescriptionModel> ReceivePageSource(Match lastRegex)
         {
             Hyperlink link = SetLinkAddress(lastRegex);
-            WebBrowser.Address = string.Empty;
 
             if (link.NavigateUri != null)
             {
-                WebBrowser.Address = link.NavigateUri.ToString();
+               // _webPageSource = null;
+
+                _myRequest = WebRequest.CreateHttp(link.NavigateUri.ToString());
+                _myRequest.Method = "GET";
+                _myRequest.BeginGetResponse(GetResponseCallback, _myRequest);
 
                 _isFrameLoaded = false;
 
@@ -144,18 +124,36 @@ namespace ChatClient.Helpers
                 }
             }
 
-            string webPageSource = await WebBrowser.GetSourceAsync();
-
             HyperlinkDescriptionModel hyperlinkDescription = new HyperlinkDescriptionModel();
 
-            if (webPageSource != string.Empty)
+            if (_responseString != null)
             {
-               hyperlinkDescription = ReadWebSource(webPageSource);
+                hyperlinkDescription = ReadWebSource(_responseString);
             }
 
             return hyperlinkDescription;
         }
 
+        private static void GetResponseCallback(IAsyncResult asynchronousResult)
+        {
+            try
+            {
+                WebResponse resp = _myRequest.EndGetResponse(asynchronousResult);
+                HttpWebResponse response = (HttpWebResponse)resp;
+                Stream streamResponse = response.GetResponseStream();
+                StreamReader streamRead = new StreamReader(streamResponse);
+                _responseString = streamRead.ReadToEnd();
+                
+                // Close the stream object
+                streamResponse.Close();
+                streamRead.Close();
+                // Release the HttpWebResponse
+                response.Close();
+
+                _isFrameLoaded=true;
+            }
+            catch (Exception ex) { }
+        }
         private static HyperlinkDescriptionModel ReadWebSource(string webPageSource)
         {
             const string PAGE_TITLE_START_KEY = "og:site_name\" content=\"";
@@ -215,14 +213,6 @@ namespace ChatClient.Helpers
            string pageTagDescription = pageTagDescriptionStart.Substring(0, pageTagDescriptionStart.IndexOf("\">"));
 
             return pageTagDescription;
-        }
-
-        private static void WebBrowser_FrameLoadEnd(object sender, CefSharp.FrameLoadEndEventArgs e)
-        {
-            if (!_isFrameLoaded)
-            {
-                _isFrameLoaded = true;
-            }
         }
 
         private static Hyperlink SetLinkAddress(Match match)

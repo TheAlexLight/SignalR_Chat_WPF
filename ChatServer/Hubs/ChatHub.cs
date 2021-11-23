@@ -98,6 +98,8 @@ namespace ChatServer.Hubs
 
                     if (user.UserModel.UserStatus.BanStatus.IsBanned)
                     {
+                        await UpdateChat(userHandler);
+                        await SendPublicGroup();
                         await Clients.Client(userHandler.ConnectedIds).SendAsync("ReceiveBan", user.UserModel.UserStatus.BanStatus);
                         return;
                     }

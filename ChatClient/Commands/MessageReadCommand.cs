@@ -27,15 +27,15 @@ namespace ChatClient.Commands
         public override void Execute(object parameter)
         {
             object[] values = parameter as object[];
-            if (values[0] is MessageModel message 
+            if (values[0] is MessageViewModel message 
                     && _viewModel.CurrentUser != null 
-                    && message.Sender != _viewModel.CurrentUser.UserProfile.Username)
+                    && message.MessageModel.Sender != _viewModel.CurrentUser.UserProfile.Username)
             {
                 if (IsUserVisible((FrameworkElement)values[1], (FrameworkElement)values[2])
-                    && message.CheckStatus == MessageStatus.Received)
+                    && message.MessageModel.CheckStatus == MessageStatus.Received)
                 {
-                    message.CheckStatus = MessageStatus.Read;
-                    _viewModel.ChatService.UpdateMessage(message, _viewModel.CurrentChatGroup.CurrentChatGroupModel);
+                    message.MessageModel.CheckStatus = MessageStatus.Read;
+                    _viewModel.ChatService.UpdateMessage(message.MessageModel, _viewModel.CurrentChatGroup.CurrentChatGroupModel);
                 }
             }
         }

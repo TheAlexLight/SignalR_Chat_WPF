@@ -346,10 +346,13 @@ namespace ChatClient.ViewModels
         {
             if (AllUsers.Count != 0 && SelectedUserIndex != -1)
             {
-                _temporarySelectedItem = AllUsers[SelectedUserIndex];
+                _temporarySelectedItem = (UserModel)SelectedItem;/*AllUsers[SelectedUserIndex]*/;
             }
 
             AllUsers = allUsers;
+
+            FilterUsersCollectionView = CollectionViewSource.GetDefaultView(AllUsers);
+            FilterUsersCollectionView.Filter = FilterUsers;
 
             try
             {
@@ -467,9 +470,10 @@ namespace ChatClient.ViewModels
             set
             {
                 _allUsers = value;
-                FilterUsersCollectionView = CollectionViewSource.GetDefaultView(AllUsers);
-                FilterUsersCollectionView.Filter = FilterUsers;
                 OnPropertyChanged();
+
+                //SelectedItem = _temporarySelectedItem;
+                //_temporarySelectedItem = null;
             }   
         }
 
@@ -621,7 +625,6 @@ namespace ChatClient.ViewModels
                 if (value == null && _temporarySelectedItem != null)
                 {
                     _selectedItem = _temporarySelectedItem;
-                    _temporarySelectedItem = null;
                 }
                 else
                 {

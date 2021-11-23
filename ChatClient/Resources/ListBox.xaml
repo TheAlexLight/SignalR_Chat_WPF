@@ -180,7 +180,7 @@
     </Style>
 
     <Style x:Key="privateUsersListBox" TargetType="{x:Type ListBox}">
-        <Setter Property="ItemsSource" Value="{Binding AllUsers, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+        <Setter Property="ItemsSource" Value="{Binding AllUsers}"/>
         <Setter Property="FontSize" Value="20"/>
         <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
         <Setter Property="Focusable" Value="False"/>
@@ -259,7 +259,10 @@
         <Setter Property="BorderThickness" Value="0,1,0,1"/>
         <Setter Property="VirtualizingPanel.ScrollUnit" Value="Pixel"/>
         <Setter Property="FontSize" Value="20"/>
-        <Setter Property="extensions:DropFilesBehaviorExtension.IsEnabled" Value="True"/>
+        <Setter Property="HorizontalContentAlignment" Value="Left" />
+        <Setter Property="VerticalContentAlignment" Value="Top" />
+
+            <Setter Property="extensions:DropFilesBehaviorExtension.IsEnabled" Value="True"/>
         <Setter Property="ItemsPanel">
             <Setter.Value>
                 <ItemsPanelTemplate>
@@ -270,7 +273,7 @@
         </Setter>
         <Setter Property="Template">
             <Setter.Value>
-                <ControlTemplate TargetType="{x:Type ItemsControl}">
+                <ControlTemplate>
                     <extensions:ScrollViewerExtension 
                         Background="#E6E6E6"
                         HorizontalScrollBarVisibility="Disabled"
@@ -323,7 +326,7 @@
                                Background="Transparent">
                                 <i:Interaction.Triggers>
                                     <i:EventTrigger  EventName="ScrollChanged"
-                                             SourceObject="{Binding RelativeSource={RelativeSource AncestorType={x:Type extensions:ScrollViewerExtension}}}"
+                                             SourceObject="{Binding RelativeSource={ RelativeSource  AncestorType={x:Type extensions:ScrollViewerExtension}}}"
                                              SourceName="scroll">
                                         <i:InvokeCommandAction Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type UserControl}}
                                             , Path=DataContext.MessageReadCommand}">

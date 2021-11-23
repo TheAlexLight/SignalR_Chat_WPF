@@ -98,8 +98,10 @@
                     </Button.CommandParameter>
                 </Button>
                 <AdornerDecorator Grid.Column="1">
-                    <TextBox Style="{StaticResource adornerTextBox}"
-                     Text="{Binding Message.TextMessage}">
+                    <TextBox TextWrapping="Wrap" Style="{StaticResource adornerTextBox}"
+                     Text="{Binding Message.TextMessage}"
+                             Height="Auto"
+                             MaxHeight="115">
                         <controls:WatermarkService.Watermark>
                             <TextBlock Style="{StaticResource adornerTextBlock}">
                                 Write a message

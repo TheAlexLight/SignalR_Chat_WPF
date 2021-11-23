@@ -72,13 +72,13 @@ namespace ChatClient.Validators
                 {
                     _hasLowerCaseLetter = true;
                 }
-                else if (char.IsDigit(ch)) 
+                else if (char.IsDigit(ch))
                 {
                     _hasDecimalDigit = true;
                 }
                 else if (!char.IsLetterOrDigit(ch))
                 {
-                    _hasNonLetterOrDigit = true; ;
+                    _hasNonLetterOrDigit = true;
                 }
 
                 if (_hasUpperCaseLetter && _hasLowerCaseLetter && _hasDecimalDigit && _hasNonLetterOrDigit)

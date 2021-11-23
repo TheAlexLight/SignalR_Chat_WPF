@@ -136,7 +136,10 @@
                 </Button>
                 <AdornerDecorator Grid.Column="1">
                     <TextBox Style="{StaticResource adornerTextBox}"
-                     Text="{Binding Message.TextMessage}">
+                     Text="{Binding Message.TextMessage}"
+                             Height="Auto"
+                             MaxHeight="115"
+                             TextWrapping="Wrap">
                         <controls:WatermarkService.Watermark>
                             <TextBlock Style="{StaticResource adornerTextBlock}">
                                 Write a message
@@ -193,14 +196,5 @@
                 </Style>
             </additionalViews:SettingsView.Style>
         </additionalViews:SettingsView>
-
-        <wpf:ChromiumWebBrowser Width="1" 
-                                Height="1"
-                                Visibility="Hidden"
-                                Name="webBrowser"
-                                Panel.ZIndex="0"
-                                helpers:HyperlinksDetetectionHelper.ChromiumWebBrowser="{Binding ElementName=webBrowser}">
-
-        </wpf:ChromiumWebBrowser>
     </Grid>
 </UserControl>

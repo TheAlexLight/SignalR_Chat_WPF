@@ -130,7 +130,7 @@
                     <Border x:Name="SubmenuBorder"
                 SnapsToDevicePixels="True"
                 BorderThickness="1"
-                Background="{StaticResource menuItemsBasicColors}">
+                Background="#B9BBE0">
                         <ScrollViewer CanContentScroll="True"
                                       VerticalScrollBarVisibility="Auto">
                             <StackPanel IsItemsHost="True"

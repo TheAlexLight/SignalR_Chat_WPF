@@ -9,11 +9,15 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
+using CefSharp.Wpf;
+using ChatClient.Controls;
 using ChatClient.Converters;
+using ChatClient.Helpers;
 using ChatClient.Validators;
 using ChatClient.ViewModels;
 using ChatClient.Views;
 using ChatClient.Views.AdditionalViews;
+using SharedItems.Enums;
 using System;
 using System.Diagnostics;
 using System.Windows;
@@ -89,7 +93,7 @@ namespace ChatClient.Views {
                 return;
             }
             _contentLoaded = true;
-            System.Uri resourceLocater = new System.Uri("/ChatClient;component/views/loginview.xaml", System.UriKind.Relative);
+            System.Uri resourceLocater = new System.Uri("/ChatClient;V1.0.0.0;component/views/loginview.xaml", System.UriKind.Relative);
             
             #line 1 "..\..\..\..\Views\LoginView.xaml"
             System.Windows.Application.LoadComponent(this, resourceLocater);
