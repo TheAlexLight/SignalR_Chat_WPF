@@ -16,14 +16,11 @@ namespace ChatServer.Controllers
     {
         private readonly UserManager<User> _userManager;
         private readonly ApplicationContext _dbContext;
-        private readonly IWebHostEnvironment _webHostEnvironment;
 
-        public AccountController(UserManager<User> userManager, ApplicationContext dbContext
-            , IWebHostEnvironment webHostEnvironment)
+        public AccountController(UserManager<User> userManager, ApplicationContext dbContext)
         {
             _userManager = userManager;
             _dbContext = dbContext;
-            _webHostEnvironment = webHostEnvironment;
         }
 
         public async Task<IdentityResult> Register(UserRegistrationModel model)

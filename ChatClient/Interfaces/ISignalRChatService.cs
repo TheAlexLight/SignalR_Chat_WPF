@@ -34,7 +34,7 @@ namespace ChatClient.Interfaces
         public Task SendBan(string username, BanStatusModel model);
         public Task SendMute(string username, MuteStatusModel model);
         public Task KickUser(string username);
-        public Task SwitchChat(ChatType chatType);
+        public Task SwitchChat(ChatType chatType, UserModel currentUser);
         public Task UpdatePrivateMessages(UserModel selectedUser, UserModel currentUser);
         public Task UpdateMessage(MessageModel message);
         public Task ChangePhoto(UserModel currentUser, byte[] photo);

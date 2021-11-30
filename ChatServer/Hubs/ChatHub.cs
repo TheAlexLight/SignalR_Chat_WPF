@@ -29,23 +29,22 @@ namespace ChatServer.Hubs
         private readonly UserManager<User> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly ApplicationContext _dbContext;
-        private readonly IWebHostEnvironment _webHostEnvironment;
         private readonly AccountController _account;
         private readonly RoleController _roleController;
         private readonly AuthorizationHelper _authorizationHelper;
         private readonly GroupsHelper _groupsHelper;
+        private readonly UserHelper _userHelper;
 
-        public ChatHub(UserManager<User> userManager, RoleManager<IdentityRole> roleManager, ApplicationContext dbContext
-            , IWebHostEnvironment webHostEnvironment)
+        public ChatHub(UserManager<User> userManager, RoleManager<IdentityRole> roleManager, ApplicationContext dbContext)
         {
             _userManager = userManager;
             _roleManager = roleManager;
             _dbContext = dbContext;
-            _webHostEnvironment = webHostEnvironment;
-            _account = new AccountController(_userManager, _dbContext, _webHostEnvironment);
+            _account = new AccountController(_userManager, _dbContext);
             _roleController = new RoleController(_roleManager, _userManager);
             _authorizationHelper = new();
             _groupsHelper = new();
+            _userHelper = new UserHelper();
         }
 
         public async Task SendRegistration(UserRegistrationModel model)
@@ -81,17 +80,11 @@ namespace ChatServer.Hubs
 
             if (successfulLogin)
             {
-                UserHandler userHandler = Account.Users.FirstOrDefault(a => a.ConnectedIds == Context.ConnectionId);
-                userHandler.ConnectedUsername = model.Username;
+                UserHandler userHandler = _userHelper.FindUserHandler(Context, model.Username);
 
                 if (userHandler != null)
                 {
                     User user = _dbContext.Users
-                        .Include(u => u.UserModel)
-                            .ThenInclude(u => u.UserStatus)
-                                .ThenInclude(userStatus => userStatus.BanStatus)
-                        .Include(u => u.UserModel)
-                            .ThenInclude(um => um.UserProfile)
                         .FirstOrDefault(u => u.UserName == model.Username);
 
                     user.UserModel.UserProfile.IsOnline = true;
@@ -153,8 +146,7 @@ namespace ChatServer.Hubs
 
         public async Task SendReconnection(string username)
         {
-            UserHandler userHandler = Account.Users.FirstOrDefault(a => a.ConnectedIds == Context.ConnectionId);
-            userHandler.ConnectedUsername = username;
+            UserHandler userHandler = _userHelper.FindUserHandler(Context, username);
 
             UserProfileModel user = await _dbContext.UserProfiles
                     .FirstOrDefaultAsync(u => u.Username == username);
@@ -169,7 +161,7 @@ namespace ChatServer.Hubs
             await Clients.All.SendAsync("ReceiveCurrentGroup", group);
         }
 
-        public async Task SendSwitchChat(ChatType chatType)
+        public async Task SendSwitchChat(ChatType chatType, UserModel currentUser)
         {
             ChatGroupModel group;
 
@@ -183,6 +175,9 @@ namespace ChatServer.Hubs
                 group = new ChatGroupModel();
             }
 
+            UserHandler userHandler = _userHelper.FindUserHandler(Context,currentUser.UserProfile.Username);
+
+            await UpdateChat(userHandler);
             await Clients.Caller.SendAsync("ReceiveCurrentGroup", group);
         }
 
@@ -195,8 +190,8 @@ namespace ChatServer.Hubs
 
             group ??= await _groupsHelper.AddUsersToPrivateGroup(_dbContext, currentUser.UserProfile.Username, selectedUser.UserProfile.Username);
 
-            UserHandler userHandler = Account.Users.FirstOrDefault(a => a.ConnectedIds == Context.ConnectionId);
-            userHandler.ConnectedUsername = currentUser.UserProfile.Username;
+            UserHandler userHandler = _userHelper.FindUserHandler(Context, currentUser.UserProfile.Username);
+            
             await SendCurrentUser(userHandler);
 
             await Clients.Caller.SendAsync("ReceiveCurrentGroup", group);
@@ -218,7 +213,7 @@ namespace ChatServer.Hubs
         private async Task UpdateChat(UserHandler userHandler)
         {
             await SendCurrentUser(userHandler);
-            await SendUserList();
+            await SendUserList(userHandler);
         }
 
         public async Task SendCurrentUser(UserHandler userHandler)
@@ -235,10 +230,9 @@ namespace ChatServer.Hubs
             await Clients.Client(userHandler.ConnectedIds).SendAsync("ReceiveCurrentUser", user.UserModel);
         }
 
-        public async Task SendUserList()
+        public async Task SendUserList(UserHandler userHandler)
         {
-            List<UserModel> users = _dbContext.UserModels.ToList();
-
+            List<UserModel> users = _dbContext.UserModels.Where(um=>um.UserProfile.Username != userHandler.ConnectedUsername).ToList();
 
             await Clients.All.SendAsync("ReceiveUserList", new ObservableCollection<UserModel>(users));
         }
@@ -267,8 +261,8 @@ namespace ChatServer.Hubs
 
                 await _dbContext.SaveChangesAsync();
 
-                UserHandler userHandler = Account.Users.FirstOrDefault(a => a.ConnectedIds == Context.ConnectionId);
-                userHandler.ConnectedUsername = currentUser.UserProfile.Username;
+                UserHandler userHandler = _userHelper.FindUserHandler(Context, currentUser.UserProfile.Username);
+                
                 await UpdateChat(userHandler);
 
                 await SendConcreteGroup(currentGroup.Name, group);
@@ -312,8 +306,8 @@ namespace ChatServer.Hubs
 
                         await Clients.Caller.SendAsync("ReceiveUserPropertyChange", true, "Username", string.Empty);
 
-                        UserHandler userHandler = Account.Users.FirstOrDefault(a => a.ConnectedIds == Context.ConnectionId);
-                        userHandler.ConnectedUsername = username;
+                        UserHandler userHandler = _userHelper.FindUserHandler(Context, username);
+
                         await UpdateChat(userHandler);
                     }
                     else
@@ -348,8 +342,8 @@ namespace ChatServer.Hubs
 
                         await Clients.Caller.SendAsync("ReceiveUserPropertyChange", true, "Email", string.Empty);
 
-                        UserHandler userHandler = Account.Users.FirstOrDefault(a => a.ConnectedIds == Context.ConnectionId);
-                        userHandler.ConnectedUsername = user.UserProfile.Username;
+                        UserHandler userHandler = _userHelper.FindUserHandler(Context, user.UserProfile.Username);
+                        
                         await UpdateChat(userHandler);
                     }
                     else
@@ -380,8 +374,8 @@ namespace ChatServer.Hubs
 
                     await Clients.Caller.SendAsync("ReceiveUserPropertyChange", true, "Password", string.Empty);
 
-                    UserHandler userHandler = Account.Users.FirstOrDefault(a => a.ConnectedIds == Context.ConnectionId);
-                    userHandler.ConnectedUsername = user.UserProfile.Username;
+                    UserHandler userHandler = _userHelper.FindUserHandler(Context, user.UserProfile.Username);
+                    
                     await UpdateChat(userHandler);
                 }
                 else
@@ -406,6 +400,7 @@ namespace ChatServer.Hubs
                 foreach (UserModel user in group.Users)
                 {
                     UserHandler userHandler = Account.Users.FirstOrDefault(u => u.ConnectedUsername == user.UserProfile.Username);
+                    
                     if (userHandler != null)
                     {
                         await Clients.Client(userHandler.ConnectedIds).SendAsync("ReceiveCurrentGroup", group);
@@ -466,8 +461,6 @@ namespace ChatServer.Hubs
             UserHandler userHandler = Account.Users.FirstOrDefault(u => u.ConnectedUsername == username);
 
             User user = _dbContext.Users
-                .Include(u => u.UserModel.UserStatus)
-                .ThenInclude(userStatus => userStatus.MuteStatus)
                 .FirstOrDefault(u => u.UserName == username);
 
             user.UserModel.UserStatus.MuteStatus = model;

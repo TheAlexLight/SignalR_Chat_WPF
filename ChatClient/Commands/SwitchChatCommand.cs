@@ -41,7 +41,7 @@ namespace ChatClient.Commands
                     _viewModel.SelectedUserIndex = 0;
                 }
 
-                _viewModel.ChatService.SwitchChat(currentChatType);
+                _viewModel.ChatService.SwitchChat(currentChatType, _viewModel.CurrentUser);
                 _viewModel.CanCloseChat = false;
 
                 Thread.Sleep(100);

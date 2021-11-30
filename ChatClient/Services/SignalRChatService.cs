@@ -117,9 +117,9 @@ namespace ChatClient.Services
             await Connection.SendAsync("SendKickUser", username);
         }
         
-        public async Task SwitchChat(ChatType chatTtype)
+        public async Task SwitchChat(ChatType chatTtype, UserModel currentUser)
         {
-            await Connection.SendAsync("SendSwitchChat", chatTtype);
+            await Connection.SendAsync("SendSwitchChat", chatTtype, currentUser);
         }
         public async Task UpdatePrivateMessages(UserModel selectedUser, UserModel currentUser)
         {

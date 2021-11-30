@@ -93,6 +93,9 @@ namespace ChatClient.ViewModels
 
         private ChatType _currentChatType;
         private ChangeSettingsType _userSettingsType;
+
+        private ICollectionView _usersCollectionView;
+        private ICollectionView _filterUsersCollectionView;
         #endregion
 
         #region Commands
@@ -115,8 +118,24 @@ namespace ChatClient.ViewModels
         //public ICommand SendImageCommand { get; private set; }
         #endregion
 
-        public ICollectionView UsersCollectionView { get; set; }
-        public ICollectionView FilterUsersCollectionView { get; set; }
+        public ICollectionView UsersCollectionView 
+        {
+            get => _usersCollectionView;
+            set
+            {
+                _usersCollectionView = value;
+                OnPropertyChanged();
+            }
+        }
+        public ICollectionView FilterUsersCollectionView 
+        {
+            get => _filterUsersCollectionView;
+            set
+            {
+                _filterUsersCollectionView = value;
+                OnPropertyChanged();
+            }
+        }
 
         public static readonly DependencyProperty TimeDurationProperty = DependencyProperty.RegisterAttached("DurationTime"
                 , typeof(string), typeof(ChatViewModel), new PropertyMetadata(null));
@@ -171,16 +190,16 @@ namespace ChatClient.ViewModels
 
         private bool UsersGroupFilter(object obj)
         {
-            Group group = obj as Group;
+            //Group group = obj as Group;
 
-            ICollectionView usersCollectionView = CollectionViewSource.GetDefaultView(group.GroupedUsers);
+            //ICollectionView usersCollectionView = CollectionViewSource.GetDefaultView(group.GroupedUsers);
 
-            if (usersCollectionView != null)
-            {
-                usersCollectionView.Filter = user => ((UserModel)user).UserProfile.Username != CurrentUser.UserProfile.Username;
+            //if (usersCollectionView != null)
+            //{
+            //    usersCollectionView.Filter = user => ((UserModel)user).UserProfile.Username != CurrentUser.UserProfile.Username;
 
-                //return group.GroupedUsers.All(user => user.UserProfile.Username != CurrentUser.UserProfile.Username);
-            }
+            //    //return group.GroupedUsers.All(user => user.UserProfile.Username != CurrentUser.UserProfile.Username);
+            //}
 
             return true;  
             //UsersCollectionView.GetDefaultView(group.GroupedUsers);
@@ -222,6 +241,8 @@ namespace ChatClient.ViewModels
             }
 
             return result;
+
+            //turn true;
         }
 
         private void CreateGroups()
@@ -297,13 +318,14 @@ namespace ChatClient.ViewModels
         {
             if (currentGroup.Name == CurrentChatType)
             {
+                currentGroup.Users = currentGroup.Users.Where(um => um.UserProfile.Username != CurrentUser.UserProfile.Username).ToList();
+
                 CurrentChatGroup.CurrentChatGroupModel = currentGroup;
 
                 Application.Current.Dispatcher.Invoke(() =>
                 {
                     CurrentChatGroup.MessagesViewModel.Clear();
                 });
-                
 
                 foreach (MessageModel messageModel in CurrentChatGroup.CurrentChatGroupModel.Messages)
                 {
@@ -312,13 +334,6 @@ namespace ChatClient.ViewModels
                         CurrentChatGroup.MessagesViewModel.Add(new MessageViewModel(messageModel));
                     });
                 }
-
-               //ScrollViewerExtension.SetResetScrollPosition(CurrentChatGroup, )
-
-                //if (AllUsers.Count != 0)
-                //{
-                //    ResetScroll = AllUsers[SelectedUserIndex].UserProfile.Username;
-                //}
 
                 Group bannedGroup = Groups.FirstOrDefault(g => g.Name.Equals(nameof(UserGroups.Banned)));
                 bannedGroup.GroupedUsers = new ObservableCollection<UserModel>(CurrentChatGroup.CurrentChatGroupModel.Users
@@ -338,13 +353,10 @@ namespace ChatClient.ViewModels
 
                 offlineGroup.UsersCount = offlineGroup.GroupedUsers.Where(user => user.UserProfile.Username != CurrentUser.UserProfile.Username).Count();
 
-
-                try
+                Application.Current.Dispatcher.Invoke(() =>
                 {
                     UsersCollectionView.Refresh();
-                }
-                catch (Exception)
-                { }
+                });
             }
         }
 
@@ -359,15 +371,6 @@ namespace ChatClient.ViewModels
 
             FilterUsersCollectionView = CollectionViewSource.GetDefaultView(AllUsers);
             FilterUsersCollectionView.Filter = FilterUsers;
-
-            try
-            {
-                FilterUsersCollectionView.Refresh();
-            }
-            catch
-            { 
-
-            }
         }
 
         private async void ChatService_ReceivedBan(BanStatusModel model)
@@ -538,7 +541,10 @@ namespace ChatClient.ViewModels
 
                 if (FilterUsersCollectionView != null)
                 {
-                    FilterUsersCollectionView.Refresh();
+                    Application.Current.Dispatcher.Invoke(() =>
+                    {
+                        FilterUsersCollectionView.Refresh();
+                    });
                 }
             }
         }
