@@ -309,6 +309,7 @@ namespace ChatServer.Hubs
                         UserHandler userHandler = _userHelper.FindUserHandler(Context, username);
 
                         await UpdateChat(userHandler);
+                        await SendPublicGroup();
                     }
                     else
                     {
@@ -345,6 +346,7 @@ namespace ChatServer.Hubs
                         UserHandler userHandler = _userHelper.FindUserHandler(Context, user.UserProfile.Username);
                         
                         await UpdateChat(userHandler);
+                        await SendPublicGroup();
                     }
                     else
                     {
@@ -377,6 +379,7 @@ namespace ChatServer.Hubs
                     UserHandler userHandler = _userHelper.FindUserHandler(Context, user.UserProfile.Username);
                     
                     await UpdateChat(userHandler);
+                    await SendPublicGroup();
                 }
                 else
                 {
@@ -409,7 +412,7 @@ namespace ChatServer.Hubs
             }
         }
 
-        public async Task SendChangePhoto(UserModel currentUser, byte[] photo)
+        public async Task SendChangePhoto(UserModel currentUser, byte[] photo, ChatType currentChatType)
         {
             UserModel userModel = _dbContext.UserModels.FirstOrDefault(um => um == currentUser);
 
@@ -420,20 +423,8 @@ namespace ChatServer.Hubs
             UserHandler userHandler = Account.Users.FirstOrDefault(u => u.ConnectedUsername == currentUser.UserProfile.Username);
 
             await UpdateChat(userHandler);
+            await SendPublicGroup();
         }
-
-        //public async Task SendImage(UserModel currentUser, MessageModel photo)
-        //{
-        //    UserModel userModel = _dbContext.UserModels.FirstOrDefault(um => um == currentUser);
-
-        //    userModel.UserProfile.Image = photo;
-
-        //    await _dbContext.SaveChangesAsync();
-
-        //    UserHandler userHandler = Account.Users.FirstOrDefault(u => u.ConnectedUsername == currentUser.UserProfile.Username);
-
-        //    await UpdateChat(userHandler);
-        //}
 
         public async Task SendUserBan(string username, BanStatusModel model)
         {

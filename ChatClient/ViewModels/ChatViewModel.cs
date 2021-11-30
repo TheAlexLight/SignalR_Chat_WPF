@@ -115,7 +115,6 @@ namespace ChatClient.ViewModels
         public ICommand ChangeEmailCommand { get; private set; }
         public ICommand ChangePasswordCommand { get; private set; }
         public ICommand ChangeUserSettingsCommand { get; private set; }
-        //public ICommand SendImageCommand { get; private set; }
         #endregion
 
         public ICollectionView UsersCollectionView 
@@ -169,7 +168,6 @@ namespace ChatClient.ViewModels
             ChangeUsernameCommand = new ChangeUsernameCommand(this);
             ChangePasswordCommand = new ChangePasswordCommand(this);
             ChangeEmailCommand = new ChangeEmailCommand(this);
-            //SendImageCommand = new SendImageCommand(this);
             Message = new();
             MuteStatus = new();
             UsersFilter = string.Empty;
@@ -316,48 +314,45 @@ namespace ChatClient.ViewModels
 
         private void ChatService_CurrentGroupReceived(ChatGroupModel currentGroup)
         {
-            if (currentGroup.Name == CurrentChatType)
+            currentGroup.Users = currentGroup.Users.Where(um => um.UserProfile.Username != CurrentUser.UserProfile.Username).ToList();
+
+            CurrentChatGroup.CurrentChatGroupModel = currentGroup;
+
+            Application.Current.Dispatcher.Invoke(() =>
             {
-                currentGroup.Users = currentGroup.Users.Where(um => um.UserProfile.Username != CurrentUser.UserProfile.Username).ToList();
+                CurrentChatGroup.MessagesViewModel.Clear();
+            });
 
-                CurrentChatGroup.CurrentChatGroupModel = currentGroup;
-
+            foreach (MessageModel messageModel in CurrentChatGroup.CurrentChatGroupModel.Messages)
+            {
                 Application.Current.Dispatcher.Invoke(() =>
                 {
-                    CurrentChatGroup.MessagesViewModel.Clear();
-                });
-
-                foreach (MessageModel messageModel in CurrentChatGroup.CurrentChatGroupModel.Messages)
-                {
-                    Application.Current.Dispatcher.Invoke(() =>
-                    {
-                        CurrentChatGroup.MessagesViewModel.Add(new MessageViewModel(messageModel));
-                    });
-                }
-
-                Group bannedGroup = Groups.FirstOrDefault(g => g.Name.Equals(nameof(UserGroups.Banned)));
-                bannedGroup.GroupedUsers = new ObservableCollection<UserModel>(CurrentChatGroup.CurrentChatGroupModel.Users
-                        .Where(u => u.UserStatus.BanStatus.IsBanned).ToList());
-
-                bannedGroup.UsersCount = bannedGroup.GroupedUsers.Where(user => user.UserProfile.Username != CurrentUser.UserProfile.Username).Count();
-
-                Group onlineGroup = Groups.FirstOrDefault(g => g.Name.Equals(nameof(UserGroups.Online)));
-                onlineGroup.GroupedUsers = new ObservableCollection<UserModel>(CurrentChatGroup.CurrentChatGroupModel.Users
-                        .Where(u => u.UserProfile.IsOnline).Except(bannedGroup.GroupedUsers).ToList());
-
-                onlineGroup.UsersCount = onlineGroup.GroupedUsers.Where(user => user.UserProfile.Username != CurrentUser.UserProfile.Username).Count();
-
-                Group offlineGroup = Groups.FirstOrDefault(g => g.Name.Equals(nameof(UserGroups.Offline)));
-                offlineGroup.GroupedUsers = new ObservableCollection<UserModel>(CurrentChatGroup.CurrentChatGroupModel.Users
-                        .Except(bannedGroup.GroupedUsers).Except(onlineGroup.GroupedUsers).ToList());
-
-                offlineGroup.UsersCount = offlineGroup.GroupedUsers.Where(user => user.UserProfile.Username != CurrentUser.UserProfile.Username).Count();
-
-                Application.Current.Dispatcher.Invoke(() =>
-                {
-                    UsersCollectionView.Refresh();
+                    CurrentChatGroup.MessagesViewModel.Add(new MessageViewModel(messageModel));
                 });
             }
+
+            Group bannedGroup = Groups.FirstOrDefault(g => g.Name.Equals(nameof(UserGroups.Banned)));
+            bannedGroup.GroupedUsers = new ObservableCollection<UserModel>(CurrentChatGroup.CurrentChatGroupModel.Users
+                    .Where(u => u.UserStatus.BanStatus.IsBanned).ToList());
+
+            bannedGroup.UsersCount = bannedGroup.GroupedUsers.Where(user => user.UserProfile.Username != CurrentUser.UserProfile.Username).Count();
+
+            Group onlineGroup = Groups.FirstOrDefault(g => g.Name.Equals(nameof(UserGroups.Online)));
+            onlineGroup.GroupedUsers = new ObservableCollection<UserModel>(CurrentChatGroup.CurrentChatGroupModel.Users
+                    .Where(u => u.UserProfile.IsOnline).Except(bannedGroup.GroupedUsers).ToList());
+
+            onlineGroup.UsersCount = onlineGroup.GroupedUsers.Where(user => user.UserProfile.Username != CurrentUser.UserProfile.Username).Count();
+
+            Group offlineGroup = Groups.FirstOrDefault(g => g.Name.Equals(nameof(UserGroups.Offline)));
+            offlineGroup.GroupedUsers = new ObservableCollection<UserModel>(CurrentChatGroup.CurrentChatGroupModel.Users
+                    .Except(bannedGroup.GroupedUsers).Except(onlineGroup.GroupedUsers).ToList());
+
+            offlineGroup.UsersCount = offlineGroup.GroupedUsers.Where(user => user.UserProfile.Username != CurrentUser.UserProfile.Username).Count();
+
+            Application.Current.Dispatcher.Invoke(() =>
+            {
+                UsersCollectionView.Refresh();
+            });
         }
 
         private void ChatService_UserListReceived(ObservableCollection<UserModel>/*List<UserModel>*/ allUsers)
