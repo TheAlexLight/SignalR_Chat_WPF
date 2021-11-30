@@ -58,11 +58,17 @@ namespace ChatClient.ViewModels
             }
         }
 
-        private MessageInformationModel _message;
+        #region Private Fields
         private string _usersFilter;
         private string _usernameSettingsText;
         private string _emailSettingsText;
+        private string _resetScroll;
+        private string _password;
+        private string _passwordConfirm;
+        private string _descriptionText;
         //private ObservableCollection<MessageModel> _messages;
+
+        private MessageInformationModel _message;
         private ObservableCollection<UserModel> _allUsers;
         private ObservableCollection<Group> _groups;
         private UserModel _currentUser; 
@@ -70,27 +76,26 @@ namespace ChatClient.ViewModels
         private MuteStatusModel _muteStatus;
         private ChatGroupViewModel _currentChatGroup;
         private UserModel _temporarySelectedItem = null;
+
         private object _selectedItem;
+
         private int _selectedUserIndex;
+
         private bool _isUserInfoOpened;
         private bool _isSettingsOpened;
         private bool _needToClearPassword;
         private bool _needToUpdateMessagesCount;
         private bool _canCloseChat;
-        private string _resetScroll;
-        private string _password;
-        private string _passwordConfirm;
-        private string _descriptionText;
+
         private BitmapImage _descriptionImage;
         private GridLength _usersColumnWidth;
         private GridLength _messagesColumnWidth;
 
         private ChatType _currentChatType;
         private ChangeSettingsType _userSettingsType;
+        #endregion
 
-        public ICollectionView UsersCollectionView { get; set; }
-        public ICollectionView FilterUsersCollectionView { get; set; }
-
+        #region Commands
         public ICommand SendChatMessageCommand { get; private set; }
         public ICommand RemoveToolBarOverflowCommand { get; private set; }
         public ICommand KickUserCommand { get; private set; }
@@ -108,8 +113,10 @@ namespace ChatClient.ViewModels
         public ICommand ChangePasswordCommand { get; private set; }
         public ICommand ChangeUserSettingsCommand { get; private set; }
         //public ICommand SendImageCommand { get; private set; }
+        #endregion
 
-
+        public ICollectionView UsersCollectionView { get; set; }
+        public ICollectionView FilterUsersCollectionView { get; set; }
 
         public static readonly DependencyProperty TimeDurationProperty = DependencyProperty.RegisterAttached("DurationTime"
                 , typeof(string), typeof(ChatViewModel), new PropertyMetadata(null));
@@ -153,7 +160,6 @@ namespace ChatClient.ViewModels
             MessagesColumnWidth = new GridLength(2.5, GridUnitType.Star);
 
             CreateGroups();
-
 
             UsersCollectionView = CollectionViewSource.GetDefaultView(Groups);
             UsersCollectionView.GroupDescriptions.Add(new PropertyGroupDescription(nameof(Group.Name)));

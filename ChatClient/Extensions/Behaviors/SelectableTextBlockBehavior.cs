@@ -58,7 +58,6 @@ namespace ChatClient.Extensions.Behaviors
             _endSelectPosition = textBlock.GetPositionFromPoint(emptyPoint, true);
 
             TextRange fullText = new TextRange(textBlock.ContentStart, textBlock.ContentEnd);
-            fullText.ApplyPropertyValue(TextElement.ForegroundProperty, textBlock.Foreground);
             fullText.ApplyPropertyValue(TextElement.BackgroundProperty, textBlock.Background);
             e.Handled = true;
 

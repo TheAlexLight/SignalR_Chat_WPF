@@ -20,6 +20,7 @@ using System.IO;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
 using ChatServer.Enums;
+using Microsoft.AspNetCore.Hosting;
 
 namespace ChatServer.Hubs
 {
@@ -28,18 +29,20 @@ namespace ChatServer.Hubs
         private readonly UserManager<User> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly ApplicationContext _dbContext;
+        private readonly IWebHostEnvironment _webHostEnvironment;
         private readonly AccountController _account;
         private readonly RoleController _roleController;
         private readonly AuthorizationHelper _authorizationHelper;
         private readonly GroupsHelper _groupsHelper;
 
-        public ChatHub(UserManager<User> userManager, RoleManager<IdentityRole> roleManager, ApplicationContext dbContext)
+        public ChatHub(UserManager<User> userManager, RoleManager<IdentityRole> roleManager, ApplicationContext dbContext
+            , IWebHostEnvironment webHostEnvironment)
         {
             _userManager = userManager;
             _roleManager = roleManager;
             _dbContext = dbContext;
-
-            _account = new AccountController(_userManager, _dbContext);
+            _webHostEnvironment = webHostEnvironment;
+            _account = new AccountController(_userManager, _dbContext, _webHostEnvironment);
             _roleController = new RoleController(_roleManager, _userManager);
             _authorizationHelper = new();
             _groupsHelper = new();
@@ -129,7 +132,6 @@ namespace ChatServer.Hubs
         private async Task SendPublicGroup()
         {
             ChatGroupModel group = _dbContext.Groups
-                .Include(g => g.Users)
                 .FirstOrDefault(g => g.Name == ChatType.Public);
 
             if (group == null)
@@ -159,7 +161,12 @@ namespace ChatServer.Hubs
 
             await _dbContext.SaveChangesAsync();
 
-           // await UpdateChat(userHandler);
+            await UpdateChat(userHandler);
+
+            ChatGroupModel group = _dbContext.Groups
+               .FirstOrDefault(g => g.Name == ChatType.Public);
+
+            await Clients.All.SendAsync("ReceiveCurrentGroup", group);
         }
 
         public async Task SendSwitchChat(ChatType chatType)
@@ -484,12 +491,12 @@ namespace ChatServer.Hubs
 
         public override Task OnConnectedAsync()
         {
-            UserHandler user = new()
+            UserHandler userHandler = new()
             {
                 ConnectedIds = Context.ConnectionId
             };
 
-            Account.Users.Add(user);
+            Account.Users.Add(userHandler);
 
             return base.OnConnectedAsync();
         }

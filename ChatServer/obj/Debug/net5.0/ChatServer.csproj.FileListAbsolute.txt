@@ -152,3 +152,4 @@ C:\Users\oyudi\Alexander\Programming\SignalR_Chat_WPF\ChatServer\obj\Debug\net5.
 C:\Users\oyudi\Alexander\Programming\SignalR_Chat_WPF\ChatServer\obj\Debug\net5.0\ref\ChatServer.dll
 C:\Users\oyudi\Alexander\Programming\SignalR_Chat_WPF\ChatServer\obj\Debug\net5.0\ChatServer.pdb
 C:\Users\oyudi\Alexander\Programming\SignalR_Chat_WPF\ChatServer\obj\Debug\net5.0\ChatServer.genruntimeconfig.cache
+C:\Users\oyudi\Alexander\Programming\SignalR_Chat_WPF\ChatServer\bin\Debug\net5.0\wwwroot\images\defaultUser.png

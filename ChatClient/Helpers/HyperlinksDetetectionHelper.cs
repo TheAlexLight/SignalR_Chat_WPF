@@ -8,6 +8,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Net.Http;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
@@ -108,21 +109,26 @@ namespace ChatClient.Helpers
         {
             Hyperlink link = SetLinkAddress(lastRegex);
 
-            if (link.NavigateUri != null)
-            {
-               // _webPageSource = null;
+                // _webPageSource = null;
 
-                _myRequest = WebRequest.CreateHttp(link.NavigateUri.ToString());
-                _myRequest.Method = "GET";
-                _myRequest.BeginGetResponse(GetResponseCallback, _myRequest);
+               // WebClient client = new WebClient();
 
-                _isFrameLoaded = false;
+               //var a = client.OpenReadAsync(link.NavigateUri);
 
-                while (!_isFrameLoaded)
-                {
-                    await Task.Delay(25);
-                }
-            }
+                HttpClient httpClient = new HttpClient();
+
+                _responseString = await httpClient.GetStringAsync(link.NavigateUri);
+
+                //_myRequest = WebRequest.CreateHttp(link.NavigateUri.ToString());
+                //_myRequest.Method = "GET";
+                //_myRequest.BeginGetResponse(GetResponseCallback, _myRequest);
+
+                //_isFrameLoaded = false;
+
+                //while (!_isFrameLoaded)
+                //{
+                //    await Task.Delay(25);
+                //}
 
             HyperlinkDescriptionModel hyperlinkDescription = new HyperlinkDescriptionModel();
 
@@ -134,26 +140,28 @@ namespace ChatClient.Helpers
             return hyperlinkDescription;
         }
 
-        private static void GetResponseCallback(IAsyncResult asynchronousResult)
-        {
-            try
-            {
-                WebResponse resp = _myRequest.EndGetResponse(asynchronousResult);
-                HttpWebResponse response = (HttpWebResponse)resp;
-                Stream streamResponse = response.GetResponseStream();
-                StreamReader streamRead = new StreamReader(streamResponse);
-                _responseString = streamRead.ReadToEnd();
-                
-                // Close the stream object
-                streamResponse.Close();
-                streamRead.Close();
-                // Release the HttpWebResponse
-                response.Close();
+        //private static void GetResponseCallback(IAsyncResult asynchronousResult)
+        //{
+        //    try
+        //    {
+        //        WebResponse resp = _myRequest.EndGetResponse(asynchronousResult);
+        //        HttpWebResponse response = (HttpWebResponse)resp;
+        //        Stream streamResponse = response.GetResponseStream();
+        //        StreamReader streamRead = new StreamReader(streamResponse);
+        //        _responseString = streamRead.ReadToEnd();
 
-                _isFrameLoaded=true;
-            }
-            catch (Exception ex) { }
-        }
+        //        // Close the stream object
+        //        streamResponse.Close();
+        //        streamRead.Close();
+        //        // Release the HttpWebResponse
+        //        response.Close();
+
+        //        _isFrameLoaded = true;
+        //    }
+        //    catch (Exception ex) { }
+        //}
+        
+
         private static HyperlinkDescriptionModel ReadWebSource(string webPageSource)
         {
             const string PAGE_TITLE_START_KEY = "og:site_name\" content=\"";

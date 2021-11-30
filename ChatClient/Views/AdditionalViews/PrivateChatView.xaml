@@ -36,7 +36,8 @@
                 <TextBox Style="{StaticResource adornerTextBox}"
                          Background="#CFC5E3"
                         Text="{Binding UsersFilter,UpdateSourceTrigger=PropertyChanged}"
-                         VerticalContentAlignment="Center">
+                         VerticalContentAlignment="Center"
+                         AcceptsReturn="True">
                     <controls:WatermarkService.Watermark>
                         <TextBlock Style="{StaticResource adornerTextBlock}"
                                    Margin="5">

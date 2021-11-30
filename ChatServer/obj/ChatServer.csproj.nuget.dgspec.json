@@ -56,6 +56,10 @@
               "target": "Package",
               "version": "[5.0.10, )"
             },
+            "Microsoft.AspNetCore.StaticFiles": {
+              "target": "Package",
+              "version": "[2.2.0, )"
+            },
             "Microsoft.EntityFrameworkCore.Proxies": {
               "target": "Package",
               "version": "[5.0.10, )"

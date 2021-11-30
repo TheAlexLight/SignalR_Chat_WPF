@@ -139,7 +139,8 @@
                      Text="{Binding Message.TextMessage}"
                              Height="Auto"
                              MaxHeight="115"
-                             TextWrapping="Wrap">
+                             TextWrapping="Wrap"
+                             AcceptsReturn="True">
                         <controls:WatermarkService.Watermark>
                             <TextBlock Style="{StaticResource adornerTextBlock}">
                                 Write a message

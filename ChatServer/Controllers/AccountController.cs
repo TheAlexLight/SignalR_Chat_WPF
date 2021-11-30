@@ -1,4 +1,5 @@
 ﻿using ChatServer.Models;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using SharedItems.Models;
 using SharedItems.Models.AuthenticationModels;
@@ -15,11 +16,14 @@ namespace ChatServer.Controllers
     {
         private readonly UserManager<User> _userManager;
         private readonly ApplicationContext _dbContext;
+        private readonly IWebHostEnvironment _webHostEnvironment;
 
-        public AccountController(UserManager<User> userManager, ApplicationContext dbContext)
+        public AccountController(UserManager<User> userManager, ApplicationContext dbContext
+            , IWebHostEnvironment webHostEnvironment)
         {
             _userManager = userManager;
             _dbContext = dbContext;
+            _webHostEnvironment = webHostEnvironment;
         }
 
         public async Task<IdentityResult> Register(UserRegistrationModel model)
@@ -30,12 +34,11 @@ namespace ChatServer.Controllers
 
             if (result.Succeeded)
             {
-                User createdUser = await _userManager.FindByNameAsync(model.Username);
+               User createdUser = await _userManager.FindByNameAsync(model.Username);
 
                await AddUserModelIds(createdUser);
                await AddUserStatuslIds(createdUser);
                await AddUserProfileIds(createdUser);
-               //await AddMessageseIds(createdUser);
             }
 
             return result;
@@ -77,26 +80,21 @@ namespace ChatServer.Controllers
 
         private async Task AddUserProfileIds(User createdUser)
         {
+            var currentProgramPath = Environment.CurrentDirectory;
+            string staticFilesFolderPath = $"{currentProgramPath}\\wwwroot"; //string.Format("{0}\\\\wwwroot}",g);//_webHostEnvironment.WebRootPath;
+
+            string defaultImagePath = string.Format("{0}\\Images\\defaultUser.png",staticFilesFolderPath);
+
             _dbContext.UserProfiles.Add(new UserProfileModel()
             {
                 Username = createdUser.UserName,
                 Email = createdUser.Email,
                 UserModelId = createdUser.UserModel.Id,
-                Image = File.ReadAllBytes("Resources/Default/defaultUser.png")
+                Image = File.ReadAllBytes(defaultImagePath)
         });
 
             await _dbContext.SaveChangesAsync();
         }
-
-        //private async Task AddMessageseIds(User createdUser)
-        //{
-        //    _dbContext.Messages.Add(new MessageModel()
-        //    {
-        //        UserModelId = createdUser.UserModel.Id
-        //    });
-
-        //    await _dbContext.SaveChangesAsync();
-        //}
 
         public async Task<bool> Login(UserLoginModel model)
         {
