@@ -26,6 +26,31 @@ namespace ChatClient.Extensions
         //public static readonly DependencyProperty MessageCollectionProperty;
         //public static readonly DependencyProperty ResetScrollPositionProperty;
 
+        public static readonly RoutedEvent ScrollDownEvent = EventManager.RegisterRoutedEvent(
+       "ScrollDown", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(ScrollViewerExtension));
+
+        public event RoutedEventHandler ScrollDown
+        {
+            add { AddHandler(ScrollDownEvent, value); }
+            remove { RemoveHandler(ScrollDownEvent, value); }
+        }
+
+        public ScrollViewerExtension()
+        {
+            ScrollDown += ScrollViewerExtension_ScrollDown;
+        }
+
+        private void ScrollViewerExtension_ScrollDown(object sender, RoutedEventArgs e)
+        {
+            this.ScrollToEnd();
+        }
+
+        public virtual void RaiseScrollDownEvent()
+        {
+            RoutedEventArgs args = new RoutedEventArgs(ScrollDownEvent);
+            RaiseEvent(args);
+        }
+
         static ScrollViewerExtension()
         {
             //MessageCollectionProperty = DependencyProperty.Register(nameof(MessageCollection)
@@ -81,6 +106,7 @@ namespace ChatClient.Extensions
         ////    ScrollToVerticalOffset(messagesHeightCount - ViewportHeight);
         ////    _messagesHandled = true;
         ////}
+        ///
 
         protected override void OnScrollChanged(ScrollChangedEventArgs e)
         {

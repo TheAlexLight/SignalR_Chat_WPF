@@ -1,4 +1,5 @@
 ﻿using CefSharp.Wpf;
+using ChatClient.Extensions;
 using ChatClient.Helpers;
 using ChatClient.Interfaces;
 using ChatClient.Services;
@@ -13,6 +14,7 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Documents;
 using System.Windows.Input;
 
@@ -107,6 +109,10 @@ namespace ChatClient.Commands
                     {
                         await _chatService.SendMessage(model, _viewModel.CurrentChatGroup.CurrentChatGroupModel, null, _viewModel.CurrentUser);
                     }
+
+                    var scrollViewerExtension = UIHelper.FindChild<ScrollViewerExtension>(Application.Current.MainWindow, "scroll");
+
+                    scrollViewerExtension.RaiseScrollDownEvent();
 
                     _viewModel.ErrorMessage = string.Empty; 
                 }

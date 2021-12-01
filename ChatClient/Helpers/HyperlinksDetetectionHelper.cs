@@ -109,28 +109,11 @@ namespace ChatClient.Helpers
         {
             Hyperlink link = SetLinkAddress(lastRegex);
 
-                // _webPageSource = null;
+            HttpClient httpClient = new();
 
-               // WebClient client = new WebClient();
+            _responseString = await httpClient.GetStringAsync(link.NavigateUri);
 
-               //var a = client.OpenReadAsync(link.NavigateUri);
-
-                HttpClient httpClient = new HttpClient();
-
-                _responseString = await httpClient.GetStringAsync(link.NavigateUri);
-
-                //_myRequest = WebRequest.CreateHttp(link.NavigateUri.ToString());
-                //_myRequest.Method = "GET";
-                //_myRequest.BeginGetResponse(GetResponseCallback, _myRequest);
-
-                //_isFrameLoaded = false;
-
-                //while (!_isFrameLoaded)
-                //{
-                //    await Task.Delay(25);
-                //}
-
-            HyperlinkDescriptionModel hyperlinkDescription = new HyperlinkDescriptionModel();
+            HyperlinkDescriptionModel hyperlinkDescription = new();
 
             if (_responseString != null)
             {
@@ -139,29 +122,6 @@ namespace ChatClient.Helpers
 
             return hyperlinkDescription;
         }
-
-        //private static void GetResponseCallback(IAsyncResult asynchronousResult)
-        //{
-        //    try
-        //    {
-        //        WebResponse resp = _myRequest.EndGetResponse(asynchronousResult);
-        //        HttpWebResponse response = (HttpWebResponse)resp;
-        //        Stream streamResponse = response.GetResponseStream();
-        //        StreamReader streamRead = new StreamReader(streamResponse);
-        //        _responseString = streamRead.ReadToEnd();
-
-        //        // Close the stream object
-        //        streamResponse.Close();
-        //        streamRead.Close();
-        //        // Release the HttpWebResponse
-        //        response.Close();
-
-        //        _isFrameLoaded = true;
-        //    }
-        //    catch (Exception ex) { }
-        //}
-        
-
         private static HyperlinkDescriptionModel ReadWebSource(string webPageSource)
         {
             const string PAGE_TITLE_START_KEY = "og:site_name\" content=\"";
@@ -198,7 +158,7 @@ namespace ChatClient.Helpers
                 }
                 catch (Exception)
                 {
-                    //Do something
+                    Trace.WriteLine("File can't be deleted");
                 }
             }
 
@@ -218,7 +178,7 @@ namespace ChatClient.Helpers
                    .Substring(pageTagDescriptionIndex)
                    .Replace(tagName, "");
 
-           string pageTagDescription = pageTagDescriptionStart.Substring(0, pageTagDescriptionStart.IndexOf("\">"));
+            string pageTagDescription = pageTagDescriptionStart.Substring(0, pageTagDescriptionStart.IndexOf("\">"));
 
             return pageTagDescription;
         }
@@ -262,7 +222,7 @@ namespace ChatClient.Helpers
         private static void OnUrlClick(object sender, RoutedEventArgs e)
         {
             Hyperlink link = (Hyperlink)sender;
-                
+
             Process.Start(new ProcessStartInfo(link.NavigateUri.AbsoluteUri)
             {
                 UseShellExecute = true
