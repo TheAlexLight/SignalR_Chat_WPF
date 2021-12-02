@@ -1,5 +1,6 @@
 ﻿using ChatClient.Enums;
 using ChatClient.Interfaces;
+using ChatClient.Interfaces.BaseConfiguration;
 using MessagePack;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.SignalR.Client;
@@ -19,7 +20,7 @@ using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 
-namespace ChatClient.Services
+namespace ChatClient.Services.ConcreteConfiguration
 {
     public class SignalRChatService : ISignalRChatService
     {

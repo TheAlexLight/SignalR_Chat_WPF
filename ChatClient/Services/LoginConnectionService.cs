@@ -1,7 +1,7 @@
 ﻿using ChatClient.Enums;
-using ChatClient.Interfaces;
-using ChatClient.Stores;
-using ChatClient.ViewModels;
+using ChatClient.Interfaces.BaseConfiguration;
+using ChatClient.MVVM.ViewModels.BaseViewModels;
+
 using System;
 using System.Collections.Generic;
 using System.Linq;

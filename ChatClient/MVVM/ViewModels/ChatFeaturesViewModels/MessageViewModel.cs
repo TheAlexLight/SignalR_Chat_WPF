@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media.Imaging;
 
-namespace ChatClient.ViewModels
+namespace ChatClient.MVVM.ViewModels.ChatFeaturesModels
 {
     public class MessageViewModel : ViewModelBase
     {

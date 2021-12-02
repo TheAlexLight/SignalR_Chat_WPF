@@ -10,7 +10,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ChatClient.Interfaces
+namespace ChatClient.Interfaces.BaseConfiguration
 {
     public interface ISignalRChatService : ISignalRService
     {

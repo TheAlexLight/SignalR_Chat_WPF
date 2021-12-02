@@ -1,6 +1,4 @@
-﻿using ChatClient.Helpers;
-using ChatClient.ViewModels;
-using Microsoft.Win32;
+﻿using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -11,6 +9,9 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media.Imaging;
+
+using ChatClient.MVVM.ViewModels.ChatMainViewModels;
+using ChatClient.Supplements.Helpers;
 
 namespace ChatClient.Commands
 {

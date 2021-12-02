@@ -1,10 +1,12 @@
-﻿using ChatClient.Enums;
-using ChatClient.Interfaces;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+
+using ChatClient.Enums;
+using ChatClient.Interfaces.BaseConfiguration;
+using ChatClient.Interfaces.Factories;
 
 namespace ChatClient.Commands.NavigationCommands
 {

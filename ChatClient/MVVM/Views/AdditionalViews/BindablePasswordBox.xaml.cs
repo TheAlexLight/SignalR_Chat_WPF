@@ -13,7 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace ChatClient.Views.AdditionalViews
+namespace ChatClient.MVVM.Views.AdditionalViews
 {
     /// <summary>
     /// Interaction logic for BindablePasswordBox.xaml

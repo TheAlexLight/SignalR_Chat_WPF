@@ -10,7 +10,7 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 
-namespace ChatClient.Extensions.Behaviors
+namespace ChatClient.Supplements.Extensions.Behaviors
 {
     public class SelectableTextBlockBehavior : Behavior<TextBlock>
     {

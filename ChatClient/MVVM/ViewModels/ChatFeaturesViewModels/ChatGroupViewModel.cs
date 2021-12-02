@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ChatClient.ViewModels
+namespace ChatClient.MVVM.ViewModels.ChatFeaturesModels
 {
     public class ChatGroupViewModel : ViewModelBase
     {

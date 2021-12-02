@@ -78,6 +78,7 @@ C:\Users\oyudi\Alexander\Programming\WPF\Chat\ChatServer\bin\Debug\net5.0\System
 C:\Users\oyudi\Alexander\Programming\SignalR_Chat_WPF\ChatServer\bin\Debug\net5.0\appsettings.Development.json
 C:\Users\oyudi\Alexander\Programming\SignalR_Chat_WPF\ChatServer\bin\Debug\net5.0\appsettings.json
 C:\Users\oyudi\Alexander\Programming\SignalR_Chat_WPF\ChatServer\bin\Debug\net5.0\ChatServer.StaticWebAssets.xml
+C:\Users\oyudi\Alexander\Programming\SignalR_Chat_WPF\ChatServer\bin\Debug\net5.0\wwwroot\images\defaultUser.png
 C:\Users\oyudi\Alexander\Programming\SignalR_Chat_WPF\ChatServer\bin\Debug\net5.0\ChatServer.exe
 C:\Users\oyudi\Alexander\Programming\SignalR_Chat_WPF\ChatServer\bin\Debug\net5.0\ChatServer.deps.json
 C:\Users\oyudi\Alexander\Programming\SignalR_Chat_WPF\ChatServer\bin\Debug\net5.0\ChatServer.runtimeconfig.json
@@ -152,4 +153,3 @@ C:\Users\oyudi\Alexander\Programming\SignalR_Chat_WPF\ChatServer\obj\Debug\net5.
 C:\Users\oyudi\Alexander\Programming\SignalR_Chat_WPF\ChatServer\obj\Debug\net5.0\ref\ChatServer.dll
 C:\Users\oyudi\Alexander\Programming\SignalR_Chat_WPF\ChatServer\obj\Debug\net5.0\ChatServer.pdb
 C:\Users\oyudi\Alexander\Programming\SignalR_Chat_WPF\ChatServer\obj\Debug\net5.0\ChatServer.genruntimeconfig.cache
-C:\Users\oyudi\Alexander\Programming\SignalR_Chat_WPF\ChatServer\bin\Debug\net5.0\wwwroot\images\defaultUser.png

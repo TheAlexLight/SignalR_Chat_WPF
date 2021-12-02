@@ -1,13 +1,4 @@
-﻿using CefSharp.Wpf;
-using ChatClient.Extensions;
-using ChatClient.Helpers;
-using ChatClient.Interfaces;
-using ChatClient.Services;
-using ChatClient.ViewModels;
-using SharedItems.Enums;
-using SharedItems.Models;
-using SharedItems.ViewModels;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -17,6 +8,12 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Documents;
 using System.Windows.Input;
+using ChatClient.Interfaces.BaseConfiguration;
+using ChatClient.MVVM.ViewModels.ChatMainViewModels;
+using ChatClient.Supplements.Extensions;
+using ChatClient.Supplements.Helpers;
+using SharedItems.Enums;
+using SharedItems.Models;
 
 namespace ChatClient.Commands
 {

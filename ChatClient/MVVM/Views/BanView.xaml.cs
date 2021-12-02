@@ -13,7 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace ChatClient.Views
+namespace ChatClient.MVVM.Views
 {
     /// <summary>
     /// Interaction logic for BanView.xaml

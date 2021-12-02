@@ -1,4 +1,5 @@
 ﻿using ChatClient.Interfaces;
+using ChatClient.Interfaces.BaseConfiguration;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,5 +20,7 @@ namespace ChatClient.Services.BaseConfiguration
         public INavigator Navigator { get; }
         public ISignalRChatService ChatService { get; }
         public IWindowConfigurationService WindowConfigurationService { get; }
+        //public INavigationService NavigationService { get; }
+
     }
 }

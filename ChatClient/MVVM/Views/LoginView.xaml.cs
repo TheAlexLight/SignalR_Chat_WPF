@@ -1,7 +1,7 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
 
-namespace ChatClient.Views
+namespace ChatClient.MVVM.Views
 {
     /// <summary>
     /// Interaction logic for LoginPage.xaml

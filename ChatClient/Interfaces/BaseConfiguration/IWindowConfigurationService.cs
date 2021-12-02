@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 
-namespace ChatClient.Interfaces
+namespace ChatClient.Interfaces.BaseConfiguration
 {
     public interface IWindowConfigurationService
     {

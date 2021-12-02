@@ -1,12 +1,11 @@
-﻿using ChatClient.Services;
-using ChatClient.ViewModels;
-using SharedItems.Models;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using ChatClient.MVVM.ViewModels.ChatMainViewModels;
+using SharedItems.Models;
 
 namespace ChatClient.Commands.ToolBarCommands
 {

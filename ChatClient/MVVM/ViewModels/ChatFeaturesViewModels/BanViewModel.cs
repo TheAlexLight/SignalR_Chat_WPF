@@ -1,8 +1,9 @@
 ﻿using ChatClient.Commands.AuthenticationCommands;
-using ChatClient.Interfaces;
+using ChatClient.MVVM.ViewModels.BaseViewModels;
 using ChatClient.Services.BaseConfiguration;
 using SharedItems.Models;
 using SharedItems.Models.StatusModels;
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,7 +12,7 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using System.Windows.Threading;
 
-namespace ChatClient.ViewModels
+namespace ChatClient.MVVM.ViewModels.ChatFeaturesModels
 {
     public class BanViewModel : ChatViewModelBase
     {

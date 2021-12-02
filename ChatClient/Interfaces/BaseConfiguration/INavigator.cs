@@ -1,12 +1,12 @@
-﻿using ChatClient.ViewModels;
-using SharedItems.ViewModels;
+﻿using SharedItems.ViewModels;
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ChatClient.Interfaces
+namespace ChatClient.Interfaces.BaseConfiguration
 {
     public interface INavigator
     {

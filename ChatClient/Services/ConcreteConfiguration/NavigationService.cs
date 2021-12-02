@@ -1,14 +1,13 @@
-﻿using ChatClient.Interfaces;
-using ChatClient.Stores;
-using ChatClient.ViewModels;
+﻿using ChatClient.Interfaces.BaseConfiguration;
 using SharedItems.ViewModels;
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ChatClient.Services
+namespace ChatClient.Services.ConcreteConfiguration
 {
     public class NavigationService<TViewModel>
         where TViewModel : ViewModelBase

@@ -1,11 +1,12 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:converters="clr-namespace:ChatClient.Converters"
-                    xmlns:extensions="clr-namespace:ChatClient.Extensions"
-                    xmlns:helpers="clr-namespace:ChatClient.Helpers"
-                    xmlns:viewmodels="clr-namespace:ChatClient.ViewModels"
+                    xmlns:extensions="clr-namespace:ChatClient.Supplements.Extensions"
+                    xmlns:helpers="clr-namespace:ChatClient.Supplements.Helpers"
+                    xmlns:viewmodels="clr-namespace:ChatClient.MVVM.ViewModels"
+                    xmlns:mainViewModels="clr-namespace:ChatClient.MVVM.ViewModels.ChatMainViewModels"
                     xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
-                    xmlns:behaviors="clr-namespace:ChatClient.Extensions.Behaviors">
+                    xmlns:behaviors="clr-namespace:ChatClient.Supplements.Extensions.Behaviors">
 
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="pack://application:,,,/ChatClient;component/Resources/Images/Mute.xaml"/>
@@ -111,20 +112,20 @@
                                             </MenuItem.Header>
                                             <MenuItem Header="Ban" Style="{StaticResource banMenuItem}">
                                                 <MenuItem Header="10 min" 
-                                                              viewmodels:ChatViewModel.DurationTime="10"
+                                                              mainViewModels:ChatViewModel.DurationTime="10"
                                                               Style="{StaticResource banMenuItem}">
                                                 </MenuItem>
                                                 <MenuItem Header="20 min" 
-                                                              viewmodels:ChatViewModel.DurationTime="20"
+                                                              mainViewModels:ChatViewModel.DurationTime="20"
                                                               Style="{StaticResource banMenuItem}"/>
                                                 <MenuItem Header="30 min" 
-                                                              viewmodels:ChatViewModel.DurationTime="30"
+                                                              mainViewModels:ChatViewModel.DurationTime="30"
                                                               Style="{StaticResource banMenuItem}"/>
                                                 <MenuItem Header="60 min" 
-                                                              viewmodels:ChatViewModel.DurationTime="60"
+                                                              mainViewModels:ChatViewModel.DurationTime="60"
                                                               Style="{StaticResource banMenuItem}"/>
                                                 <MenuItem Header="Permanent"
-                                                              viewmodels:ChatViewModel.DurationTime="Permanent"
+                                                              mainViewModels:ChatViewModel.DurationTime="Permanent"
                                                               Style="{StaticResource banMenuItem}"/>
                                             </MenuItem>
                                             <MenuItem Style="{StaticResource baseMenuItem}"
@@ -133,20 +134,20 @@
                                                       CommandParameter="{Binding ElementName=menu, Path=DataContext}"/>
                                             <MenuItem Header="Mute" Style="{StaticResource muteMenuItem}">
                                                 <MenuItem Header="10 min" 
-                                                          viewmodels:ChatViewModel.DurationTime="10"
+                                                          mainViewModels:ChatViewModel.DurationTime="10"
                                                           Style="{StaticResource muteMenuItem}">
                                                 </MenuItem>
                                                 <MenuItem Header="20 min" 
-                                                          viewmodels:ChatViewModel.DurationTime="20"
+                                                          mainViewModels:ChatViewModel.DurationTime="20"
                                                           Style="{StaticResource muteMenuItem}"/>
                                                 <MenuItem Header="30 min" 
-                                                          viewmodels:ChatViewModel.DurationTime="30"
+                                                          mainViewModels:ChatViewModel.DurationTime="30"
                                                           Style="{StaticResource muteMenuItem}"/>
                                                 <MenuItem Header="60 min" 
-                                                          viewmodels:ChatViewModel.DurationTime="60"
+                                                          mainViewModels:ChatViewModel.DurationTime="60"
                                                           Style="{StaticResource banMenuItem}"/>
                                                 <MenuItem Header="Permanent"
-                                                          viewmodels:ChatViewModel.DurationTime="Permanent"
+                                                          mainViewModels:ChatViewModel.DurationTime="Permanent"
                                                           Style="{StaticResource banMenuItem}"/>
                                             </MenuItem>
                                         </MenuItem>

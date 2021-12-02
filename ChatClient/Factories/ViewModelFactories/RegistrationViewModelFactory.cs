@@ -1,6 +1,8 @@
 ﻿using ChatClient.Interfaces;
+using ChatClient.Interfaces.Factories;
+using ChatClient.MVVM.ViewModels.ChatMainViewModels;
 using ChatClient.Services.BaseConfiguration;
-using ChatClient.ViewModels;
+
 using System;
 using System.Collections.Generic;
 using System.Linq;

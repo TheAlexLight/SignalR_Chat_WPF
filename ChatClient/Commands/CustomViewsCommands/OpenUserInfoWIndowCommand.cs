@@ -1,5 +1,6 @@
-﻿using ChatClient.ViewModels;
+﻿using ChatClient.MVVM.ViewModels.ChatMainViewModels;
 using SharedItems.Models;
+
 using System;
 using System.Collections.Generic;
 using System.Linq;

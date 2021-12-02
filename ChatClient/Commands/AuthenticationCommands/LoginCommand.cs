@@ -1,6 +1,5 @@
-﻿using ChatClient.Services;
-using ChatClient.Stores;
-using ChatClient.ViewModels;
+﻿using ChatClient.MVVM.ViewModels.ChatMainViewModels;
+using ChatClient.Services;
 using Microsoft.AspNetCore.SignalR.Client;
 using SharedItems.Models;
 using SharedItems.Models.AuthenticationModels;

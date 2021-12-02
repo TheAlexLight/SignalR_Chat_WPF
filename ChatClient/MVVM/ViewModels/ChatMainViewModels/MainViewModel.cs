@@ -1,8 +1,9 @@
 ﻿using ChatClient.Commands.NavigationCommands;
 using ChatClient.Enums;
-using ChatClient.Interfaces;
-using ChatClient.Stores;
+using ChatClient.Interfaces.BaseConfiguration;
+using ChatClient.Interfaces.Factories;
 using SharedItems.ViewModels;
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,7 +11,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 
-namespace ChatClient.ViewModels
+namespace ChatClient.MVVM.ViewModels.ChatMainViewModels
 {
     public class MainViewModel : ViewModelBase
     {

@@ -4,8 +4,10 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ChatClient"
-        xmlns:viewModels="clr-namespace:ChatClient.ViewModels"
-        xmlns:views="clr-namespace:ChatClient.Views"
+        xmlns:viewModels="clr-namespace:ChatClient.MVVM.ViewModels"
+        xmlns:mainViewModel="clr-namespace:ChatClient.MVVM.ViewModels.ChatMainViewModels"
+        xmlns:featuresViewModel="clr-namespace:ChatClient.MVVM.ViewModels.ChatFeaturesModels"
+        xmlns:views="clr-namespace:ChatClient.MVVM.Views"
         mc:Ignorable="d"
         Title="Chat" Height="450" Width="600"  WindowStartupLocation="Manual" Background="#4E535B"
         Loaded="Window_Loaded">
@@ -13,16 +15,16 @@
 
     <ContentControl Content="{Binding CurrentViewModel}">
         <ContentControl.Resources>
-            <DataTemplate DataType="{x:Type viewModels:LoginViewModel}">
+            <DataTemplate DataType="{x:Type mainViewModel:LoginViewModel}">
                 <views:LoginView/>
             </DataTemplate>
-            <DataTemplate DataType="{x:Type viewModels:ChatViewModel}">
+            <DataTemplate DataType="{x:Type mainViewModel:ChatViewModel}">
                 <views:ChatView/>
             </DataTemplate>
-            <DataTemplate DataType="{x:Type viewModels:RegistrationViewModel}">
+            <DataTemplate DataType="{x:Type mainViewModel:RegistrationViewModel}">
                 <views:RegistrationView/>
             </DataTemplate>
-            <DataTemplate DataType="{x:Type viewModels:BanViewModel}">
+            <DataTemplate DataType="{x:Type featuresViewModel:BanViewModel}">
                 <views:BanView/>
             </DataTemplate>
         </ContentControl.Resources>

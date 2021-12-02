@@ -1,11 +1,8 @@
-﻿using ChatClient.Commands;
-using ChatClient.Commands.AuthenticationCommands;
+﻿using ChatClient.Commands.AuthenticationCommands;
 using ChatClient.Commands.NavigatonCommands;
-using ChatClient.Interfaces;
-using ChatClient.Services;
+using ChatClient.MVVM.ViewModels.BaseViewModels;
 using ChatClient.Services.BaseConfiguration;
-using ChatClient.Stores;
-using Microsoft.AspNetCore.Identity;
+using ChatClient.Services.ConcreteConfiguration;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -13,7 +10,7 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Input;
 
-namespace ChatClient.ViewModels
+namespace ChatClient.MVVM.ViewModels.ChatMainViewModels
 {
     public class RegistrationViewModel : ChatViewModelBase, IDataErrorInfo/*, INotifyDataErrorInfo*/
     {

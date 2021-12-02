@@ -1,11 +1,12 @@
-﻿using ChatClient.ViewModels;
-using SharedItems.Enums;
-using SharedItems.Models;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+
+using ChatClient.MVVM.ViewModels.ChatMainViewModels;
+using SharedItems.Enums;
+using SharedItems.Models;
 
 namespace ChatClient.Commands
 {

@@ -1,12 +1,11 @@
-﻿using ChatClient.Services;
-using ChatClient.Stores;
-using ChatClient.ViewModels;
-using SharedItems.ViewModels;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+
+using ChatClient.Services.ConcreteConfiguration;
+using SharedItems.ViewModels;
 
 namespace ChatClient.Commands.NavigatonCommands
 {

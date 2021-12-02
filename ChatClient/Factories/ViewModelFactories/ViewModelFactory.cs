@@ -1,7 +1,8 @@
 ﻿using ChatClient.Enums;
-using ChatClient.Interfaces;
-using ChatClient.ViewModels;
+using ChatClient.Interfaces.Factories;
+using ChatClient.MVVM.ViewModels.ChatMainViewModels;
 using SharedItems.ViewModels;
+
 using System;
 using System.Collections.Generic;
 using System.Linq;

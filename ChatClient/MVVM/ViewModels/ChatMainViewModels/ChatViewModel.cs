@@ -5,16 +5,16 @@ using ChatClient.Commands.ContextMenuCommands;
 using ChatClient.Commands.CustomViewsCommands;
 using ChatClient.Commands.ToolBarCommands;
 using ChatClient.Enums;
-using ChatClient.Extensions;
 using ChatClient.Interfaces;
-using ChatClient.Services;
+using ChatClient.Interfaces.BaseConfiguration;
+using ChatClient.MVVM.ViewModels.BaseViewModels;
+using ChatClient.MVVM.ViewModels.ChatFeaturesModels;
 using ChatClient.Services.BaseConfiguration;
-using ChatClient.Stores;
-using Newtonsoft.Json;
+using ChatClient.Services.ConcreteConfiguration;
 using SharedItems.Enums;
 using SharedItems.Models;
 using SharedItems.Models.StatusModels;
-using SharedItems.ViewModels;
+
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -33,7 +33,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
-namespace ChatClient.ViewModels
+namespace ChatClient.MVVM.ViewModels.ChatMainViewModels
 {
     public class ChatViewModel : ChatViewModelBase, IDataErrorInfo, IFilesDropped
     {

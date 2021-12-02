@@ -1,8 +1,13 @@
 ﻿using ChatClient.Factories.ViewModelFactories;
 using ChatClient.Interfaces;
+using ChatClient.Interfaces.BaseConfiguration;
+using ChatClient.Interfaces.Factories;
+using ChatClient.MVVM.ViewModels.BaseViewModels;
+using ChatClient.MVVM.ViewModels.ChatMainViewModels;
 using ChatClient.Services;
-using ChatClient.Stores;
-using ChatClient.ViewModels;
+using ChatClient.Services.BaseConfiguration;
+using ChatClient.Services.ConcreteConfiguration;
+using ChatClient.Services.Stores;
 using Microsoft.AspNetCore.SignalR.Client;
 using Microsoft.Extensions.DependencyInjection;
 using SharedItems.Models;
@@ -41,6 +46,7 @@ namespace ChatClient
 
             services.AddSingleton<HubConnectionBuilder>();
             services.AddSingleton<WindowConfigurationService>();
+            services.AddSingleton<ChatBaseConfiguration>();
 
             services.AddSingleton<ISignalRChatService, SignalRChatService>();
             services.AddSingleton<IWindowConfigurationService, WindowConfigurationService>();

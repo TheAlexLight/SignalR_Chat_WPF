@@ -1,4 +1,4 @@
-﻿using ChatClient.Interfaces;
+﻿using ChatClient.Interfaces.BaseConfiguration;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 
-namespace ChatClient.Services
+namespace ChatClient.Services.ConcreteConfiguration
 {
     public class WindowConfigurationService : IWindowConfigurationService
     {

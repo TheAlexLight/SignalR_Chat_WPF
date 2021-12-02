@@ -1,6 +1,5 @@
-﻿using ChatClient.ViewModels;
-using Microsoft.Win32;
-using SharedItems.Models;
+﻿using Microsoft.Win32;
+
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -9,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 
-namespace ChatClient.Helpers
+namespace ChatClient.Supplements.Helpers
 {
     public class SelectFileHelper
     {

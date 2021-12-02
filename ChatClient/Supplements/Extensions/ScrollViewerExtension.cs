@@ -11,7 +11,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 
-namespace ChatClient.Extensions
+namespace ChatClient.Supplements.Extensions
 {
     public class ScrollViewerExtension : ScrollViewer
     {

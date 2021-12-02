@@ -1,9 +1,11 @@
 ﻿using ChatClient.Commands.NavigatonCommands;
-using ChatClient.Services;
-using ChatClient.ViewModels;
+using ChatClient.MVVM.ViewModels.BaseViewModels;
+using ChatClient.MVVM.ViewModels.ChatMainViewModels;
+using ChatClient.Services.ConcreteConfiguration;
 using Microsoft.AspNetCore.SignalR.Client;
 using SharedItems.Models;
 using SharedItems.Models.StatusModels;
+
 using System;
 using System.Collections.Generic;
 using System.Linq;

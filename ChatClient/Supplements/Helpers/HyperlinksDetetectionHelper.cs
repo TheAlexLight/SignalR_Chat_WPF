@@ -20,7 +20,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Threading;
 
-namespace ChatClient.Helpers
+namespace ChatClient.Supplements.Helpers
 {
     public class HyperlinksDetetectionHelper
     {

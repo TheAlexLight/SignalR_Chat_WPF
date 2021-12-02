@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 
-namespace ChatClient.Extensions
+namespace ChatClient.Supplements.Extensions
 {
     public class DropFilesBehaviorExtension
     {

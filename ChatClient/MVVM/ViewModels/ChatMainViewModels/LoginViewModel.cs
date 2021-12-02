@@ -2,13 +2,9 @@
 using ChatClient.Commands.AuthenticationCommands;
 using ChatClient.Commands.NavigatonCommands;
 using ChatClient.Enums;
-using ChatClient.Interfaces;
-using ChatClient.Services;
+using ChatClient.MVVM.ViewModels.BaseViewModels;
 using ChatClient.Services.BaseConfiguration;
-using ChatClient.Stores;
-using ChatClient.Views;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.SignalR.Client;
+using ChatClient.Services.ConcreteConfiguration;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,7 +13,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 
-namespace ChatClient.ViewModels
+namespace ChatClient.MVVM.ViewModels.ChatMainViewModels
 {
    public class LoginViewModel : ChatViewModelBase
     {
