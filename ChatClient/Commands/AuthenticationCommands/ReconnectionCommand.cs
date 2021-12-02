@@ -26,8 +26,7 @@ namespace ChatClient.Commands.AuthenticationCommands
             _viewModel = viewModel;
             _currentUser = currentUser;
 
-            _navigationCommand = new NavigateCommand<ChatViewModel>(new NavigationService<ChatViewModel>(_viewModel.BaseConfiguration.Navigator,
-                    () => new ChatViewModel(_viewModel.BaseConfiguration)));
+            _navigationCommand = new NavigateCommand<ChatViewModel>(_viewModel.BaseConfiguration, _viewModel.BaseConfiguration);
         }
 
         public override bool CanExecute(object parameter)

@@ -1,6 +1,6 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:viewmodels="clr-namespace:ChatClient.ViewModels"
+                    xmlns:viewmodels="clr-namespace:ChatClient.MVVM.ViewModels.ChatMainViewModels"
                     xmlns:converters="clr-namespace:ChatClient.Converters">
 
     <ResourceDictionary.MergedDictionaries>

@@ -24,9 +24,7 @@ namespace ChatClient.MVVM.ViewModels.ChatMainViewModels
                     , left: window.Left, top: window.Top, minWidth: 385, minHeight: 545);
             }
 
-            NavigateLoginCommand = new NavigateCommand<LoginViewModel>(
-                    new NavigationService<LoginViewModel>(BaseConfiguration.Navigator,
-                    () => new LoginViewModel(BaseConfiguration)));
+            NavigateLoginCommand = new NavigateCommand<LoginViewModel>(BaseConfiguration, BaseConfiguration);
 
             RegistrationCommand = new RegistrationCommand(this);
 
@@ -117,10 +115,9 @@ namespace ChatClient.MVVM.ViewModels.ChatMainViewModels
             {
                 MessageBox.Show("Registration was successful");
 
-                NavigationService<LoginViewModel> navigationService = new(BaseConfiguration.Navigator,
-                        () => new LoginViewModel(BaseConfiguration));
-                
-                navigationService.Navigate();
+                BaseConfiguration.CreateConcreteNavigationService<LoginViewModel>(BaseConfiguration);
+
+                BaseConfiguration.NavigationService.Navigate();
             }
             else
             {

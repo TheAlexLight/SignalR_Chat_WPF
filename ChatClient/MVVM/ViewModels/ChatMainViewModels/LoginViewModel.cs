@@ -23,20 +23,7 @@ namespace ChatClient.MVVM.ViewModels.ChatMainViewModels
 
             LoginCommand = new LoginCommand(this);
 
-            //NavigateRegistrationCommand = new NavigateCommand<RegistrationViewModel>
-            //        (new NavigationService<RegistrationViewModel>(navigator,
-            //        () => new RegistrationViewModel(navigator, chatService, WindowConfigurationService)));
-
-            NavigateRegistrationCommand = new NavigateCommand<RegistrationViewModel>
-                   (new NavigationService<RegistrationViewModel>(BaseConfiguration.Navigator,
-                   () => new RegistrationViewModel(BaseConfiguration)));
-
-            //navigator.CurrentViewModel = new RegistrationViewModel(navigator, chatService, WindowConfigurationService); ;
-
-            //NavigationService<RegistrationViewModel> vv = new(navigator,
-            //        () => new RegistrationViewModel(navigator, chatService, WindowConfigurationService));
-
-            //vv.Navigate();
+            NavigateRegistrationCommand = new NavigateCommand<RegistrationViewModel>(baseConfiguration, baseConfiguration);
 
             ConnectionStatusValue = ConnectionStatus.Connecting;
 
@@ -62,9 +49,9 @@ namespace ChatClient.MVVM.ViewModels.ChatMainViewModels
         {
             if (loginResult)
             {
-                NavigationService<ChatViewModel> navigationService = new(BaseConfiguration.Navigator,
-                       () => new ChatViewModel(BaseConfiguration));
-                navigationService.Navigate();
+                BaseConfiguration.CreateConcreteNavigationService<ChatViewModel>(BaseConfiguration);
+
+                BaseConfiguration.NavigationService.Navigate();
             }
             else
             {

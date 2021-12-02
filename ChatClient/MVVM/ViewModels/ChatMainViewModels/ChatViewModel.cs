@@ -371,10 +371,9 @@ namespace ChatClient.MVVM.ViewModels.ChatMainViewModels
         {
             await BaseConfiguration.ChatService.Connection.StopAsync();
 
-            NavigationService<BanViewModel> navigationService = new(BaseConfiguration.Navigator,
-                () => new BanViewModel(BaseConfiguration, model, CurrentUser));
+            BaseConfiguration.CreateConcreteNavigationService<BanViewModel>(BaseConfiguration, model, CurrentUser);
 
-            navigationService.Navigate();
+            BaseConfiguration.NavigationService.Navigate();
         }
 
         private void ChatService_ReceivedMute(MuteStatusModel model)
@@ -386,10 +385,10 @@ namespace ChatClient.MVVM.ViewModels.ChatMainViewModels
         {
             await BaseConfiguration.ChatService.Connection.StopAsync();
 
-            NavigationService<LoginViewModel> navigationService = new(BaseConfiguration.Navigator,
-          () => new LoginViewModel(BaseConfiguration));
+            BaseConfiguration.CreateConcreteNavigationService<LoginViewModel>(BaseConfiguration);
 
-            navigationService.Navigate();
+            BaseConfiguration.NavigationService.Navigate();
+
             MessageBox.Show("You have been kicked.");
         }
 

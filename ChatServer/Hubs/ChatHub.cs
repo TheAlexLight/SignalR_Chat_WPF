@@ -55,7 +55,7 @@ namespace ChatServer.Hubs
             AuthorizationHelper helper = new AuthorizationHelper();
             string error = await helper.TryRegistration(model, _userManager, _account);
 
-            bool result = false;
+            bool result = false;    
 
             if (error == "")
             {
