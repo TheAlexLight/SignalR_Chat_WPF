@@ -46,7 +46,7 @@ namespace ChatClient.Commands.ContextMenuCommands
 
                     model.IsBanned = true;
 
-                    await _viewModel.ChatService.SendBan(user.UserProfile.Username, model);
+                    await _viewModel.BaseConfiguration.ChatService.SendBan(user.UserProfile.Username, model);
                 }
             }
         }

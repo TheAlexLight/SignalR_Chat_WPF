@@ -3,6 +3,7 @@ using ChatClient.Commands.AuthenticationCommands;
 using ChatClient.Commands.NavigatonCommands;
 using ChatClient.Interfaces;
 using ChatClient.Services;
+using ChatClient.Services.BaseConfiguration;
 using ChatClient.Stores;
 using Microsoft.AspNetCore.Identity;
 using System;
@@ -16,24 +17,25 @@ namespace ChatClient.ViewModels
 {
     public class RegistrationViewModel : ChatViewModelBase, IDataErrorInfo/*, INotifyDataErrorInfo*/
     {
-        public RegistrationViewModel(INavigator navigator, ISignalRChatService chatService
-               , IWindowConfigurationService windowConfigurationService) : base(navigator, chatService, windowConfigurationService)
+        public RegistrationViewModel(ChatBaseConfiguration baseConfiguration) : base(baseConfiguration)
         {
             Window window = Application.Current.MainWindow;
 
             if (window != null)
             {
-               window = windowConfigurationService.SetWindowStartupData(window: window, width: 385, height: 545
+               window = BaseConfiguration.WindowConfigurationService.SetWindowStartupData(window: window, width: 385, height: 545
                     , left: window.Left, top: window.Top, minWidth: 385, minHeight: 545);
             }
 
             NavigateLoginCommand = new NavigateCommand<LoginViewModel>(
-                    new NavigationService<LoginViewModel>(Navigator,
-                    () => new LoginViewModel(Navigator, chatService, windowConfigurationService)));
+                    new NavigationService<LoginViewModel>(BaseConfiguration.Navigator,
+                    () => new LoginViewModel(BaseConfiguration)));
 
             RegistrationCommand = new RegistrationCommand(this);
 
-            chatService.ReceiveRegistrationResult += ChatService_ReceiveRegistrationResult;
+            BaseConfiguration.ChatService.ReceiveRegistrationResult += ChatService_ReceiveRegistrationResult;
+
+             
         }
 
         public ICommand NavigateLoginCommand { get; }
@@ -117,8 +119,10 @@ namespace ChatClient.ViewModels
             if (registrationResult)
             {
                 MessageBox.Show("Registration was successful");
-                NavigationService<LoginViewModel> navigationService = new(Navigator,
-                        () => new LoginViewModel(Navigator, ChatService, WindowConfigurationService));
+
+                NavigationService<LoginViewModel> navigationService = new(BaseConfiguration.Navigator,
+                        () => new LoginViewModel(BaseConfiguration));
+                
                 navigationService.Navigate();
             }
             else

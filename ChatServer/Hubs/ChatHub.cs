@@ -40,8 +40,8 @@ namespace ChatServer.Hubs
             _userManager = userManager;
             _roleManager = roleManager;
             _dbContext = dbContext;
-            _account = new AccountController(_userManager, _dbContext);
             _roleController = new RoleController(_roleManager, _userManager);
+            _account = new AccountController(_userManager, _dbContext, _roleController);    
             _authorizationHelper = new();
             _groupsHelper = new();
             _userHelper = new UserHelper();
@@ -49,6 +49,9 @@ namespace ChatServer.Hubs
 
         public async Task SendRegistration(UserRegistrationModel model)
         {
+            await _roleController.CreateRoleIfNotExists(Role.User.ToString(), _roleManager);
+            await _roleController.CreateRoleIfNotExists(Role.Admin.ToString(), _roleManager);
+
             AuthorizationHelper helper = new AuthorizationHelper();
             string error = await helper.TryRegistration(model, _userManager, _account);
 
@@ -58,20 +61,18 @@ namespace ChatServer.Hubs
             {
                 result = true;
 
-                await _roleController.CreateRoleIfNotExists(Role.User.ToString(), _roleManager);
-                await _roleController.CreateRoleIfNotExists(Role.Admin.ToString(), _roleManager);
+                //List<string> addedRoles = new List<string>()
+                //{
+                //    "User"
+                //};
 
-                List<string> addedRoles = new List<string>()
-                {
-                    "User"
-                };
-
-                await _roleController.Assign(model.Username, addedRoles);
+                //await _roleController.Assign(model.Username, addedRoles);
             }
 
             await Clients.Caller.SendAsync("ReceiveRegistrationResult", result, error);
+            await Clients.Caller.SendAsync("ReceiveRegistrationResult", true, string.Empty);
         }
-
+            
         public async Task SendLogin(UserLoginModel model)
         {
             bool successfulLogin = await _account.Login(model);
@@ -88,36 +89,17 @@ namespace ChatServer.Hubs
                         .FirstOrDefault(u => u.UserName == model.Username);
 
                     user.UserModel.UserProfile.IsOnline = true;
+                    
                     await _dbContext.SaveChangesAsync();
-
-                    // await SendCurrentUser(userHandler);
-
-                    if (user.UserModel.UserStatus.BanStatus.IsBanned)
-                    {
-                        await UpdateChat(userHandler);
-                        await SendPublicGroup();
-                        await Clients.Client(userHandler.ConnectedIds).SendAsync("ReceiveBan", user.UserModel.UserStatus.BanStatus);
-                        return;
-                    }
 
                     await UpdateChat(userHandler);
                     await SendPublicGroup();
-                    #region roleAssign
-                    //List<IdentityError> errors = await _roleController.Create("User");
-                    //List<IdentityError> errors2 = await _roleController.Create("Admin");
 
-                    //await _roleController.Assign(model.Username, new List<string>()
-                    //{
-                    //    "Admin"
-                    //});
-
-                    //await _roleController.Delete("Admin");
-
-                    //if (errors.Any())
-                    //{
-                    //    //TODO: Send result
-                    //}
-                    #endregion
+                    if (user.UserModel.UserStatus.BanStatus.IsBanned)
+                    {
+                        await Clients.Client(userHandler.ConnectedIds).SendAsync("ReceiveBan", user.UserModel.UserStatus.BanStatus);
+                        return;
+                    }
                 }
             }
         }
@@ -412,7 +394,7 @@ namespace ChatServer.Hubs
             }
         }
 
-        public async Task SendChangePhoto(UserModel currentUser, byte[] photo, ChatType currentChatType)
+        public async Task SendChangePhoto(UserModel currentUser, byte[] photo)
         {
             UserModel userModel = _dbContext.UserModels.FirstOrDefault(um => um == currentUser);
 

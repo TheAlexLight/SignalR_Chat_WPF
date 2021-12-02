@@ -1,5 +1,6 @@
 ﻿using ChatClient.Commands.AuthenticationCommands;
 using ChatClient.Interfaces;
+using ChatClient.Services.BaseConfiguration;
 using SharedItems.Models;
 using SharedItems.Models.StatusModels;
 using System;
@@ -14,9 +15,8 @@ namespace ChatClient.ViewModels
 {
     public class BanViewModel : ChatViewModelBase
     {
-        public BanViewModel(INavigator navigator, ISignalRChatService chatService
-               , IWindowConfigurationService windowConfigurationService,
-                BanStatusModel banStatus, UserModel currentUser) : base(navigator, chatService, windowConfigurationService)
+        public BanViewModel(ChatBaseConfiguration baseConfiguration,
+                BanStatusModel banStatus, UserModel currentUser) : base(baseConfiguration)
         {
             _banStatus = banStatus;
             _currentUser = currentUser;
@@ -107,7 +107,7 @@ namespace ChatClient.ViewModels
 
         protected async override Task Reconnect()
         {
-            await ChatService.Reconnect(_currentUser.UserProfile.Username);
+            await BaseConfiguration.ChatService.Reconnect(_currentUser.UserProfile.Username);
         }
     }
 }

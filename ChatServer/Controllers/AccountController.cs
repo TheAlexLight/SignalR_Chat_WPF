@@ -16,11 +16,14 @@ namespace ChatServer.Controllers
     {
         private readonly UserManager<User> _userManager;
         private readonly ApplicationContext _dbContext;
+        private readonly RoleController _roleController;
 
-        public AccountController(UserManager<User> userManager, ApplicationContext dbContext)
+        public AccountController(UserManager<User> userManager, ApplicationContext dbContext
+                ,RoleController roleController)
         {
             _userManager = userManager;
             _dbContext = dbContext;
+            _roleController = roleController;
         }
 
         public async Task<IdentityResult> Register(UserRegistrationModel model)
@@ -31,11 +34,11 @@ namespace ChatServer.Controllers
 
             if (result.Succeeded)
             {
-               User createdUser = await _userManager.FindByNameAsync(model.Username);
+                User createdUser = await _userManager.FindByNameAsync(model.Username);
 
-               await AddUserModelIds(createdUser);
-               await AddUserStatuslIds(createdUser);
-               await AddUserProfileIds(createdUser);
+                await AddUserModelIds(createdUser);
+                await AddUserStatuslIds(createdUser);
+                await AddUserProfileIds(createdUser);
             }
 
             return result;
@@ -80,15 +83,31 @@ namespace ChatServer.Controllers
             var currentProgramPath = Environment.CurrentDirectory;
             string staticFilesFolderPath = $"{currentProgramPath}\\wwwroot"; //string.Format("{0}\\\\wwwroot}",g);//_webHostEnvironment.WebRootPath;
 
-            string defaultImagePath = string.Format("{0}\\Images\\defaultUser.png",staticFilesFolderPath);
+            string defaultImagePath = string.Format("{0}\\Images\\defaultUser.png", staticFilesFolderPath);
 
-            _dbContext.UserProfiles.Add(new UserProfileModel()
+            UserProfileModel userProfile = new()
             {
                 Username = createdUser.UserName,
                 Email = createdUser.Email,
                 UserModelId = createdUser.UserModel.Id,
                 Image = File.ReadAllBytes(defaultImagePath)
-        });
+            };
+
+            var adminId = _dbContext.Roles.First(role => role.Name == "Admin").Id;
+
+            if (!_dbContext.UserRoles.Any(role => role.RoleId == adminId))
+            {
+                userProfile.Role = "Admin";
+            }
+
+            List<string> addedRoles = new List<string>()
+            {
+                userProfile.Role
+            };
+
+            await _roleController.Assign(userProfile.Username, addedRoles);
+
+            _dbContext.UserProfiles.Add(userProfile);
 
             await _dbContext.SaveChangesAsync();
         }

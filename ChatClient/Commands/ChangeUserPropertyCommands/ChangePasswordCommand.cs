@@ -20,7 +20,7 @@ namespace ChatClient.Commands.ChangeUserPropertyCommand
         {
             if (parameter is string password)
             {
-                _viewModel.ChatService.SubmitPasswordChange(_viewModel.CurrentUser, _viewModel.Password, password);
+                _viewModel.BaseConfiguration.ChatService.SubmitPasswordChange(_viewModel.CurrentUser, _viewModel.Password, password);
             }
         }
     }

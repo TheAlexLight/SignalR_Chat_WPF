@@ -27,7 +27,7 @@ namespace ChatClient.Commands.ToolBarCommands
 
                 if (_viewModel.CurrentUser.UserProfile.Username != selectedModel.UserProfile.Username)
                 {
-                    await _viewModel.ChatService.KickUser(selectedModel.UserProfile.Username);
+                    await _viewModel.BaseConfiguration.ChatService.KickUser(selectedModel.UserProfile.Username);
                 }
             }
         }

@@ -22,7 +22,7 @@ namespace ChatClient.Commands
         {
             if (_viewModel.SelectedUserIndex != -1 && _viewModel.CurrentChatType == ChatType.Private && parameter is UserModel SelectedUser )
             {
-                _viewModel.ChatService.UpdatePrivateMessages(SelectedUser, _viewModel.CurrentUser);
+                _viewModel.BaseConfiguration.ChatService.UpdatePrivateMessages(SelectedUser, _viewModel.CurrentUser);
             }
         }
     }

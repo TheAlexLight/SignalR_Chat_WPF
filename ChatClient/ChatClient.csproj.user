@@ -7,34 +7,34 @@
     </ApplicationDefinition>
   </ItemGroup>
   <ItemGroup>
-    <Compile Update="Views\AdditionalViews\BindablePasswordBox.xaml.cs">
+    <Compile Update="MVVM\Views\AdditionalViews\BindablePasswordBox.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="Views\AdditionalViews\ChangeUserSettingsView.xaml.cs">
+    <Compile Update="MVVM\Views\AdditionalViews\ChangeUserSettingsView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="Views\AdditionalViews\PrivateChatView.xaml.cs">
+    <Compile Update="MVVM\Views\AdditionalViews\PrivateChatView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="Views\AdditionalViews\SettingsView.xaml.cs">
+    <Compile Update="MVVM\Views\AdditionalViews\SettingsView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="Views\AdditionalViews\UserInfoView.xaml.cs">
+    <Compile Update="MVVM\Views\AdditionalViews\UserInfoView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="Views\BanView.xaml.cs">
+    <Compile Update="MVVM\Views\BanView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="Views\ChatView.xaml.cs">
+    <Compile Update="MVVM\Views\ChatView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="Views\AdditionalViews\ConnectionLostView.xaml.cs">
+    <Compile Update="MVVM\Views\AdditionalViews\ConnectionLostView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="Views\LoginView.xaml.cs">
+    <Compile Update="MVVM\Views\LoginView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="Views\RegistrationView.xaml.cs">
+    <Compile Update="MVVM\Views\RegistrationView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>
@@ -69,31 +69,31 @@
     <Page Update="Resources\ToolBar.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="Views\AdditionalViews\BindablePasswordBox.xaml">
+    <Page Update="MVVM\Views\AdditionalViews\BindablePasswordBox.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="Views\AdditionalViews\ChangeUserSettingsView.xaml">
+    <Page Update="MVVM\Views\AdditionalViews\ChangeUserSettingsView.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="Views\AdditionalViews\PrivateChatView.xaml">
+    <Page Update="MVVM\Views\AdditionalViews\PrivateChatView.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="Views\AdditionalViews\SettingsView.xaml">
+    <Page Update="MVVM\Views\AdditionalViews\SettingsView.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="Views\AdditionalViews\UserInfoView.xaml">
+    <Page Update="MVVM\Views\AdditionalViews\UserInfoView.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="Views\BanView.xaml">
+    <Page Update="MVVM\Views\BanView.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="Views\ChatView.xaml">
+    <Page Update="MVVM\Views\ChatView.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="Views\AdditionalViews\ConnectionLostView.xaml">
+    <Page Update="MVVM\Views\AdditionalViews\ConnectionLostView.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="Views\LoginView.xaml">
+    <Page Update="MVVM\Views\LoginView.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Resources\Button.xaml">
@@ -105,7 +105,7 @@
     <Page Update="Resources\TextBox.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="Views\RegistrationView.xaml">
+    <Page Update="MVVM\Views\RegistrationView.xaml">
       <SubType>Designer</SubType>
     </Page>
   </ItemGroup>

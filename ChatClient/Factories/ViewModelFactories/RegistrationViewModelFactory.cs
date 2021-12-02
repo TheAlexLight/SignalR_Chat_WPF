@@ -1,4 +1,5 @@
 ﻿using ChatClient.Interfaces;
+using ChatClient.Services.BaseConfiguration;
 using ChatClient.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -10,21 +11,16 @@ namespace ChatClient.Factories.ViewModelFactories
 {
     public class RegistrationViewModelFactory : IViewModelConcreteFactory<RegistrationViewModel>
     {
-        private readonly INavigator _navigator;
-        private readonly ISignalRChatService _chatService;
-        private readonly IWindowConfigurationService _windowConfigurationService;
+        private readonly ChatBaseConfiguration _baseConfiguration;
 
-        public RegistrationViewModelFactory(INavigator navigator, ISignalRChatService chatService
-                , IWindowConfigurationService windowConfigurationService)
+        public RegistrationViewModelFactory(ChatBaseConfiguration baseConfiguration)
         {
-            _navigator = navigator;
-            _chatService = chatService;
-            _windowConfigurationService = windowConfigurationService;
+            _baseConfiguration = baseConfiguration;
         }
 
         public RegistrationViewModel CreateViewModel()
         {
-            return new RegistrationViewModel(_navigator, _chatService, _windowConfigurationService);
+            return new RegistrationViewModel(_baseConfiguration);
         }
     }
 }

@@ -8,6 +8,7 @@ using ChatClient.Enums;
 using ChatClient.Extensions;
 using ChatClient.Interfaces;
 using ChatClient.Services;
+using ChatClient.Services.BaseConfiguration;
 using ChatClient.Stores;
 using Newtonsoft.Json;
 using SharedItems.Enums;
@@ -36,18 +37,17 @@ namespace ChatClient.ViewModels
 {
     public class ChatViewModel : ChatViewModelBase, IDataErrorInfo, IFilesDropped
     {
-        public ChatViewModel(INavigator navigator, ISignalRChatService chatService
-               , IWindowConfigurationService windowConfigurationService) : base(navigator, chatService, windowConfigurationService)
+        public ChatViewModel(ChatBaseConfiguration baseConfiguration) : base(baseConfiguration)
         {
 
-            InitializeFields(chatService);
-            InitializeEvents(chatService);
+            InitializeFields(BaseConfiguration.ChatService);
+            InitializeEvents(BaseConfiguration.ChatService);
 
             Window window = Application.Current.MainWindow;
 
             if (window != null)
             {
-                windowConfigurationService.SetWindowStartupData(
+                BaseConfiguration.WindowConfigurationService.SetWindowStartupData(
                     window: window,
                     left: 415,
                     top: 110,
@@ -262,12 +262,11 @@ namespace ChatClient.ViewModels
             };
         }
 
-        public static ChatViewModel CreateConnectedViewModel(ISignalRChatService chatService, INavigator navigator
-                , IWindowConfigurationService windowConfiguration)
+        public static ChatViewModel CreateConnectedViewModel(ChatBaseConfiguration baseConfiguration)
         {
-            ChatViewModel viewModel = new(navigator, chatService, windowConfiguration);
+            ChatViewModel viewModel = new(baseConfiguration);
 
-            chatService.Connect().ContinueWith(task =>
+            baseConfiguration.ChatService.Connect().ContinueWith(task =>
             {
                 if (task.Exception != null)
                 {
@@ -304,7 +303,7 @@ namespace ChatClient.ViewModels
 
         protected async override Task Reconnect()
         {
-            await ChatService.Reconnect(CurrentUser.UserProfile.Username);
+            await BaseConfiguration.ChatService.Reconnect(CurrentUser.UserProfile.Username);
         }
 
         private void ChatService_CurrentUserReceived(UserModel currentUser)
@@ -370,10 +369,10 @@ namespace ChatClient.ViewModels
 
         private async void ChatService_ReceivedBan(BanStatusModel model)
         {
-            await ChatService.Connection.StopAsync();
+            await BaseConfiguration.ChatService.Connection.StopAsync();
 
-            NavigationService<BanViewModel> navigationService = new(Navigator,
-                () => new BanViewModel(Navigator, ChatService, WindowConfigurationService, model, CurrentUser));
+            NavigationService<BanViewModel> navigationService = new(BaseConfiguration.Navigator,
+                () => new BanViewModel(BaseConfiguration, model, CurrentUser));
 
             navigationService.Navigate();
         }
@@ -385,10 +384,10 @@ namespace ChatClient.ViewModels
 
         private async void ChatService_ReceivedKick()
         {
-            await ChatService.Connection.StopAsync();
+            await BaseConfiguration.ChatService.Connection.StopAsync();
 
-            NavigationService<LoginViewModel> navigationService = new(Navigator,
-          () => new LoginViewModel(Navigator, ChatService, WindowConfigurationService));
+            NavigationService<LoginViewModel> navigationService = new(BaseConfiguration.Navigator,
+          () => new LoginViewModel(BaseConfiguration));
 
             navigationService.Navigate();
             MessageBox.Show("You have been kicked.");

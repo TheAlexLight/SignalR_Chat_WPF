@@ -35,7 +35,7 @@ namespace ChatClient.Commands
                     && message.MessageModel.CheckStatus == MessageStatus.Received)
                 {
                     message.MessageModel.CheckStatus = MessageStatus.Read;
-                    _viewModel.ChatService.UpdateMessage(message.MessageModel, _viewModel.CurrentChatGroup.CurrentChatGroupModel);
+                    _viewModel.BaseConfiguration.ChatService.UpdateMessage(message.MessageModel, _viewModel.CurrentChatGroup.CurrentChatGroupModel);
                 }
             }
         }

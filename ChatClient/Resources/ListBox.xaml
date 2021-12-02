@@ -95,7 +95,7 @@
                                                    Name="UsernameText"/>
                                     </DockPanel>
                                     <Menu Style="{StaticResource userMenu}" 
-                              Grid.Column="1"
+                                          Grid.Column="1"
                                           Name="menu">
                                         <MenuItem Style="{StaticResource userMenuItem}"
                                                   Width="30"

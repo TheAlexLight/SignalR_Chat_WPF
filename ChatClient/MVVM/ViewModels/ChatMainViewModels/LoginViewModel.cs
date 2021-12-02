@@ -4,6 +4,7 @@ using ChatClient.Commands.NavigatonCommands;
 using ChatClient.Enums;
 using ChatClient.Interfaces;
 using ChatClient.Services;
+using ChatClient.Services.BaseConfiguration;
 using ChatClient.Stores;
 using ChatClient.Views;
 using Microsoft.AspNetCore.Identity;
@@ -20,15 +21,26 @@ namespace ChatClient.ViewModels
 {
    public class LoginViewModel : ChatViewModelBase
     {
-        public LoginViewModel(INavigator navigator, ISignalRChatService chatService
-                , IWindowConfigurationService windowConfigurationService) : base(navigator, chatService, windowConfigurationService)
+        public LoginViewModel(ChatBaseConfiguration baseConfiguration) : base(baseConfiguration)
         {
-            base.ChatService.ReceiveLoginResult += ChatService_ReceiveLoginResult;
+            BaseConfiguration.ChatService.ReceiveLoginResult += ChatService_ReceiveLoginResult;
 
             LoginCommand = new LoginCommand(this);
+
+            //NavigateRegistrationCommand = new NavigateCommand<RegistrationViewModel>
+            //        (new NavigationService<RegistrationViewModel>(navigator,
+            //        () => new RegistrationViewModel(navigator, chatService, WindowConfigurationService)));
+
             NavigateRegistrationCommand = new NavigateCommand<RegistrationViewModel>
-                    (new NavigationService<RegistrationViewModel>(navigator,
-                    () => new RegistrationViewModel(navigator, chatService, WindowConfigurationService)));
+                   (new NavigationService<RegistrationViewModel>(BaseConfiguration.Navigator,
+                   () => new RegistrationViewModel(BaseConfiguration)));
+
+            //navigator.CurrentViewModel = new RegistrationViewModel(navigator, chatService, WindowConfigurationService); ;
+
+            //NavigationService<RegistrationViewModel> vv = new(navigator,
+            //        () => new RegistrationViewModel(navigator, chatService, WindowConfigurationService));
+
+            //vv.Navigate();
 
             ConnectionStatusValue = ConnectionStatus.Connecting;
 
@@ -36,7 +48,7 @@ namespace ChatClient.ViewModels
 
             if (window != null)
             {
-                windowConfigurationService.SetWindowStartupData(window: window, width: 385, height: 385
+                BaseConfiguration.WindowConfigurationService.SetWindowStartupData(window: window, width: 385, height: 385
                     , left: window.Left, top: window.Top, minWidth: 385, minHeight: 385);
 
                 window.MaxHeight = 385;
@@ -54,8 +66,8 @@ namespace ChatClient.ViewModels
         {
             if (loginResult)
             {
-                NavigationService<ChatViewModel> navigationService = new(Navigator,
-                       () => new ChatViewModel(Navigator, ChatService, WindowConfigurationService));
+                NavigationService<ChatViewModel> navigationService = new(BaseConfiguration.Navigator,
+                       () => new ChatViewModel(BaseConfiguration));
                 navigationService.Navigate();
             }
             else

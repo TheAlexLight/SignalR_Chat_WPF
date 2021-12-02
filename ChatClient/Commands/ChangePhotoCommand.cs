@@ -34,7 +34,7 @@ namespace ChatClient.Commands
 
             if (imageInBytes != null)
             {
-                _viewModel.ChatService.ChangePhoto(_viewModel.CurrentUser, imageInBytes);
+                _viewModel.BaseConfiguration.ChatService.ChangePhoto(_viewModel.CurrentUser, imageInBytes);
             }
         }
     }

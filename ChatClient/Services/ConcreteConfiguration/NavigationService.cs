@@ -21,7 +21,7 @@ namespace ChatClient.Services
             _navigator = navigator;
             _createViewModel = createViewModel;
         }
-
+        
         public void Navigate() 
         {
             _navigator.CurrentViewModel = _createViewModel();

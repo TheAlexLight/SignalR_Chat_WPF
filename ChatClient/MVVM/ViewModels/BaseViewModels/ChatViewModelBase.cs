@@ -3,6 +3,7 @@ using ChatClient.Commands.AuthenticationCommands;
 using ChatClient.Enums;
 using ChatClient.Interfaces;
 using ChatClient.Services;
+using ChatClient.Services.BaseConfiguration;
 using ChatClient.Stores;
 using Microsoft.AspNetCore.SignalR.Client;
 using SharedItems.ViewModels;
@@ -17,20 +18,15 @@ namespace ChatClient.ViewModels
 {
    public class ChatViewModelBase : ViewModelBase
     {
-        public ISignalRChatService ChatService { get; }
-        public INavigator Navigator { get; }
-        public IWindowConfigurationService WindowConfigurationService { get; }
+        public ChatBaseConfiguration BaseConfiguration { get; }
 
-        public ChatViewModelBase(INavigator navigator, ISignalRChatService signalChatRService
-                , IWindowConfigurationService windowConfigurationServie)
+        public ChatViewModelBase(ChatBaseConfiguration baseConfiguration)
         {
-            ChatService = signalChatRService;
-            Navigator = navigator;
-            WindowConfigurationService = windowConfigurationServie;
+            BaseConfiguration = baseConfiguration;
 
-            ChatService.Connection.Reconnecting += Connection_Reconnecting;
-            ChatService.Connection.Reconnected += Connection_Reconnected;
-            ChatService.Connection.Closed += Connection_Closed;
+            BaseConfiguration.ChatService.Connection.Reconnecting += Connection_Reconnecting;
+            BaseConfiguration.ChatService.Connection.Reconnected += Connection_Reconnected;
+            BaseConfiguration.ChatService.Connection.Closed += Connection_Closed;
         }
 
         private string _errorMessage;
@@ -74,14 +70,14 @@ namespace ChatClient.ViewModels
 
         public async Task<HubConnectionState> ConnectToServer(ChatViewModelBase viewModel)
         {
-            if (ChatService.Connection.State == HubConnectionState.Disconnected)
+            if (BaseConfiguration.ChatService.Connection.State == HubConnectionState.Disconnected)
             {
-                 LoginConnectionService connectionService = new(Navigator, ChatService);
+                 LoginConnectionService connectionService = new(BaseConfiguration.Navigator, BaseConfiguration.ChatService);
 
-                Navigator.CurrentViewModel = await connectionService.CreateConnectedViewModel(ChatService, viewModel);
+                BaseConfiguration.Navigator.CurrentViewModel = await connectionService.CreateConnectedViewModel(BaseConfiguration.ChatService, viewModel);
             }
 
-            return ChatService.Connection.State;
+            return BaseConfiguration.ChatService.Connection.State;
         }
 
         protected virtual Task Connection_Reconnecting(Exception arg)

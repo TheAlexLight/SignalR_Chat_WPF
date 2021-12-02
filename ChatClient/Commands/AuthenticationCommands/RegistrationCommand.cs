@@ -27,8 +27,8 @@ namespace ChatClient.Commands.AuthenticationCommands
 
         public override async void Execute(object parameter)
         {
-            _viewModel.IsLoading = true;
-            RaiseCanExecuteChanged();
+            //_viewModel.IsLoading = true;
+            //RaiseCanExecuteChanged();
 
             if (await _viewModel.ConnectToServer(_viewModel) != HubConnectionState.Disconnected)
             {
@@ -40,11 +40,11 @@ namespace ChatClient.Commands.AuthenticationCommands
                     PasswordConfirm = _viewModel.PasswordConfirm,
                 };
 
-                await _viewModel.ChatService.Registration(userData);
+                await _viewModel.BaseConfiguration.ChatService.Registration(userData);
             }
 
-            _viewModel.IsLoading = false;
-            RaiseCanExecuteChanged();
+            //_viewModel.IsLoading = false;
+            //RaiseCanExecuteChanged();
         }
     }
 }

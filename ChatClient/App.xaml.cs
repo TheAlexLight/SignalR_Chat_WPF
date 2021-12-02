@@ -39,16 +39,18 @@ namespace ChatClient
         {
             IServiceCollection services = new ServiceCollection();
 
-            services.AddSingleton<ISignalRChatService, SignalRChatService>();
             services.AddSingleton<HubConnectionBuilder>();
+            services.AddSingleton<WindowConfigurationService>();
+
+            services.AddSingleton<ISignalRChatService, SignalRChatService>();
             services.AddSingleton<IWindowConfigurationService, WindowConfigurationService>();
+            services.AddSingleton<INavigator, NavigationStore>();
 
             services.AddSingleton<IViewModelAbstractFactory, ViewModelFactory>();
             services.AddSingleton<IViewModelConcreteFactory<LoginViewModel>, LoginViewModelFactory>();
             services.AddSingleton<IViewModelConcreteFactory<RegistrationViewModel>, RegistrationViewModelFactory>();
             services.AddSingleton<IViewModelConcreteFactory<ChatViewModel>, ChatViewModelFactory>();
-
-            services.AddScoped<INavigator, NavigationStore>();
+                      
             services.AddScoped<MainViewModel>();
             services.AddScoped<ChatViewModelBase, LoginViewModel>();
 

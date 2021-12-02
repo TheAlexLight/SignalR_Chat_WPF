@@ -45,7 +45,7 @@ namespace ChatClient.Commands.ToolBarCommands
 
                     model.IsMuted = true;
 
-                    await _viewModel.ChatService.SendMute(user.UserProfile.Username, model);
+                    await _viewModel.BaseConfiguration.ChatService.SendMute(user.UserProfile.Username, model);
                 }
             }
         }

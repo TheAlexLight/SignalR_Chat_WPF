@@ -36,6 +36,23 @@ namespace ChatClient.Services
         public event Action<MuteStatusModel> ReceivedMute;
         public event Func<bool, string, string, Task> ReceivedUserPropertyChange;
 
+        public bool IsEventHandlerRegistered()
+        {
+            if (ReceiveRegistrationResult != null)
+            {
+                return true;
+                //foreach (Delegate existingHandler in ReceiveRegistrationResult.GetInvocationList())
+                //{
+                //    if (existingHandler == prospectiveHandler)
+                //    {
+                //        return true;
+                //    }
+                //}
+            }
+
+            return false;
+        }
+
         public SignalRChatService(HubConnectionBuilder connectionBuilder)
         {
             Connection = connectionBuilder

@@ -25,6 +25,8 @@ namespace ChatClient.Interfaces
         public event Action<MuteStatusModel> ReceivedMute;
         public event Func<bool, string, string, Task> ReceivedUserPropertyChange;
 
+        public bool IsEventHandlerRegistered();
+
         public Task Connect();
         public Task Reconnect(string username);
         public Task SendMessage(MessageModel message, ChatGroupModel currentGroup, UserModel selectedUsr, UserModel currentUser);

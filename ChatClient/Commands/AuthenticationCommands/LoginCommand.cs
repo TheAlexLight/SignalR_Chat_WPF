@@ -40,7 +40,7 @@ namespace ChatClient.Commands.AuthenticationCommands
                     Password = _viewModel.Password
                 };
 
-                await _viewModel.ChatService.Login(loginData);
+                await _viewModel.BaseConfiguration.ChatService.Login(loginData);
             }
 
             _viewModel.IsLoading = false;

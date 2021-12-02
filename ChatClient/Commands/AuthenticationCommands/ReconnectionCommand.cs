@@ -24,8 +24,8 @@ namespace ChatClient.Commands.AuthenticationCommands
             _viewModel = viewModel;
             _currentUser = currentUser;
 
-            _navigationCommand = new NavigateCommand<ChatViewModel>(new NavigationService<ChatViewModel>(_viewModel.Navigator,
-                    () => new ChatViewModel(_viewModel.Navigator, _viewModel.ChatService, _viewModel.WindowConfigurationService)));
+            _navigationCommand = new NavigateCommand<ChatViewModel>(new NavigationService<ChatViewModel>(_viewModel.BaseConfiguration.Navigator,
+                    () => new ChatViewModel(_viewModel.BaseConfiguration)));
         }
 
         public override bool CanExecute(object parameter)
@@ -44,11 +44,11 @@ namespace ChatClient.Commands.AuthenticationCommands
                 ? chatViewModel.CurrentUser.UserProfile.Username
                 : _currentUser.UserProfile.Username;
 
-                await _viewModel.ChatService.Reconnect(username);
+                await _viewModel.BaseConfiguration.ChatService.Reconnect(username);
 
                 if (parameter is BanStatusModel banStatus)
                 {
-                    await _viewModel.ChatService.SendBan(username, banStatus);
+                    await _viewModel.BaseConfiguration.ChatService.SendBan(username, banStatus);
                 }
 
                 _navigationCommand.Execute(null);
