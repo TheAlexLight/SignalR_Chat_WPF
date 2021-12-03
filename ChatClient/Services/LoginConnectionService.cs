@@ -1,7 +1,7 @@
 ﻿using ChatClient.Enums;
 using ChatClient.Interfaces.BaseConfiguration;
 using ChatClient.MVVM.ViewModels.BaseViewModels;
-
+using ChatClient.Services.ConcreteConfiguration;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,11 +22,11 @@ namespace ChatClient.Services
             ChatService = chatService;
         }
 
-        public async Task<ChatViewModelBase> CreateConnectedViewModel (ISignalRChatService chatService, ChatViewModelBase viewModelType)
+        public async Task<ChatViewModelBase> CreateConnectedViewModel (SignalRChatService chatService, ChatViewModelBase viewModelType)
         {
             ChatViewModelBase viewModel = viewModelType;
 
-           await chatService.Connect().ContinueWith(task =>
+           await chatService.AuthorizationModel.Connect().ContinueWith(task =>
             {
                 if (task.Exception != null)
                 {

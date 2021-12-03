@@ -40,7 +40,7 @@ namespace ChatClient.Commands.AuthenticationCommands
                     PasswordConfirm = _viewModel.PasswordConfirm,
                 };
 
-                await _viewModel.BaseConfiguration.ChatService.Registration(userData);
+                await _viewModel.BaseConfiguration.ChatService.AuthorizationModel.Register(userData);
             }
 
             //_viewModel.IsLoading = false;

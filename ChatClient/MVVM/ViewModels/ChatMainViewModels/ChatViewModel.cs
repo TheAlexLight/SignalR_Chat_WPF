@@ -149,7 +149,7 @@ namespace ChatClient.MVVM.ViewModels.ChatMainViewModels
             return (string)element.GetValue(TimeDurationProperty);
         }
 
-        private void InitializeFields(ISignalRChatService chatService)
+        private void InitializeFields(SignalRChatService chatService)
         {
             SendChatMessageCommand = new SendChatMessageCommand(this, chatService);
             ReconnectionCommand = new ReconnectionCommand(this, CurrentUser);
@@ -215,17 +215,17 @@ namespace ChatClient.MVVM.ViewModels.ChatMainViewModels
             //return result;
         }
 
-        private void InitializeEvents(ISignalRChatService chatService)
+        private void InitializeEvents(SignalRChatService chatService)
         {
-            //chatService.MessageReceived += ChatService_MessageReceived;
-            chatService.UserListReceived += ChatService_UserListReceived;
-            chatService.CurrentGroupReceived += ChatService_CurrentGroupReceived;
-            chatService.CurrentUserReceived += ChatService_CurrentUserReceived;
-            //chatService.CurrentGroupReceived += ChatService_SavedMessagesReceived;
-            chatService.ReceivedBan += ChatService_ReceivedBan;
-            chatService.ReceivedKick += ChatService_ReceivedKick;
-            chatService.ReceivedMute += ChatService_ReceivedMute;
-            chatService.ReceivedUserPropertyChange += ChatService_ReceivedUserPropertyChange;
+            chatService.UsersUpdateModel.CurrentUserReceived += ChatService_CurrentUserReceived;
+            chatService.UsersUpdateModel.UserListReceived += ChatService_UserListReceived;
+            chatService.UsersUpdateModel.CurrentGroupReceived += ChatService_CurrentGroupReceived;
+            
+            chatService.AdminActionModel.BanResultReceived += ChatService_ReceivedBan;
+            chatService.AdminActionModel.KickResultReceived += ChatService_ReceivedKick;
+            chatService.AdminActionModel.MuteResultReceived += ChatService_ReceivedMute;
+            
+            chatService.CredentialModel.UserCredentialsResultReceived += ChatService_UserCredentialsResultReceived;
         }
 
         private bool FilterUsers(object obj)
@@ -266,7 +266,7 @@ namespace ChatClient.MVVM.ViewModels.ChatMainViewModels
         {
             ChatViewModel viewModel = new(baseConfiguration);
 
-            baseConfiguration.ChatService.Connect().ContinueWith(task =>
+            baseConfiguration.ChatService.AuthorizationModel.Connect().ContinueWith(task =>
             {
                 if (task.Exception != null)
                 {
@@ -303,7 +303,7 @@ namespace ChatClient.MVVM.ViewModels.ChatMainViewModels
 
         protected async override Task Reconnect()
         {
-            await BaseConfiguration.ChatService.Reconnect(CurrentUser.UserProfile.Username);
+            await BaseConfiguration.ChatService.AuthorizationModel.Reconnect(CurrentUser.UserProfile.Username);
         }
 
         private void ChatService_CurrentUserReceived(UserModel currentUser)
@@ -392,7 +392,7 @@ namespace ChatClient.MVVM.ViewModels.ChatMainViewModels
             MessageBox.Show("You have been kicked.");
         }
 
-        private Task ChatService_ReceivedUserPropertyChange(bool success, string PropertyName, string message)
+        private Task ChatService_UserCredentialsResultReceived(bool success, string PropertyName, string message)
         {
             if (success)
             {

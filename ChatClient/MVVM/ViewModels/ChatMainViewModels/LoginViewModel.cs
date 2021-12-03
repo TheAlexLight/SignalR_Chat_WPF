@@ -19,7 +19,7 @@ namespace ChatClient.MVVM.ViewModels.ChatMainViewModels
     {
         public LoginViewModel(ChatBaseConfiguration baseConfiguration) : base(baseConfiguration)
         {
-            BaseConfiguration.ChatService.ReceiveLoginResult += ChatService_ReceiveLoginResult;
+            BaseConfiguration.ChatService.AuthorizationModel.LoginResultReceived += ChatService_ReceiveLoginResult;
 
             LoginCommand = new LoginCommand(this);
 

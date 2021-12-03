@@ -28,7 +28,12 @@ namespace ChatClient.MVVM.ViewModels.ChatMainViewModels
 
             RegistrationCommand = new RegistrationCommand(this);
 
-            BaseConfiguration.ChatService.ReceiveRegistrationResult += ChatService_ReceiveRegistrationResult;
+
+            //if (!BaseConfiguraction.ChatService.IsEventHandlerRegistered())
+            //{
+                BaseConfiguration.ChatService.AuthorizationModel.RegistrationResultReceived += ChatService_ReceiveRegistrationResult;
+            //}
+            
 
              
         }

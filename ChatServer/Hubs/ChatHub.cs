@@ -70,7 +70,6 @@ namespace ChatServer.Hubs
             }
 
             await Clients.Caller.SendAsync("ReceiveRegistrationResult", result, error);
-            await Clients.Caller.SendAsync("ReceiveRegistrationResult", true, string.Empty);
         }
             
         public async Task SendLogin(UserLoginModel model)

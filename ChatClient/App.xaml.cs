@@ -48,7 +48,8 @@ namespace ChatClient
             services.AddSingleton<WindowConfigurationService>();
             services.AddSingleton<ChatBaseConfiguration>();
 
-            services.AddSingleton<ISignalRChatService, SignalRChatService>();
+            services.AddSingleton<SignalRChatService>();
+            
             services.AddSingleton<IWindowConfigurationService, WindowConfigurationService>();
             services.AddSingleton<INavigator, NavigationStore>();
 

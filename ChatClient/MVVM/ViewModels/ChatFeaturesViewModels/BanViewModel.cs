@@ -108,7 +108,7 @@ namespace ChatClient.MVVM.ViewModels.ChatFeaturesModels
 
         protected async override Task Reconnect()
         {
-            await BaseConfiguration.ChatService.Reconnect(_currentUser.UserProfile.Username);
+            await BaseConfiguration.ChatService.AuthorizationModel.Reconnect(_currentUser.UserProfile.Username);
         }
     }
 }

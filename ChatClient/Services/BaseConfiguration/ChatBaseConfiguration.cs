@@ -13,7 +13,7 @@ namespace ChatClient.Services.BaseConfiguration
 {
     public class ChatBaseConfiguration : IChatBaseConfiguration
     {
-        public ChatBaseConfiguration(INavigator navigator, ISignalRChatService chatService, IWindowConfigurationService windowConfigurationService)
+        public ChatBaseConfiguration(INavigator navigator, SignalRChatService chatService, IWindowConfigurationService windowConfigurationService)
         {
             Navigator = navigator;
             ChatService = chatService;
@@ -21,7 +21,7 @@ namespace ChatClient.Services.BaseConfiguration
         }
 
         public INavigator Navigator { get; }
-        public ISignalRChatService ChatService { get; }
+        public SignalRChatService ChatService { get; }
         public IWindowConfigurationService WindowConfigurationService { get; }
         public INavigationService NavigationService { get; private set; }
 

@@ -10,6 +10,7 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using ChatClient.Interfaces.BaseConfiguration;
 using ChatClient.MVVM.ViewModels.ChatMainViewModels;
+using ChatClient.Services.ConcreteConfiguration;
 using ChatClient.Supplements.Extensions;
 using ChatClient.Supplements.Helpers;
 using SharedItems.Enums;
@@ -20,10 +21,10 @@ namespace ChatClient.Commands
     public class SendChatMessageCommand : CommandBase
     {
         private readonly ChatViewModel _viewModel;
-        private readonly ISignalRChatService _chatService;
+        private readonly SignalRChatService _chatService;
         private readonly Regex _regexUrl = new Regex(@"(?#Protocol)(?:(?:ht|f)tp(?:s?)\:\/\/|~/|/)?(?#Username:Password)(?:\w+:\w+@)?(?#Subdomains)(?:(?:[-\w]+\.)+(?#TopLevel Domains)(?:com|org|net|gov|mil|biz|info|mobi|name|aero|jobs|museum|travel|[a-z]{2}))(?#Port)(?::[\d]{1,5})?(?#Directories)(?:(?:(?:/(?:[-\w~!$+|.,=]|%[a-f\d]{2})+)+|/)+|\?|#)?(?#Query)(?:(?:\?(?:[-\w~!$+|.,*:]|%[a-f\d{2}])+=(?:[-\w~!$+|.,*:=]|%[a-f\d]{2})*)(?:&(?:[-\w~!$+|.,*:]|%[a-f\d{2}])+=(?:[-\w~!$+|.,*:=]|%[a-f\d]{2})*)*)*(?#Anchor)(?:#(?:[-\w~!$+|.,*:=]|%[a-f\d]{2})*)?");
 
-        public SendChatMessageCommand(ChatViewModel viewModel, ISignalRChatService chatService)
+        public SendChatMessageCommand(ChatViewModel viewModel, SignalRChatService chatService)
         {
             _viewModel = viewModel;
             _chatService = chatService;
@@ -99,12 +100,12 @@ namespace ChatClient.Commands
                     {
                         if (values[1] is UserModel selectedUser)
                         {
-                            await _chatService.SendMessage(model, _viewModel.CurrentChatGroup.CurrentChatGroupModel, selectedUser, _viewModel.CurrentUser);
+                            await _chatService.MessagesManagementModel.SendMessage(model, _viewModel.CurrentChatGroup.CurrentChatGroupModel, selectedUser, _viewModel.CurrentUser);
                         }
                     }
                     else
                     {
-                        await _chatService.SendMessage(model, _viewModel.CurrentChatGroup.CurrentChatGroupModel, null, _viewModel.CurrentUser);
+                        await _chatService.MessagesManagementModel.SendMessage(model, _viewModel.CurrentChatGroup.CurrentChatGroupModel, null, _viewModel.CurrentUser);
                     }
 
                     var scrollViewerExtension = UIHelper.FindChild<ScrollViewerExtension>(Application.Current.MainWindow, "scroll");

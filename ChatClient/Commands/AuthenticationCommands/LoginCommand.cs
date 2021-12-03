@@ -1,5 +1,7 @@
-﻿using ChatClient.MVVM.ViewModels.ChatMainViewModels;
+﻿using ChatClient.Interfaces.SignalRTransmitting;
+using ChatClient.MVVM.ViewModels.ChatMainViewModels;
 using ChatClient.Services;
+using ChatClient.Services.ConcreteConfiguration;
 using Microsoft.AspNetCore.SignalR.Client;
 using SharedItems.Models;
 using SharedItems.Models.AuthenticationModels;
@@ -39,7 +41,7 @@ namespace ChatClient.Commands.AuthenticationCommands
                     Password = _viewModel.Password
                 };
 
-                await _viewModel.BaseConfiguration.ChatService.Login(loginData);
+                await _viewModel.BaseConfiguration.ChatService.AuthorizationModel.Login(loginData);
             }
 
             _viewModel.IsLoading = false;

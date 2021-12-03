@@ -45,11 +45,11 @@ namespace ChatClient.Commands.AuthenticationCommands
                 ? chatViewModel.CurrentUser.UserProfile.Username
                 : _currentUser.UserProfile.Username;
 
-                await _viewModel.BaseConfiguration.ChatService.Reconnect(username);
+                await _viewModel.BaseConfiguration.ChatService.AuthorizationModel.Reconnect(username);
 
                 if (parameter is BanStatusModel banStatus)
                 {
-                    await _viewModel.BaseConfiguration.ChatService.SendBan(username, banStatus);
+                    await _viewModel.BaseConfiguration.ChatService.AdminActionModel.Ban(username, banStatus);
                 }
 
                 _navigationCommand.Execute(null);
