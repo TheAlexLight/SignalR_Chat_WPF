@@ -1,9 +1,11 @@
 {
   "version": 2,
-  "dgSpecHash": "Jq6hoOQkNq5kw6Y75KL0tevOcqlDj3UGUrMiA+e0qZ6+d80bJ0QTG/Nwb884eu5DJetHDwdsgPTSNoFpqt0zqA==",
+  "dgSpecHash": "w8zta1Kh/S9ctv3N9dvQIuJiAdLKFDaTBY8OdOK3yEGE8i24558SFcX7kQtK3shaT8mh46+07xiYJHETPACIcQ==",
   "success": true,
   "projectFilePath": "C:\\Users\\oyudi\\Alexander\\Programming\\SignalR_Chat_WPF\\ChatClient\\ChatClient.csproj",
   "expectedPackageFiles": [
+    "C:\\Users\\oyudi\\.nuget\\packages\\automapper\\10.1.1\\automapper.10.1.1.nupkg.sha512",
+    "C:\\Users\\oyudi\\.nuget\\packages\\automapper.extensions.microsoft.dependencyinjection\\8.1.1\\automapper.extensions.microsoft.dependencyinjection.8.1.1.nupkg.sha512",
     "C:\\Users\\oyudi\\.nuget\\packages\\cefsharp.common.netcore\\95.7.141\\cefsharp.common.netcore.95.7.141.nupkg.sha512",
     "C:\\Users\\oyudi\\.nuget\\packages\\cefsharp.wpf.netcore\\95.7.141\\cefsharp.wpf.netcore.95.7.141.nupkg.sha512",
     "C:\\Users\\oyudi\\.nuget\\packages\\chromiumembeddedframework.runtime\\95.7.14\\chromiumembeddedframework.runtime.95.7.14.nupkg.sha512",
@@ -42,7 +44,7 @@
     "C:\\Users\\oyudi\\.nuget\\packages\\syroot.windows.io.knownfolders\\1.2.3\\syroot.windows.io.knownfolders.1.2.3.nupkg.sha512",
     "C:\\Users\\oyudi\\.nuget\\packages\\system.io.pipelines\\5.0.1\\system.io.pipelines.5.0.1.nupkg.sha512",
     "C:\\Users\\oyudi\\.nuget\\packages\\system.memory\\4.5.3\\system.memory.4.5.3.nupkg.sha512",
-    "C:\\Users\\oyudi\\.nuget\\packages\\system.reflection.emit\\4.6.0\\system.reflection.emit.4.6.0.nupkg.sha512",
+    "C:\\Users\\oyudi\\.nuget\\packages\\system.reflection.emit\\4.7.0\\system.reflection.emit.4.7.0.nupkg.sha512",
     "C:\\Users\\oyudi\\.nuget\\packages\\system.reflection.emit.lightweight\\4.6.0\\system.reflection.emit.lightweight.4.6.0.nupkg.sha512",
     "C:\\Users\\oyudi\\.nuget\\packages\\system.runtime.compilerservices.unsafe\\4.5.2\\system.runtime.compilerservices.unsafe.4.5.2.nupkg.sha512",
     "C:\\Users\\oyudi\\.nuget\\packages\\system.security.principal.windows\\4.7.0\\system.security.principal.windows.4.7.0.nupkg.sha512",

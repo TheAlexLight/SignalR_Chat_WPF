@@ -10,8 +10,6 @@
              xmlns:extensions="clr-namespace:ChatClient.Supplements.Extensions"
              xmlns:sharedItems="clr-namespace:SharedItems.Enums;assembly=SharedItems"
              xmlns:i="http://schemas.microsoft.com/xaml/behaviors" 
-             xmlns:viewmodels="clr-namespace:ChatClient.MVVM.ViewModels"
-             d:DataContext="{d:DesignInstance Type=viewmodels:ChatViewModel}"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="550">
     <UserControl.Resources>
@@ -51,7 +49,8 @@
 
             <ListBox Style="{StaticResource privateUsersListBox}"
                          Name="userList"
-                         Grid.Row="1">
+                         Grid.Row="1"
+                        >
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="SelectionChanged">
                         <i:InvokeCommandAction Command="{Binding UpdatePrivateMessagesCommand}"

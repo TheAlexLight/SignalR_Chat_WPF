@@ -20,29 +20,30 @@ namespace ChatClient.Commands
             _viewModel = viewModel;
         }
 
-        public override void Execute(object parameter)
+        public override async void Execute(object parameter)
         {
             if (parameter is ChatType currentChatType)
             {
                 _viewModel.CurrentChatType = currentChatType;
                 _viewModel.Message.TextMessage = string.Empty;
-                _viewModel.CanCloseChat = true;
+                //_viewModel.CanCloseChat = true;
 
                 if (currentChatType == ChatType.Private)
                 {
                     _viewModel.UsersColumnWidth = new GridLength(1, GridUnitType.Star);
                     _viewModel.MessagesColumnWidth = new GridLength(2.5, GridUnitType.Star);
-                    _viewModel.SelectedUserIndex = -1;
+                    //_viewModel.SelectedUserIndex = -1;
                 }
                 else
                 {
                     _viewModel.UsersColumnWidth = new GridLength(1, GridUnitType.Star);
                     _viewModel.MessagesColumnWidth = new GridLength(2.5, GridUnitType.Star);
-                    _viewModel.SelectedUserIndex = 0;
+                   // _viewModel.SelectedUserIndex = 0;
                 }
 
-                _viewModel.BaseConfiguration.ChatService.SwitchChat(currentChatType, _viewModel.CurrentUser);
-                _viewModel.CanCloseChat = false;
+                await _viewModel.BaseConfiguration.ChatService.SwitchChat(currentChatType, _viewModel.CurrentUser);
+                
+               // _viewModel.CanCloseChat = false;
 
                 Thread.Sleep(100);
             }

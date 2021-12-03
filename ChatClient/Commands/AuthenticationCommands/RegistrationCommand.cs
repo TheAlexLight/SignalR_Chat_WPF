@@ -27,8 +27,8 @@ namespace ChatClient.Commands.AuthenticationCommands
 
         public override async void Execute(object parameter)
         {
-            //_viewModel.IsLoading = true;
-            //RaiseCanExecuteChanged();
+            _viewModel.IsLoading = true;
+            RaiseCanExecuteChanged();
 
             if (await _viewModel.ConnectToServer(_viewModel) != HubConnectionState.Disconnected)
             {

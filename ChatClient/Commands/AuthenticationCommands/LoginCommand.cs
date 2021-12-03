@@ -43,9 +43,6 @@ namespace ChatClient.Commands.AuthenticationCommands
 
                 await _viewModel.BaseConfiguration.ChatService.AuthorizationModel.Login(loginData);
             }
-
-            _viewModel.IsLoading = false;
-            RaiseCanExecuteChanged();
         }
     }
 }

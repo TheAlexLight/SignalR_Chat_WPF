@@ -1,4 +1,5 @@
-﻿using ChatClient.Commands;
+﻿using AutoMapper;
+using ChatClient.Commands;
 using ChatClient.Commands.AuthenticationCommands;
 using ChatClient.Commands.ChangeUserPropertyCommand;
 using ChatClient.Commands.ContextMenuCommands;
@@ -71,8 +72,8 @@ namespace ChatClient.MVVM.ViewModels.ChatMainViewModels
         private MessageInformationModel _message;
         private ObservableCollection<UserModel> _allUsers;
         private ObservableCollection<Group> _groups;
-        private UserModel _currentUser; 
-        private UserModel _selectedUser; 
+        private UserModel _currentUser;
+        private UserModel _selectedUser;
         private MuteStatusModel _muteStatus;
         private ChatGroupViewModel _currentChatGroup;
         private UserModel _temporarySelectedItem = null;
@@ -80,12 +81,13 @@ namespace ChatClient.MVVM.ViewModels.ChatMainViewModels
         private object _selectedItem;
 
         private int _selectedUserIndex;
+        //private int _temporarySelectedIndex = -1;
 
         private bool _isUserInfoOpened;
         private bool _isSettingsOpened;
         private bool _needToClearPassword;
         private bool _needToUpdateMessagesCount;
-        private bool _canCloseChat;
+        private bool _canCloseChat = true;
 
         private BitmapImage _descriptionImage;
         private GridLength _usersColumnWidth;
@@ -117,7 +119,7 @@ namespace ChatClient.MVVM.ViewModels.ChatMainViewModels
         public ICommand ChangeUserSettingsCommand { get; private set; }
         #endregion
 
-        public ICollectionView UsersCollectionView 
+        public ICollectionView UsersCollectionView
         {
             get => _usersCollectionView;
             set
@@ -126,7 +128,7 @@ namespace ChatClient.MVVM.ViewModels.ChatMainViewModels
                 OnPropertyChanged();
             }
         }
-        public ICollectionView FilterUsersCollectionView 
+        public ICollectionView FilterUsersCollectionView
         {
             get => _filterUsersCollectionView;
             set
@@ -138,7 +140,7 @@ namespace ChatClient.MVVM.ViewModels.ChatMainViewModels
 
         public static readonly DependencyProperty TimeDurationProperty = DependencyProperty.RegisterAttached("DurationTime"
                 , typeof(string), typeof(ChatViewModel), new PropertyMetadata(null));
-        
+
         public static void SetDurationTime(DependencyObject element, string value)
         {
             element.SetValue(TimeDurationProperty, value);
@@ -199,7 +201,7 @@ namespace ChatClient.MVVM.ViewModels.ChatMainViewModels
             //    //return group.GroupedUsers.All(user => user.UserProfile.Username != CurrentUser.UserProfile.Username);
             //}
 
-            return true;  
+            return true;
             //UsersCollectionView.GetDefaultView(group.GroupedUsers);
 
 
@@ -220,11 +222,11 @@ namespace ChatClient.MVVM.ViewModels.ChatMainViewModels
             chatService.UsersUpdateModel.CurrentUserReceived += ChatService_CurrentUserReceived;
             chatService.UsersUpdateModel.UserListReceived += ChatService_UserListReceived;
             chatService.UsersUpdateModel.CurrentGroupReceived += ChatService_CurrentGroupReceived;
-            
+
             chatService.AdminActionModel.BanResultReceived += ChatService_ReceivedBan;
             chatService.AdminActionModel.KickResultReceived += ChatService_ReceivedKick;
             chatService.AdminActionModel.MuteResultReceived += ChatService_ReceivedMute;
-            
+
             chatService.CredentialModel.UserCredentialsResultReceived += ChatService_UserCredentialsResultReceived;
         }
 
@@ -308,63 +310,102 @@ namespace ChatClient.MVVM.ViewModels.ChatMainViewModels
 
         private void ChatService_CurrentUserReceived(UserModel currentUser)
         {
-                CurrentUser = currentUser; 
+            CurrentUser = currentUser;
         }
 
         private void ChatService_CurrentGroupReceived(ChatGroupModel currentGroup)
         {
-            currentGroup.Users = currentGroup.Users.Where(um => um.UserProfile.Username != CurrentUser.UserProfile.Username).ToList();
-
-            CurrentChatGroup.CurrentChatGroupModel = currentGroup;
-
-            Application.Current.Dispatcher.Invoke(() =>
+            if (CurrentChatType == currentGroup.Name)
             {
-                CurrentChatGroup.MessagesViewModel.Clear();
-            });
+                if (CurrentChatType == ChatType.Public)
+                {
+                    currentGroup.Users = currentGroup.Users.Where(um => um.UserProfile.Username != CurrentUser.UserProfile.Username).ToList();
+                }
 
-            foreach (MessageModel messageModel in CurrentChatGroup.CurrentChatGroupModel.Messages)
-            {
+                if (CurrentChatGroup.CurrentChatGroupModel == null || (SelectedItem != null && currentGroup.Users
+                        .Any(u=>u.UserProfile.Username == ((UserModel)SelectedItem).UserProfile.Username)))
+                {
+                    CurrentChatGroup.CurrentChatGroupModel = currentGroup;
+
+
+                    Application.Current.Dispatcher.Invoke(() =>
+                    {
+                        CurrentChatGroup.MessagesViewModel.Clear();
+                    });
+
+                    foreach (MessageModel messageModel in CurrentChatGroup.CurrentChatGroupModel.Messages)
+                    {
+                        Application.Current.Dispatcher.Invoke(() =>
+                        {
+                            CurrentChatGroup.MessagesViewModel.Add(new MessageViewModel(messageModel));
+                        });
+                    }
+                }
+
+
+                //var config = new MapperConfiguration(cfg => cfg.CreateMap<MessageModel, MessageViewModel>());
+
+                // BaseConfiguration.Mapper = config.CreateMapper();
+
+                //var b = BaseConfiguration.Mapper.Map<MessageViewModel>(CurrentChatGroup.CurrentChatGroupModel.Messages.ToList());
+
+                //List<MessageModel> a = CurrentChatGroup.CurrentChatGroupModel.Messages.ToList();
+                //CurrentChatGroup.MessagesViewModel = new ObservableCollection<MessageViewModel>(a);
+
+                Group bannedGroup = Groups.FirstOrDefault(g => g.Name.Equals(nameof(UserGroups.Banned)));
+                bannedGroup.GroupedUsers = new ObservableCollection<UserModel>(CurrentChatGroup.CurrentChatGroupModel.Users
+                        .Where(u => u.UserStatus.BanStatus.IsBanned).ToList());
+
+                bannedGroup.UsersCount = bannedGroup.GroupedUsers.Where(user => user.UserProfile.Username != CurrentUser.UserProfile.Username).Count();
+
+                Group onlineGroup = Groups.FirstOrDefault(g => g.Name.Equals(nameof(UserGroups.Online)));
+                onlineGroup.GroupedUsers = new ObservableCollection<UserModel>(CurrentChatGroup.CurrentChatGroupModel.Users
+                        .Where(u => u.UserProfile.IsOnline).Except(bannedGroup.GroupedUsers).ToList());
+
+                onlineGroup.UsersCount = onlineGroup.GroupedUsers.Where(user => user.UserProfile.Username != CurrentUser.UserProfile.Username).Count();
+
+                Group offlineGroup = Groups.FirstOrDefault(g => g.Name.Equals(nameof(UserGroups.Offline)));
+                offlineGroup.GroupedUsers = new ObservableCollection<UserModel>(CurrentChatGroup.CurrentChatGroupModel.Users
+                        .Except(bannedGroup.GroupedUsers).Except(onlineGroup.GroupedUsers).ToList());
+
+                offlineGroup.UsersCount = offlineGroup.GroupedUsers.Where(user => user.UserProfile.Username != CurrentUser.UserProfile.Username).Count();
+
                 Application.Current.Dispatcher.Invoke(() =>
                 {
-                    CurrentChatGroup.MessagesViewModel.Add(new MessageViewModel(messageModel));
+                    UsersCollectionView.Refresh();
                 });
             }
 
-            Group bannedGroup = Groups.FirstOrDefault(g => g.Name.Equals(nameof(UserGroups.Banned)));
-            bannedGroup.GroupedUsers = new ObservableCollection<UserModel>(CurrentChatGroup.CurrentChatGroupModel.Users
-                    .Where(u => u.UserStatus.BanStatus.IsBanned).ToList());
 
-            bannedGroup.UsersCount = bannedGroup.GroupedUsers.Where(user => user.UserProfile.Username != CurrentUser.UserProfile.Username).Count();
-
-            Group onlineGroup = Groups.FirstOrDefault(g => g.Name.Equals(nameof(UserGroups.Online)));
-            onlineGroup.GroupedUsers = new ObservableCollection<UserModel>(CurrentChatGroup.CurrentChatGroupModel.Users
-                    .Where(u => u.UserProfile.IsOnline).Except(bannedGroup.GroupedUsers).ToList());
-
-            onlineGroup.UsersCount = onlineGroup.GroupedUsers.Where(user => user.UserProfile.Username != CurrentUser.UserProfile.Username).Count();
-
-            Group offlineGroup = Groups.FirstOrDefault(g => g.Name.Equals(nameof(UserGroups.Offline)));
-            offlineGroup.GroupedUsers = new ObservableCollection<UserModel>(CurrentChatGroup.CurrentChatGroupModel.Users
-                    .Except(bannedGroup.GroupedUsers).Except(onlineGroup.GroupedUsers).ToList());
-
-            offlineGroup.UsersCount = offlineGroup.GroupedUsers.Where(user => user.UserProfile.Username != CurrentUser.UserProfile.Username).Count();
-
-            Application.Current.Dispatcher.Invoke(() =>
-            {
-                UsersCollectionView.Refresh();
-            });
         }
 
-        private void ChatService_UserListReceived(ObservableCollection<UserModel>/*List<UserModel>*/ allUsers)
+        private void ChatService_UserListReceived(ObservableCollection<UserModel> allUsers)
         {
-            if (AllUsers.Count != 0 && SelectedUserIndex != -1)
-            {
-                _temporarySelectedItem = (UserModel)SelectedItem;/*AllUsers[SelectedUserIndex]*/;
-            }
+            //if (AllUsers.Count != 0 && SelectedUserIndex != -1)
+            //{
+            //    _temporarySelectedItem = (UserModel)SelectedItem;
 
-            AllUsers = allUsers;
+            //    _canCloseChat = false;
+            //    //_temporarySelectedIndex = SelectedUserIndex;
+            //}
+
+            _canCloseChat = false;
+
+            List<UserModel> allUsersExceptCurrent = allUsers.Where(u => u.UserProfile.Username != CurrentUser.UserProfile.Username).ToList();
+
+            AllUsers = new ObservableCollection<UserModel>(allUsersExceptCurrent);
 
             FilterUsersCollectionView = CollectionViewSource.GetDefaultView(AllUsers);
             FilterUsersCollectionView.Filter = FilterUsers;
+
+            //SelectedItem = _temporarySelectedItem;
+
+            //if (_temporarySelectedItem != null)
+            //{
+            //    SelectedUserIndex = AllUsers.IndexOf(AllUsers.First(u => u.UserProfile.Id == _temporarySelectedItem.UserProfile.Id));
+            //}
+
+            _canCloseChat = true;
         }
 
         private async void ChatService_ReceivedBan(BanStatusModel model)
@@ -400,7 +441,7 @@ namespace ChatClient.MVVM.ViewModels.ChatMainViewModels
                 {
                     MessageBox.Show(string.Format("{0} was changed successfully", PropertyName));
                 });
-                
+
                 ChangeUserSettingsCommand.Execute(ChangeSettingsType.None);
             }
             else
@@ -476,7 +517,7 @@ namespace ChatClient.MVVM.ViewModels.ChatMainViewModels
 
                 //SelectedItem = _temporarySelectedItem;
                 //_temporarySelectedItem = null;
-            }   
+            }
         }
 
         public MuteStatusModel MuteStatus
@@ -592,15 +633,15 @@ namespace ChatClient.MVVM.ViewModels.ChatMainViewModels
             }
         }
 
-        public bool CanCloseChat
-        {
-            get => _canCloseChat;
-            set
-            {
-                _canCloseChat = value;
-                OnPropertyChanged();
-            }
-        }
+        //public bool CanCloseChat
+        //{
+        //    get => _canCloseChat;
+        //    set
+        //    {
+        //        _canCloseChat = value;
+        //        OnPropertyChanged();
+        //    }
+        //}
 
         public bool NeedToUpdateMessagesCount
         {
@@ -627,14 +668,19 @@ namespace ChatClient.MVVM.ViewModels.ChatMainViewModels
             get => _selectedItem;
             set
             {
-                if (value == null && _temporarySelectedItem != null)
-                {
-                    _selectedItem = _temporarySelectedItem;
-                }
-                else
+                if (_canCloseChat)
                 {
                     _selectedItem = value;
                 }
+                //if (value == null && _temporarySelectedItem != null)
+                //{
+                //    _selectedItem = _temporarySelectedItem;
+                //    _temporarySelectedItem = null;
+                //}
+                //else
+                //{
+                //    _selectedItem = value;
+                //}
 
                 OnPropertyChanged();
             }
@@ -716,10 +762,24 @@ namespace ChatClient.MVVM.ViewModels.ChatMainViewModels
             get => _selectedUserIndex;
             set
             {
-                if (CanCloseChat || value != -1)
+                if (_canCloseChat)
                 {
                     _selectedUserIndex = value;
                 }
+                //if (CanCloseChat || value != -1 )
+                //{
+                //    _selectedUserIndex = value;
+                //    //if (_temporarySelectedIndex != 0 )
+                //    //{
+                //    //    _selectedUserIndex = value;
+                //    //}
+                //    //else
+                //    //{
+                //    //    _selectedUserIndex = _temporarySelectedIndex;
+                //    //    _temporarySelectedIndex = -1;
+                //    //}
+
+                //}
 
                 OnPropertyChanged();
                 OnPropertyChanged(nameof(AllUsers));

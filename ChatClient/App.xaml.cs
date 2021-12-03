@@ -1,8 +1,10 @@
-﻿using ChatClient.Factories.ViewModelFactories;
+﻿using AutoMapper;
+using ChatClient.Factories.ViewModelFactories;
 using ChatClient.Interfaces;
 using ChatClient.Interfaces.BaseConfiguration;
 using ChatClient.Interfaces.Factories;
 using ChatClient.MVVM.ViewModels.BaseViewModels;
+using ChatClient.MVVM.ViewModels.ChatFeaturesModels;
 using ChatClient.MVVM.ViewModels.ChatMainViewModels;
 using ChatClient.Services;
 using ChatClient.Services.BaseConfiguration;
@@ -26,6 +28,10 @@ namespace ChatClient
         protected override void OnStartup(StartupEventArgs e)
         {
             IServiceProvider serviceProvider = CreateServiceProvider();
+
+            //var config = new MapperConfiguration(cfg => cfg.CreateMap<MessageModel, MessageViewModel>());
+
+            //var mapper = config.CreateMapper();
 
             IWindowConfigurationService service = serviceProvider.GetRequiredService<IWindowConfigurationService>();
             Window window = serviceProvider.GetRequiredService<Window>();
@@ -62,6 +68,8 @@ namespace ChatClient
             services.AddScoped<ChatViewModelBase, LoginViewModel>();
 
             services.AddScoped<Window>(s=> new MainWindow(s.GetRequiredService<MainViewModel>()));
+
+            //services.AddAutoMapper(typeof(App));    
 
             return services.BuildServiceProvider();
         }

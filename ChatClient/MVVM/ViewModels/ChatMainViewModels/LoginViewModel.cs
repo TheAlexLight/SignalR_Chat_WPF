@@ -57,6 +57,9 @@ namespace ChatClient.MVVM.ViewModels.ChatMainViewModels
             {
                 MessageBox.Show("Username or password can't be found");
             }
+
+            IsLoading = false;
+            LoginCommand.RaiseCanExecuteChanged();
         }
 
         public string Username

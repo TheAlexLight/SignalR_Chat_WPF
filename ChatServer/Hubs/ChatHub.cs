@@ -169,13 +169,23 @@ namespace ChatServer.Hubs
                         && g.Users.Contains(selectedUser)
                         && g.Users.Contains(currentUser));
 
+
             group ??= await _groupsHelper.AddUsersToPrivateGroup(_dbContext, currentUser.UserProfile.Username, selectedUser.UserProfile.Username);
 
             UserHandler userHandler = _userHelper.FindUserHandler(Context, currentUser.UserProfile.Username);
-            
+
+            var timer = new Stopwatch();
+            timer.Start();
+
             await SendCurrentUser(userHandler);
 
+            //B: Run stuff you want timed
+            timer.Stop();
+
+            Trace.WriteLine(timer.ElapsedMilliseconds);
             await Clients.Caller.SendAsync("ReceiveCurrentGroup", group);
+
+
         }
 
         public async Task UpdateMessage(MessageModel message)
@@ -213,7 +223,7 @@ namespace ChatServer.Hubs
 
         public async Task SendUserList(UserHandler userHandler)
         {
-            List<UserModel> users = _dbContext.UserModels.Where(um=>um.UserProfile.Username != userHandler.ConnectedUsername).ToList();
+            List<UserModel> users = _dbContext.UserModels.ToList();/*.Where(um=>um.UserProfile.Username != userHandler.ConnectedUsername).ToList();*/
 
             await Clients.All.SendAsync("ReceiveUserList", new ObservableCollection<UserModel>(users));
         }

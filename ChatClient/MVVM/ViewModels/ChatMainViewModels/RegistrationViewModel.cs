@@ -1,4 +1,5 @@
-﻿using ChatClient.Commands.AuthenticationCommands;
+﻿using ChatClient.Commands;
+using ChatClient.Commands.AuthenticationCommands;
 using ChatClient.Commands.NavigatonCommands;
 using ChatClient.MVVM.ViewModels.BaseViewModels;
 using ChatClient.Services.BaseConfiguration;
@@ -20,26 +21,19 @@ namespace ChatClient.MVVM.ViewModels.ChatMainViewModels
 
             if (window != null)
             {
-               window = BaseConfiguration.WindowConfigurationService.SetWindowStartupData(window: window, width: 385, height: 545
-                    , left: window.Left, top: window.Top, minWidth: 385, minHeight: 545);
+                window = BaseConfiguration.WindowConfigurationService.SetWindowStartupData(window: window, width: 385, height: 545
+                     , left: window.Left, top: window.Top, minWidth: 385, minHeight: 545);
             }
 
             NavigateLoginCommand = new NavigateCommand<LoginViewModel>(BaseConfiguration, BaseConfiguration);
 
             RegistrationCommand = new RegistrationCommand(this);
 
-
-            //if (!BaseConfiguraction.ChatService.IsEventHandlerRegistered())
-            //{
-                BaseConfiguration.ChatService.AuthorizationModel.RegistrationResultReceived += ChatService_ReceiveRegistrationResult;
-            //}
-            
-
-             
+            BaseConfiguration.ChatService.AuthorizationModel.RegistrationResultReceived += ChatService_ReceiveRegistrationResult;
         }
 
         public ICommand NavigateLoginCommand { get; }
-        public ICommand RegistrationCommand { get; }
+        public CommandBase RegistrationCommand { get; }
 
         private string _username;
         private string _email;
@@ -128,6 +122,10 @@ namespace ChatClient.MVVM.ViewModels.ChatMainViewModels
             {
                 MessageBox.Show(error);
             }
+
+            IsLoading = false;
+
+            RegistrationCommand.RaiseCanExecuteChanged();
         }
     }
 }
