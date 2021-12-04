@@ -1,4 +1,5 @@
-﻿using Microsoft.Win32;
+﻿using ChatClient.Supplements.Extensions;
+using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -23,11 +24,11 @@ namespace ChatClient.Converters
             {
                 try
                 {
-                    Stream imageStream = new MemoryStream(imageInBytes);
+                    Stream _imageStream = new MemoryStream(imageInBytes);
 
                     image.BeginInit();
-                    image.StreamSource = imageStream;
-                    image.EndInit();
+                    image.StreamSource = _imageStream;
+                    image.EndInit();            
                 }
                 catch (Exception ex)
                 {

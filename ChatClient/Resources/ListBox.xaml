@@ -267,7 +267,8 @@
         <Setter Property="ItemsPanel">
             <Setter.Value>
                 <ItemsPanelTemplate>
-                    <VirtualizingStackPanel IsVirtualizing="True"/>
+                    <VirtualizingStackPanel IsVirtualizing="True"
+                                            VirtualizationMode="Recycling"/>
                 </ItemsPanelTemplate>
             </Setter.Value>
         </Setter>
@@ -297,10 +298,11 @@
                                     Height="30"
                                 VerticalAlignment="Top"
                                 Margin="0,10,0,0">
-                            <Ellipse >
+                            <Ellipse>
                                 <Ellipse.Fill>
-                                    <ImageBrush ImageSource="{Binding MessageModel.UserModel.UserProfile.Image, Converter={StaticResource byteToImageConverter}}"
-                                                                Stretch="UniformToFill"/>
+                                    <ImageBrush x:Name="imageBrush" ImageSource="{Binding Image}"
+                                                                Stretch="UniformToFill">
+                                    </ImageBrush>
                                 </Ellipse.Fill>
                             </Ellipse>
                             <Border.Style>

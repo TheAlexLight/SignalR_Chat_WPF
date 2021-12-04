@@ -40,7 +40,6 @@ namespace ChatClient.MVVM.ViewModels.ChatMainViewModels
     {
         public ChatViewModel(ChatBaseConfiguration baseConfiguration) : base(baseConfiguration)
         {
-
             InitializeFields(BaseConfiguration.ChatService);
             InitializeEvents(BaseConfiguration.ChatService);
 
@@ -327,30 +326,13 @@ namespace ChatClient.MVVM.ViewModels.ChatMainViewModels
                 {
                     CurrentChatGroup.CurrentChatGroupModel = currentGroup;
 
-
-                    Application.Current.Dispatcher.Invoke(() =>
-                    {
-                        CurrentChatGroup.MessagesViewModel.Clear();
-                    });
-
+                    CurrentChatGroup.MessagesViewModel.Clear();
+                    
                     foreach (MessageModel messageModel in CurrentChatGroup.CurrentChatGroupModel.Messages)
                     {
-                        Application.Current.Dispatcher.Invoke(() =>
-                        {
-                            CurrentChatGroup.MessagesViewModel.Add(new MessageViewModel(messageModel));
-                        });
+                        CurrentChatGroup.MessagesViewModel.Add(new MessageViewModel(messageModel));
                     }
                 }
-
-
-                //var config = new MapperConfiguration(cfg => cfg.CreateMap<MessageModel, MessageViewModel>());
-
-                // BaseConfiguration.Mapper = config.CreateMapper();
-
-                //var b = BaseConfiguration.Mapper.Map<MessageViewModel>(CurrentChatGroup.CurrentChatGroupModel.Messages.ToList());
-
-                //List<MessageModel> a = CurrentChatGroup.CurrentChatGroupModel.Messages.ToList();
-                //CurrentChatGroup.MessagesViewModel = new ObservableCollection<MessageViewModel>(a);
 
                 Group bannedGroup = Groups.FirstOrDefault(g => g.Name.Equals(nameof(UserGroups.Banned)));
                 bannedGroup.GroupedUsers = new ObservableCollection<UserModel>(CurrentChatGroup.CurrentChatGroupModel.Users

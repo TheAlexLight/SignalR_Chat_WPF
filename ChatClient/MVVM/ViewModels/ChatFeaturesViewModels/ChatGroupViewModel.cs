@@ -12,6 +12,7 @@ namespace ChatClient.MVVM.ViewModels.ChatFeaturesModels
     public class ChatGroupViewModel : ViewModelBase
     {
         private ChatGroupModel _currentChatGroupModel;
+        private ObservableCollection<MessageViewModel> _messagesViewModel;
 
         public ChatGroupViewModel()
         {
@@ -27,6 +28,15 @@ namespace ChatClient.MVVM.ViewModels.ChatFeaturesModels
                 OnPropertyChanged();
             }
         }
-        public ObservableCollection<MessageViewModel> MessagesViewModel { get; set; }
+
+        public ObservableCollection<MessageViewModel> MessagesViewModel
+        {
+            get => _messagesViewModel; 
+            set
+            {
+                _messagesViewModel = value;
+                OnPropertyChanged();
+            }
+        }
     }
 }

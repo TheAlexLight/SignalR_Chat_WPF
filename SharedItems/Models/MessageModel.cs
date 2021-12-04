@@ -23,6 +23,11 @@ namespace SharedItems.Models
         private MessageStatus _checkStatus;
         private double _messageHeight;
 
+        private MessageInformationModel _message;
+        private UserModel _userModel;
+        private HyperlinkDescriptionModel _hyperlinkDescriptionModel;
+        private ChatGroupModel _chatGroupModel;
+
         public int Id { get; set; }
         public int UserModelId { get; set; }
         public int ChatGroupModelId { get; set; }
@@ -53,12 +58,46 @@ namespace SharedItems.Models
         }
 
         public int Count { get; set; }
-        public virtual MessageInformationModel Message { get; set; }
+        public virtual MessageInformationModel Message
+        {
+            get => _message;
+            set
+            {
+                _message = value;
+                OnPropertyChanged();
+            }
+        }
         public MessageInformationType MessageInformationType { get; set; }
         public string Sender { get; set; }
-        public virtual HyperlinkDescriptionModel HyperlinkDescriptionModel { get; set; }
-        public virtual UserModel UserModel { get; set; }
+        
+        public virtual HyperlinkDescriptionModel HyperlinkDescriptionModel
+        {
+            get => _hyperlinkDescriptionModel;
+            set
+            {
+                _hyperlinkDescriptionModel = value;
+                OnPropertyChanged();
+            }
+        }
 
-        public virtual ChatGroupModel ChatGroupModel { get; set; }
+        public virtual UserModel UserModel
+        {
+            get => _userModel;
+            set
+            {
+                _userModel = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public virtual ChatGroupModel ChatGroupModel
+        {
+            get => _chatGroupModel;
+            set
+            {
+                _chatGroupModel = value;
+                OnPropertyChanged();
+            }
+        }
     }
 }
