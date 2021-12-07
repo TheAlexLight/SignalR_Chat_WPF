@@ -1,24 +1,17 @@
-﻿using CefSharp;
-using CefSharp.Wpf;
-using SharedItems.Models;
+﻿using SharedItems.Models;
 using Syroot.Windows.IO;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
-using System.Text;
+using System.Net.Sockets;
 using System.Text.RegularExpressions;
-using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Threading;
 
 namespace ChatClient.Supplements.Helpers
 {
@@ -44,7 +37,7 @@ namespace ChatClient.Supplements.Helpers
         public static void SetText(DependencyObject d, string value)
         { d.SetValue(TextProperty, value); }
 
-        private static void OnTextChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        private static async void OnTextChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             TextBlock textBlock = d as TextBlock;
 
@@ -71,12 +64,13 @@ namespace ChatClient.Supplements.Helpers
                 if (match.Index != lastPosition)
                 {
                     string rawText = newText.Substring(lastPosition, match.Index - lastPosition);
+                    
                     textBlock.Inlines.Add(new Run(rawText));
                 }
 
                 Hyperlink link = SetLinkAddress(match);
 
-                if (link.NavigateUri != null)
+                if (link.NavigateUri != null /*&& await DoesUrlExists(link.NavigateUri)*/)
                 {
                     link.Click += OnUrlClick;
 
@@ -107,19 +101,48 @@ namespace ChatClient.Supplements.Helpers
         {
             Hyperlink link = SetLinkAddress(lastRegex);
 
-            HttpClient httpClient = new();
-
-            _responseString = await httpClient.GetStringAsync(link.NavigateUri);
-
             HyperlinkDescriptionModel hyperlinkDescription = new();
 
-            if (_responseString != null)
+            if (await DoesUrlExists(link.NavigateUri))
             {
-                hyperlinkDescription = ReadWebSource(_responseString);
+                using (HttpClient httpClient = new HttpClient())
+                {
+                    _responseString = await httpClient.GetStringAsync(link.NavigateUri);
+
+                    if (_responseString != null)
+                    {
+                        hyperlinkDescription = ReadWebSource(_responseString);
+                    }
+                }
             }
 
             return hyperlinkDescription;
         }
+
+        private static async Task<bool> DoesUrlExists(Uri url)
+        {
+            try
+            {
+                using (HttpClient client = new HttpClient())
+                {
+                    //Do only Head request to avoid download full file
+                    var response = await client.SendAsync(new HttpRequestMessage(HttpMethod.Head, url));
+
+                    if (response.IsSuccessStatusCode)
+                    {
+                        //Url is available is we have a SuccessStatusCode
+                        return true;
+                    }
+
+                    return false;
+                }
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
         private static HyperlinkDescriptionModel ReadWebSource(string webPageSource)
         {
             const string PAGE_TITLE_START_KEY = "og:site_name\" content=\"";
