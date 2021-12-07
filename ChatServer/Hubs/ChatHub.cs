@@ -204,7 +204,7 @@ namespace ChatServer.Hubs
         private async Task UpdateChat(UserHandler userHandler)
         {
             await SendCurrentUser(userHandler);
-            await SendUserList(userHandler);
+            await SendUserList();
         }
 
         public async Task SendCurrentUser(UserHandler userHandler)
@@ -221,7 +221,7 @@ namespace ChatServer.Hubs
             await Clients.Client(userHandler.ConnectedIds).SendAsync("ReceiveCurrentUser", user.UserModel);
         }
 
-        public async Task SendUserList(UserHandler userHandler)
+        public async Task SendUserList()
         {
             List<UserModel> users = _dbContext.UserModels.ToList();/*.Where(um=>um.UserProfile.Username != userHandler.ConnectedUsername).ToList();*/
 
@@ -256,8 +256,21 @@ namespace ChatServer.Hubs
                 
                 await UpdateChat(userHandler);
 
-                await SendConcreteGroup(currentGroup.Name, group);
+                //await SendConcreteGroup(currentGroup.Name, group);
+                await SendPublicGroup();
             }
+        }
+
+        public async Task SendDeleteMessage(MessageModel message)
+        {
+            _dbContext.Messages.Remove(message);
+
+            await _dbContext.SaveChangesAsync();
+
+            UserHandler userHandler = Account.Users.First(a => a.ConnectedIds == Context.ConnectionId);
+
+            await UpdateChat(userHandler);
+            await SendPublicGroup();
         }
 
         public async Task SendUpdateMessage(MessageModel message, ChatGroupModel currentGroup)

@@ -46,6 +46,8 @@ namespace ChatClient.Services.ConcreteConfiguration
             MessagesManagementModel = new MessagesManagementModel(this);
 
             UsersUpdateModel = new UsersUpdateModel(this);
+
+            MessageContextMenu = new MessageContextMenu(this);
         }
 
         public HubConnection Connection { get; }
@@ -57,6 +59,8 @@ namespace ChatClient.Services.ConcreteConfiguration
         public IMessagesManagement MessagesManagementModel { get; set; }
 
         public IUsersUpdateResult UsersUpdateModel { get; set; }
+
+        public IContextMenu MessageContextMenu { get; set; }
 
         public bool IsEventHandlerRegistered(Delegate handlerList, Delegate prospectiveHandler)
         {

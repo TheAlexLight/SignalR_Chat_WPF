@@ -32,13 +32,13 @@ namespace ChatClient.Commands
                 {
                     _viewModel.UsersColumnWidth = new GridLength(1, GridUnitType.Star);
                     _viewModel.MessagesColumnWidth = new GridLength(2.5, GridUnitType.Star);
-                    //_viewModel.SelectedUserIndex = -1;
+                    _viewModel.SelectedUserIndex = -1;
                 }
                 else
                 {
                     _viewModel.UsersColumnWidth = new GridLength(1, GridUnitType.Star);
                     _viewModel.MessagesColumnWidth = new GridLength(2.5, GridUnitType.Star);
-                   // _viewModel.SelectedUserIndex = 0;
+                    _viewModel.SelectedUserIndex = 0;
                 }
 
                 await _viewModel.BaseConfiguration.ChatService.SwitchChat(currentChatType, _viewModel.CurrentUser);

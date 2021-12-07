@@ -14,7 +14,6 @@ C:\Users\oyudi\Alexander\Programming\SignalR_Chat_WPF\SharedItems\bin\Debug\net5
 C:\Users\oyudi\Alexander\Programming\SignalR_Chat_WPF\SharedItems\bin\Debug\net5.0\SharedItems.dll
 C:\Users\oyudi\Alexander\Programming\SignalR_Chat_WPF\SharedItems\bin\Debug\net5.0\ref\SharedItems.dll
 C:\Users\oyudi\Alexander\Programming\SignalR_Chat_WPF\SharedItems\bin\Debug\net5.0\SharedItems.pdb
-C:\Users\oyudi\Alexander\Programming\SignalR_Chat_WPF\SharedItems\obj\Debug\net5.0\SharedItems.csproj.AssemblyReference.cache
 C:\Users\oyudi\Alexander\Programming\SignalR_Chat_WPF\SharedItems\obj\Debug\net5.0\SharedItems.GeneratedMSBuildEditorConfig.editorconfig
 C:\Users\oyudi\Alexander\Programming\SignalR_Chat_WPF\SharedItems\obj\Debug\net5.0\SharedItems.AssemblyInfoInputs.cache
 C:\Users\oyudi\Alexander\Programming\SignalR_Chat_WPF\SharedItems\obj\Debug\net5.0\SharedItems.AssemblyInfo.cs

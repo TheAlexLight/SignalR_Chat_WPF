@@ -24,10 +24,10 @@ namespace ChatClient.Converters
             {
                 try
                 {
-                    Stream _imageStream = new MemoryStream(imageInBytes);
+                    Stream imageStream = new MemoryStream(imageInBytes);
 
                     image.BeginInit();
-                    image.StreamSource = _imageStream;
+                    image.StreamSource = imageStream;
                     image.EndInit();            
                 }
                 catch (Exception ex)

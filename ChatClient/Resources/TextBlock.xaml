@@ -73,7 +73,12 @@
     </Style>
 
     <Style x:Key="selectableTextBlock" TargetType="{x:Type TextBlock}">
+        <Setter Property="Margin" Value="10,-5,0,0"/>
         <Setter Property="Focusable" Value="True"/>
+        <Setter Property="FontSize" Value="20"/>
+        <Setter Property="TextWrapping" Value="Wrap"/>
+        <Setter Property="HorizontalAlignment" Value="Left"/>
+        <Setter Property="Visibility" Value="Collapsed"/>
         <Style.Triggers>
             <Trigger Property="IsMouseOver" Value="True">
                 <Setter Property="Cursor" Value="SizeNS"/>
@@ -85,5 +90,4 @@
         <Setter Property="FontSize" Value="22"/>
         <Setter Property="VerticalAlignment" Value="Center" />
     </Style>
-
 </ResourceDictionary>

@@ -116,6 +116,7 @@ namespace ChatClient.MVVM.ViewModels.ChatMainViewModels
         public ICommand ChangeEmailCommand { get; private set; }
         public ICommand ChangePasswordCommand { get; private set; }
         public ICommand ChangeUserSettingsCommand { get; private set; }
+        public ICommand DeleteMessageCommand { get; set; }
         #endregion
 
         public ICollectionView UsersCollectionView
@@ -169,6 +170,8 @@ namespace ChatClient.MVVM.ViewModels.ChatMainViewModels
             ChangeUsernameCommand = new ChangeUsernameCommand(this);
             ChangePasswordCommand = new ChangePasswordCommand(this);
             ChangeEmailCommand = new ChangeEmailCommand(this);
+            DeleteMessageCommand = new DeleteMessageCommand(BaseConfiguration);
+           
             Message = new();
             MuteStatus = new();
             UsersFilter = string.Empty;
@@ -321,7 +324,7 @@ namespace ChatClient.MVVM.ViewModels.ChatMainViewModels
                     currentGroup.Users = currentGroup.Users.Where(um => um.UserProfile.Username != CurrentUser.UserProfile.Username).ToList();
                 }
 
-                if (CurrentChatGroup.CurrentChatGroupModel == null || (SelectedItem != null && currentGroup.Users
+                if (CurrentChatType == ChatType.Public || CurrentChatGroup.CurrentChatGroupModel == null || (SelectedItem != null && currentGroup.Users
                         .Any(u=>u.UserProfile.Username == ((UserModel)SelectedItem).UserProfile.Username)))
                 {
                     CurrentChatGroup.CurrentChatGroupModel = currentGroup;

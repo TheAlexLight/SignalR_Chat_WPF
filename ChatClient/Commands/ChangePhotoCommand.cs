@@ -24,7 +24,7 @@ namespace ChatClient.Commands
             _viewModel = viewModel;
         }
 
-        public override void Execute(object parameter)
+        public async override void Execute(object parameter)
         {
             string filter = "Image Files(*.jpg; *.jpeg; *.gif; *.bmp; *.png)" +
                     "   |*.jpg; *.jpeg; *.gif; *.bmp; *.png";
@@ -35,7 +35,7 @@ namespace ChatClient.Commands
 
             if (imageInBytes != null)
             {
-                _viewModel.BaseConfiguration.ChatService.ChangePhoto(_viewModel.CurrentUser, imageInBytes);
+                await _viewModel.BaseConfiguration.ChatService.ChangePhoto(_viewModel.CurrentUser, imageInBytes);
             }
         }
     }

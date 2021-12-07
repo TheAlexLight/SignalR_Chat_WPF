@@ -16,7 +16,7 @@
         <ResourceDictionary Source="ToolBar.xaml"/>
         <ResourceDictionary Source="ScrollBar.xaml"/>
     </ResourceDictionary.MergedDictionaries>
-    
+
     <converters:ByteToImageConverter x:Key="byteToImageConverter"/>
     <converters:MessageStatusToImageConverter x:Key="messageStatusToImageConverter"/>
     <converters:UncheckedMessagesConverter x:Key="uncheckedMessagesConverter"/>
@@ -240,7 +240,8 @@
                                              RelativeSource="{RelativeSource AncestorType={x:Type UserControl}}"/>
                                 </MultiBinding>
                             </TextBlock.Text>
-                        </TextBlock><!--="{Binding ., Converter={ StaticResource uncheckedMessagesConverter}}"/>-->
+                        </TextBlock>
+                        <!--="{Binding ., Converter={ StaticResource uncheckedMessagesConverter}}"/>-->
                     </Grid>
                     <DataTemplate.Triggers>
                         <DataTrigger Binding="{Binding UserProfile.IsOnline}" Value="True">
@@ -263,7 +264,7 @@
         <Setter Property="HorizontalContentAlignment" Value="Left" />
         <Setter Property="VerticalContentAlignment" Value="Top" />
 
-            <Setter Property="extensions:DropFilesBehaviorExtension.IsEnabled" Value="True"/>
+        <Setter Property="extensions:DropFilesBehaviorExtension.IsEnabled" Value="True"/>
         <Setter Property="ItemsPanel">
             <Setter.Value>
                 <ItemsPanelTemplate>
@@ -316,14 +317,7 @@
                                 </Style>
                             </Border.Style>
                         </Border>
-                        <Border CornerRadius="5"
-                            BorderThickness="0"
-                            BorderBrush="Black"
-                            Margin="5"
-                            Padding="5,5,10,5"
-                            Background="#D1D3EE"
-                            MaxWidth="400"
-                            HorizontalAlignment="Left">
+                        <Border Style="{StaticResource messagesBorder}">
                             <DockPanel Name="dockPanel"
                                Background="Transparent">
                                 <i:Interaction.Triggers>
@@ -342,18 +336,6 @@
                                             </i:InvokeCommandAction.CommandParameter>
                                         </i:InvokeCommandAction>
                                     </i:EventTrigger>
-                                    <!--<i:EventTrigger  EventName="Loaded">
-                                <i:InvokeCommandAction Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type UserControl}}
-                                            , Path=DataContext.MessageLoadedCommand}">
-                                    <i:InvokeCommandAction.CommandParameter>
-                                        <MultiBinding Converter="{StaticResource multiBindingConverter}">
-                                            <Binding Path="."/>
-                                            <Binding ElementName="dockPanel"/>
-                                            <Binding Source="2"/>
-                                        </MultiBinding>
-                                    </i:InvokeCommandAction.CommandParameter>
-                                </i:InvokeCommandAction>
-                            </i:EventTrigger>-->
                                     <i:EventTrigger  EventName="Loaded"
                                              SourceObject="{Binding RelativeSource={RelativeSource AncestorType={x:Type extensions:ScrollViewerExtension}}}"
                                              SourceName="scroll">
@@ -389,19 +371,13 @@
                                        Margin="5,0,0,0"/>
                                     </StackPanel>
                                     <StackPanel>
-                                        <TextBlock
-                                       x:Name="textMessage"
-                                       Margin="10,-5,0,0"
-                                       Foreground="Black"
-                                        Focusable="True"
-                                       FontSize="20"
-                                       TextWrapping="Wrap"
-                                       HorizontalAlignment="Left"
-                                       Visibility="Collapsed"
-                                       helpers:HyperlinksDetetectionHelper.Text="{Binding MessageModel.Message.TextMessage, Mode=TwoWay}"
-                                        Style="{StaticResource selectableTextBlock}">
+                                        <TextBlock Style="{StaticResource selectableTextBlock}"
+                                                   x:Name="textMessage"
+                                                   helpers:HyperlinksDetetectionHelper.Text="{Binding MessageModel.Message.TextMessage, Mode=TwoWay}">
                                         <i:Interaction.Behaviors>
-                                            <behaviors:SelectableTextBlockBehavior/>
+                                            <behaviors:SelectableTextBlockBehavior 
+                                                CopyText="{Binding ElementName=copyTextMenuItem}"
+                                                DeleteMessage="{Binding ElementName=deleteMessageMenuItem}"/>
                                         </i:Interaction.Behaviors>
                                         </TextBlock>
                                         <DockPanel Focusable="True" Visibility="{Binding HyperlinkPanelVisibility}">
@@ -424,9 +400,9 @@
                                                Text="{Binding MessageModel.HyperlinkDescriptionModel.HyperlinkDescription}"
                                                        helpers:HyperlinksDetetectionHelper.Text="{Binding MessageModel.HyperlinkDescriptionModel.HyperlinkDescription}"
                                                        Style="{StaticResource selectableTextBlock}">
-                                                 <i:Interaction.Behaviors>
-                                            <behaviors:SelectableTextBlockBehavior/>
-                                        </i:Interaction.Behaviors>
+                                                    <i:Interaction.Behaviors>
+                                                        <behaviors:SelectableTextBlockBehavior/>
+                                                    </i:Interaction.Behaviors>
                                                 </TextBlock>
                                                 <Image Source="{Binding MessageModel.HyperlinkDescriptionModel.HyperlinkImage, Converter={StaticResource byteToImageConverter}}"
                                        MaxHeight="250"
@@ -444,6 +420,14 @@
                                    HorizontalAlignment="Left"/>
                                 </DockPanel>
                             </DockPanel>
+                            <Border.ContextMenu>
+                                <ContextMenu>
+                                    <MenuItem Header="Copy text"
+                                              Name="copyTextMenuItem"/>
+                                    <MenuItem Header="Delete message"
+                                              Name="deleteMessageMenuItem"/>
+                                </ContextMenu>
+                            </Border.ContextMenu>
                         </Border>
                     </DockPanel>
                     <DataTemplate.Triggers>
