@@ -1,6 +1,7 @@
 ﻿using ChatClient.Commands.AuthenticationCommands;
 using ChatClient.Enums;
 using ChatClient.Interfaces;
+using ChatClient.Interfaces.Authorization;
 using ChatClient.MVVM.Models.CommandModels.CommandModelsBase;
 using ChatClient.MVVM.ViewModels.BaseViewModels;
 using ChatClient.MVVM.ViewModels.ChatFeaturesModels;
@@ -30,12 +31,14 @@ using System.Windows.Media.Imaging;
 
 namespace ChatClient.MVVM.ViewModels.ChatMainViewModels
 {
-    public class ChatViewModel : ChatViewModelBase, IDataErrorInfo, IFilesDropped
+    public class ChatViewModel : ChatViewModelBase, IFilesDropped
     {
         public ChatViewModel(ChatBaseConfiguration baseConfiguration) : base(baseConfiguration)
         {
             CommandsModel = new ChatCommandsModelBase(this, baseConfiguration.ChatService);
             ReconnectionCommand = new ReconnectionCommand(this, CurrentUser);
+
+            UserCredentials = new UserCredentialsViewModel();
 
             InitializeFields();
             InitializeEvents(BaseConfiguration.ChatService);
@@ -56,14 +59,12 @@ namespace ChatClient.MVVM.ViewModels.ChatMainViewModels
         }
 
         #region Private Fields
+
         private string _usersFilter;
-        private string _usernameSettingsText;
-        private string _emailSettingsText;
+
         private string _resetScroll;
-        private string _password;
-        private string _passwordConfirm;
+
         private string _descriptionText;
-        //private ObservableCollection<MessageModel> _messages;
 
         private MessageInformationModel _message;
         private ObservableCollection<UserModel> _allUsers;
@@ -72,12 +73,10 @@ namespace ChatClient.MVVM.ViewModels.ChatMainViewModels
         private UserModel _selectedUser;
         private MuteStatusModel _muteStatus;
         private ChatGroupViewModel _currentChatGroup;
-        private UserModel _temporarySelectedItem = null;
 
         private object _selectedItem;
 
         private int _selectedUserIndex;
-        //private int _temporarySelectedIndex = -1;
 
         private bool _isUserInfoOpened;
         private bool _isSettingsOpened;
@@ -95,6 +94,8 @@ namespace ChatClient.MVVM.ViewModels.ChatMainViewModels
         private ICollectionView _usersCollectionView;
         private ICollectionView _filterUsersCollectionView;
         #endregion
+
+        public IUserSettings UserCredentials { get; }
 
         public ChatCommandsModelBase CommandsModel { get; set; }
 
@@ -239,30 +240,6 @@ namespace ChatClient.MVVM.ViewModels.ChatMainViewModels
             });
 
             return viewModel;
-        }
-
-        public string Error { get; }
-
-        public string this[string propertyName]
-        {
-            get
-            {
-                string result = string.Empty;
-
-                propertyName ??= string.Empty;
-
-                if (propertyName != string.Empty
-                        && (propertyName == nameof(PasswordConfirm) || propertyName == nameof(Password))
-                        && PasswordConfirm != null && Password != null)
-                {
-                    if (!Password.Equals(PasswordConfirm, StringComparison.Ordinal))
-                    {
-                        result = "Passwords do not match";
-                    }
-                }
-
-                return result;
-            }
         }
 
         protected async override Task Reconnect()
@@ -585,16 +562,6 @@ namespace ChatClient.MVVM.ViewModels.ChatMainViewModels
             }
         }
 
-        public string UsernameSettingsField
-        {
-            get => _usernameSettingsText;
-            set
-            {
-                _usernameSettingsText = value;
-                OnPropertyChanged();
-            }
-        }
-
         public object SelectedItem
         {
             get => _selectedItem;
@@ -605,37 +572,6 @@ namespace ChatClient.MVVM.ViewModels.ChatMainViewModels
                     _selectedItem = value;
                 }
 
-                OnPropertyChanged();
-            }
-        }
-
-        public string Password
-        {
-            get => _password;
-            set
-            {
-                _password = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public string PasswordConfirm
-        {
-            get => _passwordConfirm;
-            set
-            {
-                _passwordConfirm = value;
-                OnPropertyChanged();
-                OnPropertyChanged(nameof(Password));
-            }
-        }
-
-        public string EmailSettingsField
-        {
-            get => _emailSettingsText;
-            set
-            {
-                _emailSettingsText = value;
                 OnPropertyChanged();
             }
         }

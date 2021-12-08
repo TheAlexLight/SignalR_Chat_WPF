@@ -29,12 +29,12 @@ namespace ChatClient.Commands.CustomViewsCommands
                 {
                     _viewModel.NeedToClearPassword = true;
 
-                    _viewModel.UsernameSettingsField = string.Empty;
+                    _viewModel.UserCredentials.UsernameSettings = string.Empty;
 
-                    _viewModel.EmailSettingsField = string.Empty;
+                    _viewModel.UserCredentials.EmailSettings = string.Empty;
 
-                    _viewModel.Password = string.Empty;
-                    _viewModel.PasswordConfirm = string.Empty;
+                    _viewModel.UserCredentials.Password = string.Empty;
+                    _viewModel.UserCredentials.PasswordConfirm = string.Empty;
                 }
             }
         }

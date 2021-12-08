@@ -37,7 +37,7 @@ namespace ChatClient.Supplements.Helpers
         public static void SetText(DependencyObject d, string value)
         { d.SetValue(TextProperty, value); }
 
-        private static async void OnTextChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        private static void OnTextChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             TextBlock textBlock = d as TextBlock;
 

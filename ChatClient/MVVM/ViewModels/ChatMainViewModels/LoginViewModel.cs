@@ -2,6 +2,7 @@
 using ChatClient.Commands.AuthenticationCommands;
 using ChatClient.Commands.NavigatonCommands;
 using ChatClient.Enums;
+using ChatClient.Interfaces.Authorization;
 using ChatClient.MVVM.ViewModels.BaseViewModels;
 using ChatClient.Services.BaseConfiguration;
 using ChatClient.Services.ConcreteConfiguration;
@@ -19,6 +20,8 @@ namespace ChatClient.MVVM.ViewModels.ChatMainViewModels
     {
         public LoginViewModel(ChatBaseConfiguration baseConfiguration) : base(baseConfiguration)
         {
+            UserCredentials = new UserCredentialsViewModel();
+
             BaseConfiguration.ChatService.AuthorizationModel.LoginResultReceived += ChatService_ReceiveLoginResult;
 
             LoginCommand = new LoginCommand(this);
@@ -39,10 +42,10 @@ namespace ChatClient.MVVM.ViewModels.ChatMainViewModels
             }
         }
 
-        private string _username;
-        private string _password;
+        public ILogin UserCredentials { get; set; }
 
         public CommandBase LoginCommand { get; }
+
         public ICommand NavigateRegistrationCommand { get; }
 
         private void ChatService_ReceiveLoginResult(bool loginResult)
@@ -60,25 +63,6 @@ namespace ChatClient.MVVM.ViewModels.ChatMainViewModels
 
             IsLoading = false;
             LoginCommand.RaiseCanExecuteChanged();
-        }
-
-        public string Username
-        {
-            get => _username;
-            set
-            {
-                _username = value;
-                OnPropertyChanged();
-            }
-        }
-        public string Password
-        {
-            get => _password;
-            set
-            {
-                _password = value;
-                OnPropertyChanged();
-            }
         }
     }
 }

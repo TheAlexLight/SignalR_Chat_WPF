@@ -1,6 +1,7 @@
 ﻿using ChatClient.Commands;
 using ChatClient.Commands.AuthenticationCommands;
 using ChatClient.Commands.NavigatonCommands;
+using ChatClient.Interfaces.Authorization;
 using ChatClient.MVVM.ViewModels.BaseViewModels;
 using ChatClient.Services.BaseConfiguration;
 using ChatClient.Services.ConcreteConfiguration;
@@ -13,7 +14,7 @@ using System.Windows.Input;
 
 namespace ChatClient.MVVM.ViewModels.ChatMainViewModels
 {
-    public class RegistrationViewModel : ChatViewModelBase, IDataErrorInfo/*, INotifyDataErrorInfo*/
+    public class RegistrationViewModel : ChatViewModelBase
     {
         public RegistrationViewModel(ChatBaseConfiguration baseConfiguration) : base(baseConfiguration)
         {
@@ -25,6 +26,8 @@ namespace ChatClient.MVVM.ViewModels.ChatMainViewModels
                      , left: window.Left, top: window.Top, minWidth: 385, minHeight: 545);
             }
 
+            UserCredentials = new UserCredentialsViewModel();
+
             NavigateLoginCommand = new NavigateCommand<LoginViewModel>(BaseConfiguration, BaseConfiguration);
 
             RegistrationCommand = new RegistrationCommand(this);
@@ -33,80 +36,10 @@ namespace ChatClient.MVVM.ViewModels.ChatMainViewModels
         }
 
         public ICommand NavigateLoginCommand { get; }
+
         public CommandBase RegistrationCommand { get; }
 
-        private string _username;
-        private string _email;
-        private string _password;
-        private string _passwordConfirm;
-
-        //public event EventHandler<DataErrorsChangedEventArgs> ErrorsChanged;
-
-        public string Username
-        {
-            get => _username;
-            set
-            {
-                _username = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public string Email
-        {
-            get => _email;
-            set
-            {
-                _email = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public string Password
-        {
-            get => _password;
-            set
-            {
-                _password = value;
-                OnPropertyChanged();
-                OnPropertyChanged(nameof(PasswordConfirm));
-            }
-        }
-
-        public string PasswordConfirm
-        {
-            get => _passwordConfirm;
-            set
-            {
-                _passwordConfirm = value;
-                OnPropertyChanged();
-                OnPropertyChanged(nameof(Password));
-            }
-        }
-
-        public string Error { get; }
-
-        public string this[string propertyName]
-        {
-            get
-            {
-                string result = string.Empty;
-
-                propertyName ??= string.Empty;
-
-                if (propertyName != string.Empty
-                        && (propertyName == nameof(PasswordConfirm) || propertyName == nameof(Password))
-                        && PasswordConfirm != null && Password != null)
-                {
-                    if (!Password.Equals(PasswordConfirm, StringComparison.Ordinal))
-                    {
-                        result = "Passwords do not match";
-                    }
-                }
-
-                return result;
-            }
-        }
+        public UserCredentialsViewModel UserCredentials { get; set; }
 
         private void ChatService_ReceiveRegistrationResult(bool registrationResult, string error)
         {

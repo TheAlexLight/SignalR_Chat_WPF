@@ -36,7 +36,7 @@
                     <TextBox Style="{StaticResource enterField}"
                              x:Name="txtUsername"
                              TextChanged="LoginField_TextOrPasswordChanged"
-                             Text="{Binding Username, UpdateSourceTrigger=PropertyChanged}"
+                             Text="{Binding UserCredentials.Username, UpdateSourceTrigger=PropertyChanged}"
                              Margin="10,0,10,10">
                     </TextBox>
                     <TextBlock Text="Password" 
@@ -49,7 +49,7 @@
                         Style="{StaticResource passwordField}"
                             x:Name="pwBoxPassword"
                             PasswordBox.PasswordChanged="LoginField_TextOrPasswordChanged"
-                            Password="{Binding Password}"/>
+                            Password="{Binding UserCredentials.Password}"/>
                     </Border>
                     <Button  Content="Login" 
                              Style="{StaticResource loginButton}"

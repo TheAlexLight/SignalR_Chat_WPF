@@ -21,7 +21,7 @@ namespace ChatClient.Commands.ChangeUserPropertyCommand
         {
             if (parameter is string password)
             {
-                _viewModel.BaseConfiguration.ChatService.CredentialModel.ChangeEmail(_viewModel.CurrentUser, _viewModel.EmailSettingsField, password);
+                _viewModel.BaseConfiguration.ChatService.CredentialModel.ChangeEmail(_viewModel.CurrentUser, _viewModel.UserCredentials.EmailSettings, password);
             }
         }
     }

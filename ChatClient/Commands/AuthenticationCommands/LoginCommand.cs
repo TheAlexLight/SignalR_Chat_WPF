@@ -37,8 +37,8 @@ namespace ChatClient.Commands.AuthenticationCommands
             {
                 UserLoginModel loginData = new()
                 {
-                    Username = _viewModel.Username,
-                    Password = _viewModel.Password
+                    Username = _viewModel.UserCredentials.Username,
+                    Password = _viewModel.UserCredentials.Password
                 };
 
                 await _viewModel.BaseConfiguration.ChatService.AuthorizationModel.Login(loginData);

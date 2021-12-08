@@ -61,7 +61,7 @@
                               TextChanged="UsernameTextControl_TextOrPasswordChanged"
                               Name="username">
                         <TextBox.Text>
-                            <Binding Path="UsernameSettingsField" 
+                            <Binding Path="UserCredentials.UsernameSettings" 
                                      UpdateSourceTrigger="PropertyChanged">
                                 <Binding.ValidationRules>
                                     <validators:UsernameValidator/>
@@ -138,7 +138,7 @@
                               Name="email"
                               TextChanged="EmailTextControl_TextOrPasswordChanged">
                         <TextBox.Text>
-                            <Binding Path="EmailSettingsField" 
+                            <Binding Path="UserCredentials.EmailSettings" 
                                      UpdateSourceTrigger="PropertyChanged">
                                 <Binding.ValidationRules>
                                     <validators:EmailValidator/>
@@ -233,7 +233,7 @@
                             x:Name="newPassword"
                             PasswordBox.PasswordChanged="PasswordTextControl_TextOrPasswordChanged">
                             <additionalViews:BindablePasswordBox.Password>
-                                <Binding Path="Password"
+                                <Binding Path="UserCredentials.Password"
                                          ValidatesOnDataErrors="True">
                                     <Binding.ValidationRules>
                                         <validators:PasswordValidator/>
@@ -254,7 +254,7 @@
                             x:Name="newPasswordConfirm"
                             PasswordBox.PasswordChanged="PasswordTextControl_TextOrPasswordChanged">
                             <additionalViews:BindablePasswordBox.Password>
-                                <Binding Path="PasswordConfirm"
+                                <Binding Path="UserCredentials.PasswordConfirm"
                                          ValidatesOnDataErrors="True">
                                     <Binding.ValidationRules>
                                         <validators:PasswordValidator/>

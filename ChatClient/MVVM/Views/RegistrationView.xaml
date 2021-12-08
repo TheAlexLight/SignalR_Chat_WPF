@@ -40,7 +40,7 @@
                              x:Name="txtUsername"
                                 TextChanged="RegistrationField_TextOrPasswordChanged">
                             <TextBox.Text>
-                                <Binding Path="Username" 
+                                <Binding Path="UserCredentials.Username" 
                                      UpdateSourceTrigger="PropertyChanged">
                                     <Binding.ValidationRules>
                                         <validators:UsernameValidator/>
@@ -58,7 +58,7 @@
                                  x:Name="txtEmail"
                                  TextChanged="RegistrationField_TextOrPasswordChanged">
                             <TextBox.Text>
-                                <Binding Path="Email" 
+                                <Binding Path="UserCredentials.Email" 
                                      UpdateSourceTrigger="PropertyChanged">
                                     <Binding.ValidationRules>
                                         <validators:EmailValidator/>
@@ -79,7 +79,7 @@
                             x:Name="pwBoxPassword"
                             PasswordBox.PasswordChanged="RegistrationField_TextOrPasswordChanged">
                                 <additionalViews:BindablePasswordBox.Password>
-                                    <Binding Path="Password"
+                                    <Binding Path="UserCredentials.Password"
                                          ValidatesOnDataErrors="True">
                                         <Binding.ValidationRules>
                                             <validators:PasswordValidator
@@ -102,7 +102,7 @@
                             x:Name="pwBoxPasswordConfirm"
                             PasswordBox.PasswordChanged="RegistrationField_TextOrPasswordChanged">
                                 <additionalViews:BindablePasswordBox.Password>
-                                    <Binding Path="PasswordConfirm" 
+                                    <Binding Path="UserCredentials.PasswordConfirm" 
                                          ValidatesOnDataErrors="True">
                                         <Binding.ValidationRules>
                                             <validators:PasswordValidator ValidationStep="UpdatedValue" />

@@ -34,10 +34,10 @@ namespace ChatClient.Commands.AuthenticationCommands
             {
                 UserRegistrationModel userData = new()
                 {
-                    Username = _viewModel.Username,
-                    Email = _viewModel.Email,
-                    Password = _viewModel.Password,
-                    PasswordConfirm = _viewModel.PasswordConfirm,
+                    Username = _viewModel.UserCredentials.Username,
+                    Email = _viewModel.UserCredentials.Email,
+                    Password = _viewModel.UserCredentials.Password,
+                    PasswordConfirm = _viewModel.UserCredentials.PasswordConfirm,
                 };
 
                 await _viewModel.BaseConfiguration.ChatService.AuthorizationModel.Register(userData);
