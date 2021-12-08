@@ -130,7 +130,7 @@
                                             </MenuItem>
                                             <MenuItem Style="{StaticResource baseMenuItem}"
                                                       Header="Kick"
-                                                      Command="{Binding RelativeSource={RelativeSource AncestorType= {x:Type UserControl}}, Path=DataContext.KickUserCommand}"
+                                                      Command="{Binding RelativeSource={RelativeSource AncestorType= {x:Type UserControl}}, Path=DataContext.CommandsModel.AdminCommandsModel.KickUserCommand}"
                                                       CommandParameter="{Binding ElementName=menu, Path=DataContext}"/>
                                             <MenuItem Header="Mute" Style="{StaticResource muteMenuItem}">
                                                 <MenuItem Header="10 min" 
@@ -325,7 +325,7 @@
                                              SourceObject="{Binding RelativeSource={ RelativeSource  AncestorType={x:Type extensions:ScrollViewerExtension}}}"
                                              SourceName="scroll">
                                         <i:InvokeCommandAction Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type UserControl}}
-                                            , Path=DataContext.MessageReadCommand}">
+                                            , Path=DataContext.CommandsModel.MessageCommandModel.MessageReadCommand}">
                                             <i:InvokeCommandAction.CommandParameter>
                                                 <MultiBinding Converter="{StaticResource multiBindingConverter}">
                                                     <Binding Path="."/>
@@ -340,7 +340,7 @@
                                              SourceObject="{Binding RelativeSource={RelativeSource AncestorType={x:Type extensions:ScrollViewerExtension}}}"
                                              SourceName="scroll">
                                         <i:InvokeCommandAction Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type UserControl}}
-                                            , Path=DataContext.MessageReadCommand}">
+                                            , Path=DataContext.CommandsModel.MessageCommandModel.MessageReadCommand}">
                                             <i:InvokeCommandAction.CommandParameter>
                                                 <MultiBinding Converter="{StaticResource multiBindingConverter}">
                                                     <Binding Path="."/>
@@ -426,6 +426,8 @@
                                               Name="copyTextMenuItem"/>
                                     <MenuItem Header="Delete message"
                                               Name="deleteMessageMenuItem"/>
+                                    <MenuItem Header="Edit"
+                                              Name="editMessageMenuItem"/>
                                 </ContextMenu>
                             </Border.ContextMenu>
                         </Border>

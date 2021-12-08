@@ -70,7 +70,7 @@ namespace ChatClient.Supplements.Helpers
 
                 Hyperlink link = SetLinkAddress(match);
 
-                if (link.NavigateUri != null /*&& await DoesUrlExists(link.NavigateUri)*/)
+                if (link.NavigateUri != null)
                 {
                     link.Click += OnUrlClick;
 

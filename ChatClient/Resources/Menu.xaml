@@ -62,7 +62,7 @@
     </Style>
 
     <Style x:Key="banMenuItem" TargetType="{x:Type MenuItem}" BasedOn="{StaticResource baseMenuItem}">
-        <Setter Property="Command" Value="{Binding RelativeSource={RelativeSource AncestorType= {x:Type UserControl}}, Path=DataContext.BanUserCommand}"/>
+        <Setter Property="Command" Value="{Binding RelativeSource={RelativeSource AncestorType= {x:Type UserControl}}, Path=DataContext.CommandsModel.AdminCommandsModel.BanUserCommand}"/>
         <Setter Property="CommandParameter">
             <Setter.Value>
                 <MultiBinding Converter="{StaticResource multiBindingConverter}">
@@ -76,7 +76,7 @@
     </Style>
 
     <Style x:Key="muteMenuItem" TargetType="{x:Type MenuItem}" BasedOn="{StaticResource baseMenuItem}">
-        <Setter Property="Command" Value="{Binding RelativeSource={RelativeSource AncestorType= {x:Type UserControl}}, Path=DataContext.MuteUserCommand}"/>
+        <Setter Property="Command" Value="{Binding RelativeSource={RelativeSource AncestorType= {x:Type UserControl}}, Path=DataContext.CommandsModel.AdminCommandsModel.MuteUserCommand}"/>
         <Setter Property="CommandParameter">
             <Setter.Value>
                 <MultiBinding Converter="{StaticResource multiBindingConverter}">

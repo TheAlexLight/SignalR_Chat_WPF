@@ -1,13 +1,7 @@
-﻿using AutoMapper;
-using ChatClient.Commands;
-using ChatClient.Commands.AuthenticationCommands;
-using ChatClient.Commands.ChangeUserPropertyCommand;
-using ChatClient.Commands.ContextMenuCommands;
-using ChatClient.Commands.CustomViewsCommands;
-using ChatClient.Commands.ToolBarCommands;
+﻿using ChatClient.Commands.AuthenticationCommands;
 using ChatClient.Enums;
 using ChatClient.Interfaces;
-using ChatClient.Interfaces.BaseConfiguration;
+using ChatClient.MVVM.Models.CommandModels.CommandModelsBase;
 using ChatClient.MVVM.ViewModels.BaseViewModels;
 using ChatClient.MVVM.ViewModels.ChatFeaturesModels;
 using ChatClient.Services.BaseConfiguration;
@@ -40,7 +34,10 @@ namespace ChatClient.MVVM.ViewModels.ChatMainViewModels
     {
         public ChatViewModel(ChatBaseConfiguration baseConfiguration) : base(baseConfiguration)
         {
-            InitializeFields(BaseConfiguration.ChatService);
+            CommandsModel = new ChatCommandsModelBase(this, baseConfiguration.ChatService);
+            ReconnectionCommand = new ReconnectionCommand(this, CurrentUser);
+
+            InitializeFields();
             InitializeEvents(BaseConfiguration.ChatService);
 
             Window window = Application.Current.MainWindow;
@@ -99,25 +96,7 @@ namespace ChatClient.MVVM.ViewModels.ChatMainViewModels
         private ICollectionView _filterUsersCollectionView;
         #endregion
 
-        #region Commands
-        public ICommand SendChatMessageCommand { get; private set; }
-        public ICommand RemoveToolBarOverflowCommand { get; private set; }
-        public ICommand KickUserCommand { get; private set; }
-        public ICommand BanUserCommand { get; private set; }
-        public ICommand MuteUserCommand { get; private set; }
-        public ICommand SwitchChatCommand { get; private set; }
-        public ICommand UpdatePrivateMessagesCommand { get; private set; }
-        public ICommand OpenUserInfoWIndowCommand { get; private set; }
-        public ICommand OpenSettingsCommand { get; private set; }
-        public ICommand ChangePhotoCommand { get; private set; }
-        public ICommand MessageReadCommand { get; private set; }
-        public ICommand MessageLoadedCommand { get; private set; }
-        public ICommand ChangeUsernameCommand { get; private set; }
-        public ICommand ChangeEmailCommand { get; private set; }
-        public ICommand ChangePasswordCommand { get; private set; }
-        public ICommand ChangeUserSettingsCommand { get; private set; }
-        public ICommand DeleteMessageCommand { get; set; }
-        #endregion
+        public ChatCommandsModelBase CommandsModel { get; set; }
 
         public ICollectionView UsersCollectionView
         {
@@ -151,27 +130,8 @@ namespace ChatClient.MVVM.ViewModels.ChatMainViewModels
             return (string)element.GetValue(TimeDurationProperty);
         }
 
-        private void InitializeFields(SignalRChatService chatService)
+        private void InitializeFields()
         {
-            SendChatMessageCommand = new SendChatMessageCommand(this, chatService);
-            ReconnectionCommand = new ReconnectionCommand(this, CurrentUser);
-            BanUserCommand = new BanUserCommand(this);
-            KickUserCommand = new KickUserCommand(this);
-            MuteUserCommand = new MuteUserCommand(this);
-            SwitchChatCommand = new SwitchChatCommand(this);
-            RemoveToolBarOverflowCommand = new RemoveToolBarOverfowCommand();
-            UpdatePrivateMessagesCommand = new UpdatePrivateMessagesCommand(this);
-            OpenUserInfoWIndowCommand = new OpenUserInfoWIndowCommand(this);
-            OpenSettingsCommand = new OpenSettingsCommand(this);
-            ChangePhotoCommand = new ChangePhotoCommand(this);
-            MessageReadCommand = new MessageReadCommand(this);
-            MessageLoadedCommand = new MessageLoadedCommand(this);
-            ChangeUserSettingsCommand = new ChangeUserSettingsCommand(this);
-            ChangeUsernameCommand = new ChangeUsernameCommand(this);
-            ChangePasswordCommand = new ChangePasswordCommand(this);
-            ChangeEmailCommand = new ChangeEmailCommand(this);
-            DeleteMessageCommand = new DeleteMessageCommand(BaseConfiguration);
-           
             Message = new();
             MuteStatus = new();
             UsersFilter = string.Empty;
@@ -427,7 +387,7 @@ namespace ChatClient.MVVM.ViewModels.ChatMainViewModels
                     MessageBox.Show(string.Format("{0} was changed successfully", PropertyName));
                 });
 
-                ChangeUserSettingsCommand.Execute(ChangeSettingsType.None);
+              CommandsModel.UserCredentialsCommandModel.ChangeUserSettingsCommand.Execute(ChangeSettingsType.None);
             }
             else
             {
@@ -457,7 +417,7 @@ namespace ChatClient.MVVM.ViewModels.ChatMainViewModels
                         parameters[1] = (UserModel)SelectedItem;
                     }
 
-                    SendChatMessageCommand.Execute(parameters);
+                  CommandsModel.MessageCommandModel.SendMessageCommand.Execute(parameters);
                 }
             }
         }
@@ -499,9 +459,6 @@ namespace ChatClient.MVVM.ViewModels.ChatMainViewModels
             {
                 _allUsers = value;
                 OnPropertyChanged();
-
-                //SelectedItem = _temporarySelectedItem;
-                //_temporarySelectedItem = null;
             }
         }
 
@@ -618,16 +575,6 @@ namespace ChatClient.MVVM.ViewModels.ChatMainViewModels
             }
         }
 
-        //public bool CanCloseChat
-        //{
-        //    get => _canCloseChat;
-        //    set
-        //    {
-        //        _canCloseChat = value;
-        //        OnPropertyChanged();
-        //    }
-        //}
-
         public bool NeedToUpdateMessagesCount
         {
             get => _needToUpdateMessagesCount;
@@ -657,15 +604,6 @@ namespace ChatClient.MVVM.ViewModels.ChatMainViewModels
                 {
                     _selectedItem = value;
                 }
-                //if (value == null && _temporarySelectedItem != null)
-                //{
-                //    _selectedItem = _temporarySelectedItem;
-                //    _temporarySelectedItem = null;
-                //}
-                //else
-                //{
-                //    _selectedItem = value;
-                //}
 
                 OnPropertyChanged();
             }
@@ -751,20 +689,6 @@ namespace ChatClient.MVVM.ViewModels.ChatMainViewModels
                 {
                     _selectedUserIndex = value;
                 }
-                //if (CanCloseChat || value != -1 )
-                //{
-                //    _selectedUserIndex = value;
-                //    //if (_temporarySelectedIndex != 0 )
-                //    //{
-                //    //    _selectedUserIndex = value;
-                //    //}
-                //    //else
-                //    //{
-                //    //    _selectedUserIndex = _temporarySelectedIndex;
-                //    //    _temporarySelectedIndex = -1;
-                //    //}
-
-                //}
 
                 OnPropertyChanged();
                 OnPropertyChanged(nameof(AllUsers));

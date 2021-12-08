@@ -87,12 +87,12 @@
                             HorizontalAlignment="Center">
                     <Button Content="Cancel" 
                             Style="{StaticResource changeUserSettingsButton}"
-                            Command="{Binding ChangeUserSettingsCommand}"
+                            Command="{Binding CommandsModel.UserCredentialsCommandModel.ChangeUserSettingsCommand}"
                             CommandParameter="{x:Static sharedItems:ChangeSettingsType.None}"/>
                     <Button Content="Submit"
                             Name="submitUsername"
                             Style="{StaticResource changeUserSettingsButton}"
-                            Command="{Binding ChangeUsernameCommand}"
+                            Command="{Binding CommandsModel.UserCredentialsCommandModel.ChangeUsernameCommand}"
                             CommandParameter="{Binding ElementName=currentUsernamePassword, Path=Password}"
                             IsEnabled="False"/>
                 </StackPanel>
@@ -166,11 +166,11 @@
                             HorizontalAlignment="Center">
                     <Button Content="Cancel" 
                             Style="{StaticResource changeUserSettingsButton}"
-                            Command="{Binding ChangeUserSettingsCommand}"
+                            Command="{Binding CommandsModel.UserCredentialsCommandModel.ChangeUserSettingsCommand}"
                             CommandParameter="{x:Static sharedItems:ChangeSettingsType.None}"/>
                     <Button Content="Submit"
                             Style="{StaticResource changeUserSettingsButton}"
-                            Command="{Binding ChangeEmailCommand}"
+                            Command="{Binding CommandsModel.UserCredentialsCommandModel.ChangeEmailCommand}"
                             CommandParameter="{Binding ElementName=currentEmailPassword, Path=Password}"
                             Name="submitEmail"
                             IsEnabled="False"/>
@@ -269,11 +269,11 @@
                             HorizontalAlignment="Center">
                     <Button Content="Cancel" 
                             Style="{StaticResource changeUserSettingsButton}"
-                            Command="{Binding ChangeUserSettingsCommand}"
+                            Command="{Binding CommandsModel.UserCredentialsCommandModel.ChangeUserSettingsCommand}"
                             CommandParameter="{x:Static sharedItems:ChangeSettingsType.None}"/>
                     <Button Content="Submit"
                             Style="{StaticResource changeUserSettingsButton}"
-                            Command="{Binding ChangePasswordCommand}"
+                            Command="{Binding CommandsModel.UserCredentialsCommandModel.ChangePasswordCommand}"
                             CommandParameter="{Binding ElementName=currentPassword, Path=Password}"
                             Name="submitPassword"
                             IsEnabled="False"/>

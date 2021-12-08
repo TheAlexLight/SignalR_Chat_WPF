@@ -21,23 +21,21 @@ namespace ChatClient.Commands.CustomViewsCommands
 
         public override void Execute(object parameter)
         {
-            //object[] values = parameter as object[];
-
             if (parameter is ChangeSettingsType settingsType)
             {
-                //if (values.Length != 2)
-                //{
-                    _viewModel.UserSettingsType = settingsType;
+                _viewModel.UserSettingsType = settingsType;
 
-                    if (settingsType == ChangeSettingsType.None)
-                    {
-                        _viewModel.NeedToClearPassword = true;
-                        _viewModel.UsernameSettingsField = string.Empty;;
-                        _viewModel.EmailSettingsField = string.Empty;
-                        _viewModel.Password = string.Empty;
-                        _viewModel.PasswordConfirm = string.Empty;
-                    }
-                //}
+                if (settingsType == ChangeSettingsType.None)
+                {
+                    _viewModel.NeedToClearPassword = true;
+
+                    _viewModel.UsernameSettingsField = string.Empty;
+
+                    _viewModel.EmailSettingsField = string.Empty;
+
+                    _viewModel.Password = string.Empty;
+                    _viewModel.PasswordConfirm = string.Empty;
+                }
             }
         }
     }

@@ -109,7 +109,7 @@ namespace ChatClient.Supplements.Extensions.Behaviors
 
             ChatViewModel chatViewModel = (ChatViewModel)mainWindowViewModel.CurrentViewModel;
 
-            chatViewModel.DeleteMessageCommand.Execute(this.AssociatedObject.DataContext);
+            chatViewModel.CommandsModel.MessageCommandModel.DeleteMessageCommand.Execute(this.AssociatedObject.DataContext);
         }
 
         private void AssociatedObject_LostKeyboardFocus(object sender, RoutedEventArgs e)
@@ -146,9 +146,10 @@ namespace ChatClient.Supplements.Extensions.Behaviors
                 if (_startSelectPosition != null)
                 {
                     Point mouseUpPoint = e.GetPosition(textBlock);
+
                     _endSelectPosition = textBlock.GetPositionFromPoint(mouseUpPoint, true);
 
-                    TextRange fullText = new TextRange(textBlock.ContentStart, textBlock.ContentEnd);
+                    TextRange fullText = new TextRange(textBlock.ContentStart,textBlock.ContentEnd);
                     fullText.ApplyPropertyValue(TextElement.BackgroundProperty, textBlock.Background);
 
                     TextRange selectedText = new TextRange(_startSelectPosition, _endSelectPosition);

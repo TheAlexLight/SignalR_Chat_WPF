@@ -23,8 +23,7 @@
         <Grid Grid.Column="1" 
                     Background="{StaticResource mainMessageBoxColors}"
                     IsHitTestVisible="True"
-                    MouseDown="Grid_MouseDown"
-                    Name="qwe">
+                    MouseDown="Grid_MouseDown">
             <DockPanel Grid.Row="0" VerticalAlignment="Top">
                 <TextBlock Text="UserInfo"
                        FontSize="28"
@@ -40,7 +39,7 @@
                         Width="25"
                         Height="25"
                         Margin="0,0,5,0"
-                        Command="{Binding OpenUserInfoWIndowCommand}">
+                        Command="{Binding CommandsModel.WindowSwitchingCommandModel.OpenUserInfoWIndowCommand}">
                     <Button.CommandParameter>
                         <MultiBinding Converter ="{StaticResource multiBindingConverter}">
                             <Binding Source="false"/>

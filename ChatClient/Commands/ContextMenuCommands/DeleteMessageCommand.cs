@@ -1,5 +1,6 @@
 ﻿using ChatClient.MVVM.ViewModels.ChatFeaturesModels;
 using ChatClient.Services.BaseConfiguration;
+using ChatClient.Services.ConcreteConfiguration;
 using SharedItems.Models;
 using System;
 using System.Collections.Generic;
@@ -11,18 +12,18 @@ namespace ChatClient.Commands.ContextMenuCommands
 {
     public class DeleteMessageCommand : CommandBase
     {
-        private readonly ChatBaseConfiguration _baseConfiguration;
+        private readonly SignalRChatService _chatService;
 
-        public DeleteMessageCommand(ChatBaseConfiguration baseConfiguration)
+        public DeleteMessageCommand(SignalRChatService chatService)
         {
-            _baseConfiguration = baseConfiguration;
+            _chatService = chatService;
         }
 
         public override void Execute(object parameter)
         {
             if (parameter is MessageViewModel messageModel)
             {
-                _baseConfiguration.ChatService.MessageContextMenu.Delete(messageModel.MessageModel);
+                _chatService.MessageContextMenu.Delete(messageModel.MessageModel);
             }
         }
     }

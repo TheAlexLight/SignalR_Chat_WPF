@@ -53,7 +53,7 @@
                         >
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="SelectionChanged">
-                        <i:InvokeCommandAction Command="{Binding UpdatePrivateMessagesCommand}"
+                        <i:InvokeCommandAction Command="{Binding CommandsModel.MessageCommandModel.UpdatePrivateMessagesCommand}"
                                                    CommandParameter="{Binding ElementName=userList, Path=SelectedItem}"/>
                     </i:EventTrigger>
                 </i:Interaction.Triggers>
@@ -63,35 +63,30 @@
         <Grid Grid.Column="1">
             <Grid.RowDefinitions>
                 <RowDefinition Height="45"/>
-                <RowDefinition Height="190*"/>
-                <RowDefinition Height="152*"/>
-                <RowDefinition Height="27*"/>
+                <RowDefinition/>
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
-            
+
             <Grid Grid.Row="0">
                 <Button Content="{Binding ElementName=userList  
                         , Path=SelectedItem.UserProfile.Username}"
                             Style="{StaticResource userInfoButton}">
-                    <!--<Button.CommandParameter>
-                        <MultiBinding Converter ="{StaticResource multiBindingConverter}">
-                            <Binding Source="true"/>
-                            <Binding ElementName="userList" Path="SelectedItem"/>
-                        </MultiBinding>
-                    </Button.CommandParameter>-->
                 </Button>
             </Grid>
             <ItemsControl Style="{StaticResource messagesListBox}"
-                          Grid.Row="1" Grid.RowSpan="3"/>
-            <Grid Grid.Row="4"
+                          Grid.Row="1"/>
+            <Grid Grid.Row="2"
                   Background="#D8DFD3">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="35"/>
                     <ColumnDefinition Width="3.7*"/>
                     <ColumnDefinition MinWidth="45" MaxWidth="45"/>
                 </Grid.ColumnDefinitions>
+
+                <!--<additionalViews:EditMessageView Panel.ZIndex="5" Grid.ColumnSpan="3"/>-->
+
                 <Button Style="{StaticResource paperClipButton}"
-                            Command="{Binding SendChatMessageCommand}">
+                            Command="{Binding CommandsModel.MessageCommandModel.SendMessageCommand}">
                     <Button.CommandParameter>
                         <MultiBinding Converter ="{StaticResource multiBindingConverter}">
                             <Binding Source="{x:Static sharedItems:MessageInformationType.Image}"/>
@@ -112,7 +107,7 @@
                     </TextBox>
                 </AdornerDecorator>
                 <Button  Margin="0,0,5,0" Grid.Column="2" Width="35" Height="35    "  
-                        Command="{Binding SendChatMessageCommand}"
+                        Command="{Binding CommandsModel.MessageCommandModel.SendMessageCommand}"
                         Style="{StaticResource sendImageMessage}"
                         Cursor="Hand">
                     <Image Stretch="Fill" Source="{StaticResource directDrawingImage}" />

@@ -55,7 +55,7 @@
                         Width="25"
                         Height="25"
                         Margin="0,0,5,0"
-                        Command="{Binding OpenSettingsCommand}">
+                        Command="{Binding CommandsModel.WindowSwitchingCommandModel.OpenSettingsCommand}">
                             <Button.CommandParameter>
                                 <MultiBinding Converter ="{StaticResource multiBindingConverter}">
                                     <Binding Source="false"/>
@@ -78,7 +78,7 @@
                         </Ellipse>
                     </Border>
                     <Button Style="{StaticResource changePhotoButton}"
-                        Command="{Binding ChangePhotoCommand}">
+                        Command="{Binding CommandsModel.UserCredentialsCommandModel.ChangePhotoCommand}">
                         <TextBlock Text="Change Photo"  
                        FontSize="20"
                        Margin="6"/>
@@ -94,7 +94,7 @@
                                            Style="{StaticResource settingsInsideField}"/>
                         <Button DockPanel.Dock="Right"
                                 Style="{StaticResource changeFieldButton}"
-                                Command="{Binding ChangeUserSettingsCommand}"
+                                Command="{Binding CommandsModel.UserCredentialsCommandModel.ChangeUserSettingsCommand}"
                                 CommandParameter="{x:Static sharedItems:ChangeSettingsType.Username}"/>
                     </DockPanel>
                     <TextBlock Text="Email"
@@ -104,7 +104,7 @@
                                    Style="{StaticResource settingsInsideField}"/>
                         <Button DockPanel.Dock="Right"
                                 Style="{StaticResource changeFieldButton}"
-                                Command="{Binding ChangeUserSettingsCommand}"
+                                Command="{Binding CommandsModel.UserCredentialsCommandModel.ChangeUserSettingsCommand}"
                                 CommandParameter="{x:Static sharedItems:ChangeSettingsType.Email}"/>
                     </DockPanel>
 
@@ -114,7 +114,7 @@
                                    Margin="5"/>
                         <Button DockPanel.Dock="Right"
                                 Style="{StaticResource changeFieldButton}"
-                                Command="{Binding ChangeUserSettingsCommand}"
+                                Command="{Binding CommandsModel.UserCredentialsCommandModel.ChangeUserSettingsCommand}"
                                 CommandParameter="{x:Static sharedItems:ChangeSettingsType.Password}"/>
                     </DockPanel>
                 </StackPanel>

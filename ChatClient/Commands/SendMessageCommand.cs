@@ -18,13 +18,13 @@ using SharedItems.Models;
 
 namespace ChatClient.Commands
 {
-    public class SendChatMessageCommand : CommandBase
+    public class SendMessageCommand : CommandBase
     {
         private readonly ChatViewModel _viewModel;
         private readonly SignalRChatService _chatService;
         private readonly Regex _regexUrl = new Regex(@"(?#Protocol)(?:(?:ht|f)tp(?:s?)\:\/\/|~/|/)?(?#Username:Password)(?:\w+:\w+@)?(?#Subdomains)(?:(?:[-\w]+\.)+(?#TopLevel Domains)(?:com|org|net|gov|mil|biz|info|mobi|name|aero|jobs|museum|travel|[a-z]{2}))(?#Port)(?::[\d]{1,5})?(?#Directories)(?:(?:(?:/(?:[-\w~!$+|.,=]|%[a-f\d]{2})+)+|/)+|\?|#)?(?#Query)(?:(?:\?(?:[-\w~!$+|.,*:]|%[a-f\d{2}])+=(?:[-\w~!$+|.,*:=]|%[a-f\d]{2})*)(?:&(?:[-\w~!$+|.,*:]|%[a-f\d{2}])+=(?:[-\w~!$+|.,*:=]|%[a-f\d]{2})*)*)*(?#Anchor)(?:#(?:[-\w~!$+|.,*:=]|%[a-f\d]{2})*)?");
 
-        public SendChatMessageCommand(ChatViewModel viewModel, SignalRChatService chatService)
+        public SendMessageCommand(ChatViewModel viewModel, SignalRChatService chatService)
         {
             _viewModel = viewModel;
             _chatService = chatService;

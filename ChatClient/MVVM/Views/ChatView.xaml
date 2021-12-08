@@ -37,13 +37,13 @@
         <Grid Grid.Column ="0">
             <StackPanel Background="#E4E3E9">
                 <Button Style="{StaticResource publicChatButton}"
-                        Command="{Binding SwitchChatCommand}"
+                        Command="{Binding CommandsModel.WindowSwitchingCommandModel.SwitchChatCommand}"
                         CommandParameter="{x:Static enums:ChatType.Public}"/>
                 <Button Style="{StaticResource privateChatButton}"
-                        Command="{Binding SwitchChatCommand}"
+                        Command="{Binding CommandsModel.WindowSwitchingCommandModel.SwitchChatCommand}"
                         CommandParameter="{x:Static enums:ChatType.Private}"/>
                 <Button Style="{StaticResource settingsButton}"
-                                    Command="{Binding OpenSettingsCommand}"
+                                    Command="{Binding CommandsModel.WindowSwitchingCommandModel.OpenSettingsCommand}"
                                     Grid.Column="2">
                     <Button.CommandParameter>
                         <MultiBinding Converter ="{StaticResource multiBindingConverter}">
@@ -74,7 +74,7 @@
                     <ToolBar Name="usersToolBar" Style="{StaticResource usersToolBar}">
                         <i:Interaction.Triggers>
                             <i:EventTrigger EventName="Loaded">
-                                <i:InvokeCommandAction Command="{Binding RemoveToolBarOverflowCommand}"
+                                <i:InvokeCommandAction Command="{Binding CommandsModel.RemoveToolBarOverflowCommand}"
                                                    CommandParameter="{Binding ElementName=usersToolBar}"/>
                             </i:EventTrigger>
                         </i:Interaction.Triggers>
@@ -127,7 +127,7 @@
                     <ColumnDefinition MinWidth="45" MaxWidth="45"/>
                 </Grid.ColumnDefinitions>
                 <Button Style="{StaticResource paperClipButton}"
-                            Command="{Binding SendChatMessageCommand}">
+                            Command="{Binding CommandsModel.MessageCommandModel.SendMessageCommand}">
                     <Button.CommandParameter>
                         <MultiBinding Converter ="{StaticResource multiBindingConverter}">
                             <Binding Source="{x:Static sharedItems:MessageInformationType.Image}"/>
@@ -149,7 +149,7 @@
                     </TextBox>
                 </AdornerDecorator>
                 <Button  Margin="0,0,5,0" Grid.Column="2" Width="35" Height="35    "  
-                        Command="{Binding SendChatMessageCommand}"
+                        Command="{Binding CommandsModel.MessageCommandModel.SendMessageCommand}"
                         Style="{StaticResource sendImageMessage}"
                         Cursor="Hand">
                     <Image Stretch="Fill" Source="{StaticResource directDrawingImage}" />

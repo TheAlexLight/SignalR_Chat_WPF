@@ -13,6 +13,9 @@
     <Compile Update="MVVM\Views\AdditionalViews\ChangeUserSettingsView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="MVVM\Views\AdditionalViews\EditMessageView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="MVVM\Views\AdditionalViews\PrivateChatView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -40,6 +43,9 @@
   </ItemGroup>
   <ItemGroup>
     <Page Update="MainWindow.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="MVVM\Views\AdditionalViews\EditMessageView.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Resources\Border.xaml">
